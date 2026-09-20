@@ -1,0 +1,598 @@
+:root {
+  --bark: #3c3226;
+  --bark-soft: #5a4c3a;
+  --clay: #8a6f4e;
+  --sand: #f6f2ea;
+  --sand-deep: #eae2d4;
+  --moss: #4a6b4a;
+  --moss-soft: #6e8c66;
+  --moss-pale: #e6ede1;
+  --rule: #d9cfbd;
+  --ink: #2e2820;
+  --ink-soft: #5c5347;
+  --accent: #a8562f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  /* Utilização de clamp para escala fluida: mínimo de 17px, adaptação via viewport, máximo de 19px */
+  font-size: clamp(17px, 1rem + 0.5vw, 19px);
+  line-height: 1.68;
+  /* Suaviza a quebra de texto permitindo hifenização nativa onde aplicável */
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  color: var(--bark);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+code,
+kbd,
+pre {
+  font-family: "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+  font-size: 0.87em;
+}
+
+pre {
+  overflow-x: auto;
+  /* Previne estouro de layout em blocos de código */
+  max-width: 100%;
+}
+
+code {
+  background: var(--sand-deep);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.08em 0.36em;
+  color: var(--bark-soft);
+  overflow-wrap: break-word;
+  /* Mantido apenas para código inline */
+}
+
+a {
+  color: var(--moss);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* ---------- layout ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  gap: 3rem;
+  max-width: 82rem;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+}
+
+nav.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 2.5rem 0 3rem;
+  border-right: 1px solid var(--rule);
+  font-family: "Segoe UI", -apple-system, Arial, sans-serif;
+  font-size: 0.92rem;
+}
+
+nav.sidebar .brand {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--clay);
+  margin-bottom: 1.25rem;
+}
+
+nav.sidebar ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 1.25rem 0 0;
+}
+
+nav.sidebar li {
+  margin: 0.1rem 0;
+}
+
+nav.sidebar a {
+  display: block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  border-left: 3px solid transparent;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+nav.sidebar a:hover {
+  background: var(--moss-pale);
+  border-left-color: var(--moss-soft);
+  color: var(--bark);
+}
+
+nav.sidebar .group {
+  margin-top: 1.4rem;
+  padding: 0 0.6rem 0.3rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--clay);
+  border-bottom: 1px solid var(--rule);
+}
+
+nav.sidebar .sub a {
+  padding-left: 1.5rem;
+  font-size: 0.88rem;
+}
+
+main {
+  padding: 2.5rem 0 6rem;
+  max-width: 52rem;
+}
+
+/* ---------- masthead ---------- */
+
+header.masthead {
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+header.masthead .eyebrow {
+  font-family: "Segoe UI", Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.73rem;
+  color: var(--clay);
+  margin: 0 0 0.5rem;
+}
+
+header.masthead h1 {
+  font-size: 2.4rem;
+  margin: 0 0 0.6rem;
+}
+
+header.masthead p.tagline {
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 40rem;
+}
+
+section {
+  margin-bottom: 3.5rem;
+  scroll-margin-top: 1.5rem;
+}
+
+section>h2 {
+  font-size: 1.6rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+h3 {
+  font-size: 1.18rem;
+  margin: 2rem 0 0.6rem;
+}
+
+/* ---------- pipeline diagram ---------- */
+
+.pipeline {
+  background: #fffdf8;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1.75rem 1.5rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 0.9rem 0;
+  border-top: 1px dashed var(--rule);
+}
+
+.phase:first-of-type {
+  border-top: 0;
+}
+
+.phase .label {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #fffdf8;
+  background: var(--moss);
+  border-radius: 4px;
+  padding: 0.28rem 0.5rem;
+  text-align: center;
+  margin-top: 0.35rem;
+}
+
+.phase.implement .label {
+  background: var(--clay);
+}
+
+.phase.verify .label {
+  background: var(--bark-soft);
+}
+
+.chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.node {
+  display: inline-block;
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.8rem;
+  background: var(--moss-pale);
+  border: 1px solid var(--moss-soft);
+  color: #35502f;
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.node:hover {
+  background: var(--moss-soft);
+  color: #fffdf8;
+}
+
+.phase.implement .node {
+  background: #f3e9db;
+  border-color: var(--clay);
+  color: #6b5334;
+}
+
+.phase.implement .node:hover {
+  background: var(--clay);
+  color: #fffdf8;
+}
+
+.phase.verify .node {
+  background: var(--sand-deep);
+  border-color: var(--bark-soft);
+  color: var(--bark);
+}
+
+.phase.verify .node:hover {
+  background: var(--bark-soft);
+  color: #fffdf8;
+}
+
+.arrow {
+  color: var(--clay);
+  font-size: 1rem;
+}
+
+.orbar {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clay);
+}
+
+.loopback {
+  grid-column: 2;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  background: var(--sand);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 5px 5px 0;
+  padding: 0.4rem 0.75rem;
+  margin-top: 0.55rem;
+}
+
+/* ---------- skill cards ---------- */
+
+article.skill {
+  background: #fffdf8;
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--moss-soft);
+  border-radius: 8px;
+  padding: 1.4rem 1.6rem 1.1rem;
+  margin: 1.5rem 0 2.25rem;
+  scroll-margin-top: 1.5rem;
+}
+
+article.skill.implement {
+  border-left-color: var(--clay);
+}
+
+article.skill.verify {
+  border-left-color: var(--bark-soft);
+}
+
+article.skill h3 {
+  margin: 0 0 0.15rem;
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 1.05rem;
+  color: var(--bark);
+}
+
+article.skill .step {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+article.skill p.what {
+  margin: 0.5rem 0 1rem;
+  color: var(--ink-soft);
+}
+
+dl.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+}
+
+dl.facts dt {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--clay);
+  padding-top: 0.24rem;
+}
+
+dl.facts dd {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+dl.facts dd ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.usewhen {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.95rem;
+}
+
+.usewhen strong {
+  color: var(--bark);
+}
+
+.usewhen ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.usewhen li {
+  margin: 0.2rem 0;
+}
+
+.callout {
+  background: var(--moss-pale);
+  border: 1px solid #cddac5;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.callout.warn {
+  background: #f7ece3;
+  border-color: #e3cbb6;
+}
+
+.callout p:first-child {
+  margin-top: 0;
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+.callout .tag {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moss);
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+.callout.warn .tag {
+  color: var(--accent);
+}
+
+/* ---------- tables ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+  /* Transforma a tabela em um bloco com scroll horizontal em telas menores */
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+caption {
+  caption-side: bottom;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-align: left;
+  padding-top: 0.5rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  min-width: 120px;
+  /* Garante espaço mínimo para evitar esmagamento do texto */
+}
+
+thead th {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clay);
+  border-bottom: 2px solid var(--rule);
+}
+
+tbody tr:nth-child(even) {
+  background: #fffdf8;
+}
+
+ol.steps {
+  padding-left: 1.3rem;
+}
+
+ol.steps li {
+  margin: 0.45rem 0;
+}
+
+footer.page {
+  border-top: 1px solid var(--rule);
+  padding-top: 1.25rem;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- media queries ---------- */
+@media (max-width: 62rem) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  nav.sidebar {
+    position: static;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.5rem;
+  }
+
+  dl.facts {
+    grid-template-columns: 1fr;
+    gap: 0.1rem 0;
+  }
+
+  dl.facts dd {
+    margin-bottom: 0.6rem;
+  }
+
+  .phase {
+    grid-template-columns: 1fr;
+  }
+
+  .phase .label {
+    justify-self: start;
+  }
+
+  .loopback {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 30rem) {
+  .shell {
+    padding: 0 1.1rem;
+  }
+
+  main {
+    padding: 1.75rem 0 4rem;
+  }
+
+  header.masthead h1 {
+    font-size: 2rem;
+  }
+
+  .pipeline {
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  article.skill {
+    padding: 1.1rem 1.15rem 0.9rem;
+  }
+
+  th,
+  td {
+    padding: 0.45rem 0.5rem;
+  }
+
+  /* Ajuste de tipografia para garantir conforto de leitura em mobile */
+  body {
+    font-size: 18px;
+  }
+}
+
+/* ---------- language switcher ---------- */
+
+nav.sidebar .langswitch {
+  margin: 1.4rem 1.25rem 0 0;
+  padding: 0.75rem 0.6rem 0;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+nav.sidebar .langswitch strong {
+  color: var(--bark);
+  font-weight: 600;
+}
+
+nav.sidebar .langswitch a {
+  display: inline;
+  padding: 0;
+  border-left: 0;
+  color: var(--moss);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+nav.sidebar .langswitch a:hover {
+  background: none;
+  color: var(--accent);
+}

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PIV Loop — Manual das Skills</title>
+<meta name="description" content="Plan → Implement → Verify: um manual amigável das oito skills que levam uma ideia da página em branco até um pull request que um humano pode aprovar.">
+
+<!-- Open Graph — o preview de link que Slack, WhatsApp, Discord e LinkedIn renderizam. -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PIV Pipeline">
+<meta property="og:title" content="PIV Loop — Manual das Skills">
+<meta property="og:description" content="Plan → Implement → Verify: um manual amigável das oito skills que levam uma ideia da página em branco até um pull request que um humano pode aprovar.">
+<meta property="og:url" content="https://fabianosobreira.github.io/piv-pipeline/index.pt-BR.html">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://fabianosobreira.github.io/piv-pipeline/og-card.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A chain do PIV Loop: Plan, Implement e Verify, com as oito skills como etapas nomeadas">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="canonical" href="https://fabianosobreira.github.io/piv-pipeline/index.pt-BR.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="alternate" hreflang="en" href="index.html">
+<link rel="alternate" hreflang="pt-BR" href="index.pt-BR.html">
+<link rel="alternate" hreflang="x-default" href="index.html">
+<script>
+// Records an explicit ?lang= choice so index.html honours it on the next visit.
+(function () {
+  var forced = new URLSearchParams(location.search).get('lang');
+  if (forced) { try { localStorage.setItem('piv-manual-lang', forced); } catch (e) {} }
+})();
+</script>
+</head>
+<body>
+
+<div class="shell">
+
+  <nav class="sidebar" aria-label="Navegação da página">
+    <p class="brand">Manual do PIV Loop</p>
+    <ol>
+      <li><a href="#overview">O que é o PIV loop</a></li>
+      <li><a href="#chain">A chain em um relance</a></li>
+      <li><a href="#picking">Por onde começar?</a></li>
+
+      <li class="group">Plan</li>
+      <li class="sub"><a href="#piv-create-prd">piv-create-prd</a></li>
+      <li class="sub"><a href="#piv-create-architecture">piv-create-architecture</a></li>
+      <li class="sub"><a href="#piv-create-tickets">piv-create-tickets</a></li>
+
+      <li class="group">Implement</li>
+      <li class="sub"><a href="#piv-implement-ticket">piv-implement-ticket</a></li>
+
+      <li class="group">Verify</li>
+      <li class="sub"><a href="#piv-review-changes">piv-review-changes</a></li>
+      <li class="sub"><a href="#piv-fix-findings">piv-fix-findings</a></li>
+      <li class="sub"><a href="#piv-commit-changes">piv-commit-changes</a></li>
+      <li class="sub"><a href="#piv-create-pr">piv-create-pr</a></li>
+
+      <li class="group">Referência</li>
+      <li class="sub"><a href="#artifacts">Artifacts e onde eles vivem</a></li>
+      <li class="sub"><a href="#house-rules">House rules</a></li>
+      <li class="sub"><a href="#walkthrough">Um percurso completo</a></li>
+      <li class="sub"><a href="#faq">Solução de problemas</a></li>
+    </ol>
+    <p class="langswitch"><a href="index.html?lang=en" hreflang="en" lang="en">English</a> · <strong>Português (BR)</strong></p>
+  </nav>
+
+  <main>
+
+    <header class="masthead">
+      <p class="eyebrow">Manual das Skills</p>
+      <h1>O PIV Loop</h1>
+      <p class="tagline">Plan → Implement → Verify. Oito skills que levam uma ideia da página em branco até um pull request que um humano pode aprovar — um passo deliberado por vez.</p>
+    </header>
+
+    <section id="overview">
+      <h2>O que é o PIV loop</h2>
+      <p><strong>PIV</strong> significa <strong>plan → implement → verify</strong>. É o formato pelo qual as skills deste projeto conduzem o trabalho.</p>
+      <ul>
+        <li><strong>Plan</strong> transforma uma ideia em um intent, uma arquitetura e um conjunto de tickets.</li>
+        <li><strong>Implement</strong> constrói um ticket na própria branch e escreve um implementation report.</li>
+        <li><strong>Verify</strong> tenta provar que a mudança está errada antes que ela vá para produção: um review escreve as findings, uma rodada de triagem resolve cada uma, e só então o trabalho é commitado e entregue a um humano.</li>
+      </ul>
+      <p>Duas propriedades sustentam o conjunto. <strong>Cada passo lê o artifact que o passo anterior escreveu</strong> — os reports não são burocracia, são o input. E <strong>cada passo é iniciado por você</strong>, nunca pelo passo anterior.</p>
+
+      <div class="callout">
+        <span class="tag">A ideia central</span>
+        <p>Nada se encadeia sozinho. Cada skill termina dizendo qual é o próximo movimento; você decide se o executa. É isso que impede um plano ruim de virar um PR mergeado enquanto você estava longe.</p>
+      </div>
+    </section>
+
+    <section id="chain">
+      <h2>A chain em um relance</h2>
+
+      <div class="pipeline">
+
+        <div class="phase plan">
+          <span class="label">Plan</span>
+          <div>
+            <div class="chain">
+              <a class="node" href="#piv-create-prd">piv-create-prd</a>
+              <span class="orbar">ou / e</span>
+              <a class="node" href="#piv-create-architecture">piv-create-architecture</a>
+              <span class="arrow" aria-hidden="true">→</span>
+              <a class="node" href="#piv-create-tickets">piv-create-tickets</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase implement">
+          <span class="label">Implement</span>
+          <div>
+            <div class="chain">
+              <a class="node" href="#piv-implement-ticket">piv-implement-ticket</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase verify">
+          <span class="label">Verify</span>
+          <div>
+            <div class="chain">
+              <a class="node" href="#piv-review-changes">piv-review-changes</a>
+              <span class="arrow" aria-hidden="true">→</span>
+              <a class="node" href="#piv-fix-findings">piv-fix-findings</a>
+              <span class="arrow" aria-hidden="true">→</span>
+              <a class="node" href="#piv-commit-changes">piv-commit-changes</a>
+              <span class="arrow" aria-hidden="true">→</span>
+              <a class="node" href="#piv-create-pr">piv-create-pr</a>
+            </div>
+            <p class="loopback"><strong>O loop fecha em um PASS.</strong> <code>piv-fix-findings</code> sempre devolve para um <code>piv-review-changes</code> novo. Só um veredito PASS conquista um commit.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <p>Leia as setas como <em>"este é o próximo movimento oferecido"</em>, não como automação. As três skills de verify antes do PR são o gate; o PR em si é a entrega para fora do loop, para um humano que revisa, aprova e faz o merge.</p>
+    </section>
+
+    <section id="picking">
+      <h2>Por onde começar?</h2>
+      <p>Raramente você precisa das oito. Encontre a linha que corresponde ao que você tem em mãos.</p>
+
+      <table>
+        <thead>
+          <tr><th>O que você tem</th><th>Comece por</th><th>Por quê</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Uma ideia de produto, nada escrito</td>
+            <td><code>piv-create-prd</code></td>
+            <td>Você precisa fixar o <em>o quê e por quê</em> antes que alguém discuta o como.</td>
+          </tr>
+          <tr>
+            <td>Um PRD ou um epic, com incerteza técnica real</td>
+            <td><code>piv-create-architecture</code></td>
+            <td>Decidir a abordagem deliberadamente, em vez de deixar os tickets a codificarem por acidente.</td>
+          </tr>
+          <tr>
+            <td>Um intent claro, com pouco risco técnico</td>
+            <td><code>piv-create-tickets</code></td>
+            <td>Um atalho legítimo — só saiba que você pulou a etapa de arquitetura de propósito.</td>
+          </tr>
+          <tr>
+            <td>Um ticket id pronto para construir</td>
+            <td><code>piv-implement-ticket</code></td>
+            <td>Tickets carregam o próprio contexto, então o loop pega um do zero só pelo id.</td>
+          </tr>
+          <tr>
+            <td>Trabalho construído numa branch, ainda não commitado</td>
+            <td><code>piv-review-changes</code></td>
+            <td>Este é o gate que decide se a mudança conquista um commit.</td>
+          </tr>
+          <tr>
+            <td>Um review report com findings</td>
+            <td><code>piv-fix-findings</code></td>
+            <td>Findings são input, não ordem de serviço — você decide sobre cada uma.</td>
+          </tr>
+          <tr>
+            <td>Um veredito PASS</td>
+            <td><code>piv-commit-changes</code></td>
+            <td>Commits atômicos e, depois, o PR.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===================== PLAN ===================== -->
+
+    <section id="plan">
+      <h2>Plan</h2>
+      <p>A etapa de plan produz três tipos de documento, em ordem crescente de concretude: <strong>intent</strong> (o PRD), <strong>decisões</strong> (o architecture doc) e <strong>unidades de trabalho</strong> (os tickets). São skills separadas porque respondem a perguntas diferentes, e misturá-las é como um PRD silenciosamente vira uma spec.</p>
+
+      <article class="skill" id="piv-create-prd">
+        <span class="step">Plan · passo 1</span>
+        <h3>piv-create-prd</h3>
+        <p class="what">Entrevista você para fixar o problema, o porquê de construí-lo e uma hipótese falseável — e então escreve um PRD em nível de produto. Só intent: <em>o quê</em> e <em>por quê</em>, nunca decisões de engenharia.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[ideia de produto]</code> e, opcionalmente, caminhos para research docs — entrevistas com usuários, temas de tickets de suporte, analytics, análises de concorrentes. Em branco, começa pelas perguntas.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code> — problem statement, evidências, tese, hipótese, usuário-alvo e JTBD, MVP, métricas de sucesso, não-objetivos, questões em aberto.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Uma entrevista agrupada em cinco fases, cada uma terminando em um gate onde ela espera por você.</dd>
+
+          <dt>Guards</dt>
+          <dd>
+            <ul>
+              <li><strong>Evidence-or-TBD</strong> — todo requisito rastreia até algo que você disse ou que um doc mostrou; o que é desconhecido é escrito como "TBD — needs validation".</li>
+              <li><strong>Intent-framed, não solution-prescriptive</strong> — se só uma solução couber no problem statement, aquilo é uma spec, não um PRD.</li>
+            </ul>
+          </dd>
+
+          <dt>Próximo passo</dt>
+          <dd><code>piv-create-architecture</code> para decidir o como, ou <code>piv-create-tickets</code> direto quando o trabalho for tecnicamente trivial.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use quando</strong>
+          <ul>
+            <li>Você está começando algo greenfield e ninguém escreveu o problema ainda.</li>
+            <li>Você está dimensionando um novo epic num produto existente — o epic vira o input.</li>
+            <li>Duas pessoas do time descreveriam "o problema" de formas diferentes.</li>
+          </ul>
+          <strong>Pule quando</strong> o intent já existir como um epic ou brief escrito em que você confia.
+        </div>
+      </article>
+
+      <article class="skill" id="piv-create-architecture">
+        <span class="step">Plan · passo 2</span>
+        <h3>piv-create-architecture</h3>
+        <p class="what">Pesa as opções de <em>como</em> construir um intent, recomenda uma direção e escreve um architecture decision doc — abordagem, building blocks, modelo de dados, riscos. Ela para no nível da decisão; não é um plano de implementação.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd>O caminho de um PRD, um epic, um brief ou uma ideia em formato livre, mais reference docs opcionais. Referências externas (URL, page key, ticket id) são buscadas na origem primeiro.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/.plans/&lt;intent-slug&gt;.architecture.md</code> — problema e objetivos, abordagens consideradas, abordagem recomendada, decisões-chave, peças faltantes, spikes e experimentos, questões em aberto.</dd>
+
+          <dt>Como roda</dt>
+          <dd><strong>Modo grilling.</strong> Ela contesta suas premissas em vez de transcrevê-las, e sinaliza as portas de mão única que merecem um spike antes do compromisso.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd><code>piv-create-tickets &lt;caminho do intent&gt; docs/.plans/&lt;intent-slug&gt;.architecture.md</code> — ou construir antes um spike que esteja bloqueando.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use quando</strong>
+          <ul>
+            <li>Existe mais de uma forma plausível de construir a coisa.</li>
+            <li>Uma decisão é difícil de reverter depois — formato de armazenamento, fronteira de serviço, um fornecedor.</li>
+            <li>O trabalho toca uma parte desconhecida do sistema.</li>
+          </ul>
+          <strong>Pule quando</strong> a abordagem for óbvia e a mudança for local. Diga em voz alta que você pulou.
+        </div>
+      </article>
+
+      <article class="skill" id="piv-create-tickets">
+        <span class="step">Plan · passo 3</span>
+        <h3>piv-create-tickets</h3>
+        <p class="what">Decompõe um intent em tickets do tamanho de um agent, com acceptance criteria e um grafo de dependências, e então os cria no tracker do projeto. É também aqui que o <strong>epic</strong> nasce: ela cria o epic e publica nele o PRD e o architecture doc antes de qualquer ticket existir — as duas plan skills anteriores escrevem arquivos locais e não sabem nada sobre tracker.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd>Um intent — PRD, epic, path, URL ou ticket id — opcionalmente com o architecture doc dele.</dd>
+
+          <dt>Output</dt>
+          <dd>O epic, com o PRD e o architecture doc publicados nele — e tickets reais embaixo dele, cada um com descrição, escopo, contexto próprio, <em>depends on</em> e acceptance criteria. Todo ticket referencia o epic de volta, para que o rastro sobreviva.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Não interativa durante a decomposição e o mapeamento de dependências, e então <strong>um gate</strong> onde você confirma a divisão antes que qualquer coisa seja criada.</dd>
+
+          <dt>Guard</dt>
+          <dd>Sem architecture doc, ela avisa, mantém os tickets no formato de resultado em vez de implementação, e oferece <code>piv-create-architecture</code> primeiro quando a incerteza técnica é real.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd><code>piv-implement-ticket &lt;ticket-id&gt;</code> — ou iniciar em paralelo uma leva de tickets independentes.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use quando</strong> um intent estiver resolvido e você precisar fatiá-lo em unidades que um agent consiga terminar e comprovar. Cada ticket carrega o próprio contexto, então pode ser pego do zero.
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== IMPLEMENT ===================== -->
+
+    <section id="implement">
+      <h2>Implement</h2>
+
+      <article class="skill implement" id="piv-implement-ticket">
+        <span class="step">Implement</span>
+        <h3>piv-implement-ticket</h3>
+        <p class="what">Constrói um ticket, task por task, na própria branch, validando a cada passo, e escreve um implementation report.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>&lt;ticket-id | caminho-do-plan-document&gt;</code>. Em branco, ela pergunta qual ticket.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — resumo, tasks concluídas, testes adicionados, resultados de validação, <strong>desvios em relação ao ticket</strong>, problemas encontrados. O status é <code>COMPLETE</code> ou <code>PARTIAL</code>.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Resolver o ticket → trabalhar em uma branch → ler o ticket de ponta a ponta → drift check → executar as tasks em ordem → fechar a estratégia de testes → rodar as checks → verificação final.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd><code>piv-review-changes</code>, em uma sessão própria, recebendo o ticket id.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Por que os desvios importam.</strong> O reviewer lê este report. Um desvio registrado aqui é uma decisão <em>intencional</em> que o reviewer não deve apontar; o mesmo desvio não escrito volta como uma finding.
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== VERIFY ===================== -->
+
+    <section id="verify">
+      <h2>Verify</h2>
+      <p>Verify são quatro skills e uma regra: <strong>review e fixes são rodadas separadas</strong>. O reviewer escreve findings e não toca em código. A rodada de triagem decide o que acontece com cada uma, com você decidindo a divisão.</p>
+
+      <article class="skill verify" id="piv-review-changes">
+        <span class="step">Verify · o gate</span>
+        <h3>piv-review-changes</h3>
+        <p class="what">Revisa a mudança pronta em busca de bugs, defeitos de segurança e violações de padrões, e escreve um review report. É um report, nunca uma edição.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[ticket id]</code> — em branco, é extraído do nome da branch.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-review.md</code> — escopo (todo arquivo lido), findings agrupadas em <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, e as checks executadas. Cada finding carrega evidência, impacto e um fix concreto.</dd>
+
+          <dt>Veredito</dt>
+          <dd><strong>CHANGES REQUESTED</strong> quando qualquer finding critical ou high sobrevive. <strong>PASS</strong> caso contrário — um PASS com findings medium e low é normal.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Resolver a mudança → resolver as deferrals anteriores → ler os padrões que a mudança precisa cumprir → ler cada arquivo alterado de ponta a ponta → montar o caso → aplicar três filtros que eliminam findings não comprovadas.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd><strong>PASS</strong> → <code>piv-commit-changes</code>. <strong>CHANGES REQUESTED</strong> → <code>piv-fix-findings</code>, recebendo o caminho deste report.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use</strong> antes de commitar qualquer coisa, e de novo depois de cada rodada de fix. Em um re-review, ela sobrescreve o report anterior: ele é o estado atual da branch, e as decisões sobre findings antigas vivem no tracker, não ali.
+        </div>
+      </article>
+
+      <article class="skill verify" id="piv-fix-findings">
+        <span class="step">Verify · triagem</span>
+        <h3>piv-fix-findings</h3>
+        <p class="what">Tria as findings do review, corrige uma a uma as que você escolher, com testes, adia e registra as demais no tracker, valida e escreve um fix report.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[caminho do review report]</code> — em branco, usa o review escrito para esta branch.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code> — <strong>Fixed</strong>, <strong>Deferred</strong> (com as referências das issues), <strong>Needs a human look</strong>, <strong>Noise / won't-fix</strong>, e as checks executadas.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Triar cada finding em um dos quatro grupos → corrigir o conjunto <em>fix now</em> uma de cada vez, cada uma com um teste que a comprove → validar a branch inteira.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd><code>piv-review-changes</code> de novo, em uma sessão nova, recebendo o ticket id.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Por que o report existe.</strong> A triagem é uma decisão humana, e uma decisão que vive só na conversa desaparece na próxima rodada. O fix report e as issues de deferral são o que dizem ao re-review que uma finding já foi resolvida — assim o que foi decidido permanece decidido.
+        </div>
+      </article>
+
+      <article class="skill verify" id="piv-commit-changes">
+        <span class="step">Verify · commit</span>
+        <h3>piv-commit-changes</h3>
+        <p class="what">Commita o trabalho pronto como commits atômicos e convencionalmente tagueados — cada um uma unidade coerente de trabalho que a subject line consiga nomear.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[ticket id]</code> — em branco, é extraído do nome da branch.</dd>
+
+          <dt>Output</dt>
+          <dd>Commits na branch, mais um resumo "What Changed" para quem for percorrer o git log. A rodada termina com a árvore limpa.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Conferir onde você está → inspecionar a árvore → agrupar as mudanças → commitar cada grupo → acrescentar um body quando a subject não bastar.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd><code>piv-create-pr</code>. O ticket id viaja no nome da branch, e é de lá que a próxima skill o lê.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use</strong> quando o veredito do review for PASS. Normalmente isso é um único commit; quando a árvore contém trabalho não relacionado, ela divide, e qualquer coisa que não caiba em nenhum grupo interrompe a rodada e pergunta a você.
+        </div>
+      </article>
+
+      <article class="skill verify" id="piv-create-pr">
+        <span class="step">Verify · entrega</span>
+        <h3>piv-create-pr</h3>
+        <p class="what">Abre o pull request da branch finalizada e entrega a URL a um reviewer humano.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[base branch]</code> — em branco, usa a base branch do projeto.</dd>
+
+          <dt>Output</dt>
+          <dd>Uma branch publicada e um review request aberto: resumo, o que mudou, validação, notas para o reviewer, questões em aberto, ticket vinculado. Ela reporta o número do PR, a URL e as branches base ← head.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Resolver a base branch → conferir se a branch está entregável → reunir o body a partir dos reports → publicar → abrir o review request.</dd>
+
+          <dt>Próximo passo</dt>
+          <dd>Um humano revisa, aprova e faz o merge. <strong>O loop do agent termina no merge.</strong></dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Portável por design.</strong> Um pull request no GitHub, um merge request no GitLab, ou marcar uma branch como pronta para review em outro lugar — ela usa o ferramental que o repo já usa.
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== REFERENCE ===================== -->
+
+    <section id="artifacts">
+      <h2>Artifacts e onde eles vivem</h2>
+      <p>Cada passo lê o artifact anterior, então os caminhos importam. Eles são definidos em <code>docs/ISSUE-TRACKER.md</code>.</p>
+
+      <p><code>docs/ISSUE-TRACKER.md</code> é <strong>seu para customizar</strong> — é onde um projeto declara qual tracker usa e quais são os caminhos dos artifacts, e as skills leem esse nome de arquivo e nenhum outro. A pasta <code>docs/</code> traz exemplos prontos para copiar por cima dele: <code>ISSUE-TRACKER-gitlab.md</code>, <code>ISSUE-TRACKER-jira.md</code> e <code>ISSUE-TRACKER-md.md</code>, para um projeto que mantém os tickets em arquivos markdown locais.</p>
+
+      <table>
+        <thead>
+          <tr><th>Artifact</th><th>Caminho</th><th>Escrito por</th><th>Lido por</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>PRD</td><td><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code>, depois publicado no epic</td><td><code>piv-create-prd</code></td><td>architecture, tickets</td></tr>
+          <tr><td>Architecture doc</td><td><code>docs/.plans/&lt;intent-slug&gt;.architecture.md</code>, depois publicado no epic</td><td><code>piv-create-architecture</code></td><td>tickets, implement</td></tr>
+          <tr><td>Epic</td><td>o tracker do projeto</td><td><code>piv-create-tickets</code></td><td>tickets, implement</td></tr>
+          <tr><td>Tickets</td><td>o tracker do projeto</td><td><code>piv-create-tickets</code></td><td>implement, review, commit, PR</td></tr>
+          <tr><td>Implementation report</td><td><code>docs/.reports/&lt;ticket-id&gt;-report.md</code></td><td><code>piv-implement-ticket</code></td><td>review, PR</td></tr>
+          <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code>piv-review-changes</code></td><td>fix-findings</td></tr>
+          <tr><td>Fix report</td><td><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code></td><td><code>piv-fix-findings</code></td><td>re-review, PR</td></tr>
+        </tbody>
+        <caption>Os ticket ids são normalizados para nomes de arquivo antes — <code>#123</code> vira <code>123</code> — para que os reports de um ticket fiquem lado a lado. Os plans são escritos localmente e continuam lá; <code>piv-create-tickets</code> publica uma cópia no epic — um comentário no GitHub, um attachment no GitLab e no Jira — para que as decisões viajem com o trabalho em vez de ficarem na máquina que as escreveu.</caption>
+      </table>
+
+      <div class="callout">
+        <span class="tag">O intent-slug</span>
+        <p>Todo artifact de um mesmo intent carrega o mesmo <code>intent-slug</code>: o kebab-slug do título do epic ou do produto. Todo artifact abre com um <strong>header block</strong> — uma lista markdown curta, um campo em negrito por linha — e o slug é o primeiro campo dela. Os passos seguintes <strong>leem o slug do artifact em vez de derivá-lo de novo</strong> — assim, um PRD escrito como <code>user-auth.prd.md</code> nunca ganha um <code>authentication.architecture.md</code> ao lado.</p>
+      </div>
+      <p>Quando o trabalho não tem ticket, o <code>intent-slug</code> ocupa o lugar do ticket id nos nomes dos reports.</p>
+    </section>
+
+    <section id="house-rules">
+      <h2>House rules</h2>
+      <ol class="steps">
+        <li><strong>Nada se encadeia sozinho.</strong> Cada skill termina oferecendo o próximo movimento; você o executa.</li>
+        <li><strong>Cada passo lê o artifact anterior.</strong> Reports são o input com que a próxima rodada trabalha, não burocracia.</li>
+        <li><strong>Skills param em vez de adivinhar.</strong> Nenhum tracker escolhido, um ticket id ambíguo, uma árvore suja com trabalho que não cabe em nenhum grupo, um review report que não existe — a rodada para e pergunta.</li>
+        <li><strong>Review e fixes são rodadas separadas.</strong> O reviewer escreve as findings e não toca em código; a rodada de triagem decide o que acontece com cada uma, com você decidindo a divisão.</li>
+        <li><strong>O loop fecha em um PASS.</strong> Uma rodada de fix sempre devolve para um review novo, que lê as issues de deferral para que o que foi decidido permaneça decidido.</li>
+      </ol>
+
+      <div class="callout warn">
+        <span class="tag">Se uma rodada parar e perguntar algo</span>
+        <p>Isso é o design, não uma falha. Responda e rode de novo — adivinhar é a única coisa que estas skills não farão por você.</p>
+      </div>
+    </section>
+
+    <section id="walkthrough">
+      <h2>Um percurso completo</h2>
+      <p>Um epic, do início ao merge. Cada linha é algo que você digita; cada rodada acontece em uma sessão própria.</p>
+
+      <ol class="steps">
+        <li><code>piv-create-prd</code> — a entrevista e, ao final, um PRD em <code>docs/.plans/team-inbox.prd.md</code>.</li>
+        <li><code>piv-create-architecture docs/.plans/team-inbox.prd.md</code> — o grilling e, ao final, um decision doc ao lado.</li>
+        <li><code>piv-create-tickets docs/.plans/team-inbox.prd.md docs/.plans/team-inbox.architecture.md</code> — confirme a divisão no gate; os tickets vão para o tracker.</li>
+        <li><code>piv-implement-ticket 123</code> — uma branch, as tasks, os testes e <code>docs/.reports/123-report.md</code>.</li>
+        <li><code>piv-review-changes 123</code> — veredito <strong>CHANGES REQUESTED</strong>, 1 high e 3 medium em <code>docs/.reports/123-review.md</code>.</li>
+        <li><code>piv-fix-findings docs/.reports/123-review.md</code> — você corrige a high e uma medium, adia duas no tracker; <code>docs/.reports/123-fixes.md</code> registra cada decisão.</li>
+        <li><code>piv-review-changes 123</code> — ela lê as issues de deferral, e o veredito é <strong>PASS</strong>.</li>
+        <li><code>piv-commit-changes 123</code> — commits atômicos, árvore limpa.</li>
+        <li><code>piv-create-pr</code> — o PR abre e a URL vai para um humano.</li>
+      </ol>
+      <p>Os passos 5–7 se repetem quantas vezes a branch precisar. Esse ciclo <em>é</em> o loop.</p>
+    </section>
+
+    <section id="faq">
+      <h2>Solução de problemas</h2>
+
+      <h3>O review insiste em levantar algo que eu já decidi adiar.</h3>
+      <p>O adiamento precisa existir como uma issue no tracker, não só como uma linha na conversa. <code>piv-fix-findings</code> abre essas issues; <code>piv-review-changes</code> as lê no passo 2 dele. Se a issue não estiver lá, a finding volta com razão.</p>
+
+      <h3>O reviewer apontou algo que eu mudei de propósito.</h3>
+      <p>Registre em <strong>Deviations from the ticket</strong> no implementation report. Essa seção é o sinal de intenção para o reviewer.</p>
+
+      <h3>Posso pular o PRD ou o architecture doc?</h3>
+      <p>Pode, e as duas skills vão dizer isso em voz alta em vez de fingir o contrário. Pular o architecture doc num trabalho com incerteza técnica real é o caro dos dois — os tickets acabam codificando decisões que ninguém tomou.</p>
+
+      <h3>Posso rodar vários tickets ao mesmo tempo?</h3>
+      <p>Pode. <code>piv-create-tickets</code> mapeia as dependências no passo 4 justamente para que você veja quais tickets formam uma leva independente.</p>
+
+      <h3>Nada aconteceu depois que uma skill terminou.</h3>
+      <p>Esperado. Skills não se encadeiam — leia o próximo movimento que ela ofereceu e execute-o você mesmo.</p>
+    </section>
+
+    <footer class="page">
+      <p>Fonte da verdade: <code>docs/PIV-LOOP.md</code>, <code>docs/ISSUE-TRACKER.md</code>, <code>docs/GIT-CONVENTIONS.md</code> e as definições das skills em <code>.claude/skills/</code>. Quando esta página e uma skill divergirem, a skill vence.</p>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>
