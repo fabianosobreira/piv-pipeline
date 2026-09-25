@@ -70,7 +70,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 
 - Run the tests that touch the suspect code, and the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
-- On a re-review, match the candidate against the previous review's findings, and follow each deferral to its ticket.
+- On a re-review, match the candidate against the previous review's findings, and against the deferral tickets step 2 found.
 
 Give each survivor a severity:
 

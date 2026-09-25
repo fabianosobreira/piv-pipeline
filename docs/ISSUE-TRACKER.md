@@ -69,7 +69,7 @@ The epic follows the same missing-label rule for its `epic` label, and carries n
 
 ## Finding a review's deferrals
 
-With a ticket behind the review, its deferrals are the ones linked to that ticket. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Search this repo's issues for the path as text; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+With a ticket behind the review, its deferrals are the issues on that ticket's timeline whose *Origin* `Ticket` line names it. The timeline alone is not the filter: a sliced ticket that names it under *Depends on* cross-references it too, and carries no *Origin*. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Search this repo's issues for the path as text; an issue whose `Review` line matches it exactly is one of that review's deferrals.
 
 ## Paths
 

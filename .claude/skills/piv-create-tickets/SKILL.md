@@ -102,15 +102,15 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 Then create one ticket per slice, in the same place, reaching that system with whatever tool fits (an MCP server, a CLI, an API). **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its group, its epic, its `Acceptance criteria` heading — the same rules `piv-fix-findings` follows for a deferral, so every ticket in the backlog reads the same and one filter finds them all. What those rules mean for a sliced ticket, and what it carries besides:
 
-- Acceptance criteria go in the ticket body as a markdown checklist under the literal heading **Acceptance criteria**. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
+- Acceptance criteria go in the ticket body as a markdown checklist under the literal `Acceptance criteria` heading *Creating a ticket* names. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - **Every ticket carries its own context** (from Step 3) — that's what makes later orientation optional.
 - Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
-- Copy the epic's `Intent-slug`, `Intent` and `Architecture` verbatim into the ticket's own header block, once the epic's fields point at the published plans, so a ticket picked up cold still resolves both plans.
+- Fill the header block the way *Creating a ticket* says — the epic's `Intent-slug`, `Intent` and `Architecture`, copied verbatim once the epic's fields point at the published plans, so a ticket picked up cold still resolves both plans.
 - Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines. That id is what every later step is handed.
 
 The ticket body: fill the template at `templates/ticket.md`.
 
-**Then write the dependency graph and the execution order down** — on the epic (the block above), or at the end of the intent doc when the intent has no epic. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
+**Then write the dependency graph and the execution order down** — in the epic's *Dependency graph and execution order* section, or at the end of the intent doc when the intent has no epic. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
 
 ### Step 7 — Report
 
@@ -134,4 +134,4 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked.
 - ✅ **The user confirmed the breakdown** before anything was created.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.
-- ✅ **Every ticket carries `Intent-slug`, `Intent` and `Architecture` in its header block**, the epic carries the published plans in its own, and the dependency graph is written down.
+- ✅ **Every ticket resolves `Intent-slug`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.

@@ -6,7 +6,7 @@
 - **Review**: <path of the review report>
 
 ## Fixed
-- **<finding>** — `path/to/file.py:42` → <what changed> · test: <the test that proves it>
+- **<finding>** — `path/to/file.py:42` → <what changed> · test: <the test that proves it> | not fixed — <why the run stopped before it>
 
 ## Deferred
 - **<finding>** — ticket <ref> | not created — <why the run stopped before it>
