@@ -49,10 +49,10 @@ Push it to the remote, tracking it so later pushes need no arguments.
 
 ### Step 5 — Open the review request
 
-Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` when an id was found in step 3 — the same shape `docs/GIT-CONVENTIONS.md` gives the commit subjects.
+Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` when an id was found in step 3 — the same shape `docs/GIT-CONVENTIONS.md` gives the commit subjects — and without the `(<ticket id>)` suffix when none was.
 
-- **Report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the issues it lists.
-- **No report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.
+- **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the issues it lists.
+- **No implementation report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.
 
 **Then close the ticket's loop**: do what the **Ticket status** section of `docs/ISSUE-TRACKER.md` assigns to this step, and nothing beyond it. That section names one owner per transition precisely so this skill doesn't have to know which tracker it is talking to.
 
@@ -60,7 +60,7 @@ Done when a review request is open for the branch and its URL is reported.
 
 ## Output
 
-Report the PR number and URL, the base ← head branches, and **"Ready for review → a human approves and merges."**
+Report the PR number and URL, the base ← head branches, and **"Ready for review → a human approves and merges."** — or, for a draft, **"Draft → waiting on the open issues it lists."**
 
 ## Hand off
 

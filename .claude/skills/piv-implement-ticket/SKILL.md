@@ -35,7 +35,7 @@ The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVEN
 - **Already on a feature branch or in a worktree** → use it. For a ticket, warn if the branch name doesn't reference it.
 - **On the base branch with uncommitted changes** → **STOP**: commit or stash first.
 
-**Then mark the ticket in flight**, the way `docs/ISSUE-TRACKER.md` says this project marks it. That is what keeps a parallel wave from picking up the same ticket twice.
+**Then mark the ticket in flight**, the way `docs/ISSUE-TRACKER.md` says this project marks it. That is what keeps a parallel wave from picking up the same ticket twice. A plan document has nothing to mark: skip this.
 
 ### Step 3 — Read the ticket end to end
 
