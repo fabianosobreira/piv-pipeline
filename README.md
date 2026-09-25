@@ -39,7 +39,6 @@ You rarely need all eight. Find the row that matches what you have in hand.
 | A review report with findings | `piv-fix-findings` | Findings are input, not a work order — you rule on each one. |
 | A PASS verdict | `piv-commit-changes` | Atomic commits, then the PR. |
 
-See `docs/PIV-LOOP.md` for the full description and `docs/ISSUE-TRACKER.md` for where each artifact lives.
 
 ## License
 
