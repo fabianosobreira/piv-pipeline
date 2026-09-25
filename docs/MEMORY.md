@@ -5,6 +5,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 ## Who owns what in the pipeline
 
 - **`piv-create-prd` and `piv-create-architecture` know nothing about the epic.** They write local files under `docs/.plans/` and stop. The epic does not exist yet at that point in the loop, and neither skill may depend on one.
+- **The epic is `piv-create-tickets`' output, never the planning skills' input.** On an existing product, `piv-create-prd` and `piv-create-architecture` take whatever document carries the context — a research doc, a decision plan, the product's docs — and never name an epic as their input.
 - **`piv-create-tickets` is where the epic is born.** It takes the local PRD and architecture doc as input, creates the epic, publishes both onto it, fills the epic's `Intent` and `Architecture`, and only then creates the tickets. It is the single point in the loop that publishes a plan, and the reason later steps point at the epic rather than at a local doc.
 - **`piv-implement-ticket` names `piv-review-changes` flatly instead of offering a menu.** That asymmetry with the other six skills is deliberate, not an oversight — do not normalize it.
 
@@ -32,6 +33,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 
 - **All eight skills carry `disable-model-invocation: true`**, and their descriptions carry no `Use when …` clause.
 - **No command examples.** Write the instruction in prose — "post each as an issue comment", not a `gh` invocation. Naming the tool a tracker is reached with is fine; spelling out its flags is not.
+- **`PIV-LOOP.md` is a reference an agent loads, not documentation for people.** Write it as terse rules the run can apply: the rule over its explanation, a short list over a table, no cost walkthroughs, examples or lists of what goes wrong. The explaining belongs in `pages/`, where a human learns the loop; an addition to `PIV-LOOP.md` that reads like a manual goes there instead.
 - **Centralizing vocabulary in `PIV-LOOP.md` does not license deleting the repetitions from the skills.** A skill restating a loop rule is carrying it into the run that needs it; leave it.
 - **A skill carries its own reasons.** `MEMORY.md` is local to this repo and never ships with the skills, which run in other projects' repos. A ruling recorded here still needs its rationale inside the skill that applies it, so a reason living in both places is not duplication to prune.
 - **Every "stop and ask, then carry on" in the skills was converted to `GATE` deliberately.** The remaining `STOP`s are the terminal ones. Don't reclassify either direction without a ruling.

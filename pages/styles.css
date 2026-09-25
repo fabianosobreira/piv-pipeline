@@ -471,6 +471,11 @@ td {
   /* Garante espaço mínimo para evitar esmagamento do texto */
 }
 
+/* Nomes de skill nas tabelas não quebram no hífen */
+td code.skill {
+  white-space: nowrap;
+}
+
 thead th {
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 0.74rem;

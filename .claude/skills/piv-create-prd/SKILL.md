@@ -1,7 +1,7 @@
 ---
 name: piv-create-prd
 description: Interviews the user to pin down the problem, why to build it, and a falsifiable hypothesis, then writes a product-level PRD — intent (what/why), never engineering decisions (how).
-argument-hint: "<product idea> · [optional: research doc paths] (blank = starts by asking what to build)"
+argument-hint: "[product idea] · [optional: research doc paths] (blank = starts by asking what to build)"
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 **Input**: $ARGUMENTS
 
-Greenfield-first. **On an existing product the epic is the input** — the same interview applies, scoped to that epic, and its architecture is decided separately with `piv-create-architecture`.
+Greenfield-first. **On an existing product, the input is whatever document carries the context** — a research doc, a decision plan, the existing product's docs — and the same interview applies, scoped to that context. Its architecture is decided separately with `piv-create-architecture`.
 
 **Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*. If none were passed, **ask whether any exist** before interviewing.
 
@@ -42,11 +42,11 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 **Format each cluster like so** — numbered, titled, each ending on the question itself:
 
 ```
-❓ **Q1** — **<question title>**: <question body, may be multiple paragraphs>
+🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs>
 
 ---
 
-❓ **Q2** — **<question title>**: <question body, may be multiple paragraphs>
+🔎 **Q2** — **<question title>**: <question body, may be multiple paragraphs>
 ```
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.
@@ -100,10 +100,10 @@ Product sections only, scannable. **Two readers:** the user confirms it at the G
 
 Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypothesis**; show what's evidenced vs assumed and the open-questions count.
 
-Offer the next move and let the user pick — it is **theirs to run**, this skill does not chain into the next one:
+Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Decide *how* to build it** — type `piv-create-architecture docs/.plans/<intent-slug>.prd.md` to make the engineering decisions this PRD deliberately left open. Then `piv-create-tickets` turns the two into a backlog.
-- **Go straight to tickets** — when the work has little technical uncertainty, typing `piv-create-tickets docs/.plans/<intent-slug>.prd.md` is fine; say that it's a shortcut, not the default.
+- **Decide *how* to build it** — run `piv-create-architecture <the PRD's path>` to make the engineering decisions this PRD deliberately left open — here or in a fresh session. Then `piv-create-tickets` turns the two into a backlog.
+- **Go straight to tickets** — when the work has little technical uncertainty, running `piv-create-tickets <the PRD's path>`, here or in a fresh session, is fine; say that it's a shortcut, not the default.
 
 ## Success criteria
 

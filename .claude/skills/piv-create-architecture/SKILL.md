@@ -1,7 +1,7 @@
 ---
 name: piv-create-architecture
-description: Weighs the options for HOW to build an intent (PRD, epic, brief, or idea) and recommends a direction, then writes an architecture decision doc — approach, building blocks, data model, risks — never an implementation plan.
-argument-hint: "<PRD / epic / brief path, or a free-form idea> · [optional: reference doc paths] (blank = starts by asking what to build)"
+description: Weighs the options for HOW to build an intent (a PRD, a brief, or an idea) and recommends a direction, then writes an architecture decision doc — approach, building blocks, data model, risks — never an implementation plan.
+argument-hint: "[PRD / brief path, or a free-form idea] · [optional: reference doc paths] (blank = starts by asking what to build)"
 disable-model-invocation: true
 ---
 
@@ -43,15 +43,15 @@ Interview the user **relentlessly** until you reach a shared understanding. Map 
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: what you can ask *now* without guessing at answers you haven't heard yet. Ask the whole frontier in one round, numbered, each with your recommended answer **and the alternatives you rejected, and why** — converging on a single answer is visible work, every time.
 
 ```
-❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
+🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices>
 
-➡️ <your recommended answer>
+💡 <your recommended answer>
 
 ---
 
-❓ **Q2** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
+🔎 **Q2** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices>
 
-➡️ <your recommended answer>
+💡 <your recommended answer>
 ```
 
 **GATE.** Post the round, stop, wait. Never roll into the next round on your own, and never treat your own recommendation as the user's answer.
@@ -62,7 +62,7 @@ Each round's answers reshape the tree: settled decisions push the frontier outwa
 
 The tree is worked when the frontier is empty — every branch visited, nothing silently assumed. **Nothing gets written until the user confirms you've reached a shared understanding.**
 
-**If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf, put the two or three most expensive or least reversible ones to them anyway, and record the rest in **Open Questions** as decided-by-default — never as though they were settled with the user.
+**If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf, put the two or three most expensive or least reversible ones to them anyway, and record the rest in **Key decisions**, each closed with the label **(decided-by-default)** — never as though they were settled with the user. **Open Questions** stays for what is genuinely still open.
 
 ### Step 4 — What to explore
 
@@ -92,7 +92,7 @@ Reversible, low-cost calls → just decide and move on.
 
 ## Output — a high-level architecture decision doc
 
-Only after the calls are made. Write it where `docs/ISSUE-TRACKER.md` says plans live; with no such file, `docs/.plans/<intent-slug>.architecture.md`. It is its own doc, never a section inside the intent: **intent and architecture stay separable**, because that's what lets a later slicing step read the *what* and the *how* as two sources instead of untangling one blob. When the intent lives in a wiki or a tracker, link the two to each other so the trace survives.
+Only after the calls are made. Write it where `docs/ISSUE-TRACKER.md` says plans live. It is its own doc, never a section inside the intent: **intent and architecture stay separable**, because that's what lets a later slicing step read the *what* and the *how* as two sources instead of untangling one blob.
 
 **Write the `Intent-slug` and the `Intent` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. The slug is the key every later step uses to find this work's tickets and reports; the `Intent` is where the *what and why* lives — the PRD's path, or "none" when this was architected straight from an idea. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one.
 
@@ -102,10 +102,10 @@ Fill the template at `templates/architecture.md`.
 
 ## Hand off
 
-Confirm where you wrote it, summarize the recommended approach + the key calls in a few lines, then offer the natural next moves and let the user pick. These are **theirs to run** — this skill does not chain into the next one:
+Confirm where you wrote it, summarize the recommended approach + the key calls in a few lines, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Slice it into tickets** — type `piv-create-tickets <intent path> docs/.plans/<intent-slug>.architecture.md` to break the epic into agent-sized tickets with a dependency graph, and create them wherever the team's work lives.
-- **Keep going here** — stay in this conversation to refine the decisions, or to write the tickets directly.
+- **Slice it into tickets** — run `piv-create-tickets <intent path> <this doc's path>` to slice the intent and this doc into agent-sized tickets with a dependency graph, and create them wherever the team's work lives — here or in a fresh session.
+- **Keep refining here** — stay in this conversation to revisit a decision before slicing.
 - **Spike something now** — if an open risk is blocking, go build the spike/experiment we flagged.
 
 ## Success criteria
@@ -116,5 +116,5 @@ Confirm where you wrote it, summarize the recommended approach + the key calls i
 - ✅ Every one-way or uncertain call has a spike with a decision rule, not a guess.
 - ✅ The doc contains no task list or step-by-step breakdown.
 - ✅ The doc's header block carries the `Intent-slug` and the `Intent`.
-- ✅ Anything decided without the user is recorded in **Open Questions** as decided-by-default.
+- ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open Questions** holds only what is still open.
 - ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly — never a summary it would have to re-derive.

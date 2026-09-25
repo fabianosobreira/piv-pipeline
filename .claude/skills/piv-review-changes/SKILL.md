@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Review Changes: Prove the Change Wrong
 
-This is the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down.
+This opens the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down.
 
 ## Posture
 
@@ -39,7 +39,7 @@ Take from the report the ticket it implemented, its status, and above all its **
 
 ### Step 2 — Resolve the deferrals
 
-**Then look for the deferrals.** A previous review of this branch may sit at the review report path `docs/ISSUE-TRACKER.md` defines; when it is there, this is a re-review, and its findings tell you what was already raised. The rulings taken on them sit in the fix report beside it, and the deferrals they name live on as tracker issues — read the fix report, then search the tracker for the issues this branch's work opened. All three together are what the prior-decision filter reads.
+A previous review of this branch may sit at the review report path `docs/ISSUE-TRACKER.md` defines; when it is there, this is a re-review. Read it, the fix report beside it, and the tracker issues this branch's work opened — together they are what the prior-decision filter reads.
 
 ### Step 3 — Read the standards the change has to meet
 
@@ -71,7 +71,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 - Run the tests that touch the suspect code, and the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - Hunt the mitigation deliberately: search upstream for the validation, search the tests for the case, check the report's deviations.
-- On a re-review, match the candidate against the previous review's findings, and follow a deferral to the tracker issue that records it.
+- On a re-review, match the candidate against the previous review's findings, and follow each deferral to its tracker issue.
 
 Give each survivor a severity:
 
@@ -90,8 +90,8 @@ Every severity heading is present on every run, and one that survived nothing re
 
 The review report is the artifact this run leaves behind, so hand over its path by name — with the ticket id when there is one. Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **PASS** → next: `piv-commit-changes` the work, handed the ticket id. Carry the medium and low findings to the author as the reviewer's notes.
-- **CHANGES REQUESTED** → next: `piv-fix-findings`, in a session of its own, handed the review report's path as the review to work from. It triages the findings — fixing some, deferring the rest onto the tracker — writes a fix report recording every ruling, and this skill runs again on the result to close the loop.
+- **PASS** → run `piv-commit-changes`, in a session of its own, handed the ticket id. The medium and low findings stay in the report; `piv-create-pr` carries them into the PR body.
+- **CHANGES REQUESTED** → run `piv-fix-findings`, in a session of its own, handed the review report's path as the review to work from.
 
 ## Success criteria
 

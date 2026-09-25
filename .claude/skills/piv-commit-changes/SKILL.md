@@ -39,11 +39,11 @@ Done when every group is committed and the working tree is clean.
 
 ## Output — the commit summary
 
-3–6 sentences for a developer skimming the git log: the feature/fix/refactor committed, the problem it solves, and the key files it touched. With more than one commit, say what each one carries.
+3–6 sentences, printed for the user: the feature/fix/refactor committed, the problem it solves, and the key files it touched. With more than one commit, say what each one carries.
 
 ## Hand off
 
-Offer the next move and let the user run it — this skill does not chain into the next one: `piv-create-pr` opens the PR. The ticket id travels on the branch name, in the form `docs/GIT-CONVENTIONS.md` defines, and that is where the next skill reads it from.
+Offer the next move and let the user run it — this skill does not chain into the next one: run `piv-create-pr` to open the PR, in this same session. The ticket id travels on the branch name, in the form `docs/GIT-CONVENTIONS.md` defines, and that is where the next skill reads it from.
 
 ## Success criteria
 

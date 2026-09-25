@@ -8,10 +8,10 @@
 ## Decisions every ticket respects
 <the architecture calls and constraints that bind every ticket under this epic, so no ticket re-decides them>
 
-## Out of scope
+## Non-goals
 <the epic's non-goals, carried from the intent>
 
-## Completion metrics
+## Success Metrics
 <what has to be true, or measured, for this epic to be done>
 
 ## Tickets
@@ -20,6 +20,7 @@
 
 ## Dependency graph and execution order
 <written once all tickets are created — which tickets can start now, in parallel, and which wait>
+<when the breakdown GATE was skipped: "Decided by default — the breakdown GATE was skipped: <the grouping, sizing and dependency calls made without the user>">
 
-## Open questions / spikes not ticketed
-<what was deliberately left undecided, and why it isn't a ticket>
+## Open Questions
+<open questions and spikes deliberately not ticketed, and why>

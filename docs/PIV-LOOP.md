@@ -28,6 +28,17 @@ Every step is started by the user. A skill ends by naming the next move; it neve
 
 That is what keeps a bad plan from becoming a merged PR while nobody was watching — and it is what keeps each run in a context of its own. A review that shares a context with the implementation it reviews is not an independent review, and a fix run that shares a context with the review cannot rule against it.
 
+## Sessions
+
+Hand-offs travel through artifacts, never through the conversation, so a fresh session loses nothing. Sessions are split by independence, not one per step:
+
+- **Planning** — `piv-create-prd` → `piv-create-architecture` → `piv-create-tickets` may share a session: they collaborate rather than audit each other. Past half the window, break at an artifact boundary.
+- **`piv-implement-ticket`** — a session of its own, one per ticket.
+- **`piv-review-changes`** and **`piv-fix-findings`** — each in a session of its own, every round.
+- **`piv-commit-changes` → `piv-create-pr`** — one fresh session, shared. Both are light, and the commit body comes from the diff, not from the implementation's story.
+
+A hand-off marks the next step's session with one of three phrases: "in a session of its own" (must be fresh), "here or in a fresh session" (may share), "in this same session" (shares).
+
 ## The hand-off
 
 Every skill closes the same way: confirm where the artifact landed and name it by path or id, then offer the next moves as a short list for the user to pick from and run. Hand on whatever the next step takes as its input — the epic id, the ticket id, the report's path.

@@ -1,15 +1,13 @@
 ---
 name: piv-create-tickets
 description: Decomposes an intent into agent-sized tickets with acceptance criteria and a dependency graph, then creates them on the project's tracker.
-argument-hint: "<intent: PRD path, epic id, or URL> · [optional: its architecture doc path] (blank = starts by asking for the intent)"
+argument-hint: "[intent: PRD path, epic id, or URL] · [optional: its architecture doc path] (blank = starts by asking for the intent)"
 disable-model-invocation: true
 ---
 
 # Create Tickets: Intent → Provable Units of Work
 
 This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
-
-**Input**: $ARGUMENTS
 
 ## Input — one intent, optionally with architecture
 
@@ -37,7 +35,7 @@ Don't invent the *how*. If no architecture exists, you are decomposing intent al
 
 ### Step 1 — Read the sources
 
-**From the intent** — an epic gives you goal, user stories, acceptance criteria, out-of-scope. A problem-first PRD gives you no build plan, so decompose from what it does carry:
+**From the intent** — an epic this loop created gives you its context, the decisions every ticket respects, its non-goals and its success metrics; an epic created elsewhere gives you whatever it carries. A problem-first PRD gives you no build plan, so decompose from what it does carry:
 
 - **MVP** — the thinnest line that proves the hypothesis end to end. The primary source of tickets: what has to exist for that line to work?
 - **Target User & JTBD** — each job-to-be-done becomes one or more tickets, phrased as user-visible outcomes.
@@ -45,11 +43,11 @@ Don't invent the *how*. If no architecture exists, you are decomposing intent al
 - **Non-goals** — the boundary. Never generate a ticket that crosses it.
 - **Open Questions** — do **not** turn these into implementation tickets. Surface them, or track them as explicit decision tickets with a decision rule. A ticket built on an unanswered question is a guess.
 
-**From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open Questions — never an implementation ticket). The slicing has to respect those calls, and **every named missing piece is usually a ticket**.
+**From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open Questions — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
 
 If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose.
 
-**Too vague to decompose → stop and flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable.
+**Too vague to decompose → flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable. **GATE.**
 
 ### Step 2 — Orient on the existing surface
 
@@ -76,6 +74,7 @@ For every ticket, draft:
 - **Description** — what and why, traced back to the intent section it came from.
 - **Acceptance criteria** — a checklist a reviewer can verify.
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
+- **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own checks are enough.
 - **Group** — the phase or outcome it belongs to.
 
 ### Step 4 — Map dependencies and parallelism
@@ -92,7 +91,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 **GATE** — post the ticket titles, their grouping and rough sizes, and the dependency graph, then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they decline the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the grouping, the sizing, the dependency graph — and record them as decided-by-default in the Step 7 report, never as though the user had ruled on them.
+**If they decline the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the grouping, the sizing, the dependency graph — and record them as decided-by-default in the epic's *Dependency graph and execution order* section, repeated in the Step 7 report — never as though the user had ruled on them.
 
 ## Output — create the tickets
 
@@ -123,10 +122,10 @@ An implementation loop picks up a single ticket by its id, so each ticket stands
 
 ## Hand off
 
-Confirm where the tickets landed, then offer the next move and let the user pick — it is **theirs to run**, this skill does not chain into the next one:
+Confirm where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Start the first ticket** — run `piv-implement-ticket <ticket-id>`. Each ticket carries its own context (Step 3), so the loop picks it up cold from its id alone.
-- **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time.
+- **Start the first ticket** — run `piv-implement-ticket <ticket-id>`, in a session of its own, one per ticket. Each ticket carries its own context (Step 3), so the loop picks it up cold from its id alone.
+- **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time, each in a session of its own.
 
 ## Success criteria
 

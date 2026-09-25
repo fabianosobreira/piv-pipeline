@@ -13,13 +13,9 @@ A review produced findings — but a review is **input, not a work order.** You 
 
 `$ARGUMENTS` carries the review report's path. **Read it end to end first**, so you understand every finding before triaging — the report is what you work from, and its findings arrive with the evidence and the severity that make each one actionable.
 
-**No path handed to you** — go find the report written for this branch, where `docs/ISSUE-TRACKER.md` says review reports live, named from the ticket id or from the branch name in the form `docs/GIT-CONVENTIONS.md` gives it. Not found → **STOP** and ask the user for the report to work from; until a report exists there is nothing to triage.
+**No path handed to you** — go find the report written for this branch, where `docs/ISSUE-TRACKER.md` says review reports live. With a ticket id on the branch name, in the form `docs/GIT-CONVENTIONS.md` gives it, the report's name follows from the id. With no id, the branch's `<short-slug>` is not reliably the report's `intent-slug`: scan the review reports and compare each one's **Branch** header against the branch you are on. One match → that is the report. More than one → ask the user which one covers this branch. **GATE.** Not found → **STOP** and ask the user for the report to work from; until a report exists there is nothing to triage.
 
 Take the ticket id and the `intent-slug` from the review report's header. They are what the fix report is named for, so the two reports sit side by side.
-
-## Interaction mode: triage gating
-
-**GATE** — put the split to the user and wait for their answer. No code moves until they rule.
 
 ## Process
 
@@ -33,6 +29,8 @@ Sort the findings before touching code. The review's severities are the default 
 - **Noise / won't-fix** — say why, then drop it.
 
 Every finding lands in exactly one bucket. Don't let the reviewer dictate scope — "real, but later" is a valid and common call; a clean small change beats a sprawling one.
+
+**GATE** — post the split and wait for the user's ruling. No code moves until they rule.
 
 ### Step 2 — Fix the *fix now* set, one at a time
 
@@ -49,22 +47,23 @@ Fix what the finding names and stop there. A repair that grows into a refactor b
 
 Run the project's own checks — the test, lint, type-check, and build commands the repo exposes. When a check goes red: fix the cause, re-run, and continue once it is green.
 
+When a failure survives a few honest attempts, or its cause sits outside what the findings ask you to change, stop working it: record the check, the failure, and what you tried in the fix report's *Checks run*. The re-review runs the checks again and raises whatever is still red.
+
 ## Output — write a fix report
 
 Write the report at the fix report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/fix-report.md`, and print the summary. The triage is a human decision, and a decision that exists only in the conversation is gone by the next run: this file is what tells the re-review what was already settled.
 
 ## Hand off
 
-Offer the next move and let the user run it — this skill does not chain into the next one.
+Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- Next: `piv-review-changes` runs again over the branch, in a session of its own. It reads the tracker issues the deferrals opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id, and tell the user to clear every *Needs a human look* item by hand before starting it: the next fix run overwrites this report, and an item still open by then drops off the record.
-- With nothing left to fix and the verdict already PASS, next is `piv-commit-changes`.
+- Run `piv-review-changes` again over the branch, in a session of its own. It reads the tracker issues the deferrals opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id, and tell the user to clear every *Needs a human look* item by hand before starting it: the next fix run overwrites this report, and an item still open by then drops off the record.
 
 ## Success criteria
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
 - ✅ Every *fix now* finding has a test that fails without the fix.
 - ✅ Every deferred finding has a tracker issue ref.
-- ✅ The project's checks are green.
+- ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
 - ✅ The triage outcome was written to the fix report path, not only printed.
 - ✅ The run ended by handing the branch back to `piv-review-changes`, which is the only thing that closes the loop.

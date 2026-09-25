@@ -9,8 +9,8 @@
 <commit summaries>
 
 ## Validation
-- Tests / type-check / lint: <pass/fail from the implementation report or a fresh run>
-- Manual check: <what was exercised, or "pending review">
+- Tests / type-check / lint: <pass/fail from the latest fix report, the implementation report, or a fresh run>
+- Review verdict: <PASS | CHANGES REQUESTED | "no review report available">
 
 ## Notes for the reviewer
 

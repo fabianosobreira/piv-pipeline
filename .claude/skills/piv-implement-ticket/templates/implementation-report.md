@@ -1,7 +1,10 @@
 # Implementation Report — <feature or ticket title>
 
 - **Intent-slug**: <intent-slug>
-- **Ticket**: <ticket id, or the plan document's path>
+- **Intent**: <the ticket's or plan document's `Intent`, or "none">
+- **Architecture**: <the ticket's or plan document's `Architecture`, or "none">
+- **Ticket**: <id or "none">
+- **Plan**: <the plan document's path, or "none">
 - **Branch**: <branch>
 - **Status**: COMPLETE | PARTIAL
 
@@ -9,7 +12,7 @@
 <What was built or fixed, 2-4 sentences. **Repair:** lead with the root cause in one line.>
 
 ## Tasks completed
-- <task> → `path/to/file` (CREATE/UPDATE)
+- <task> → `path/to/file` (ADDED/MODIFIED/DELETED)
 
 ## Tests added
 <Test files + cases + results.>
