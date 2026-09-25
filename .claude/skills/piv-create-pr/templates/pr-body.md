@@ -21,7 +21,7 @@
 <the fix report's *Needs a human look* items — raised by the triage, not confirmed as checked — or "none">
 
 ### Surviving findings
-<the review report's medium and low findings, one per line as `**<severity>** — <one-line claim> — <path>:<line>`, or "none">
+<the review report's medium and low findings, one per line as **<severity>** — <one-line claim> — `<path>:<line>`, or "none">
 
 ## Open issues
 <what the implementation report left unfinished, or "none" — a PARTIAL status names them here>

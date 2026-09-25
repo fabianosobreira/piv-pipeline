@@ -5,7 +5,7 @@ argument-hint: "[review report path] (blank = the review written for this branch
 disable-model-invocation: true
 ---
 
-# Fix Review Findings: Triage, Fix, Validate
+# Fix Findings: Triage, Fix, Validate
 
 This continues the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the review raised findings, and this run settles every one of them — the loop only closes when the fresh review this hands back to returns PASS.
 

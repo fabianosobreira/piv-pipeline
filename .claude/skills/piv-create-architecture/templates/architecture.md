@@ -23,5 +23,5 @@ _That label is the rule for every section below too._
 ## Spikes & experiments
 <the uncertain / expensive calls to de-risk first, each with its decision rule>
 
-## Open Questions
+## Open questions
 <decisions deliberately left open — named, not hidden — and what would settle each>

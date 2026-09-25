@@ -5,7 +5,7 @@ argument-hint: "[PRD / brief path, or a free-form idea] · [optional: reference 
 disable-model-invocation: true
 ---
 
-# Architect: Explore the Approach, Decide the Architecture
+# Create Architecture: Explore the Approach, Decide the Architecture
 
 This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
@@ -45,13 +45,13 @@ Work the tree in **rounds**. The **frontier** is every decision whose prerequisi
 ```
 🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices>
 
-💡 <your recommended answer>
+💡 <your recommended answer — and the alternatives you rejected, and why>
 
 ---
 
 🔎 **Q2** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices>
 
-💡 <your recommended answer>
+💡 <your recommended answer — and the alternatives you rejected, and why>
 ```
 
 **GATE.** Post the round, stop, wait. Never roll into the next round on your own, and never treat your own recommendation as the user's answer.
@@ -62,7 +62,7 @@ Each round's answers reshape the tree: settled decisions push the frontier outwa
 
 The tree is worked when the frontier is empty — every branch visited, nothing silently assumed. **Nothing gets written until the user confirms you've reached a shared understanding.**
 
-**If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf, put the two or three most expensive or least reversible ones to them anyway, and record the rest in **Key decisions**, each closed with the label **(decided-by-default)** — never as though they were settled with the user. **Open Questions** stays for what is genuinely still open.
+**If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf, put the two or three most expensive or least reversible ones to them anyway, and record the rest in **Key decisions**, each closed with the label **(decided-by-default)** — never as though they were settled with the user. **Open questions** stays for what is genuinely still open.
 
 ### Step 4 — What to explore
 
@@ -83,9 +83,9 @@ A menu, not a checklist. Take what fits the shape of work, **name what you're sk
 When a decision is a **one-way door** — uncertain or expensive to undo — recommend a **spike** instead of guessing:
 
 ```
-Question:      [what we're unsure about]
-Spike:         [the smallest thing we can build or test to learn] over [timebox]
-Decision rule: go with [X] if [signal] / [Y] if [counter-signal]
+Question:      <what we're unsure about>
+Spike:         <the smallest thing we can build or test to learn> over <timebox>
+Decision rule: go with <X> if <signal> / <Y> if <counter-signal>
 ```
 
 Reversible, low-cost calls → just decide and move on.
@@ -116,5 +116,5 @@ Confirm where you wrote it, summarize the recommended approach + the key calls i
 - ✅ Every one-way or uncertain call has a spike with a decision rule, not a guess.
 - ✅ The doc contains no task list or step-by-step breakdown.
 - ✅ The doc's header block carries the `Intent-slug` and the `Intent`.
-- ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open Questions** holds only what is still open.
+- ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open questions** holds only what is still open.
 - ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly — never a summary it would have to re-derive.

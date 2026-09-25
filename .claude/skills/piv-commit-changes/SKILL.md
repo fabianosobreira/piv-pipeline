@@ -5,7 +5,7 @@ argument-hint: "[ticket id] (blank = taken from the branch name)"
 disable-model-invocation: true
 ---
 
-# Commit: One Coherent Piece of Work per Commit
+# Commit Changes: One Coherent Piece of Work per Commit
 
 This is part of the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the change passed review, and this run turns it into a clean, atomic history before the PR opens.
 

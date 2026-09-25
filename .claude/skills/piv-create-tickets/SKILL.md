@@ -38,12 +38,12 @@ Don't invent the *how*. If no architecture exists, you are decomposing intent al
 **From the intent** — an epic this loop created gives you its context, the decisions every ticket respects, its non-goals and its success metrics; an epic created elsewhere gives you whatever it carries. A problem-first PRD gives you no build plan, so decompose from what it does carry:
 
 - **MVP** — the thinnest line that proves the hypothesis end to end. The primary source of tickets: what has to exist for that line to work?
-- **Target User & JTBD** — each job-to-be-done becomes one or more tickets, phrased as user-visible outcomes.
-- **Success Metrics** — anything that has to be measured is itself work; a metric with no way to observe it is a missing ticket.
+- **Target user & JTBD** — each job-to-be-done becomes one or more tickets, phrased as user-visible outcomes.
+- **Success metrics** — anything that has to be measured is itself work; a metric with no way to observe it is a missing ticket.
 - **Non-goals** — the boundary. Never generate a ticket that crosses it.
-- **Open Questions** — do **not** turn these into implementation tickets. Surface them, or track them as explicit decision tickets with a decision rule. A ticket built on an unanswered question is a guess.
+- **Open questions** — do **not** turn these into implementation tickets. Surface them, or track them as explicit decision tickets with a decision rule. A ticket built on an unanswered question is a guess.
 
-**From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open Questions — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
+**From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open questions — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
 
 If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose.
 

@@ -5,7 +5,7 @@ argument-hint: "[ticket id, or a plan document path] (blank = starts by asking w
 disable-model-invocation: true
 ---
 
-# Implement: Build from the Ticket
+# Implement Ticket: Build from the Ticket
 
 This is the **implement** step of the PIV loop `docs/PIV-LOOP.md` describes.
 

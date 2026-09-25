@@ -1,7 +1,7 @@
 ---
 name: piv-create-prd
 description: Interviews the user to pin down the problem, why to build it, and a falsifiable hypothesis, then writes a product-level PRD — intent (what/why), never engineering decisions (how).
-argument-hint: "[product idea] · [optional: research doc paths] (blank = starts by asking what to build)"
+argument-hint: "[product idea, or the path of a doc that carries the context] · [optional: research doc paths] (blank = starts by asking what to build)"
 disable-model-invocation: true
 ---
 
@@ -68,18 +68,18 @@ Input given → restate and confirm. Blank → *"What do you want to build? A fe
 - **GATE.** The *why* and the *move to it* are the heart — keep digging if vague.
 
 ### Phase 3 — Deep dive (users)
-Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When [situation], I want to [motivation], so I can [outcome]") · **non-users** (who it's explicitly NOT for) · constraints.
+Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When <situation>, I want to <motivation>, so I can <outcome>") · **non-users** (who it's explicitly NOT for) · constraints.
 
-**Solo builder building for themselves:** they *are* the primary user — record that in Target User, and take their own experience as evidence rather than asking for external signal. Building for someone else: no introspection counts as evidence; Phase 2 item 2 still needs an observation.
+**Solo builder building for themselves:** they *are* the primary user — record that in Target user, and take their own experience as evidence rather than asking for external signal. Building for someone else: no introspection counts as evidence; Phase 2 item 2 still needs an observation.
 
 **GATE.**
 
 ### Phase 4 — Hypothesis (the falsifiable bet)
 Co-write the hypothesis. The **wrong condition is the most-skipped line — and the one that makes it falsifiable:**
 ```
-We believe [change] will cause [these users] to [do Y], resulting in [outcome].
-We'll know we're RIGHT if [leading signal] within [timeframe].
-We'll know we're WRONG if [counter-signal / a guardrail moves].
+We believe <change> will cause <these users> to <do Y>, resulting in <outcome>.
+We'll know we're RIGHT if <leading signal> within <timeframe>.
+We'll know we're WRONG if <counter-signal / a guardrail moves>.
 ```
 - **GATE.** No hypothesis ships without a wrong condition.
 

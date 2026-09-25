@@ -2,7 +2,7 @@
 
 - **Intent-slug**: <intent-slug>
 
-## Problem Statement
+## Problem statement
 <who has what problem, and the cost of not solving it>
 
 ## Evidence
@@ -14,17 +14,17 @@
 ## Hypothesis
 <the RIGHT/WRONG "We believe …" block from Phase 4>
 
-## Target User & JTBD
+## Target user & JTBD
 <primary user, the job-to-be-done, non-users>
 
 ## MVP
 <the thinnest line that proves the hypothesis end to end>
 
-## Success Metrics
+## Success metrics
 <specific and outcome-shaped (not "engagement"): metric · target · how measured>
 
 ## Non-goals
 <what you're explicitly NOT doing>
 
-## Open Questions
+## Open questions
 <named, not hidden, as checkboxes>

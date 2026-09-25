@@ -11,7 +11,7 @@
 ## Non-goals
 <the epic's non-goals, carried from the intent>
 
-## Success Metrics
+## Success metrics
 <what has to be true, or measured, for this epic to be done>
 
 ## Tickets
@@ -20,7 +20,7 @@
 
 ## Dependency graph and execution order
 <written once all tickets are created — which tickets can start now, in parallel, and which wait>
-<when the breakdown GATE was skipped: "Decided by default — the breakdown GATE was skipped: <the type, grouping, sizing and dependency calls made without the user>">
+<when the breakdown GATE was skipped: "**(decided-by-default)** — the breakdown GATE was skipped: <the type, grouping, sizing and dependency calls made without the user>">
 
-## Open Questions
+## Open questions
 <open questions and spikes deliberately not ticketed, and why>
