@@ -53,6 +53,24 @@ An attachment is the raw markdown file: a plan of any size travels whole, there 
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them. **The epic lives at the group level while the tickets are project issues**, so the plans sit one level above the backlog they generated — link the epic from each ticket so the trace survives that gap.
 
+## Creating a ticket
+
+Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
+
+- **Where** — an issue in this project, its description filled from the creating skill's own template.
+- **Header block** — `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
+- **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
+- **Group** — the phase or outcome the ticket belongs to, as a label.
+- **Epic** — linked to its epic, when the intent has one.
+- **Link** — a deferral is linked to the ticket the review covered as *relates to*.
+- **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
+
+A label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type or group is one the filters never find.
+
+## Finding a review's deferrals
+
+With a ticket behind the review, its deferrals are the issues related to that ticket. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Search this project's issue descriptions for the path as text; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+
 ## Paths
 
 - **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic as above.
@@ -70,7 +88,8 @@ Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic.
 
 ## Ticket status
 
-**GitLab owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Two loop steps leave a mark on the issue anyway, and each has exactly one owner:
+**GitLab owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
 - **Assignee** — `piv-implement-ticket` assigns the issue to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
+- **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
 - **Merge request link** — `piv-create-pr` links the merge request to the issue, which is what carries it into review and closes it at the merge.

@@ -76,6 +76,7 @@ For every ticket, draft:
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
 - **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own checks are enough.
 - **Group** — the phase or outcome it belongs to.
+- **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
 
 ### Step 4 — Map dependencies and parallelism
 
@@ -89,9 +90,9 @@ With intent only and no architecture, keep this graph coarse and say so — real
 
 The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets live. Say which one you are writing to.
 
-**GATE** — post the ticket titles, their grouping and rough sizes, and the dependency graph, then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
+**GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph, then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they decline the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the grouping, the sizing, the dependency graph — and record them as decided-by-default in the epic's *Dependency graph and execution order* section, repeated in the Step 7 report — never as though the user had ruled on them.
+**If they decline the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as decided-by-default in the epic's *Dependency graph and execution order* section, repeated in the Step 7 report — never as though the user had ruled on them.
 
 ## Output — create the tickets
 
@@ -99,12 +100,12 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 **The epic comes first.** Unless you were handed one that already exists, create it where `docs/ISSUE-TRACKER.md` says tickets live, filling the template at `templates/epic.md`. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields — `docs/ISSUE-TRACKER.md` owns that procedure, because it changes with the tracker; follow what it says rather than assuming this project's one. This is the single point in the loop that publishes the plans: `piv-create-prd` and `piv-create-architecture` write their doc and stop.
 
-Then create one ticket per slice, in the same place, reaching that system with whatever tool fits (an MCP server, a CLI, an API):
+Then create one ticket per slice, in the same place, reaching that system with whatever tool fits (an MCP server, a CLI, an API). **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its group, its epic, its `Acceptance criteria` heading — the same rules `piv-fix-findings` follows for a deferral, so every ticket in the backlog reads the same and one filter finds them all. What those rules mean for a sliced ticket, and what it carries besides:
 
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal heading **Acceptance criteria**. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - **Every ticket carries its own context** (from Step 3) — that's what makes later orientation optional.
-- Preserve the grouping and the dependency information with whatever the system offers — labels, an epic/parent, a milestone. Create the grouping mechanism when it's missing.
-- Link each ticket back to the epic, and copy the epic's `Intent-slug`, `Intent` and `Architecture` verbatim into the ticket's own header block, once the epic's fields point at the published plans, so a ticket picked up cold still resolves both plans.
+- Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
+- Copy the epic's `Intent-slug`, `Intent` and `Architecture` verbatim into the ticket's own header block, once the epic's fields point at the published plans, so a ticket picked up cold still resolves both plans.
 - Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines. That id is what every later step is handed.
 
 The ticket body: fill the template at `templates/ticket.md`.
@@ -113,7 +114,7 @@ The ticket body: fill the template at `templates/ticket.md`.
 
 ### Step 7 — Report
 
-- A table: ticket title → group → created id and URL.
+- A table: ticket title → type → group → created id and URL.
 - The intent (and architecture) the backlog was generated from.
 - The execution order — which tickets can start now, in parallel, and which are waiting.
 - **What you deliberately did *not* ticket** — open questions, non-goals, anything blocked on a spike.
@@ -129,6 +130,7 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 
 - ✅ **Every ticket traces back to a specific section** of the intent or architecture.
 - ✅ **One provable concern each**, with verifiable acceptance criteria and enough context to be picked up cold.
+- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type and its group.
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked.
 - ✅ **The user confirmed the breakdown** before anything was created.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.

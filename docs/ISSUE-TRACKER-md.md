@@ -45,6 +45,25 @@ The three reports use the same header block, with the fields their own templates
 
 Plans stay local, so intent and architecture stay separable and get reviewed beside the code.
 
+## Creating a ticket
+
+Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the breakdown reads the same:
+
+- **Where** — a block appended to the intent's breakdown file, in the form shown under *The breakdown file*, with the next free number. When the intent has no breakdown yet, create the file with its header block first.
+- **Header block** — none of its own: the block inherits the breakdown's `Intent-slug`, `Intent` and `Architecture`.
+- **Type** — a `Type:` line carrying exactly one of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
+- **Group** — a `Group:` line carrying the phase or outcome the ticket belongs to.
+- **Epic** — none of its own: the breakdown file belongs to the intent doc.
+- **Link** — a deferral's `Origin:` line carries the id of the ticket the review covered; that id is the link.
+- **Status** — `Status: todo`.
+- **Acceptance criteria** — a markdown checklist under the literal bold line `Acceptance criteria`.
+
+The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:` and `Suggested fix:` where a sliced ticket carries `Scope:` and `Per-ticket context:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
+
+## Finding a review's deferrals
+
+A deferral is a block in the intent's breakdown file whose `Origin:` line carries the review report's path verbatim in its `Review` field. With a ticket behind the review, that line also carries the ticket's id; with none, the path alone identifies it. Read the `Origin:` lines of `docs/.tickets/<intent-slug>.md`; a block whose `Review` field matches the path exactly is one of that review's deferrals.
+
 ## Intent-slug
 
 Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title. The PRD, the architecture doc, the ticket breakdown and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
@@ -59,7 +78,7 @@ The prefix is what lets the id resolve to its own breakdown file: an implementat
 
 A markdown ticket carries `Status: todo | in progress | in review | done` in its block — the field exists because a breakdown file has nowhere else to keep it. Each transition has exactly one owner:
 
-- **`todo`** — written by `piv-create-tickets` when the ticket is created.
+- **`todo`** — written when the ticket is created: by `piv-create-tickets` for a sliced ticket, by `piv-fix-findings` for a deferral, one block per deferred finding.
 - **`in progress`** — set by `piv-implement-ticket` once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
 - **`in review`** — set by `piv-create-pr` when the review request opens: it rewrites the `Status:` line in that ticket's block inside `docs/.tickets/<intent-slug>.md` and appends the PR URL beside it. There is no tracker to own this, so the breakdown file is what records it.
 - **`done`** — set at the merge, which happens outside this loop.
@@ -80,11 +99,13 @@ The goal in 2-3 lines.
 
 ### <INTENT-SLUG>-1 — <title>
 - Status: todo
+- Type: <bug | feature | task>
 - Group: <the phase or outcome this ticket belongs to>
 - Description: <what and why> — traced to <the intent or architecture section it came from>
 - Scope: one provable concern · surfaces touched (estimate) · rough size
 - Per-ticket context: e.g. "source-adapter guide · seam: adapter interface · acceptance criteria 2 and 4 from the epic"
 - Depends on: <none, or <INTENT-SLUG>-x>
+- Testing strategy: <the tests this ticket needs and the checks that prove it, or "project defaults">
 
 **Acceptance criteria**
 - [ ] <criterion a reviewer can verify>

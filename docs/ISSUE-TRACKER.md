@@ -17,7 +17,7 @@ One name per artifact, used the same way across every skill:
 
 ## Where tickets live
 
-**Tickets are GitHub issues in this repo**, reached with `gh`. An epic is an issue carrying the `epic` label, and a ticket links back to its epic.
+**Tickets are GitHub issues in this repo**, reached with `gh`. An epic is an issue carrying the `epic` label, and a ticket is a sub-issue of its epic.
 
 When GitHub is unreachable, say so and stop. There is nowhere else this project keeps tickets, so writing them anywhere else puts a backlog where nobody will look for it.
 
@@ -51,6 +51,26 @@ A plan too large for one comment splits across several, each still opening with 
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them.
 
+## Creating a ticket
+
+Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
+
+- **Where** — an issue in this repo, its body filled from the creating skill's own template.
+- **Header block** — `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
+- **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
+- **Group** — the phase or outcome the ticket belongs to, as a label.
+- **Epic** — a sub-issue of its epic, when the intent has one.
+- **Link** — a deferral names the ticket the review covered under its *Origin*, which puts the cross-reference on that ticket's timeline.
+- **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
+
+A label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type or group is one the filters never find.
+
+The epic follows the same missing-label rule for its `epic` label, and carries no type or group: it is not a ticket.
+
+## Finding a review's deferrals
+
+With a ticket behind the review, its deferrals are the ones linked to that ticket. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Search this repo's issues for the path as text; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+
 ## Paths
 
 - **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic as above.
@@ -71,5 +91,5 @@ Write the id the way GitHub writes it — `#123`. Commit subjects, branch names 
 **GitHub owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
 - **Assignee** — `piv-implement-ticket` assigns the issue to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
-- **Deferral issues** — `piv-fix-findings` opens one issue per deferred finding, linked back to the ticket the review covered.
+- **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
 - **PR link** — `piv-create-pr` links the pull request to the issue, which is what carries it into review and closes it at the merge.

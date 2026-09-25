@@ -19,8 +19,6 @@ One name per artifact, used the same way across every skill:
 
 **Tickets are Jira issues in project `<KEY>`**, reached with whatever Atlassian tooling this project has — an MCP server, a CLI, or the REST API. An epic is an issue of type **Epic**, and a ticket is linked to its epic as a child.
 
-Jira issue types other than Epic are interchangeable here: create tickets as whatever type the project's workflow expects (`Story`, `Task`), and keep it consistent across one breakdown.
-
 When Jira is unreachable, say so and stop. There is nowhere else this project keeps tickets, so writing them anywhere else puts a backlog where nobody will look for it.
 
 ## Header block
@@ -53,6 +51,24 @@ An attachment is the raw markdown file, which is what makes this the right shape
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them.
 
+## Creating a ticket
+
+Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
+
+- **Where** — an issue in project `<KEY>`, its description filled from the creating skill's own template.
+- **Header block** — `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
+- **Type** — exactly one issue type out of `Bug`, `Story` and `Task`. `Bug` is behavior that diverges from what was specified or delivered; `Story` delivers a new capability; `Task` is refactor, docs, chore or infra work. Where a skill says `bug`, `feature` or `task`, it means `Bug`, `Story` or `Task` here.
+- **Group** — the phase or outcome the ticket belongs to, as a label.
+- **Epic** — linked to its epic as a child, when the intent has one.
+- **Link** — a deferral is linked to the ticket the review covered with a *relates to* issue link.
+- **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
+
+A label or issue type that doesn't exist yet is created before the first ticket that needs it. When it can't be created — the project's scheme may not allow it — say so and stop: a ticket missing its type or group is one the filters never find.
+
+## Finding a review's deferrals
+
+With a ticket behind the review, its deferrals are the issues linked to that ticket as *relates to*. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Run a text search over project `<KEY>`'s issues for the path; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+
 ## Paths
 
 - **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic as above.
@@ -77,5 +93,7 @@ Write the id the way Jira writes it — `PROJ-123`, the project key and the issu
 - **In Progress** — `piv-implement-ticket` transitions the issue and assigns it to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
 - **In Review** — `piv-create-pr` transitions the issue and puts the pull request URL on it.
 - **Done** — set at the merge, which happens outside this loop.
+
+One more step leaves a mark on the issue: **deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this one.
 
 When the project's workflow names these states differently, map them to the nearest equivalent and say which mapping you used; when a transition is unavailable from the issue's current state, leave the status alone, comment on the issue instead, and report it.

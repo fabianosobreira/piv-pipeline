@@ -1,0 +1,26 @@
+- **Intent-slug**: <intent-slug>
+- **Intent**: <the reviewed ticket's `Intent`, copied verbatim — or the implementation report's when there is no ticket — or "none">
+- **Architecture**: <the reviewed ticket's `Architecture`, copied verbatim — or the implementation report's when there is no ticket — or "none">
+
+## Description
+<the finding's one-line claim> — <its impact: what breaks, and for whom>
+
+## Origin
+- **Ticket**: <the ticket the review covered, or "none">
+- **Review**: <path of the review report>
+- **Severity**: <the finding's severity>
+- **Location**: `path/to/file.py:42`
+
+## Suggested fix
+<the review's fix for this finding>
+
+## Depends on
+<the ticket the review covered, or "none">
+
+## Testing strategy
+<the test that proves the fix and the checks that cover it, or "project defaults">
+
+## Acceptance criteria
+- [ ] <bug: the defect at `path/to/file.py:42` no longer reproduces, and a test fails without the fix and passes with it>
+- [ ] <task: the finding's claim no longer holds at `path/to/file.py:42`, and the project's checks stay green>
+- [ ] <any criterion the finding itself calls for>

@@ -9,7 +9,7 @@
 - **<finding>** — `path/to/file.py:42` → <what changed> · test: <the test that proves it>
 
 ## Deferred
-- **<finding>** — issue <ref>
+- **<finding>** — ticket <ref> | not created — <why the run stopped before it>
 
 ## Needs a human look
 - **<finding>** — <what to inspect or test by hand>
