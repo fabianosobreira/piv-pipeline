@@ -7,6 +7,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **`piv-create-prd` and `piv-create-architecture` know nothing about the epic.** They write local files under `docs/.plans/` and stop. The epic does not exist yet at that point in the loop, and neither skill may depend on one.
 - **The epic is `piv-create-tickets`' output, never the planning skills' input.** On an existing product, `piv-create-prd` and `piv-create-architecture` take whatever document carries the context — a research doc, a decision plan, the product's docs — and never name an epic as their input.
 - **`piv-create-tickets` is where the epic is born.** It takes the local PRD and architecture doc as input, creates the epic, publishes both onto it, fills the epic's `Intent` and `Architecture`, and only then creates the tickets. It is the single point in the loop that publishes a plan, and the reason later steps point at the epic rather than at a local doc.
+- **An architecture doc's `Intent` names a PRD or says "none" — nothing else.** An idea, a brief or a research doc handed to `piv-create-architecture` is carried into its *Problem & goals*, and the doc stands on its own. Pointing the field at the brief, and having `piv-create-tickets` publish it as the intent, was proposed and refused: `piv-create-tickets` publishes whatever the field names as the PRD.
 - **`piv-implement-ticket` names `piv-review-changes` flatly instead of offering a menu.** That asymmetry with the other six skills is deliberate, not an oversight — do not normalize it.
 
 ## Reports and the PR
@@ -16,6 +17,8 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **`piv-review-changes` does not read the PR body.** It runs right after `piv-implement-ticket`, on the uncommitted branch, before any PR exists. A reviewer's agent working from the PR sits outside the loop.
 - **The fix report is overwritten each round, not accumulated.** `piv-create-pr` reads only the latest round. The user clears every *Needs a human look* item before the next review, and the PR lists the latest ones as flagged, never as checked. Deferrals are not listed in the body: it points at the deferral tickets linked to the ticket — or, with no ticket, at the tickets whose *Origin* names the review report's path — because a list built from the latest round alone would read as complete when it isn't.
 - **The triage's default cut defers every medium and low, even though a PASS sends the same findings only to the PR body.** Defaulting low to *noise / won't-fix* was proposed and refused: a deferral is the only thing that closes a finding for the next review, so a low dropped without one comes back every round. The asymmetry with the PASS path is accepted.
+- **A *Noise / won't-fix* ruling is evidence the re-review weighs, never a closure.** `piv-review-changes` reads the previous fix report's reason in its mitigation filter, and it drops the candidate only when the reason shows the problem is not there; "not worth fixing" admits the problem, so only a deferral settles it — the ruling above still holds. Treating *Noise* as a prior decision that drops the finding outright was proposed and refused, and so was ignoring it: a false positive ruled high would block PASS every round.
+- **`piv-commit-changes` gates on the verdict; `piv-create-pr` does not.** Before committing, it reads the latest review report's verdict — and nothing else from the reports — and GATEs when it is not PASS, when there is no review report, or when a fix report is newer than it. Having `piv-create-pr` open a draft on a non-PASS verdict, alone or alongside the commit gate, was proposed and not adopted.
 
 ## Skills vs. tracker docs
 
@@ -30,7 +33,8 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **Header block, not YAML front matter.** Every artifact opens with a markdown list of bold labels — `- **Intent-slug**: …` — one field per line, directly under the title. Front matter renders as a stray heading in an issue body; a list renders the same in a file and in a tracker.
 - **`Intent-slug`, `Intent` and `Architecture` always get their own line.**
 - **The PRD never points at itself**: it is the intent, so it carries `Intent-slug` alone. The epic carries all three, born with the local paths and repointed to the published URLs once the plans are on it.
-- **Template placeholders are `<...>`**, in every template. Not `{...}`, not `[...]`. Literal illustrative values (`` `path/to/file.py:42` ``, `PASS | CHANGES REQUESTED`) are not placeholders and stay as they are.
+- **Template placeholders are `<...>`**, in every template. Not `{...}`, not `[...]`. Literal illustrative values (`` `path/to/file.py:42` ``, `PASS | CHANGES REQUESTED`) are not placeholders and stay as they are. The rule reaches every block a skill hands the run to fill — the hypothesis, the JTBD line, the spike — not only the files under `templates/`.
+- **Template headings are sentence case** — `Problem statement`, `Target user & JTBD`, `Success metrics`, `Open questions`. Acronyms keep their capitals (`PRD`, `MVP`, `JTBD`), and a skill citing a heading cites it in the same case. Keeping the mixed case because the terms already matched across artifacts was proposed and refused.
 
 ## Skill-writing conventions
 
