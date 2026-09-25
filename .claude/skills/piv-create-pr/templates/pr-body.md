@@ -29,5 +29,6 @@
 ## Linked
 <ticket / issue refs, or "none">
 <with a ticket: "Findings deferred during review live on the tracker as tickets linked to <ticket id>.">
+<with no ticket and a fix report: "Findings deferred during review live on the tracker as tickets whose *Origin* names `<review report path>`.">
 
 <_Ready for review._ | _Draft — waiting on the open issues above._>

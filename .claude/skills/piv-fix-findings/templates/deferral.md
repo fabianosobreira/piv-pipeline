@@ -11,6 +11,9 @@
 - **Severity**: <the finding's severity>
 - **Location**: `path/to/file.py:42`
 
+## Evidence
+<the finding's evidence, copied verbatim from the review report — the quoted line or the traced path that proves it>
+
 ## Suggested fix
 <the review's fix for this finding>
 

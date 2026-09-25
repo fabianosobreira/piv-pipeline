@@ -39,7 +39,7 @@ The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVEN
 
 ### Step 3 — Read the ticket end to end
 
-Before any edit, read the ticket's **`Architecture`** field and its **Per-ticket context** first — the architecture doc, the guides and seams it names — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list.** **Repair:** also the root cause, and whether the proposed fix still addresses it.
+Before any edit, read the ticket's **`Architecture`** field and its **Per-ticket context** first — the architecture doc, the guides and seams it names; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list.** **Repair:** also the root cause, and whether the proposed fix still addresses it.
 
 **If the field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/ISSUE-TRACKER.md` says plans live. Unresolvable there, and not attached to the ticket or its epic either → **STOP** and ask for it; building without the architecture the ticket was sliced against plans against a guess.
 
