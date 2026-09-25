@@ -18,4 +18,16 @@ Work gets built on its own branch, named `<tag>/<ticket-id>-<short-slug>`:
 
 ## Commit subjects
 
-`<tag>: <atomic description> (<ticket id>)` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `<tag>` is the conventional tag the work earns. The `(<ticket id>)` suffix closes the subject whenever there is an id: the one handed to you, or the one the branch name carries. Write the id in the form `docs/ISSUE-TRACKER.md` defines for the tracker in use; with no file to consult, write it exactly as it reached you. PR titles carry the same shape.
+`<tag>: <atomic description> (<ticket id>)` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `<tag>` is the conventional tag the work earns, as *Commit tags* below defines it. The `(<ticket id>)` suffix closes the subject whenever there is an id: the one handed to you, or the one the branch name carries. Write the id in the form `docs/ISSUE-TRACKER.md` defines for the tracker in use; with no file to consult, write it exactly as it reached you. PR titles carry the same shape.
+
+## Commit tags
+
+This repo ships skills: its markdown is the product, not documentation of it. Pick the tag by what the change does to the agent that loads the file, never by the file's extension:
+
+- **`feat`** — the agent does something it didn't before: a new step, template, artifact, GATE or STOP, or a new rule in a doc it reads.
+- **`fix`** — an instruction that led the agent wrong: a contradiction between skills or with a doc they read, a broken reference, a dead end, a rule that can't be met.
+- **`refactor`** — rewording or restructuring that leaves what the agent does unchanged.
+- **`docs`** — what only people read: `README.md`, `pages/`.
+- **`chore`** — `tools/`, `.claude/settings*`, repo configuration.
+
+The docs an agent loads — `CLAUDE.md`, `docs/PIV-LOOP.md`, `docs/MEMORY.md`, `docs/ISSUE-TRACKER*.md`, this file — count as skills, not as `docs`. A change that mixes effects is split into one commit per effect; when it can't be split, the largest effect names the tag.
