@@ -28,7 +28,7 @@ Sort the findings before touching code. The review's severities are the default 
 - **Fix now** — real, in-scope, belongs with this change.
 - **Defer** — real but later; don't bloat this change. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-create-tickets` titles its tickets — and its type here, and its group too when no ticket is behind the review.
 - **Needs a human look / manual test** — anything the user should inspect or test by hand before trusting it. Flag it, don't silently auto-fix.
-- **Noise / won't-fix** — say why, then drop it.
+- **Noise / won't-fix** — say why, then drop it. The next review weighs that reason against the code, so make it one the code can bear out: a reason that shows the problem is not there keeps the finding from coming back; "not worth fixing" does not.
 
 Every finding lands in exactly one bucket. Don't let the reviewer dictate scope — "real, but later" is a valid and common call; a clean small change beats a sprawling one.
 

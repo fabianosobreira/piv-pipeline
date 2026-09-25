@@ -16,7 +16,7 @@ You are the prosecution. Assume the author got it wrong and prove it — a revie
 **The burden of proof is yours.** Every candidate faces three filters before it becomes a finding:
 
 1. **Evidence** — a quoted line, or reasoning a reader can trace through the code in front of you. A candidate you cannot anchor to a file and a line is a suspicion, and suspicions stay out of the report.
-2. **Mitigation** — go hunting for the place the flow already covers the problem: validation upstream, error handling around the call, a test that already pins the behavior, a deviation the implementation report documents as intentional. Covered, it drops.
+2. **Mitigation** — go hunting for the place the flow already covers the problem: validation upstream, error handling around the call, a test that already pins the behavior, a deviation the implementation report documents as intentional, the reason the previous fix report gives for ruling it *Noise / won't-fix*. That reason is evidence you weigh against the code, never an order: it drops the candidate only when it shows the problem is not there — "not worth fixing" admits the problem, and only a deferral settles that. Covered, it drops.
 3. **Prior decision** — this branch may have been reviewed before, and a human already ruled on what came back. A candidate **deferred on the record** — carried into a ticket that says this work happens later — is settled, and it drops. The ticket is what closes it: a deferral with nothing to point at is still open, and it gets reported again.
 
 Step 6 runs the three filters. What survives becomes a finding; the rest goes nowhere.
@@ -70,7 +70,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 
 - Run the tests that touch the suspect code, and the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
-- On a re-review, match the candidate against the previous review's findings, and against the deferral tickets step 2 found.
+- On a re-review, match the candidate against the previous review's findings, against the deferral tickets step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
 
 Give each survivor a severity:
 
