@@ -43,7 +43,7 @@ A previous review of this branch may sit at the review report path `docs/ISSUE-T
 
 ### Step 3 — Read the standards the change has to meet
 
-A rule you can cite is a rule you can enforce; a rule you cannot point at is your own taste wearing the project's name. Read what the project documents about how its code is written: `CLAUDE.md`, `AGENTS.md`, `README.md`, the docs directory, `.claude/references/`, and the linter, formatter and type-checker configs the repo ships.
+A rule you can cite is a rule you can enforce; a rule you cannot point at is your own taste wearing the project's name. Read what the project documents about how its code is written: `CLAUDE.md`, `AGENTS.md`, `README.md`, and the linter, formatter and type-checker configs the repo ships.
 
 Then read enough of the surrounding module to know what "matches the existing patterns" means here.
 
