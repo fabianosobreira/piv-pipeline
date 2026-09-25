@@ -9,16 +9,16 @@
 <what proves it's real (quote / data / observation), under the literal label **Evidenced:**. No evidence → the literal label **TBD — needs validation**, plus the method that would settle it>
 
 ## Thesis (why build it)
-<why this, why now, and why it beats how they cope today — the heart>
+<the vision in one sentence, then why this, why now, and why it beats how they cope today — the heart>
 
 ## Hypothesis
 <the RIGHT/WRONG "We believe …" block from Phase 4>
 
 ## Target user & JTBD
-<primary user, the job-to-be-done, non-users>
+<primary user, the job-to-be-done, non-users, constraints>
 
 ## MVP
-<the thinnest line that proves the hypothesis end to end>
+<the thinnest line that proves the hypothesis end to end — and its door: one-way (spike first) or two-way (just build it)>
 
 ## Success metrics
 <specific and outcome-shaped (not "engagement"): metric · target · how measured>
@@ -27,4 +27,4 @@
 <what you're explicitly NOT doing>
 
 ## Open questions
-<named, not hidden, as checkboxes>
+<named, not hidden, as checkboxes, each with what would settle it>

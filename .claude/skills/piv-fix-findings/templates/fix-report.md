@@ -9,13 +9,13 @@
 - **<the finding's one-line claim>** — `path/to/file.py:42` → <what changed> · proof: <the test or check that proves it> | not fixed — <why the run stopped before it>
 
 ## Deferred
-- **<the finding's one-line claim>** — ticket <ref> | not created — <why the run stopped before it>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → ticket <ref> | not created — <why the run stopped before it>
 
 ## Needs a human look
-- **<the finding's one-line claim>** — <what to inspect or test by hand>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → <what to inspect or test by hand>
 
 ## Noise / won't-fix
-- **<the finding's one-line claim>** — <why it drops>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → <why it drops>
 
 ## Checks run
 <tests / type-check / lint / build — what was run and what it returned>
