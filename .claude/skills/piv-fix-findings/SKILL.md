@@ -60,8 +60,8 @@ For each finding, in severity order:
 
 1. Explain what was wrong.
 2. Make the fix.
-3. Write a test that fails without the fix and passes with it.
-4. Run that test. The finding goes **green** when it passes, and a red finding gets fixed before the next one starts.
+3. Prove it. A finding Step 2 would type `bug` — logic, security — gets a test that fails without the fix and passes with it. Any other gets the check that shows its claim no longer holds: the lint or type-check rule it broke, or, for a coverage finding, the test it asked for.
+4. Run that proof. The finding goes **green** when it passes, and a red finding gets fixed before the next one starts.
 
 Fix what the finding names and stop there. A repair that grows into a refactor becomes its own ticket.
 
@@ -84,7 +84,7 @@ Confirm the fix report's path and each deferral ticket's ref, then offer the nex
 ## Success criteria
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
-- ✅ Every *fix now* finding has a test that fails without the fix.
+- ✅ Every *fix now* finding has its Step 3 proof — a test that fails without the fix for a `bug`-type finding, the check that shows the claim gone for any other.
 - ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its ref in the fix report.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
 - ✅ The triage outcome was written to the fix report path, not only printed.
