@@ -15,7 +15,7 @@ _That label is the rule for every section below too._
 <the chosen direction in a few sentences — the shape of the solution. Brownfield: where it plugs into the existing system and what it reuses, at a high level>
 
 ## Key decisions
-<one sub-section per menu item this work actually raised, named after the menu item it came from — **Building blocks**, **Data model**, **Boundaries & contracts**, **Operational shape**, **Other**. State each decision as prose; a call made without the user closes with the literal label **(decided-by-default)**>
+<one sub-section per menu item this work actually raised, named after the menu item it came from — **Building blocks**, **Data model**, **Boundaries & contracts**, **Operational shape**, **Other eng-lead calls**. State each decision as prose; a call made without the user closes with the literal label **(decided-by-default)**>
 
 ## Missing pieces
 <what has to exist that doesn't yet — the building blocks this approach depends on>

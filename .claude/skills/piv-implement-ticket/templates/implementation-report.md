@@ -24,4 +24,4 @@
 <What changed vs the ticket and WHY — or "none". This is the reviewer's signal of intent.>
 
 ## Issues encountered
-<Anything notable, or "none".>
+<each check still red — the check, the failure and what was tried — and each success criterion that isn't true, named; or "none". A PARTIAL status names its causes here>

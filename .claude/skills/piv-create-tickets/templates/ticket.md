@@ -1,5 +1,5 @@
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the epic's `Intent`, copied verbatim>
+- **Intent**: <the epic's `Intent`, copied verbatim, or "none">
 - **Architecture**: <the epic's `Architecture`, copied verbatim, or "none">
 
 ## Description
@@ -9,10 +9,10 @@
 <one provable concern: the surfaces it touches (estimate) · rough size>
 
 ## Per-ticket context
-<the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · acceptance criteria 2 and 4 from the epic">
+<the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the epic">
 
 ## Depends on
-<none, or the ticket id>
+<the ids of the tickets this one waits on, or "none">
 
 ## Testing strategy
 <the tests this ticket needs and the checks that prove it, or "project defaults">
