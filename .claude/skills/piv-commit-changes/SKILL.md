@@ -17,6 +17,8 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 `docs/GIT-CONVENTIONS.md` defines which branch is the base branch. Work belongs on its own branch: when you are on the base branch, ask the user before committing anything. **GATE.** Go ahead when they confirm — a solo project with no PR coming commits on the base branch by design.
 
+**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines — named from the ticket id, or, with no id, by comparing each report's **Branch** header against this branch, the way `piv-review-changes` does. Read its **Verdict** and nothing else, and check whether a fix report beside it is newer than it. The verdict is not PASS, there is no review report, or the fix report is newer — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
+
 ### Step 2 — Inspect
 
 Inspect everything uncommitted: the working tree status plus the full diff against the last commit, tracked files and untracked alike.
@@ -47,6 +49,7 @@ Offer the next move and let the user run it — this skill does not chain into t
 
 ## Success criteria
 
+- ✅ The latest review report's verdict was PASS, with no fix report newer than it — or the user ruled to commit anyway.
 - ✅ Every uncommitted change landed in a group, or the user decided where it goes.
 - ✅ Every group is one coherent piece of work its subject can name.
 - ✅ Every subject follows `<tag>: <atomic description> (<ticket id>)`, with the tag the work earns and the id present whenever one exists.
