@@ -19,7 +19,7 @@ Read whatever you were handed, end to end. When the intent is an epic that alrea
 |---|---|
 | **intent + architecture** (the strong case) | The architecture is **load-bearing**: it names the seams, the data model, the boundaries, and the missing pieces the slices must respect. Slice along those seams. |
 | **intent only** | You have the *what*, not the *how*. Slice by outcome — see the guard below. |
-| **architecture only** | No PRD — the work was architected straight from an idea. Slice along the architecture's seams same as the strong case; the architecture's *Problem & goals* stands in for the intent wherever it doesn't cover one. |
+| **architecture only** | No PRD — the work was architected straight from an idea, a brief or a research doc. Slice along the architecture's seams same as the strong case; the architecture's *Problem & goals* stands in for the intent wherever it doesn't cover one. |
 
 **The epic is this skill's output, not its input** — unless one was handed to you. `docs/ISSUE-TRACKER.md` says how the epic is created and how the plans are published onto it; Step 6 does both, before any ticket exists.
 

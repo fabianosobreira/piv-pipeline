@@ -94,7 +94,7 @@ Reversible, low-cost calls → just decide and move on.
 
 Only after the calls are made. Write it where `docs/ISSUE-TRACKER.md` says plans live. It is its own doc, never a section inside the intent: **intent and architecture stay separable**, because that's what lets a later slicing step read the *what* and the *how* as two sources instead of untangling one blob.
 
-**Write the `Intent-slug` and the `Intent` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. The slug is the key every later step uses to find this work's tickets and reports; the `Intent` is where the *what and why* lives — the PRD's path, or "none" when this was architected straight from an idea. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one.
+**Write the `Intent-slug` and the `Intent` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. The slug is the key every later step uses to find this work's tickets and reports; the `Intent` is where the *what and why* lives — the PRD's path, or "none" when there is no PRD. An intent that is not a PRD — an idea, a brief, a research doc — is never named there: `piv-create-tickets` publishes the field's target as the PRD, so carry what that input says into *Problem & goals* instead, and let this doc stand on its own. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one.
 
 Fill the template at `templates/architecture.md`.
 
