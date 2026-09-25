@@ -6,7 +6,7 @@
 <1–2 sentences: what this branch delivers, from the implementation report's *Summary*>
 
 ## What changed
-<commit summaries>
+<the commit subjects ahead of the base branch, one per line>
 
 ## Validation
 - Tests / type-check / lint / build: <green/red from the fix report's *Checks run*, else the implementation report's *Validation results*, else a fresh run>

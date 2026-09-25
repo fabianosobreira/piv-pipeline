@@ -15,7 +15,7 @@
 <the finding's evidence, copied verbatim from the review report — the quoted line or the traced path that proves it>
 
 ## Suggested fix
-<the review's fix for this finding>
+<the finding's fix, copied from the review report>
 
 ## Depends on
 <the id of the ticket the review covered, or "none">

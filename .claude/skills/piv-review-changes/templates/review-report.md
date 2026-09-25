@@ -1,4 +1,4 @@
-# Review Report — <feature or ticket title>
+# Review report — <feature or ticket title>
 
 - **Intent-slug**: <intent-slug>
 - **Ticket**: <id or "none">

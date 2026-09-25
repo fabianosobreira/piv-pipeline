@@ -1,4 +1,4 @@
-# Fix Report — <feature or ticket title>
+# Fix report — <feature or ticket title>
 
 - **Intent-slug**: <intent-slug>
 - **Ticket**: <id or "none">
