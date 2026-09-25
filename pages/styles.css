@@ -497,6 +497,41 @@ ol.steps li {
   margin: 0.45rem 0;
 }
 
+.session-groups {
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.session-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.session-group ol.steps {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+}
+
+.session-group .session-note {
+  flex: 0 0 15rem;
+  margin: 0.45rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.session-group .session-note strong {
+  font-weight: 600;
+  color: var(--bark-soft);
+}
+
 footer.page {
   border-top: 1px solid var(--rule);
   padding-top: 1.25rem;
@@ -526,6 +561,16 @@ footer.page {
 
   dl.facts dd {
     margin-bottom: 0.6rem;
+  }
+
+  .session-group {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .session-group .session-note {
+    flex-basis: auto;
+    margin: 0 0 0.45rem 1.3rem;
   }
 
   .phase {

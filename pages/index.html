@@ -54,7 +54,6 @@
     <ol>
       <li><a href="#overview">What the PIV loop is</a></li>
       <li><a href="#chain">The chain at a glance</a></li>
-      <li><a href="#sessions">Which runs share a session</a></li>
       <li><a href="#picking">Where do I start?</a></li>
 
       <li class="group">Plan</li>
@@ -75,6 +74,7 @@
       <li class="sub"><a href="#artifacts">Artifacts &amp; where they live</a></li>
       <li class="sub"><a href="#house-rules">House rules</a></li>
       <li class="sub"><a href="#walkthrough">A full walkthrough</a></li>
+      <li class="sub"><a href="#sessions">Which runs share a session</a></li>
       <li class="sub"><a href="#faq">Troubleshooting</a></li>
     </ol>
     <p class="langswitch"><strong>English</strong> · <a href="index.pt-BR.html?lang=pt-BR" hreflang="pt-BR" lang="pt-BR">Português (BR)</a></p>
@@ -150,55 +150,6 @@
       </div>
 
       <p>Read the arrows as <em>"this is the next move offered"</em>, not as automation. The three verify skills before the PR are the gate; the PR itself is the handoff out of the loop, to a human who reviews, approves and merges.</p>
-    </section>
-
-    <section id="sessions">
-      <h2>Which runs share a session</h2>
-      <p>Every hand-off travels through an artifact — the PRD, the architecture doc, the tickets, the reports, the commits, the branch name — never through the conversation. A fresh session never loses anything the next step needs, so the choice weighs two things: whether the next run has to be independent, and what the session costs in tokens.</p>
-      <p>A shared session saves re-reading files, but every turn resends the whole session, and that cost grows with every tool call. A fresh session pays the re-read once and keeps later turns light. Sharing only pays when the next step would re-read almost everything the last one read <strong>and</strong> independence doesn't matter.</p>
-
-      <table>
-        <thead>
-          <tr><th>Steps</th><th>Session</th><th>Why</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code class="skill">piv-create-prd</code><br><code class="skill">piv-create-architecture</code><br><code class="skill">piv-create-tickets</code></td>
-            <td>May share</td>
-            <td>They collaborate rather than audit each other, and the interviews leave nuance the docs don't always record. Once the window is past half full, break at an artifact boundary — the doc just written is complete.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-implement-ticket</code></td>
-            <td>Its own, one per ticket</td>
-            <td>The heaviest step needs the whole window. Inside the planning session it misses the ticket's gaps and brings back alternatives the interviews rejected.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-review-changes</code></td>
-            <td>Its own, always</td>
-            <td>In the implementation's session, the review re-reads its own decisions and tends to confirm them.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-fix-findings</code></td>
-            <td>Its own</td>
-            <td>The run that raised the findings tends to defend them; the triage has to be free to rule against the review.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-review-changes</code>, again</td>
-            <td>Its own, always</td>
-            <td>Same reason, applied to the fix. Only a fresh review closes the loop.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-commit-changes</code><br><code class="skill">piv-create-pr</code></td>
-            <td>One fresh session, shared</td>
-            <td>Both are light, so carrying a review-sized context costs more than starting over — and the commit body is written from the diff, not from the implementation's story. The PR describes what the commit recorded, so nothing between the two needs to stay independent.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="callout warn">
-        <span class="tag">Combinations to avoid</span>
-        <p><strong>implement + review</strong>: self-approval. <strong>review + fix</strong>: the triage can't rule against the findings. <strong>fix + re-review</strong>: the loop closes without an independent PASS. <strong>fix or re-review + commit</strong>: a bloated session, and a commit body that retells the reports. <strong>planning + implement</strong>: the ticket's gaps go unseen and rejected alternatives come back.</p>
-      </div>
     </section>
 
     <section id="picking">
@@ -536,20 +487,61 @@
 
     <section id="walkthrough">
       <h2>A full walkthrough</h2>
-      <p>One epic, start to merge. Each line is something you type, and each opens a fresh session unless it says it shares one — see <a href="#sessions">which runs share a session</a>.</p>
+      <p>One epic, start to merge. Each line is something you type, and the steps are grouped by the session they run in; the note beside each group says why, and <a href="#sessions">which runs share a session</a> explains the reasoning.</p>
 
-      <ol class="steps">
-        <li><code>piv-create-prd</code> — interview, then a PRD lands at <code>docs/.plans/team-inbox.prd.md</code>.</li>
-        <li><code>piv-create-architecture docs/.plans/team-inbox.prd.md</code> — grilling, then a decision doc beside it. Same session as step 1.</li>
-        <li><code>piv-create-tickets docs/.plans/team-inbox.prd.md docs/.plans/team-inbox.architecture.md</code> — confirm the breakdown at the gate; tickets land on the tracker. Same session as step 2.</li>
-        <li><code>piv-implement-ticket 123</code> — a branch, the tasks, the tests, and <code>docs/.reports/123-report.md</code>.</li>
-        <li><code>piv-review-changes 123</code> — verdict <strong>CHANGES REQUESTED</strong>, 1 high and 3 medium in <code>docs/.reports/123-review.md</code>.</li>
-        <li><code>piv-fix-findings docs/.reports/123-review.md</code> — you fix the high and one medium, defer two onto the tracker; <code>docs/.reports/123-fixes.md</code> records every ruling.</li>
-        <li><code>piv-review-changes 123</code> — it reads the deferral issues, and the verdict is <strong>PASS</strong>.</li>
-        <li><code>piv-commit-changes 123</code> — atomic commits, clean tree.</li>
-        <li><code>piv-create-pr</code> — the PR opens and the URL goes to a human. Same session as step 8.</li>
-      </ol>
-      <p>Steps 5–7 repeat as many times as the branch needs. That cycle <em>is</em> the loop.</p>
+      <div class="session-groups">
+        <div class="session-group">
+          <ol class="steps" start="1">
+            <li><code>piv-create-prd</code> — interview, then a PRD lands at <code>docs/.plans/team-inbox.prd.md</code>.</li>
+            <li><code>piv-create-architecture docs/.plans/team-inbox.prd.md</code> — grilling, then a decision doc beside it.</li>
+            <li><code>piv-create-tickets docs/.plans/team-inbox.prd.md docs/.plans/team-inbox.architecture.md</code> — confirm the breakdown at the gate; tickets land on the tracker.</li>
+          </ol>
+          <p class="session-note"><strong>One session for all three.</strong> They collaborate rather than audit each other, and the interview's nuance carries over. Past half the window, break at a doc boundary — the docs already hold everything.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="4">
+            <li><code>piv-implement-ticket 123</code> — a branch, the tasks, the tests, and <code>docs/.reports/123-report.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session, one per ticket.</strong> The heaviest step needs the whole window; in the planning session it would miss the ticket's gaps and bring back alternatives the interviews rejected.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="5">
+            <li><code>piv-review-changes 123</code> — verdict <strong>CHANGES REQUESTED</strong>, 1 high and 3 medium in <code>docs/.reports/123-review.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session, always.</strong> In the implementation's session the review re-reads its own decisions and tends to confirm them.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="6">
+            <li><code>piv-fix-findings docs/.reports/123-review.md</code> — you fix the high and one medium, defer two onto the tracker; <code>docs/.reports/123-fixes.md</code> records every ruling.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session.</strong> The run that raised the findings tends to defend them; the triage has to be free to rule against the review.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="7">
+            <li><code>piv-review-changes 123</code> — it reads the deferral issues, and the verdict is <strong>PASS</strong>.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session, always.</strong> In the fix's session the review would approve its own fix; only an independent PASS closes the loop.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="8">
+            <li><code>piv-commit-changes 123</code> — atomic commits, clean tree.</li>
+            <li><code>piv-create-pr</code> — the PR opens and the URL goes to a human.</li>
+          </ol>
+          <p class="session-note"><strong>One fresh session for both.</strong> Carrying a review-sized context costs more than starting over, and the commit body comes from the diff, not the reports. The PR describes what the commit recorded, so nothing between them needs to stay independent.</p>
+        </div>
+      </div>
+      <p>Steps 5–7 repeat as many times as the branch needs, each pass in fresh sessions. That cycle <em>is</em> the loop.</p>
+    </section>
+
+    <section id="sessions">
+      <h2>Which runs share a session</h2>
+      <p>Every hand-off travels through an artifact — the PRD, the architecture doc, the tickets, the reports, the commits, the branch name — never through the conversation. A fresh session never loses anything the next step needs, so the choice weighs two things: whether the next run has to be independent, and what the session costs in tokens.</p>
+      <p>A shared session saves re-reading files, but every turn resends the whole session, and that cost grows with every tool call. A fresh session pays the re-read once and keeps later turns light. Sharing only pays when the next step would re-read almost everything the last one read <strong>and</strong> independence doesn't matter — which is why only the planning steps, and the commit with the PR, share one.</p>
+
+      <div class="callout warn">
+        <span class="tag">Combinations to avoid</span>
+        <p><strong>implement + review</strong>: self-approval. <strong>review + fix</strong>: the triage can't rule against the findings. <strong>fix + re-review</strong>: the loop closes without an independent PASS. <strong>fix or re-review + commit</strong>: a bloated session, and a commit body that retells the reports. <strong>planning + implement</strong>: the ticket's gaps go unseen and rejected alternatives come back.</p>
+      </div>
     </section>
 
     <section id="faq">

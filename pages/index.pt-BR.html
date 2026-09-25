@@ -43,7 +43,6 @@
     <ol>
       <li><a href="#overview">O que é o PIV loop</a></li>
       <li><a href="#chain">A chain em um relance</a></li>
-      <li><a href="#sessions">Quais rodadas compartilham sessão</a></li>
       <li><a href="#picking">Por onde começar?</a></li>
 
       <li class="group">Plan</li>
@@ -64,6 +63,7 @@
       <li class="sub"><a href="#artifacts">Artifacts e onde eles vivem</a></li>
       <li class="sub"><a href="#house-rules">House rules</a></li>
       <li class="sub"><a href="#walkthrough">Um percurso completo</a></li>
+      <li class="sub"><a href="#sessions">Quais rodadas compartilham sessão</a></li>
       <li class="sub"><a href="#faq">Solução de problemas</a></li>
     </ol>
     <p class="langswitch"><a href="index.html?lang=en" hreflang="en" lang="en">English</a> · <strong>Português (BR)</strong></p>
@@ -139,55 +139,6 @@
       </div>
 
       <p>Leia as setas como <em>"este é o próximo movimento oferecido"</em>, não como automação. As três skills de verify antes do PR são o gate; o PR em si é a entrega para fora do loop, para um humano que revisa, aprova e faz o merge.</p>
-    </section>
-
-    <section id="sessions">
-      <h2>Quais rodadas compartilham sessão</h2>
-      <p>Todo hand-off passa por um artifact — o PRD, o architecture doc, os tickets, os reports, os commits, o nome da branch — e nunca pela conversa. Uma sessão nova nunca perde o que o próximo passo precisa, então a escolha pesa duas coisas: se a próxima rodada precisa ser independente, e quanto a sessão custa em tokens.</p>
-      <p>Uma sessão compartilhada economiza a releitura de arquivos, mas cada turno reenvia a sessão inteira, e esse custo cresce a cada tool call. Uma sessão nova paga a releitura uma vez e deixa os turnos seguintes leves. Compartilhar só compensa quando o próximo passo vai reler quase tudo o que o anterior leu <strong>e</strong> a independência não importa.</p>
-
-      <table>
-        <thead>
-          <tr><th>Passos</th><th>Sessão</th><th>Por quê</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code class="skill">piv-create-prd</code><br><code class="skill">piv-create-architecture</code><br><code class="skill">piv-create-tickets</code></td>
-            <td>Pode compartilhar</td>
-            <td>As skills colaboram, não se fiscalizam, e as entrevistas deixam nuances que o documento nem sempre registra. Quando a janela passar da metade, quebre a sessão na fronteira de um artifact — o documento recém-escrito já está completo.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-implement-ticket</code></td>
-            <td>Própria, uma por ticket</td>
-            <td>É o passo mais pesado e precisa da janela inteira. Dentro da sessão de planejamento, esconde as lacunas do ticket e traz de volta alternativas que as entrevistas rejeitaram.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-review-changes</code></td>
-            <td>Própria, sempre</td>
-            <td>Na sessão da implementação, o review relê as próprias decisões e tende a confirmá-las.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-fix-findings</code></td>
-            <td>Própria</td>
-            <td>Quem levantou os findings tende a defendê-los; a triage precisa estar livre para decidir contra o review.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-review-changes</code>, de novo</td>
-            <td>Própria, sempre</td>
-            <td>O mesmo motivo, aplicado ao fix. Só um review novo fecha o loop.</td>
-          </tr>
-          <tr>
-            <td><code class="skill">piv-commit-changes</code><br><code class="skill">piv-create-pr</code></td>
-            <td>Uma sessão nova, compartilhada</td>
-            <td>As duas são leves, então carregar um contexto do tamanho de um review custa mais do que começar do zero — e o body do commit é escrito a partir do diff, não da história da implementação. O PR descreve o que o commit registrou, então não há independência a preservar entre as duas.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="callout warn">
-        <span class="tag">Combinações a evitar</span>
-        <p><strong>implement + review</strong>: autoaprovação. <strong>review + fix</strong>: a triage não consegue decidir contra os findings. <strong>fix + re-review</strong>: o loop fecha sem um PASS independente. <strong>fix ou re-review + commit</strong>: uma sessão inchada e um body de commit que repete os reports. <strong>planejamento + implement</strong>: as lacunas do ticket passam despercebidas e alternativas descartadas voltam.</p>
-      </div>
     </section>
 
     <section id="picking">
@@ -525,20 +476,61 @@
 
     <section id="walkthrough">
       <h2>Um percurso completo</h2>
-      <p>Um epic, do início ao merge. Cada linha é algo que você digita e abre uma sessão nova, a menos que diga que compartilha uma — veja <a href="#sessions">quais rodadas compartilham sessão</a>.</p>
+      <p>Um epic, do início ao merge. Cada linha é algo que você digita, e os passos estão agrupados pela sessão em que rodam; a nota ao lado de cada grupo diz por quê, e <a href="#sessions">quais rodadas compartilham sessão</a> explica o raciocínio.</p>
 
-      <ol class="steps">
-        <li><code>piv-create-prd</code> — a entrevista e, ao final, um PRD em <code>docs/.plans/team-inbox.prd.md</code>.</li>
-        <li><code>piv-create-architecture docs/.plans/team-inbox.prd.md</code> — o grilling e, ao final, um decision doc ao lado. Mesma sessão do passo 1.</li>
-        <li><code>piv-create-tickets docs/.plans/team-inbox.prd.md docs/.plans/team-inbox.architecture.md</code> — confirme a divisão no gate; os tickets vão para o tracker. Mesma sessão do passo 2.</li>
-        <li><code>piv-implement-ticket 123</code> — uma branch, as tasks, os testes e <code>docs/.reports/123-report.md</code>.</li>
-        <li><code>piv-review-changes 123</code> — veredito <strong>CHANGES REQUESTED</strong>, 1 high e 3 medium em <code>docs/.reports/123-review.md</code>.</li>
-        <li><code>piv-fix-findings docs/.reports/123-review.md</code> — você corrige a high e uma medium, adia duas no tracker; <code>docs/.reports/123-fixes.md</code> registra cada decisão.</li>
-        <li><code>piv-review-changes 123</code> — ela lê as issues de deferral, e o veredito é <strong>PASS</strong>.</li>
-        <li><code>piv-commit-changes 123</code> — commits atômicos, árvore limpa.</li>
-        <li><code>piv-create-pr</code> — o PR abre e a URL vai para um humano. Mesma sessão do passo 8.</li>
-      </ol>
-      <p>Os passos 5–7 se repetem quantas vezes a branch precisar. Esse ciclo <em>é</em> o loop.</p>
+      <div class="session-groups">
+        <div class="session-group">
+          <ol class="steps" start="1">
+            <li><code>piv-create-prd</code> — a entrevista e, ao final, um PRD em <code>docs/.plans/team-inbox.prd.md</code>.</li>
+            <li><code>piv-create-architecture docs/.plans/team-inbox.prd.md</code> — o grilling e, ao final, um decision doc ao lado.</li>
+            <li><code>piv-create-tickets docs/.plans/team-inbox.prd.md docs/.plans/team-inbox.architecture.md</code> — confirme a divisão no gate; os tickets vão para o tracker.</li>
+          </ol>
+          <p class="session-note"><strong>Uma sessão para os três.</strong> Eles colaboram em vez de auditar um ao outro, e a nuance da entrevista segue junto. Se a janela passar da metade, quebre na fronteira de um doc — os docs já guardam tudo.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="4">
+            <li><code>piv-implement-ticket 123</code> — uma branch, as tasks, os testes e <code>docs/.reports/123-report.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Sessão nova, uma por ticket.</strong> O passo mais pesado precisa da janela inteira; na sessão de planejamento ele deixaria passar as lacunas do ticket e traria de volta alternativas que as entrevistas rejeitaram.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="5">
+            <li><code>piv-review-changes 123</code> — veredito <strong>CHANGES REQUESTED</strong>, 1 high e 3 medium em <code>docs/.reports/123-review.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Sessão nova, sempre.</strong> Na sessão da implementação, a review relê as próprias decisões e tende a confirmá-las.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="6">
+            <li><code>piv-fix-findings docs/.reports/123-review.md</code> — você corrige a high e uma medium, adia duas no tracker; <code>docs/.reports/123-fixes.md</code> registra cada decisão.</li>
+          </ol>
+          <p class="session-note"><strong>Sessão nova.</strong> A rodada que levantou os findings tende a defendê-los; a triagem precisa estar livre para decidir contra a review.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="7">
+            <li><code>piv-review-changes 123</code> — ela lê as issues de deferral, e o veredito é <strong>PASS</strong>.</li>
+          </ol>
+          <p class="session-note"><strong>Sessão nova, sempre.</strong> Na sessão do fix, a review aprovaria a própria correção; só um PASS independente fecha o loop.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="8">
+            <li><code>piv-commit-changes 123</code> — commits atômicos, árvore limpa.</li>
+            <li><code>piv-create-pr</code> — o PR abre e a URL vai para um humano.</li>
+          </ol>
+          <p class="session-note"><strong>Uma sessão nova para os dois.</strong> Carregar um contexto do tamanho de uma review custa mais do que recomeçar, e o corpo do commit vem do diff, não dos reports. O PR descreve o que o commit registrou, então nada entre os dois precisa ficar independente.</p>
+        </div>
+      </div>
+      <p>Os passos 5–7 se repetem quantas vezes a branch precisar, cada passada em sessões novas. Esse ciclo <em>é</em> o loop.</p>
+    </section>
+
+    <section id="sessions">
+      <h2>Quais rodadas compartilham sessão</h2>
+      <p>Todo hand-off passa por um artifact — o PRD, o architecture doc, os tickets, os reports, os commits, o nome da branch — e nunca pela conversa. Uma sessão nova nunca perde o que o próximo passo precisa, então a escolha pesa duas coisas: se a próxima rodada precisa ser independente, e quanto a sessão custa em tokens.</p>
+      <p>Uma sessão compartilhada economiza a releitura de arquivos, mas cada turno reenvia a sessão inteira, e esse custo cresce a cada tool call. Uma sessão nova paga a releitura uma vez e deixa os turnos seguintes leves. Compartilhar só compensa quando o próximo passo vai reler quase tudo o que o anterior leu <strong>e</strong> a independência não importa — por isso só os passos de planejamento, e o commit com o PR, compartilham uma.</p>
+
+      <div class="callout warn">
+        <span class="tag">Combinações a evitar</span>
+        <p><strong>implement + review</strong>: autoaprovação. <strong>review + fix</strong>: a triage não consegue decidir contra os findings. <strong>fix + re-review</strong>: o loop fecha sem um PASS independente. <strong>fix ou re-review + commit</strong>: uma sessão inchada e um body de commit que repete os reports. <strong>planejamento + implement</strong>: as lacunas do ticket passam despercebidas e alternativas descartadas voltam.</p>
+      </div>
     </section>
 
     <section id="faq">
