@@ -104,7 +104,7 @@ Fill the template at `templates/architecture.md`.
 
 Confirm where you wrote it, summarize the recommended approach + the key calls in a few lines, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Slice it into tickets** — run `piv-create-tickets <intent path> <this doc's path>` to slice the intent and this doc into agent-sized tickets with a dependency graph, and create them wherever the team's work lives — here or in a fresh session.
+- **Slice it into tickets** — run `piv-create-tickets <the PRD's path> <this doc's path>` — or this doc's path alone when its `Intent` is "none" — to slice the intent and this doc into agent-sized tickets with a dependency graph, and create them wherever the team's work lives — here or in a fresh session.
 - **Keep refining here** — stay in this conversation to revisit a decision before slicing.
 - **Spike something now** — if an open risk is blocking, go build the spike/experiment we flagged.
 

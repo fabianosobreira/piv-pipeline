@@ -1,7 +1,7 @@
 ---
 name: piv-create-tickets
 description: Decomposes an intent into agent-sized tickets with acceptance criteria and a dependency graph, then creates them on the project's tracker.
-argument-hint: "[intent: PRD path, epic id, or URL] · [optional: its architecture doc path] (blank = starts by asking for the intent)"
+argument-hint: "[intent: PRD path, epic id or URL, or a brief — or the architecture doc alone] · [optional: its architecture doc path] (blank = starts by asking for the intent)"
 disable-model-invocation: true
 ---
 
@@ -11,9 +11,9 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 ## Input — one intent, optionally with architecture
 
-`$ARGUMENTS` carries the intent — a PRD's path, an epic id or URL, or a free-form brief — and optionally the path of the architecture doc written for it. Nothing passed → ask for the intent. **GATE.**
+`$ARGUMENTS` carries the intent — a PRD's path, an epic id or URL, or a free-form brief — and optionally the path of the architecture doc written for it, or that architecture doc alone. Nothing passed → ask for the intent. **GATE.**
 
-Read whatever you were handed, end to end. When the intent is an epic that already exists, read it and every plan published on it, the way `docs/ISSUE-TRACKER.md` says they get there. When the plans are still local files, read them from their paths. Either way, **what you end up holding is the one branch that changes how you slice** — establish it before anything else:
+Read whatever you were handed, end to end. When the intent is an epic that already exists, read it and every plan published on it, the way `docs/ISSUE-TRACKER.md` says they get there. When the plans are still local files, read them from their paths. An architecture doc handed alone names its intent in its `Intent` field: when that field names a PRD, read it too — you are holding both, and only a field that says "none" puts you in the *architecture only* row. Either way, **what you end up holding is the one branch that changes how you slice** — establish it before anything else:
 
 | What you have | What it means for slicing |
 |---|---|
@@ -98,7 +98,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 ### Step 6 — Create the epic, publish the plans, create the tickets
 
-**The epic comes first.** Unless you were handed one that already exists, create it where `docs/ISSUE-TRACKER.md` says tickets live, filling the template at `templates/epic.md`. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields — `docs/ISSUE-TRACKER.md` owns that procedure, because it changes with the tracker; follow what it says rather than assuming this project's one. This is the single point in the loop that publishes the plans: `piv-create-prd` and `piv-create-architecture` write their doc and stop.
+**The epic comes first.** Unless you were handed one that already exists, create it where `docs/ISSUE-TRACKER.md` says tickets live, filling the template at `templates/epic.md`. Then **publish the plans that exist onto it** and fill its `Intent` and `Architecture` fields — `docs/ISSUE-TRACKER.md` owns that procedure, because it changes with the tracker; follow what it says rather than assuming this project's one. This is the single point in the loop that publishes the plans: `piv-create-prd` and `piv-create-architecture` write their doc and stop.
 
 Then create one ticket per slice, in the same place, reaching that system with whatever tool fits (an MCP server, a CLI, an API). **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its group, its epic, its `Acceptance criteria` heading — the same rules `piv-fix-findings` follows for a deferral, so every ticket in the backlog reads the same and one filter finds them all. What those rules mean for a sliced ticket, and what it carries besides:
 
@@ -110,7 +110,7 @@ Then create one ticket per slice, in the same place, reaching that system with w
 
 The ticket body: fill the template at `templates/ticket.md`.
 
-**Then write the dependency graph and the execution order down** — in the epic's *Dependency graph and execution order* section, or at the end of the intent doc when the intent has no epic. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
+**Then write the dependency graph and the execution order down** — in the epic's *Dependency graph and execution order* section, or wherever `docs/ISSUE-TRACKER.md` says it lives when the tracker keeps no epic issue. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
 
 ### Step 7 — Report
 

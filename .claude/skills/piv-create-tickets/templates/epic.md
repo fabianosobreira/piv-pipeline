@@ -1,5 +1,5 @@
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the PRD path, replaced by its published URL once the plans are on this epic>
+- **Intent**: <the PRD path, replaced by its published URL once the plans are on this epic, or "none" when there is no PRD>
 - **Architecture**: <the architecture doc path, replaced by its published URL once the plans are on this epic, or "none">
 
 ## Context
