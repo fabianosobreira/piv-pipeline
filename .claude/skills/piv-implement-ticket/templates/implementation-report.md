@@ -1,8 +1,8 @@
 # Implementation Report — <feature or ticket title>
 
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the ticket's or plan document's `Intent`, or "none">
-- **Architecture**: <the ticket's or plan document's `Architecture`, or "none">
+- **Intent**: <the ticket's or plan document's `Intent`, copied verbatim, or "none">
+- **Architecture**: <the ticket's or plan document's `Architecture`, copied verbatim, or "none">
 - **Ticket**: <id or "none">
 - **Plan**: <the plan document's path, or "none">
 - **Branch**: <branch>

@@ -104,7 +104,7 @@ Then create one ticket per slice, in the same place, reaching that system with w
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal heading **Acceptance criteria**. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - **Every ticket carries its own context** (from Step 3) — that's what makes later orientation optional.
 - Preserve the grouping and the dependency information with whatever the system offers — labels, an epic/parent, a milestone. Create the grouping mechanism when it's missing.
-- Link each ticket back to the epic, and carry the epic's `Intent-slug`, `Intent` and `Architecture` into the ticket's own header block, so a ticket picked up cold still resolves both plans.
+- Link each ticket back to the epic, and copy the epic's `Intent-slug`, `Intent` and `Architecture` verbatim into the ticket's own header block, once the epic's fields point at the published plans, so a ticket picked up cold still resolves both plans.
 - Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines. That id is what every later step is handed.
 
 The ticket body: fill the template at `templates/ticket.md`.

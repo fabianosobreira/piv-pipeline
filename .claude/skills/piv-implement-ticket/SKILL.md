@@ -87,7 +87,7 @@ Before you write the report, walk the **Success criteria** at the end of this sk
 
 ## Output — write an implementation report
 
-Write a short report at the implementation report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/implementation-report.md`, and print the summary. Carry the ticket's `Intent-slug`, `Intent` and `Architecture` — or the plan document's — into its header block, so a run with no ticket to read still resolves both plans. This is what the `piv-review-changes` gate reads — especially the **deviations** (a documented deviation is an *intentional* decision the reviewer should not flag).
+Write a short report at the implementation report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/implementation-report.md`, and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` — or the plan document's — **verbatim** into its header block, so a run with no ticket to read still resolves both plans. The field's value is what travels: a URL stays a URL even when step 3 read the doc from a local path. This is what the `piv-review-changes` gate reads — especially the **deviations** (a documented deviation is an *intentional* decision the reviewer should not flag).
 
 ## Hand off
 

@@ -1,6 +1,6 @@
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the PRD path or published URL this ticket traces to>
-- **Architecture**: <the architecture doc path or published URL this ticket traces to, or "none">
+- **Intent**: <the epic's `Intent`, copied verbatim>
+- **Architecture**: <the epic's `Architecture`, copied verbatim, or "none">
 
 ## Description
 <what and why> — traced to <the intent or architecture section it came from>

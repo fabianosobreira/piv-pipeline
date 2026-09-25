@@ -28,8 +28,10 @@ When Jira is unreachable, say so and stop. There is nowhere else this project ke
 The PRD, the architecture doc, the epic and every ticket open with one **header block** — one bold label per line, directly under the title:
 
 - **`Intent-slug`** — the key defined below. Every artifact of one intent carries the same one.
-- **`Intent`** — where the *what and why* lives: the PRD's path, or its attachment URL once the plans are on the epic. The PRD is itself the intent, so the PRD alone carries no `Intent` field.
-- **`Architecture`** — the architecture doc's path, or its attachment URL once on the epic, or "none".
+- **`Intent`** — where the *what and why* lives: the PRD's path until the plans are on the epic, its attachment URL from then on. The PRD is itself the intent, so the PRD alone carries no `Intent` field.
+- **`Architecture`** — the architecture doc's path until it is on the epic, its attachment URL from then on, or "none".
+
+Once the plans are on the epic, the attachment URL is the value: every ticket, implementation report and PR copies it verbatim, even where the local file is at hand.
 
 The three reports use the same header block, with the fields their own templates name.
 

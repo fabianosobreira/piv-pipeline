@@ -1,6 +1,6 @@
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the PRD path or published URL the ticket traces to, or "none">
-- **Architecture**: <the architecture doc path or published URL the ticket traces to, or "none">
+- **Intent**: <the ticket's `Intent` — the implementation report's when there is no ticket — copied verbatim, or "none">
+- **Architecture**: <the ticket's `Architecture` — the implementation report's when there is no ticket — copied verbatim, or "none">
 
 ## Summary
 <1-2 sentences: what this ticket delivers>
