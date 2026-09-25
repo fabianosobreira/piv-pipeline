@@ -91,7 +91,7 @@ Every severity heading is present on every run, and one that survived nothing re
 The review report is the artifact this run leaves behind, so hand over its path by name — with the ticket id when there is one. Offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **PASS** → next: `piv-commit-changes` the work, handed the ticket id. Carry the medium and low findings to the author as the reviewer's notes.
-- **CHANGES REQUESTED** → next: `piv-fix-findings`, handed the review report's path as the review to work from. It triages the findings — fixing some, deferring the rest onto the tracker — writes a fix report recording every ruling, and this skill runs again on the result to close the loop.
+- **CHANGES REQUESTED** → next: `piv-fix-findings`, in a session of its own, handed the review report's path as the review to work from. It triages the findings — fixing some, deferring the rest onto the tracker — writes a fix report recording every ruling, and this skill runs again on the result to close the loop.
 
 ## Success criteria
 

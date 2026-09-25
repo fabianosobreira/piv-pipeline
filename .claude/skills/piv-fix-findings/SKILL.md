@@ -55,9 +55,9 @@ Write the report at the fix report path `docs/ISSUE-TRACKER.md` defines, filling
 
 ## Hand off
 
-Offer the next move and let the user run it — this skill does not chain into the next one:
+Offer the next move and let the user run it — this skill does not chain into the next one.
 
-- Next: `piv-review-changes` runs again over the branch, in a session of its own. It reads the tracker issues the deferrals opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id.
+- Next: `piv-review-changes` runs again over the branch, in a session of its own. It reads the tracker issues the deferrals opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id, and tell the user to clear every *Needs a human look* item by hand before starting it: the next fix run overwrites this report, and an item still open by then drops off the record.
 - With nothing left to fix and the verdict already PASS, next is `piv-commit-changes`.
 
 ## Success criteria

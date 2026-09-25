@@ -33,7 +33,13 @@ The commit subjects since `{base}`, the diff statistics of the files they touch,
 
 **Then read the ticket's header block** and carry its `Intent-slug`, `Intent` and `Architecture` straight into the PR body's own, so the PR resolves back to the plans it came from without a reviewer opening the ticket first. No ticket → take them from the implementation report's header instead, and write "none" for whatever neither carries. Then look for the implementation report at the implementation report path `docs/ISSUE-TRACKER.md` defines. When it is there, take its status, its summary, its validation results, its **documented deviations**, and its *Issues encountered*. The deviations tell the reviewer what was intentional and the issues tell them what is still open, so both belong in the body.
 
-**Then look for the review report** at the review report path the same file defines, and take its verdict and the medium and low findings that survived it. Those are the reviewer's notes the review had nowhere else to send: a PASS with medium and low findings is normal, and the body is where the human reviewer meets them. When the repo ships a pull request template, fill that template instead of the default below.
+**Then look for the review report** at the review report path the same file defines, and take its verdict and the medium and low findings that survived it. Those are the reviewer's notes the review had nowhere else to send: a PASS with medium and low findings is normal, and the body is where the human reviewer meets them. Carry each one as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix. Those are the first reviewer's reasoning, and a reviewer who reads them inherits that framing instead of reading the code.
+
+**Then look for the fix report** at the fix report path the same file defines, and take its *Needs a human look* items. The report holds only the latest round of triage, and that is all the body carries: the items of earlier rounds were cleared by hand before the review that followed them. List them as flagged, never as checked — the report records that the triage raised them, not that anyone tested them. Leave its deferrals out: they live on the tracker as issues linked to the ticket, and the body points there rather than listing a subset. No fix report is the normal case when the first review passed: write "none" under *Flagged for a manual check*, and leave the fix report out of what the body calls unavailable.
+
+The body is the reports' distillation: carry what they say into its sections and leave the files themselves local.
+
+When the repo ships a pull request template, fill that template instead of the default below.
 
 ### Step 4 — Publish the branch
 
@@ -66,6 +72,7 @@ Next: a human reviews, approves and merges. The agent's loop ends at the merge.
 
 - ✅ The PR title follows `<tag>: <concise description> (<ticket id>)` whenever an id was found.
 - ✅ The PR is a draft when the implementation report's status is `PARTIAL`, and ready for review otherwise.
-- ✅ The body carries the implementation report's documented deviations and open issues, and the review report's surviving medium and low findings — or says which report was unavailable.
+- ✅ The body carries the implementation report's documented deviations and open issues, the review report's surviving medium and low findings, and the fix report's items flagged for a manual check — or says which of the implementation and review reports was unavailable. A missing fix report goes unmentioned.
+- ✅ The reports themselves stay local: the body is their distillation, and nothing is attached or embedded.
 - ✅ Whenever a ticket was found, the mark `docs/ISSUE-TRACKER.md` assigns to this step is on it.
 - ✅ The body's header block carries the `Intent-slug`, `Intent` and `Architecture` the ticket carried.

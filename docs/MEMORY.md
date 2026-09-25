@@ -8,6 +8,13 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **`piv-create-tickets` is where the epic is born.** It takes the local PRD and architecture doc as input, creates the epic, publishes both onto it, fills the epic's `Intent` and `Architecture`, and only then creates the tickets. It is the single point in the loop that publishes a plan, and the reason later steps point at the epic rather than at a local doc.
 - **`piv-implement-ticket` names `piv-review-changes` flatly instead of offering a menu.** That asymmetry with the other six skills is deliberate, not an oversight — do not normalize it.
 
+## Reports and the PR
+
+- **The reports never travel with the PR.** Not attached, not embedded in collapsed `<details>`, not committed to the branch — `docs/.reports/` stays gitignored. `piv-create-pr` distills them into the body, which is the single source for the human reviewer and for whatever agent that reviewer brings. Raw reports would hand that agent the first reviewer's framing instead of the code.
+- **The PR body carries each surviving finding as severity, one-line claim and `file:line`** — never its evidence, impact or fix, for the same reason.
+- **`piv-review-changes` does not read the PR body.** It runs right after `piv-implement-ticket`, on the uncommitted branch, before any PR exists. A reviewer's agent working from the PR sits outside the loop.
+- **The fix report is overwritten each round, not accumulated.** `piv-create-pr` reads only the latest round. The user clears every *Needs a human look* item before the next review, and the PR lists the latest ones as flagged, never as checked. Deferrals are not listed in the body: it points at the tracker issues linked to the ticket, because a list built from the latest round alone would read as complete when it isn't.
+
 ## Skills vs. tracker docs
 
 - **Anything tracker-specific belongs in `docs/ISSUE-TRACKER.md`, never inside a skill.** The tracker is swappable — `ISSUE-TRACKER-jira.md`, `ISSUE-TRACKER-gitlab.md`, `ISSUE-TRACKER-md.md` are the alternatives a project copies over it. A skill that branches on which tracker is in use is a defect; it delegates the procedure instead.
@@ -26,11 +33,11 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **All eight skills carry `disable-model-invocation: true`**, and their descriptions carry no `Use when …` clause.
 - **No command examples.** Write the instruction in prose — "post each as an issue comment", not a `gh` invocation. Naming the tool a tracker is reached with is fine; spelling out its flags is not.
 - **Centralizing vocabulary in `PIV-LOOP.md` does not license deleting the repetitions from the skills.** A skill restating a loop rule is carrying it into the run that needs it; leave it.
+- **A skill carries its own reasons.** `MEMORY.md` is local to this repo and never ships with the skills, which run in other projects' repos. A ruling recorded here still needs its rationale inside the skill that applies it, so a reason living in both places is not duplication to prune.
 - **Every "stop and ask, then carry on" in the skills was converted to `GATE` deliberately.** The remaining `STOP`s are the terminal ones. Don't reclassify either direction without a ruling.
 - `## Output` may legitimately contain numbered process steps when the output *is* those steps, as in `piv-create-tickets`.
 
 ## Working style
 
-- **The maintainer rules item by item.** A review is delivered as a markdown report with `- [ ]` checkboxes and a **User comment** field per item; they tick what to implement, leave the rest blank, and annotate. Implement only `[x]`, resolve every filled comment, ignore `[ ]`.
 - **Resolve open decisions before editing.** When rulings conflict with each other or leave a fork, put the fork to them with a recommendation and wait — do not pick and proceed.
 - **Reviewing this repo is not policing its working tree.** Untracked scratch files and a missing `.gitignore` are not findings.

@@ -33,7 +33,7 @@ Take one group at a time — stage it, then commit it with a subject line in the
 
 When the subject alone leaves the work unexplained, add a body after one blank line saying what the commit implements. Hard-wrap the body at 72 columns.
 
-Write that body from the diff in front of you. **This step deliberately does not read the implementation report or the fix report** — the narrative of why the change looks like this belongs in the PR, where a human reviewer meets it, and `piv-create-pr` is what reads both reports to build it. A commit body that duplicates the report ages into a second, stale copy of it.
+Write that body from the diff in front of you. **This step deliberately does not read the implementation report or the fix report** — the narrative of why the change looks like this belongs in the PR, where a human reviewer meets it, and `piv-create-pr` is what reads both, along with the review report, to build it. A commit body that duplicates a report ages into a second, stale copy of it.
 
 Done when every group is committed and the working tree is clean.
 
