@@ -109,8 +109,6 @@ Then create one ticket per slice, in the same place, reaching that system with w
 
 The ticket body: fill the template at `templates/ticket.md`.
 
-An implementation loop picks up a single ticket by its id, so each ticket stands on its own.
-
 **Then write the dependency graph and the execution order down** — on the epic (the block above), or at the end of the intent doc when the intent has no epic. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
 
 ### Step 7 — Report
@@ -124,7 +122,7 @@ An implementation loop picks up a single ticket by its id, so each ticket stands
 
 Confirm where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Start the first ticket** — run `piv-implement-ticket <ticket-id>`, in a session of its own, one per ticket. Each ticket carries its own context (Step 3), so the loop picks it up cold from its id alone.
+- **Start the first ticket** — run `piv-implement-ticket <ticket-id>`, in a session of its own, one per ticket.
 - **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time, each in a session of its own.
 
 ## Success criteria

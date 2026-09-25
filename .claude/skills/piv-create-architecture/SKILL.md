@@ -34,7 +34,7 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 
 ### Step 2 — Stay at the decision level
 
-**This is a high-level decision doc, not an implementation plan.** You're choosing the *approach* and the *shape* — not a task-by-task build plan; the task-level detail is the ticket's acceptance criteria, written later by `piv-create-tickets`. If you start listing individual tasks or edits, you've gone too deep — pull back up to the decisions.
+**This is a high-level decision doc, not an implementation plan.** You're choosing the *approach* and the *shape* — not a task-by-task build plan; the task-level detail is the ticket's acceptance criteria, written later by `piv-create-tickets`.
 
 ### Step 3 — Interaction mode: grilling
 

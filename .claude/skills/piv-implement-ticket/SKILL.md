@@ -53,7 +53,7 @@ Work through the tasks in order. When the ticket carries an explicit task list, 
 
 #### a. Implement the task
 - Follow the ticket's specification for this task, and match the patterns already present in the files you're editing.
-- Update the code the change reaches — imports, callers, call sites — and stop there.
+- Update the code the change reaches — imports, callers, call sites.
 
 #### b. Verify as you go
 **Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none — acceptance criteria without checks, or a task written without one — run the closest relevant check instead: the test file you just touched, the linter on the changed file. A task goes **green** when its check passes, and a red task gets fixed before the next one starts. Step 7 runs the ticket's checks in full; this per-task gate is what keeps step 7 from becoming a pile-up.

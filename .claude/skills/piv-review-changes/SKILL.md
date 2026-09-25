@@ -70,7 +70,6 @@ Take each candidate through all three filters from **Posture**, and run the chec
 
 - Run the tests that touch the suspect code, and the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
-- Hunt the mitigation deliberately: search upstream for the validation, search the tests for the case, check the report's deviations.
 - On a re-review, match the candidate against the previous review's findings, and follow each deferral to its tracker issue.
 
 Give each survivor a severity:
