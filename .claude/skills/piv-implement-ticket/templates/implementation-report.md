@@ -18,7 +18,7 @@
 <test files + cases + results>
 
 ## Validation results
-<tests / type-check / lint / build — green/red with counts>
+<tests / type-check / lint / build — green/red with counts, naming each test that was already red on the baseline>
 
 ## Deviations from the ticket
 <what changed vs the ticket and WHY, or "none" — the reviewer's signal of intent; a test changed while the ticket left its behavior unchanged is listed here too, and the review still blocks it>

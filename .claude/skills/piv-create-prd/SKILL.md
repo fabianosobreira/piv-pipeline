@@ -70,7 +70,7 @@ Input given → restate and confirm. Blank → *"What do you want to build? A fe
 ### Phase 3 — Deep dive (users)
 Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When <situation>, I want to <motivation>, so I can <outcome>") · **non-users** (who it's explicitly NOT for) · constraints.
 
-**Solo builder building for themselves:** they *are* the primary user — record that in Target user, and take their own experience as evidence rather than asking for external signal. Building for someone else: no introspection counts as evidence; Phase 2 item 2 still needs an observation.
+**Solo builder building for themselves:** they *are* the primary user — record that in *Target user & JTBD*, and take their own experience as evidence rather than asking for external signal. Building for someone else: no introspection counts as evidence; Phase 2 item 2 still needs an observation.
 
 **GATE.**
 
@@ -81,11 +81,13 @@ We believe <change> will cause <these users> to <do Y>, resulting in <outcome>.
 We'll know we're RIGHT if <leading signal> within <timeframe>.
 We'll know we're WRONG if <counter-signal / a guardrail moves>.
 ```
+- **Success metrics** — turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement".
 - **GATE.** No hypothesis ships without a wrong condition.
 
 ### Phase 5 — MVP & doors
 - **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." Holds → decide the architecture and build it proper. Doesn't → you threw away a *slice*, not six months.
 - **Door check** *(informs the spike-vs-build call `piv-create-architecture` makes):* two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first.
+- **Non-goals** — what this explicitly will not do, the MVP's cut included. They are the boundary `piv-create-tickets` never slices a ticket across.
 - **GATE** before generating.
 
 ## Output — a product PRD
@@ -94,7 +96,7 @@ Write it where `docs/ISSUE-TRACKER.md` says plans live, under the `intent-slug` 
 
 **Write the `Intent-slug` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. Every later step reads it from there instead of re-deriving it — that is what keeps this PRD, its architecture doc, its epic, its tickets and its reports pointing at each other. The PRD is itself the intent, so it carries no `Intent` field: the artifacts downstream point at *it*.
 
-Product sections only, scannable. **Two readers:** the user confirms it at the GATE and comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md`.
+Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md`.
 
 ## Hand off
 

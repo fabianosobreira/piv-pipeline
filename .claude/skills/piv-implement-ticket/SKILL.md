@@ -53,7 +53,7 @@ Where the ticket quotes existing code or cites line refs, open those files and c
 
 ### Step 5 — Execute tasks in order
 
-Work through the tasks in order. When the ticket carries an explicit task list, that list is the order. When it doesn't — acceptance criteria that describe the outcome in prose — derive the list yourself in step 3, and check it covers everything the ticket asks for before you touch any code.
+Work through the tasks in order. When the ticket carries an explicit task list, that list is the order. When it doesn't — acceptance criteria that describe the outcome in prose — derive the list yourself in Step 3, and check it covers everything the ticket asks for before you touch any code.
 
 #### a. Implement the task
 - Follow the ticket's specification for this task, and match the patterns already present in the files you're editing.
@@ -61,9 +61,9 @@ Work through the tasks in order. When the ticket carries an explicit task list, 
 - Write the tests for the behavior this task adds or alters, together with the task.
 
 #### b. Verify as you go
-**Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none — acceptance criteria without checks, or a task written without one — run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter on the changed file. A task goes **green** when its check passes, and a red task gets fixed before the next one starts. Step 7 runs the full suite; this per-task gate is what keeps step 7 from becoming a pile-up.
+**Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none — acceptance criteria without checks, or a task written without one — run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter on the changed file. A task goes **green** when its check passes, and a red task gets fixed before the next one starts. Step 7 runs the full suite; this per-task gate is what keeps Step 7 from becoming a pile-up.
 
-**Stay in scope:** implement what the ticket specifies. Refactors, improvements, and unrelated problems you find along the way each become their own ticket, and this branch carries this ticket's work only. When you must deviate, note what changed and why, and surface it in the report's *Deviations*.
+**Stay in scope:** implement what the ticket specifies. Refactors, improvements, and unrelated problems you find along the way each become their own ticket, and this branch carries this ticket's work only. When you must deviate, note what changed and why, and surface it in the report's *Deviations from the ticket*.
 
 #### c. When evidence contradicts a decision
 When something you hit mid-task undercuts an assumption a decision rests on — not just a missing detail — name the assumption, the evidence against it, the decision it affects, and whether that decision's rationale survives without it. The user resolves it before the architecture changes. **GATE.**
@@ -83,7 +83,7 @@ This step is the sweep that proves the change left nothing untested:
 
 Run every check the ticket names, in the order it gives them, then the project's own checks in full — the whole test suite, lint, type-check, and build commands the repo exposes. The change reaches callers the ticket never named, and only the full suite sees their tests break.
 
-When a check goes red: fix the cause, re-run, and continue once it is green. A test goes green by the code changing: its assertions, and whether it runs at all, change only when the ticket changes the behavior it pins — the review blocks any other change to a test, whatever *Deviations* says. A test failing the same assertion the baseline recorded stays red, unless the **Testing strategy** names it or it reproduces the defect a **Repair** fixes: that one is this change's to turn green.
+When a check goes red: fix the cause, re-run, and continue once it is green. A test goes green by the code changing: its assertions, and whether it runs at all, change only when the ticket changes the behavior it pins — the review blocks any other change to a test, whatever *Deviations from the ticket* says. A test failing the same assertion the baseline recorded stays red, unless the **Testing strategy** names it or it reproduces the defect a **Repair** fixes: that one is this change's to turn green.
 
 When a failure survives a few honest attempts, or its cause sits outside what the ticket asks you to change, stop working it: record the check, the failure, and what you tried in the report's *Problems encountered*, and carry the run to Step 8 as PARTIAL.
 
@@ -93,18 +93,18 @@ Before you write the report, walk the **Success criteria** at the end of this sk
 
 ## Output — write an implementation report
 
-Write a short report at the implementation report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/implementation-report.md`, and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` — or the plan document's — **verbatim** into its header block, so a run with no ticket to read still resolves both plans. The field's value is what travels: a URL stays a URL even when step 3 read the doc from a local path. This is what the `piv-review-changes` gate reads — especially the **deviations** (a documented deviation is an *intentional* decision the reviewer should not flag — a changed test aside, as step 7 says).
+Write a short report at the implementation report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/implementation-report.md`, and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` — or the plan document's — **verbatim** into its header block, so a run with no ticket to read still resolves both plans. The field's value is what travels: a URL stays a URL even when Step 3 read the doc from a local path. This is what the `piv-review-changes` gate reads — especially the **deviations** (a documented deviation is an *intentional* decision the reviewer should not flag — except, on a project with a test suite, a test left red, missing or weakened, or a behavior left untested: the review blocks those whatever the deviation says).
 
 ## Hand off
 
-Next: `piv-review-changes` gates the work before anything is committed, in a session of its own. Hand it the ticket id; it travels on to the commit, so the commit message links back to it.
+Confirm the implementation report's path. Next: `piv-review-changes` gates the work before anything is committed, in a session of its own. Hand it the ticket id when there is one; it travels on to the commit, so the commit message links back to it.
 
 ## Success criteria
 
-- ✅ Every task on the list from step 3 is implemented.
+- ✅ Every task on the list from Step 3 is implemented.
 - ✅ Every test the ticket asks for exists, runs and passes, and every behavior the change adds or alters has a test.
-- ✅ The full test suite and every other check run in step 7 are green, apart from the baseline's red tests step 7 leaves red.
+- ✅ The full test suite and every other check run in Step 7 are green, apart from the baseline's red tests Step 7 leaves red.
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.
-- ✅ The change matches the patterns of the files it touched (step 5a).
+- ✅ The change matches the patterns of the files it touched (Step 5a).
 - ✅ Documentation the change made stale is updated.
 - ✅ **Repair:** the reproduction steps no longer reproduce the defect, and the tests around the touched code still pass.

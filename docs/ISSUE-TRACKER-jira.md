@@ -66,7 +66,7 @@ An issue type that doesn't exist yet is created before the first ticket that nee
 
 ## Finding a review's deferrals
 
-With a ticket behind the review, its deferrals are the issues linked to that ticket as *relates to*. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Run a text search over project `<KEY>`'s issues for the path; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+With a ticket behind the review, its deferrals are the issues linked to that ticket as *relates to* whose *Origin* `Ticket` line names it. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Run a text search over project `<KEY>`'s issues for the path; an issue whose `Review` line matches it exactly is one of that review's deferrals.
 
 ## Paths
 

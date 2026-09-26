@@ -49,7 +49,7 @@ Push it to the remote, tracking it so later pushes need no arguments.
 
 ### Step 5 — Open the review request
 
-Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` when an id was found in step 3 — the same shape `docs/GIT-CONVENTIONS.md` gives the commit subjects — and without the `(<ticket id>)` suffix when none was.
+Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` when an id was found in Step 3 — the same shape `docs/GIT-CONVENTIONS.md` gives the commit subjects — and without the `(<ticket id>)` suffix when none was.
 
 - **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the issues it lists.
 - **No implementation report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.
@@ -58,7 +58,7 @@ Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` wh
 
 Done when a review request is open for the branch and its URL is reported.
 
-## Output
+## Output — report the review request
 
 Report the PR number and URL, the base ← head branches, and **"Ready for review → a human approves and merges."** — or, for a draft, **"Draft → waiting on the open problems it lists."**
 

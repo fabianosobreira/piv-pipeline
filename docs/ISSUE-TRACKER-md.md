@@ -57,7 +57,7 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Status** — `Status: todo`.
 - **Acceptance criteria** — a markdown checklist under the literal bold line `Acceptance criteria`.
 
-The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:` and `Suggested fix:` where a sliced ticket carries `Scope:` and `Per-ticket context:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
+The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:`, `Evidence:` and `Suggested fix:` where a sliced ticket carries `Scope:` and `Per-ticket context:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
 
 ## Finding a review's deferrals
 
@@ -88,11 +88,11 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 # Ticket Breakdown — <intent name>
 
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the PRD path these tickets trace to>
+- **Intent**: <the PRD path these tickets trace to, or "none">
 - **Architecture**: <the architecture doc path these tickets trace to, or "none">
 
 ## Summary
-The goal in 2-3 lines.
+<the goal in 2–3 lines>
 
 ## Tickets
 
@@ -100,8 +100,8 @@ The goal in 2-3 lines.
 - Status: todo
 - Type: <bug | feature | task>
 - Description: <what and why> — traced to <the intent or architecture section it came from>
-- Scope: one provable concern · surfaces touched (estimate) · rough size
-- Per-ticket context: e.g. "source-adapter guide · seam: adapter interface · acceptance criteria 2 and 4 from the epic"
+- Scope: <one provable concern: the surfaces it touches (estimate) · rough size>
+- Per-ticket context: <the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the intent">
 - Depends on: <none, or <INTENT-SLUG>-x>
 - Testing strategy: <the tests this ticket needs and the checks that prove it, or "project defaults">
 

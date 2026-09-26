@@ -7,9 +7,7 @@
 <one paragraph: the user goal this serves (from the intent) — the lens every decision below is judged against, and what fundamentally has to be true for this to work. With no PRD, what the idea, brief or research doc said, carried here in full enough to slice from>
 
 ## Approaches considered
-<the 2–3 directions weighed, each with its trade-offs — and which one we recommend, and why. Close each direction we're not taking with the literal label **Rejected alternative(s):** so a downstream agent can tell decided from discarded without reading between the lines>
-
-_That label is the rule for every section below too._
+<the 2–3 directions weighed, each with its trade-offs — and which one we recommend, and why. Close each direction we're not taking with the literal label **Rejected alternative(s):** so a downstream agent can tell decided from discarded without reading between the lines. The same label closes every discarded option in the sections below>
 
 ## Recommended approach
 <the chosen direction in a few sentences — the shape of the solution. Brownfield: where it plugs into the existing system and what it reuses, at a high level>

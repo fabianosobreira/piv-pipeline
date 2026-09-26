@@ -43,7 +43,7 @@ Don't invent the *how*. If no architecture exists, you are decomposing intent al
 - **Non-goals** — the boundary. Never generate a ticket that crosses it.
 - **Open questions** — do **not** turn these into implementation tickets. Surface them, or track them as explicit decision tickets with a decision rule. A ticket built on an unanswered question is a guess.
 
-**From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open questions — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
+**From the architecture, when it exists** — *Recommended approach*, the *Key decisions* sub-sections (*Building blocks*, *Data model*, *Boundaries & contracts*, **Operational shape** — deploy, observability, failure modes, usually its own ticket or two — and *Other eng-lead calls*), *Missing pieces*, and **Spikes & experiments** and its own *Open questions* (the architecture's risky and unsettled calls; same rule as the intent's *Open questions* — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
 
 If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose. The grouping organizes the breakdown and the execution order; it is never written onto a ticket.
 
@@ -73,6 +73,7 @@ For every ticket, draft:
 - **Title** — imperative and specific (`Add token refresh endpoint`, not `Auth`).
 - **Description** — what and why, traced back to the intent section it came from.
 - **Acceptance criteria** — a checklist a reviewer can verify.
+- **Scope** — the surfaces it touches, from Step 2, and a rough size.
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
 - **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own testing standard and checks are enough. "Project defaults" never waives the tests: every behavior the ticket adds or alters still gets one.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
@@ -91,7 +92,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph, then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they decline the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as decided-by-default in the epic's *Dependency graph and execution order* section, repeated in the Step 7 report — never as though the user had ruled on them.
+**If they decline the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them.
 
 ## Output — create the tickets
 
@@ -105,7 +106,7 @@ Then create one ticket per slice, in the same place, reaching that system with w
 - **Every ticket carries its own context** (from Step 3) — that's what makes later orientation optional.
 - Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
 - Fill the header block the way *Creating a ticket* says — the epic's `Intent-slug`, `Intent` and `Architecture`, copied verbatim once the epic's fields point at the published plans, so a ticket picked up cold still resolves both plans.
-- Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines. That id is what every later step is handed.
+- Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines, and, when the tracker keeps an epic of its own, add its line to the epic's *Tickets* list. That id is what every later step is handed.
 
 The ticket body: fill the template at `templates/ticket.md`.
 

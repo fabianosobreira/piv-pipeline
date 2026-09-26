@@ -17,7 +17,7 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 `docs/GIT-CONVENTIONS.md` defines which branch is the base branch. Work belongs on its own branch: when you are on the base branch, ask the user before committing anything. **GATE.** Go ahead when they confirm — a solo project with no PR coming commits on the base branch by design.
 
-**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines — named from the ticket id, or, with no id, by comparing each report's **Branch** header against this branch, the way `piv-review-changes` does. Read its **Verdict** and nothing else, and check whether a fix report beside it is newer than it. The verdict is not PASS, there is no review report, or the fix report is newer — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
+**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines — named from the ticket id — the one `$ARGUMENTS` carries, or the one the branch name carries — or, with no id, by comparing each review report's **Branch** header against this branch. More than one match → ask the user which one covers this branch. **GATE.** Read its **Verdict** and nothing else, and check whether a fix report beside it is newer than it. The verdict is not PASS, there is no review report, or the fix report is newer — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
 
 ### Step 2 — Inspect
 
@@ -45,7 +45,9 @@ Done when every group is committed and the working tree is clean.
 
 ## Hand off
 
-Offer the next move and let the user run it — this skill does not chain into the next one: run `piv-create-pr` to open the PR, in this same session. The ticket id travels on the branch name, in the form `docs/GIT-CONVENTIONS.md` defines, and that is where the next skill reads it from.
+Confirm each commit by its short hash and subject, then offer the next move and let the user run it — this skill does not chain into the next one:
+
+- **Open the PR** — run `piv-create-pr`, in this same session. The ticket id travels on the branch name, in the form `docs/GIT-CONVENTIONS.md` defines, and that is where the next skill reads it from.
 
 ## Success criteria
 

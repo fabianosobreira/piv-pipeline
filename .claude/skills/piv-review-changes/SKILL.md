@@ -30,7 +30,7 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 
 A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix-findings` never defers one — a deferred red test would reach PASS still red.
 
-A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to **medium** (step 6). A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — a bug ticket's, or a repair the implementation report's *Summary* names — is this change's to turn green whatever the base shows.
+A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to **medium** (Step 6). A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — a bug ticket's, or a repair the implementation report's *Summary* names — is this change's to turn green whatever the base shows.
 
 ## Process
 
@@ -64,7 +64,7 @@ Then read enough of the surrounding module to know what "matches the existing pa
 
 Every file the change touches, whole — not the diff. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements. New files get read in full for the same reason.
 
-**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs steps 4 and 5 over its own files and reports its candidates back with the evidence attached. You run step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers.
+**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers.
 
 ### Step 5 — Build the case
 
@@ -74,7 +74,7 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
 3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
 4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them. Also match the diff against the code smells catalogued in `references/code-smells.md`.
-5. **Standards** — the rules gathered in step 3: lint, typing, formatting, logging, error handling, and the testing standard. Cite the document and the rule.
+5. **Standards** — the rules gathered in Step 3: lint, typing, formatting, logging, error handling, and the testing standard. Cite the document and the rule.
 6. **Coverage** — the tests the change brought, and the ones it should have. Hunt the blocking kinds (**Posture**). Within a tested behavior, a branch nobody exercises is a finding; so is a test that asserts the implementation instead of the behavior.
 
 ### Step 6 — Run the three filters
@@ -84,7 +84,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 - Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. Run each *red* test on the base branch too, in a worktree created outside the repository and removed afterwards, so the change under review stays untouched. The project has no test suite → say so in *Checks run*; *untested* still applies.
 - Run the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
-- On a re-review, match the candidate against the previous review's findings, against the deferral tickets step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
+- On a re-review, match the candidate against the previous review's findings, against the deferral tickets Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
 
 A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — `piv-fix-findings` types a deferral from it — and a severity:
 
@@ -95,7 +95,7 @@ A surviving blocking finding stays **blocking**, and its kind names it. Give eve
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id or the `intent-slug` resolved in step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count of blocking findings and the count per severity.
+Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id or the `intent-slug` resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count of blocking findings and the count per severity.
 
 The blocking heading and every severity heading are present on every run, and one that survived nothing reads "No findings." The verdict is **CHANGES REQUESTED** when any blocking, critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
 
@@ -108,7 +108,7 @@ The review report is the artifact this run leaves behind, so hand over its path 
 
 ## Success criteria
 
-- ✅ Every file in the change under review was read end to end — by you, or by the subagent it was dispatched to — and every class in step 5 was hunted over each of them.
+- ✅ Every file in the change under review was read end to end — by you, or by the subagent it was dispatched to — and every class in Step 5 was hunted over each of them.
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ The full test suite ran on the branch, and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.

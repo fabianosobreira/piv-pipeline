@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
-**Input intent**: $ARGUMENTS. If it is a reference to somewhere else (a URL, a page key, a ticket ID), fetch it from the source first, with whatever tool reaches that system. Blank → ask *"What do you want to build? A few sentences."* **GATE.**
+**Input intent**: $ARGUMENTS. If it is a reference to somewhere else (a URL, a page key, a ticket id), fetch it from the source first, with whatever tool reaches that system. Blank → ask *"What do you want to build? A few sentences."* **GATE.**
 
 **Reference docs (optional):** if any paths were passed alongside the intent — API docs, product/engineering docs, ADRs, prior research, a competitor teardown, a wiki page — **read them first.** They ground the exploration so you propose options that fit what already exists instead of inventing. If none were passed, **ask whether any exist** before you start exploring — a lot of the context you need is usually already written down. **GATE.**
 
@@ -58,7 +58,7 @@ Work the tree in **rounds**. The **frontier** is every decision whose prerequisi
 
 Each round's answers reshape the tree: settled decisions push the frontier outward and unblock what depended on them. Recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a *later* round.
 
-**Finding facts is your job, never the user's.** When a frontier question needs a fact from the environment, dispatch a sub-agent to find it. Don't block on it: only the questions downstream of that exploration wait; ask the rest of the frontier now.
+**Finding facts is your job, never the user's.** When a frontier question needs a fact from the environment, dispatch a subagent to find it. Don't block on it: only the questions downstream of that exploration wait; ask the rest of the frontier now.
 
 The tree is worked when the frontier is empty — every branch visited, nothing silently assumed. **Nothing gets written until the user confirms you've reached a shared understanding.**
 
@@ -98,7 +98,7 @@ Only after the calls are made. Write it where `docs/ISSUE-TRACKER.md` says plans
 
 Fill the template at `templates/architecture.md`.
 
-**Two readers:** the user confirms it at the GATE and comes back to it for context; `piv-create-tickets` reads it next as structured input it slices tickets from.
+**Two readers:** the user, who settled its calls at the GATEs, comes back to it for context; `piv-create-tickets` reads it next as structured input it slices tickets from.
 
 ## Hand off
 
