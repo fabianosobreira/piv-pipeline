@@ -18,7 +18,7 @@ Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
   - **Fix**: <the concrete change>
 
 ### critical
-- **<one-line claim>** — `path/to/file.py:42`
+- **<one-line claim>** — `path/to/file.py:42` · <the Step 5 class: logic, security, performance, quality, standards or coverage>
   - **Evidence**: <the quoted line or the traced path that proves it>
   - **Impact**: <what breaks, and for whom>
   - **Fix**: <the concrete change>

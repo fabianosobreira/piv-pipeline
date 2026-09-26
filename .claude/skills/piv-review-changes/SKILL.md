@@ -86,7 +86,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferral tickets step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
 
-A surviving blocking finding stays **blocking**. Give every other survivor a severity:
+A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — `piv-fix-findings` types a deferral from it — and a severity:
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
 - **high** — wrong behavior on a path users reach.

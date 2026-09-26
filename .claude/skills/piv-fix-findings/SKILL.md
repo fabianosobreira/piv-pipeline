@@ -44,7 +44,7 @@ A deferral is a ticket: create it by the rules `docs/ISSUE-TRACKER.md` gives und
 
 With a ticket behind the review, read that ticket where `docs/ISSUE-TRACKER.md` says tickets live — it is where the deferral's epic and header block come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was; an epic or header block filled from a guess files the deferral where no filter finds it.
 
-- **Type** — as `docs/ISSUE-TRACKER.md` defines the types under *Creating a ticket*: `bug` when the finding is behavior that diverges from what was specified or delivered (logic, security); `task` otherwise (performance, quality, standards, coverage). A deferral never delivers a new capability, so it is never a `feature`.
+- **Type** — as `docs/ISSUE-TRACKER.md` defines the types under *Creating a ticket*, read from the class the review report records on the finding rather than inferred from its claim: `bug` for logic and security, behavior that diverges from what was specified or delivered; `task` for performance, quality, standards and coverage. A deferral never delivers a new capability, so it is never a `feature`.
 - **Epic and header block** — the reviewed ticket's epic as its parent, and its `Intent-slug`, `Intent` and `Architecture` copied verbatim.
 - **Link** — linked to the reviewed ticket, the way *Creating a ticket* says a deferral is. That link is what lets the next review find the deferral once this fix report is overwritten, and what the PR body points at.
 - **Depends on** — the reviewed ticket: the code the finding names only exists once that ticket lands.
