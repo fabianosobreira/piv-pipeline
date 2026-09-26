@@ -58,14 +58,13 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Where** — an issue in this repo, its body filled from the creating skill's own template.
 - **Header block** — `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
 - **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
-- **Group** — the phase or outcome the ticket belongs to, as a label.
 - **Epic** — a sub-issue of its epic, when the intent has one.
 - **Link** — a deferral names the ticket the review covered under its *Origin*, which puts the cross-reference on that ticket's timeline.
 - **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
 
-A label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type or group is one the filters never find.
+A type label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type is one the filters never find. A ticket carries its type label and no other.
 
-The epic follows the same missing-label rule for its `epic` label, and carries no type or group: it is not a ticket.
+The epic follows the same missing-label rule for its `epic` label, and carries `epic` and no other: it is not a ticket.
 
 ## Finding a review's deferrals
 

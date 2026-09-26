@@ -52,7 +52,6 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Where** — a block appended to the intent's breakdown file, in the form shown under *The breakdown file*, with the next free number. When the intent has no breakdown yet, create the file with its header block first.
 - **Header block** — none of its own: the block inherits the breakdown's `Intent-slug`, `Intent` and `Architecture`.
 - **Type** — a `Type:` line carrying exactly one of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
-- **Group** — a `Group:` line carrying the phase or outcome the ticket belongs to.
 - **Epic** — none of its own: the breakdown file belongs to the intent doc.
 - **Link** — a deferral's `Origin:` line carries the id of the ticket the review covered; that id is the link.
 - **Status** — `Status: todo`.
@@ -100,7 +99,6 @@ The goal in 2-3 lines.
 ### <INTENT-SLUG>-1 — <title>
 - Status: todo
 - Type: <bug | feature | task>
-- Group: <the phase or outcome this ticket belongs to>
 - Description: <what and why> — traced to <the intent or architecture section it came from>
 - Scope: one provable concern · surfaces touched (estimate) · rough size
 - Per-ticket context: e.g. "source-adapter guide · seam: adapter interface · acceptance criteria 2 and 4 from the epic"

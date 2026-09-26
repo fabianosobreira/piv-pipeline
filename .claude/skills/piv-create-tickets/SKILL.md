@@ -45,7 +45,7 @@ Don't invent the *how*. If no architecture exists, you are decomposing intent al
 
 **From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open questions — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
 
-If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose.
+If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose. The grouping organizes the breakdown and the execution order; it is never a label or a ticket field.
 
 **Too vague to decompose → flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable. **GATE.**
 
@@ -75,7 +75,6 @@ For every ticket, draft:
 - **Acceptance criteria** — a checklist a reviewer can verify.
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
 - **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own checks are enough.
-- **Group** — the phase or outcome it belongs to.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
 
 ### Step 4 — Map dependencies and parallelism
@@ -100,7 +99,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 **The epic comes first.** Unless you were handed one that already exists, create it where `docs/ISSUE-TRACKER.md` says tickets live, filling the template at `templates/epic.md`. Then **publish the plans that exist onto it** and fill its `Intent` and `Architecture` fields — `docs/ISSUE-TRACKER.md` owns that procedure, because it changes with the tracker; follow what it says rather than assuming this project's one. This is the single point in the loop that publishes the plans: `piv-create-prd` and `piv-create-architecture` write their doc and stop.
 
-Then create one ticket per slice, in the same place, reaching that system with whatever tool fits (an MCP server, a CLI, an API). **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its group, its epic, its `Acceptance criteria` heading — the same rules `piv-fix-findings` follows for a deferral, so every ticket in the backlog reads the same and one filter finds them all. What those rules mean for a sliced ticket, and what it carries besides:
+Then create one ticket per slice, in the same place, reaching that system with whatever tool fits (an MCP server, a CLI, an API). **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic, its `Acceptance criteria` heading — the same rules `piv-fix-findings` follows for a deferral, so every ticket in the backlog reads the same and one filter finds them all. What those rules mean for a sliced ticket, and what it carries besides:
 
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal `Acceptance criteria` heading *Creating a ticket* names. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - **Every ticket carries its own context** (from Step 3) — that's what makes later orientation optional.
@@ -114,7 +113,7 @@ The ticket body: fill the template at `templates/ticket.md`.
 
 ### Step 7 — Report
 
-- A table: ticket title → type → group → created id and URL.
+- A table: ticket title → type → created id and URL.
 - The intent (and architecture) the backlog was generated from.
 - The execution order — which tickets can start now, in parallel, and which are waiting.
 - **What you deliberately did *not* ticket** — open questions, non-goals, anything blocked on a spike.
@@ -130,7 +129,7 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 
 - ✅ **Every ticket traces back to a specific section** of the intent or architecture.
 - ✅ **One provable concern each**, with verifiable acceptance criteria and enough context to be picked up cold.
-- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type and its group.
+- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type.
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked.
 - ✅ **The user confirmed the breakdown** before anything was created.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.
