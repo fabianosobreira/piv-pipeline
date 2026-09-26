@@ -83,7 +83,7 @@ Every artifact of one intent carries the same `intent-slug` — the kebab-slug o
 
 ## Ticket id form
 
-Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic. Commit subjects, branch names and merge request titles carry that same form.
+Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic. Commit subjects and merge request titles carry that same form; branch names carry it without the `#`, as `docs/GIT-CONVENTIONS.md` says.
 
 ## Ticket status
 

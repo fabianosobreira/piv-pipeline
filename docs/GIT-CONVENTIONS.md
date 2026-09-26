@@ -11,10 +11,10 @@ The base branch is whichever branch the remote treats as its default. Ask the re
 Work gets built on its own branch, named `<tag>/<ticket-id>-<short-slug>`:
 
 - **`<tag>`** — the same conventional tag the commits will carry (`feat`, `fix`, `docs`, `refactor`, `test`, `chore`, …).
-- **`<ticket-id>`** — the ticket id, lowercased and stripped of the punctuation branch names reject: `#123` → `123`, `PROJ-123` → `proj-123`, `PLUGGABLE-INGESTION-1` → `pluggable-ingestion-1`. No ticket → drop this segment.
+- **`<ticket-id>`** — the ticket id in the form `docs/ISSUE-TRACKER.md` defines, case kept, with only the leading `#` dropped: `#123` → `123`, `PROJ-123` and `PLUGGABLE-INGESTION-1` stay as they are. Keeping the case is what lets the id match the tracker's own form and the report file names built from it. No ticket → drop this segment.
 - **`<short-slug>`** — two to four words of the title.
 
-`piv-commit-changes` and `piv-create-pr` read the ticket id back out of this name, so the id has to survive the stripping.
+`piv-review-changes`, `piv-fix-findings`, `piv-commit-changes` and `piv-create-pr` read the ticket id back out of this name, so the id has to survive it. Reading it back, put the `#` back when the tracker's form carries one: `123` → `#123`.
 
 ## Commit subjects
 

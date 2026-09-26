@@ -31,7 +31,7 @@ When the goal is repairing observed broken behavior — a bug ticket, or a defec
 
 The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVENTIONS.md` defines the base branch and the branch name — read it before creating anything.
 
-- **On the base branch, clean** → record the baseline on it, then create a branch following that convention. The ticket id belongs in the name: `piv-commit-changes` and `piv-create-pr` read the id back out of it.
+- **On the base branch, clean** → record the baseline on it, then create a branch following that convention. The ticket id belongs in the name: every later step of the loop reads the id back out of it.
 - **Already on a feature branch or in a worktree** → record the baseline in a worktree of the base, then use the branch. For a ticket, warn if the branch name doesn't reference it.
 - **On the base branch with uncommitted changes** → **STOP**: commit or stash first.
 
