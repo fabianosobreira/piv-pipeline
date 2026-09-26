@@ -25,11 +25,11 @@ Read whatever you were handed, end to end. When the intent is an epic that alrea
 
 ## Guard
 
-Don't invent the *how*. If no architecture exists, you are decomposing intent alone. Name that out loud, keep the tickets outcome-shaped rather than implementation-shaped, and **offer `piv-create-architecture` first** when the work has real technical uncertainty — slicing against a guessed architecture produces a backlog that quietly encodes decisions nobody made. If the user wants to proceed anyway, do it, and flag which tickets are most likely to move once the architecture is decided.
+Don't invent the *how*. If no architecture exists, you are decomposing intent alone. Name that out loud, keep the tickets outcome-shaped rather than implementation-shaped, and when the work has real technical uncertainty, **offer `piv-create-architecture` first — before Step 1**, so no slicing is spent against a guess: slicing against a guessed architecture produces a backlog that quietly encodes decisions nobody made. **GATE.** If the user wants to proceed anyway, do it, and flag which tickets are most likely to move once the architecture is decided.
 
 ## Interaction mode: non-interactive until the GATE
 
-**Steps 1-4 are work you do, not questions you ask.** Decompose, then stop once at the Step 5 GATE. Ask mid-process only when the intent is too vague to decompose (see Step 1).
+**Steps 1-4 are work you do, not questions you ask.** Decompose, then stop once at the Step 5 GATE. Besides asking for an intent when none was passed, ask before or mid-process only in three cases: a local plan that differs from its published one (see *Input*), the *Guard*'s offer of `piv-create-architecture` when you hold intent only, and an intent too vague to decompose (see Step 1).
 
 ## Process
 
