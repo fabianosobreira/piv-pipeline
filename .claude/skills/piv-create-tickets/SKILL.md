@@ -74,7 +74,7 @@ For every ticket, draft:
 - **Description** — what and why, traced back to the intent section it came from.
 - **Acceptance criteria** — a checklist a reviewer can verify.
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
-- **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own checks are enough.
+- **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own testing standard and checks are enough. "Project defaults" never waives the tests: every behavior the ticket adds or alters still gets one.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
 
 ### Step 4 — Map dependencies and parallelism

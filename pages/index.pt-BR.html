@@ -316,7 +316,7 @@
         </dl>
 
         <div class="usewhen">
-          <strong>Por que os desvios importam.</strong> O reviewer lê este report. Um desvio registrado aqui é uma decisão <em>intencional</em> que o reviewer não deve apontar; o mesmo desvio não escrito volta como uma finding.
+          <strong>Por que os desvios importam.</strong> O reviewer lê este report. Um desvio registrado aqui é uma decisão <em>intencional</em> que o reviewer não deve apontar; o mesmo desvio não escrito volta como uma finding. A exceção é um teste: um teste desabilitado, afrouxado, reescrito ou removido continua bloqueando o review, mesmo quando um desvio o explica.
         </div>
       </article>
     </section>
@@ -337,10 +337,10 @@
           <dd><code>[ticket id]</code> — em branco, é extraído do nome da branch.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/&lt;ticket-id&gt;-review.md</code> — escopo (todo arquivo lido), findings agrupadas em <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, e as checks executadas. Cada finding carrega evidência, impacto e um fix concreto.</dd>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-review.md</code> — escopo (todo arquivo lido), findings agrupadas em <code>blocking</code> / <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, e as checks executadas, entre elas a suíte de testes completa. Uma finding <code>blocking</code> é um teste vermelho, faltando ou enfraquecido, ou uma behavior sem teste — um fato, fora da escala de severidade. Cada finding carrega evidência, impacto e um fix concreto.</dd>
 
           <dt>Veredito</dt>
-          <dd><strong>CHANGES REQUESTED</strong> quando qualquer finding critical ou high sobrevive. <strong>PASS</strong> caso contrário — um PASS com findings medium e low é normal.</dd>
+          <dd><strong>CHANGES REQUESTED</strong> quando qualquer finding blocking, critical ou high sobrevive. <strong>PASS</strong> caso contrário — um PASS com findings medium e low é normal.</dd>
 
           <dt>Como roda</dt>
           <dd>Resolver a mudança → resolver as deferrals anteriores → ler os padrões que a mudança precisa cumprir → ler cada arquivo alterado de ponta a ponta → montar o caso → aplicar três filtros que eliminam findings não comprovadas.</dd>
@@ -367,7 +367,7 @@
           <dd><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code> — <strong>Fixed</strong>, <strong>Deferred</strong> (com as referências das issues), <strong>Needs a human look</strong>, <strong>Noise / won't-fix</strong>, e as checks executadas.</dd>
 
           <dt>Como roda</dt>
-          <dd>Triar cada finding em um dos quatro grupos → corrigir o conjunto <em>fix now</em> uma de cada vez, cada uma com um teste que a comprove → validar a branch inteira.</dd>
+          <dd>Triar cada finding em um dos quatro grupos — uma finding blocking só em <em>fix now</em> ou <em>noise</em>, nunca adiada → corrigir o conjunto <em>fix now</em> uma de cada vez, cada uma com um teste que a comprove → validar a branch inteira.</dd>
 
           <dt>Próximo passo</dt>
           <dd><code>piv-review-changes</code> de novo, em uma sessão própria, recebendo o ticket id.</dd>
@@ -537,10 +537,10 @@
       <h2>Solução de problemas</h2>
 
       <h3>O review insiste em levantar algo que eu já decidi adiar.</h3>
-      <p>O adiamento precisa existir como uma issue no tracker, não só como uma linha na conversa. <code>piv-fix-findings</code> abre essas issues; <code>piv-review-changes</code> as lê no passo 2 dele. Se a issue não estiver lá, a finding volta com razão.</p>
+      <p>O adiamento precisa existir como uma issue no tracker, não só como uma linha na conversa. <code>piv-fix-findings</code> abre essas issues; <code>piv-review-changes</code> as lê no passo 2 dele. Se a issue não estiver lá, a finding volta com razão. Uma finding blocking volta mesmo quando adiada: ela só fecha com o fix, ou mostrando que o problema não existe.</p>
 
       <h3>O reviewer apontou algo que eu mudei de propósito.</h3>
-      <p>Registre em <strong>Deviations from the ticket</strong> no implementation report. Essa seção é o sinal de intenção para o reviewer.</p>
+      <p>Registre em <strong>Deviations from the ticket</strong> no implementation report. Essa seção é o sinal de intenção para o reviewer. A exceção é um teste que você alterou: desabilitado, afrouxado, reescrito ou removido, ele continua bloqueando o review.</p>
 
       <h3>Posso pular o PRD ou o architecture doc?</h3>
       <p>Pode, e as duas skills vão dizer isso em voz alta em vez de fingir o contrário. Pular o architecture doc num trabalho com incerteza técnica real é o caro dos dois — os tickets acabam codificando decisões que ninguém tomou.</p>

@@ -23,7 +23,7 @@ Take the ticket id and the `intent-slug` from the review report's header. They a
 
 ### Step 1 — Triage
 
-Sort the findings before touching code. The review's severities are the default cut you propose: critical and high in *fix now*, medium and low in *defer*. Low goes to *defer* too, not to *noise*: a deferral is the only thing that closes a finding for the next review, so a low dropped without one comes back every round. Four buckets:
+Sort the findings before touching code. The review's blocking findings and severities are the default cut you propose: blocking, critical and high in *fix now*, medium and low in *defer*. Low goes to *defer* too, not to *noise*: a deferral is the only thing that closes a finding for the next review, so a low dropped without one comes back every round. Four buckets:
 
 - **Fix now** — real, in-scope, belongs with this change.
 - **Defer** — real but later; don't bloat this change. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-create-tickets` titles its tickets — and its type here.
@@ -31,6 +31,8 @@ Sort the findings before touching code. The review's severities are the default 
 - **Noise / won't-fix** — say why, then drop it. The next review weighs that reason against the code, so make it one the code can bear out: a reason that shows the problem is not there keeps the finding from coming back; "not worth fixing" does not.
 
 Every finding lands in exactly one bucket. Don't let the reviewer dictate scope — "real, but later" is a valid and common call; a clean small change beats a sprawling one.
+
+A **blocking** finding — a red, missing or weakened test, or an untested behavior — lands in *fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there. Those are the two buckets that close it: the review keeps a blocking finding open through a deferral, because a deferred red test would reach PASS still red.
 
 **GATE** — post the split, each deferral with the title and type its ticket will carry, and wait for the user's ruling. No code moves and no ticket is created until they rule.
 
@@ -55,11 +57,11 @@ Record each created ticket's ref against its finding in the fix report. A deferr
 
 ### Step 3 — Fix the *fix now* set, one at a time
 
-For each finding, in severity order:
+For each finding, blocking first, then in severity order:
 
 1. Explain what was wrong.
 2. Make the fix.
-3. Prove it. A finding Step 2 would type `bug` — logic, security — gets a test that fails without the fix and passes with it. Any other gets the check that shows its claim no longer holds: the lint or type-check rule it broke, or, for a coverage finding, the test it asked for.
+3. Prove it. A blocking finding's proof is the test itself: the red test green through a change to the code — or to its assertions, when the ticket changed the behavior it pins — the missing test written and passing, the weakened test restored and passing. A finding Step 2 would type `bug` — logic, security — gets a test that fails without the fix and passes with it. Any other gets the check that shows its claim no longer holds: the lint or type-check rule it broke, or, for a coverage finding, the test it asked for.
 4. Run that proof. The finding goes **green** when it passes, and a red finding gets fixed before the next one starts.
 
 Fix what the finding names and stop there. A repair that grows into a refactor becomes its own ticket.
@@ -83,6 +85,7 @@ Confirm the fix report's path and each deferral ticket's ref, then offer the nex
 ## Success criteria
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
+- ✅ Every blocking finding landed in *fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there.
 - ✅ Every *fix now* finding has its Step 3 proof — a test that fails without the fix for a `bug`-type finding, the check that shows the claim gone for any other.
 - ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its ref in the fix report.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.

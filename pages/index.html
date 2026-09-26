@@ -327,7 +327,7 @@
         </dl>
 
         <div class="usewhen">
-          <strong>Why deviations matter.</strong> The reviewer reads this report. A deviation recorded here is an <em>intentional</em> decision the reviewer should not flag; the same deviation left unwritten comes back as a finding.
+          <strong>Why deviations matter.</strong> The reviewer reads this report. A deviation recorded here is an <em>intentional</em> decision the reviewer should not flag; the same deviation left unwritten comes back as a finding. The exception is a test: one skipped, loosened, rewritten or deleted still blocks the review, even when a deviation explains it.
         </div>
       </article>
     </section>
@@ -348,10 +348,10 @@
           <dd><code>[ticket id]</code> — blank and it's taken from the branch name.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/&lt;ticket-id&gt;-review.md</code> — scope (every file read), findings grouped <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, and the checks run. Each finding carries evidence, impact and a concrete fix.</dd>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-review.md</code> — scope (every file read), findings grouped <code>blocking</code> / <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, and the checks run, the full test suite among them. A <code>blocking</code> finding is a red, missing or weakened test, or a behavior with no test — a fact, outside the severity scale. Each finding carries evidence, impact and a concrete fix.</dd>
 
           <dt>Verdict</dt>
-          <dd><strong>CHANGES REQUESTED</strong> when any critical or high finding survives. <strong>PASS</strong> otherwise — a PASS with medium and low findings is normal.</dd>
+          <dd><strong>CHANGES REQUESTED</strong> when any blocking, critical or high finding survives. <strong>PASS</strong> otherwise — a PASS with medium and low findings is normal.</dd>
 
           <dt>How it runs</dt>
           <dd>Resolve the change → resolve prior deferrals → read the standards the change must meet → read every changed file end to end → build the case → run three filters that kill unproven findings.</dd>
@@ -378,7 +378,7 @@
           <dd><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code> — <strong>Fixed</strong>, <strong>Deferred</strong> (with issue refs), <strong>Needs a human look</strong>, <strong>Noise / won't-fix</strong>, and the checks run.</dd>
 
           <dt>How it runs</dt>
-          <dd>Triage every finding into one of the four buckets → fix the <em>fix now</em> set one at a time, each with a test that proves it → validate the whole branch.</dd>
+          <dd>Triage every finding into one of the four buckets — a blocking finding only into <em>fix now</em> or <em>noise</em>, never deferred → fix the <em>fix now</em> set one at a time, each with a test that proves it → validate the whole branch.</dd>
 
           <dt>Next move</dt>
           <dd><code>piv-review-changes</code> again, in a session of its own, handed the ticket id.</dd>
@@ -548,10 +548,10 @@
       <h2>Troubleshooting</h2>
 
       <h3>The review keeps re-raising something I already decided to defer.</h3>
-      <p>The deferral has to exist as a tracker issue, not just a line in the conversation. <code>piv-fix-findings</code> opens those issues; <code>piv-review-changes</code> reads them in its step 2. If the issue isn't there, the finding legitimately comes back.</p>
+      <p>The deferral has to exist as a tracker issue, not just a line in the conversation. <code>piv-fix-findings</code> opens those issues; <code>piv-review-changes</code> reads them in its step 2. If the issue isn't there, the finding legitimately comes back. A blocking finding comes back even when deferred: it closes only by fixing it, or by showing the problem isn't there.</p>
 
       <h3>The reviewer flagged something I changed on purpose.</h3>
-      <p>Record it under <strong>Deviations from the ticket</strong> in the implementation report. That section is the reviewer's signal of intent.</p>
+      <p>Record it under <strong>Deviations from the ticket</strong> in the implementation report. That section is the reviewer's signal of intent. A test you changed is the exception: skipped, loosened, rewritten or deleted, it still blocks the review.</p>
 
       <h3>Can I skip the PRD or the architecture doc?</h3>
       <p>Yes, and both skills will say so out loud rather than pretend otherwise. Skipping the architecture doc on work with real technical uncertainty is the expensive one — the tickets end up encoding decisions nobody made.</p>

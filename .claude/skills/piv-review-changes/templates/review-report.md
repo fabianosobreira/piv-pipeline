@@ -11,6 +11,12 @@ Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
 
 ## Findings
 
+### blocking
+- **<one-line claim: the red, missing or weakened test, or the untested behavior — its kind named>** — <the test's `file:line`, or the code's for an absent test or an untested behavior>
+  - **Evidence**: <the failing output, the test the Testing strategy names, the diff line that weakened it, or the acceptance criterion or interface naming the untested behavior>
+  - **Impact**: <what the missing proof leaves unguarded>
+  - **Fix**: <the concrete change>
+
 ### critical
 - **<one-line claim>** — `path/to/file.py:42`
   - **Evidence**: <the quoted line or the traced path that proves it>
@@ -27,4 +33,4 @@ No findings.
 …
 
 ## Checks run
-<tests / type-check / lint — what was run and what it returned>
+<the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned>

@@ -21,6 +21,17 @@ You are the prosecution. Assume the author got it wrong and prove it — a revie
 
 Step 6 runs the three filters. What survives becomes a finding; the rest goes nowhere.
 
+**Some findings are facts, not arguments.** Four kinds are **blocking**:
+
+- ***red*** — a test that fails on the branch in any run, flaky ones included.
+- ***missing*** — a test the ticket's **Testing strategy** names that is absent, or present but skipped, marked to fail, or asserting nothing.
+- ***weakened*** — a test that existed before and now asserts less or something different — skipped, marked to fail, its assertions loosened or its expected values changed, or deleted — while the ticket left the behavior it pins unchanged.
+- ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
+
+A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix-findings` never defers one — a deferred red test would reach PASS still red.
+
+A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to **medium** (step 6). A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — a bug ticket's, or a repair the implementation report's *Summary* names — is this change's to turn green whatever the base shows.
+
 ## Process
 
 ### Step 1 — Resolve the change under review
@@ -34,6 +45,8 @@ Nothing to review — a clean tree with no commits ahead of the base → **STOP*
 **No id** — the work has no ticket, so the reports are named for its `intent-slug`, and the branch's `<short-slug>` is not reliably that slug. Match existing reports first: scan the reports directory and compare the **Branch** header of every report there — implementation, review and fix reports alike, since all of one branch's reports carry it — against the branch you are on. The matches all carry one `intent-slug` → that is the slug this run uses from here on, and the implementation report under it, when there is one, is the report. No match → there is no report. Matches carrying more than one `intent-slug` → ask the user which one covers this branch. **GATE.**
 
 Take from the report the ticket it implemented, its status, and above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. There is no report → review the change on its own terms; this skill never requires one.
+
+**Then read the Testing strategy the change was held to**, from its source: the ticket, where `docs/ISSUE-TRACKER.md` says tickets live, or the plan document the report's `Plan` names. The report's *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. A ticket that can't be read — missing, or the system unreachable — or a `Plan` naming a file that can't be read → **STOP** and say which it was. With neither a ticket nor a plan, the project's testing standard is the only bar.
 
 **Settle the `intent-slug` once, and write it down.** With an id or a report, it comes from there. With neither, fall back to the branch name's `<short-slug>` in the form `docs/GIT-CONVENTIONS.md` gives it — and because that fallback is the weakest derivation, the review report records the slug it used in its header. A later run reuses the slug from an existing review report instead of re-deriving it, so a re-review overwrites the report it should overwrite rather than writing a second one beside it.
 
@@ -62,17 +75,18 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
 4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them. Also match the diff against the code smells catalogued in `references/code-smells.md`.
 5. **Standards** — the rules gathered in step 3: lint, typing, formatting, logging, error handling, and the testing standard. Cite the document and the rule.
-6. **Coverage** — the change's own tests. A behavior with a branch nobody exercises is a finding; so is a test that asserts the implementation instead of the behavior.
+6. **Coverage** — the tests the change brought, and the ones it should have. Hunt the blocking kinds (**Posture**). Within a tested behavior, a branch nobody exercises is a finding; so is a test that asserts the implementation instead of the behavior.
 
 ### Step 6 — Run the three filters
 
 Take each candidate through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
-- Run the tests that touch the suspect code, and the type-checker and linter on the changed files.
+- Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. Run each *red* test on the base branch too, in a worktree created outside the repository and removed afterwards, so the change under review stays untouched. The project has no test suite → say so in *Checks run*; *untested* still applies.
+- Run the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferral tickets step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
 
-Give each survivor a severity:
+A surviving blocking finding stays **blocking**. Give every other survivor a severity:
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
 - **high** — wrong behavior on a path users reach.
@@ -81,9 +95,9 @@ Give each survivor a severity:
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id or the `intent-slug` resolved in step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count per severity.
+Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id or the `intent-slug` resolved in step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count of blocking findings and the count per severity.
 
-Every severity heading is present on every run, and one that survived nothing reads "No findings." The verdict is **CHANGES REQUESTED** when any critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
+The blocking heading and every severity heading are present on every run, and one that survived nothing reads "No findings." The verdict is **CHANGES REQUESTED** when any blocking, critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
 
 ## Hand off
 
@@ -97,4 +111,6 @@ The review report is the artifact this run leaves behind, so hand over its path 
 - ✅ Every file in the change under review was read end to end — by you, or by the subagent it was dispatched to — and every class in step 5 was hunted over each of them.
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
+- ✅ The full test suite ran on the branch, and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
+- ✅ The change was held to the **Testing strategy** read from the ticket or the plan document, when there is one.
 - ✅ The report follows the template in **Output**, and its path was handed to whatever runs next.
