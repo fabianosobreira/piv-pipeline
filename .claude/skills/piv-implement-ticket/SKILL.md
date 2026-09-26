@@ -21,7 +21,7 @@ This is the **implement** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 From here on, **the ticket governs the run**. A plan document stands in for the ticket everywhere below — same rules, same gates — and the only difference is that it has no id, so the intent-slug takes the id's place in file names.
 
-If the ticket carries no actionable tasks, say so and ask the user what to implement. **GATE.**
+If the ticket carries no actionable tasks → **STOP**: say so, and that the ticket needs reworking before it can be built. Only work the ticket names counts.
 
 When the goal is repairing observed broken behavior — a bug ticket, or a defect the user reported — this run is a **repair**, and the instructions marked **Repair:** apply on top of the normal ones. A repair run is done only when every instruction marked **Repair:** is satisfied.
 
@@ -65,11 +65,10 @@ Work through the tasks in order. When the ticket carries an explicit task list, 
 
 **Stay in scope:** implement what the ticket specifies. Refactors, improvements, and unrelated problems you find along the way each become their own ticket, and this branch carries this ticket's work only. When you must deviate, note what changed and why, and surface it in the report's *Deviations from the ticket*.
 
-#### c. When evidence contradicts a decision
-When something you hit mid-task undercuts an assumption a decision rests on — not just a missing detail — name the assumption, the evidence against it, the decision it affects, and whether that decision's rationale survives without it. The user resolves it before the architecture changes. **GATE.**
+#### c. When a decision is missing or contradicted
+A detail the ticket leaves unspecified: beyond matching the surrounding file's patterns (Step 5a), prefer in order the precedent the ticket or its architecture doc already cites, then the smallest change consistent with the ticket's decision.
 
-#### d. When a detail is unspecified
-Beyond matching the surrounding file's patterns (5a), prefer in order: precedent the ticket or its architecture doc already cites; the smallest change consistent with the ticket's decision; **GATE** and ask when the choice would move an architectural boundary the ticket never drew.
+Two things are not yours to settle: something you hit mid-task that undercuts an assumption a decision rests on — not just a missing detail — and a choice that would move an architectural boundary the ticket never drew. Name the assumption and the evidence against it, or the boundary and the options, along with the decision it affects and whether that decision's rationale survives. The user resolves it before the architecture changes. **GATE.**
 
 ### Step 6 — Close the testing strategy
 
