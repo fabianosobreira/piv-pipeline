@@ -49,6 +49,8 @@ An issue body — the epic's, a ticket's — carries no heading of its own, beca
 
 A plan too large for one comment splits across several, each still opening with its own heading; a doc from these templates never comes close to the limit.
 
+**A revised plan edits its comment in place**, heading kept, rather than posting a new one: every ticket copied the comment URL verbatim, and an edit keeps that URL pointing at the current plan. A revision that no longer fits adds a comment after the last one of that plan, opening with the same heading.
+
 Published this way, the plans travel with the epic rather than with the machine that wrote them.
 
 ## Creating a ticket

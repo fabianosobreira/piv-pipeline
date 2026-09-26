@@ -47,7 +47,7 @@ The PRD and the architecture doc are **written as local files** while the plan i
 
 An attachment is the raw markdown file, which is what makes this the right shape on Jira in particular: **Jira does not store markdown.** A description or a comment becomes Atlassian Document Format on the way in, and that conversion is lossy — an attachment goes in and comes back out byte for byte.
 
-**A revised plan is attached again under the same name**, and the epic's field and description are repointed at the new attachment. Jira keeps the superseded one, so the field is the only thing that says which is current.
+**A revised plan is attached again under the same name**, and the epic's field and description are repointed at the new attachment. **So is every child of the epic whose `Intent` or `Architecture` still carries the old URL** — deferrals included — because each one copied that URL verbatim, and a ticket picked up cold reads its own field first. When Jira becomes unreachable partway, say so and stop, naming the tickets still pointing at the old attachment. Jira keeps the superseded one, so the fields are the only thing that says which is current. Reports and pull requests already written keep the URL they carry: they record the plan the work was built against.
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them.
 
