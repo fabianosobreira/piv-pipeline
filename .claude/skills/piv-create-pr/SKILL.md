@@ -15,7 +15,7 @@ The motion is the same wherever the team works — a pull request on GitHub, a m
 
 ### Step 1 — Resolve the base branch
 
-`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, in the id form `docs/ISSUE-TRACKER.md` defines. No base branch handed to you → resolve it the way `docs/GIT-CONVENTIONS.md` defines. Call the result `<base>`. A ticket id handed to you overrides the one the branch name carries.
+`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, in the id form `docs/ISSUE-TRACKER.md` defines. No base branch handed to you → resolve it the way `docs/GIT-CONVENTIONS.md` defines. Call the result `<base>`. A ticket id handed to you overrides any the branch name or the commit subjects carry.
 
 ### Step 2 — Check the branch is in a shippable state
 
@@ -29,7 +29,7 @@ Check which branch is checked out, whether the working tree is clean, which comm
 
 ### Step 3 — Gather the material for the body
 
-The commit subjects since `<base>`, the diff statistics of the files they touch, and — when step 1 wasn't handed one — the linked ticket or issue id wherever it shows up: branch name, commit subjects, commit bodies.
+The commit subjects since `<base>` and, when Step 1 wasn't handed one, the ticket id. The branch name carries it, in the form `docs/GIT-CONVENTIONS.md` defines; with none there, the `(<ticket id>)` suffix of the commit subjects does. Commit bodies are not a source: a body that mentions another ticket would put that ticket's header block on this PR and close it at the merge. When the ids found disagree — the branch name against a subject, or one subject against another — ask the user which one this PR closes. **GATE.**
 
 **Then find the reports** at the paths `docs/ISSUE-TRACKER.md` defines, named from the ticket id. With no id, the branch's `<short-slug>` is not reliably the reports' `intent-slug`: scan the reports and compare each one's **Branch** header against this branch — implementation, review and fix reports alike, since all of one branch's reports carry it. The matches all carry one `intent-slug` → it names every report below. Matches carrying more than one → ask the user which one covers this branch. **GATE.** No match → there are no reports.
 
