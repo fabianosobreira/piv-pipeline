@@ -24,12 +24,12 @@
 ### Surviving findings
 <the review report's medium and low findings, one per line as **<severity>** — <one-line claim> — `<path>:<line>`, or "none">
 
-## Open issues
+## Open problems
 <the implementation report's *Issues encountered* — what it left unfinished — or "none", or "unknown — no implementation report available"; a PARTIAL status names them here>
 
 ## Linked
-<ticket / issue refs, or "none">
+<ticket ids, or "none">
 <with a ticket and a fix report: "Findings deferred during review live on the tracker as tickets linked to <ticket id>.">
 <with no ticket and a fix report: "Findings deferred during review live on the tracker as tickets whose *Origin* names `<review report path>`.">
 
-<_Ready for review._ | _Draft — waiting on the open issues above._>
+<_Ready for review._ | _Draft — waiting on the open problems above._>

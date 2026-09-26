@@ -85,11 +85,11 @@ Run every check the ticket names, in the order it gives them, then the project's
 
 When a check goes red: fix the cause, re-run, and continue once it is green. A test goes green by the code changing: its assertions, and whether it runs at all, change only when the ticket changes the behavior it pins — the review blocks any other change to a test, whatever *Deviations* says. A test failing the same assertion the baseline recorded stays red, unless the **Testing strategy** names it or it reproduces the defect a **Repair** fixes: that one is this change's to turn green.
 
-When a failure survives a few honest attempts, or its cause sits outside what the ticket asks you to change, stop working it: record the check, the failure, and what you tried in the report's *Issues encountered*, and carry the run to step 8 as PARTIAL.
+When a failure survives a few honest attempts, or its cause sits outside what the ticket asks you to change, stop working it: record the check, the failure, and what you tried in the report's *Problems encountered*, and carry the run to Step 8 as PARTIAL.
 
 ### Step 8 — Final verification
 
-Before you write the report, walk the **Success criteria** at the end of this skill, line by line. Every line true → the status is COMPLETE. Any line that isn't true → the status is PARTIAL, and that line goes into the report's *Issues encountered*, named.
+Before you write the report, walk the **Success criteria** at the end of this skill, line by line. Every line true → the status is COMPLETE. Any line that isn't true → the status is PARTIAL, and that line goes into the report's *Problems encountered*, named.
 
 ## Output — write an implementation report
 

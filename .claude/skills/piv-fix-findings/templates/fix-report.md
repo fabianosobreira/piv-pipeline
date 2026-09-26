@@ -9,7 +9,7 @@
 - **<the finding's one-line claim>** — `path/to/file.py:42` → <what changed> · proof: <the test or check that proves it> | not fixed — <why the run stopped before it>
 
 ## Deferred
-- **<the finding's one-line claim>** — `path/to/file.py:42` → ticket <ref> | not created — <why the run stopped before it>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → ticket <id> | not created — <why the run stopped before it>
 
 ## Needs a human look
 - **<the finding's one-line claim>** — `path/to/file.py:42` → <what to inspect or test by hand>

@@ -45,7 +45,7 @@ Don't invent the *how*. If no architecture exists, you are decomposing intent al
 
 **From the architecture, when it exists** — recommended approach, building blocks, data model, boundaries & contracts, **operational shape** (deploy, observability, failure modes — usually its own ticket or two), missing pieces, and **Spikes & experiments** (the architecture's name for the risky calls; same rule as Open questions — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
 
-If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose. The grouping organizes the breakdown and the execution order; it is never a label or a ticket field.
+If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose. The grouping organizes the breakdown and the execution order; it is never written onto a ticket.
 
 **Too vague to decompose → flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable. **GATE.**
 
@@ -109,7 +109,7 @@ Then create one ticket per slice, in the same place, reaching that system with w
 
 The ticket body: fill the template at `templates/ticket.md`.
 
-**Then write the dependency graph and the execution order down** — in the epic's *Dependency graph and execution order* section, or wherever `docs/ISSUE-TRACKER.md` says it lives when the tracker keeps no epic issue. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
+**Then write the dependency graph and the execution order down** — in the epic's *Dependency graph and execution order* section, or wherever `docs/ISSUE-TRACKER.md` says it lives when the tracker keeps no epic of its own. It is the one part of the breakdown no single ticket carries, and unwritten it dies with this conversation.
 
 ### Step 7 — Report
 

@@ -36,7 +36,7 @@ A **blocking** finding — a red, missing or weakened test, or an untested behav
 
 **GATE** — post the split, each deferral with the title and type its ticket will carry, and wait for the user's ruling. No code moves and no ticket is created until they rule.
 
-**Once they rule, write the fix report** at the fix report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/fix-report.md` with the split, and keep it current through the steps below — each deferral's ticket ref as it is created, each fix as it goes green. A run that stops midway — a tracker that can't be reached, a label that can't be created — still leaves the ruling on record, with each deferral not yet created and each fix not yet made marked as such. Running this skill again once the cause is cleared resumes from that record.
+**Once they rule, write the fix report** at the fix report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/fix-report.md` with the split, and keep it current through the steps below — each deferral's ticket id as it is created, each fix as it goes green. A run that stops midway — a tracker that can't be reached, a ticket type that can't be created — still leaves the ruling on record, with each deferral not yet created and each fix not yet made marked as such. Running this skill again once the cause is cleared resumes from that record.
 
 ### Step 2 — Open a ticket for each deferral
 
@@ -53,7 +53,7 @@ With a ticket behind the review, read that ticket where `docs/ISSUE-TRACKER.md` 
 
 Leave the epic's body as it is — its *Tickets* list and its dependency graph alike: `piv-create-tickets` owns both, the deferral reaches the epic through the epic link *Creating a ticket* gives it, and a deferral blocks nothing — it only depends on the reviewed ticket.
 
-Record each created ticket's ref against its finding in the fix report. A deferral with nothing to point at is not a deferral: the next review raises the finding again.
+Record each created ticket's id against its finding in the fix report. A deferral with nothing to point at is not a deferral: the next review raises the finding again.
 
 ### Step 3 — Fix the *fix now* set, one at a time
 
@@ -78,7 +78,7 @@ Finish the fix report started in Step 1 — every bucket settled, *Checks run* f
 
 ## Hand off
 
-Confirm the fix report's path and each deferral ticket's ref, then offer the next move and let the user run it — this skill does not chain into the next one:
+Confirm the fix report's path and each deferral ticket's id, then offer the next move and let the user run it — this skill does not chain into the next one:
 
 - Run `piv-review-changes` again over the branch, in a session of its own. It reads the deferral tickets this run opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id when there is one, and tell the user to clear every *Needs a human look* item by hand before starting it: the next fix run overwrites this report, and an item still open by then drops off the record.
 
@@ -87,7 +87,7 @@ Confirm the fix report's path and each deferral ticket's ref, then offer the nex
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
 - ✅ Every blocking finding landed in *fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there.
 - ✅ Every *fix now* finding has its Step 3 proof — a test that fails without the fix for a `bug`-type finding, the check that shows the claim gone for any other.
-- ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its ref in the fix report.
+- ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its id in the fix report.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
 - ✅ The triage outcome was written to the fix report path, not only printed.
 - ✅ The run ended by handing the branch back to `piv-review-changes`, which is the only thing that closes the loop.

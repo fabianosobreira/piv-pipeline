@@ -23,5 +23,5 @@
 ## Deviations from the ticket
 <what changed vs the ticket and WHY, or "none" — the reviewer's signal of intent; a test changed while the ticket left its behavior unchanged is listed here too, and the review still blocks it>
 
-## Issues encountered
+## Problems encountered
 <each check still red — the check, the failure and what was tried — and each success criterion that isn't true, named; or "none". A PARTIAL status names its causes here>
