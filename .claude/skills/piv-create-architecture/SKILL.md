@@ -90,6 +90,8 @@ Decision rule: go with <X> if <signal> / <Y> if <counter-signal>
 
 Reversible, low-cost calls → just decide and move on.
 
+When the intent is a PRD, its *MVP* records the door `piv-create-prd` called: a one-way door there is a spike candidate here. That door is the MVP's as a whole, so a two-way MVP can still hold a one-way decision — judge each decision by its own door.
+
 ## Output — a high-level architecture decision doc
 
 Only after the calls are made. Write it where `docs/ISSUE-TRACKER.md` says plans live. It is its own doc, never a section inside the intent: **intent and architecture stay separable**, because that's what lets a later slicing step read the *what* and the *how* as two sources instead of untangling one blob.
