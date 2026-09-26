@@ -35,7 +35,7 @@ The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVEN
 - **Already on a feature branch or in a worktree** → record the baseline in a worktree of the base, then use the branch. For a ticket, warn if the branch name doesn't reference it.
 - **On the base branch with uncommitted changes** → **STOP**: commit or stash first.
 
-**The baseline** is the project's full test suite run against the base branch before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so step 7 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. The project has no test suite → ask whether this ticket sets one up or a prerequisite ticket does. **GATE.** A prerequisite ticket → **STOP** and name it.
+**The baseline** is the project's full test suite run against the base branch before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so Step 7 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. **The project has no test suite** → say so, skip the baseline, and carry on without tests: this run implements the ticket, and setting up a suite is not its job. Every test instruction below — the tests in Step 5a, the sweep in Step 6, the suite in Step 7 — then falls away, and the report's *Tests added* says why.
 
 **Then mark the ticket in flight**, the way `docs/ISSUE-TRACKER.md` says this project marks it. That is what keeps a parallel wave from picking up the same ticket twice. A plan document has nothing to mark: skip this.
 
@@ -43,9 +43,9 @@ The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVEN
 
 Before any edit, read the ticket's **`Architecture`** field and its **Per-ticket context** first — the architecture doc, the guides and seams it names; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list.** **Repair:** also the root cause, and whether the proposed fix still addresses it.
 
-**The Testing strategy says which tests, never whether.** "project defaults" means the project's own testing standard applies. A strategy that waives the tests for a behavior the ticket adds or alters → ask whether to write them anyway or rework the ticket: the review blocks every behavior the change adds without a test. **GATE.**
+**If the `Architecture` field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/ISSUE-TRACKER.md` says plans live. Unresolvable there, and not attached to the ticket or its epic either → **STOP** and ask for it; building without the architecture the ticket was sliced against plans against a guess.
 
-**If the field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/ISSUE-TRACKER.md` says plans live. Unresolvable there, and not attached to the ticket or its epic either → **STOP** and ask for it; building without the architecture the ticket was sliced against plans against a guess.
+**The Testing strategy says which tests, never whether.** "project defaults" means the project's own testing standard applies. A strategy that waives the tests for a behavior the ticket adds or alters → ask whether to write them anyway or rework the ticket: the review blocks every behavior the change adds without a test. **GATE.** With no test suite (Step 2), skip this.
 
 ### Step 4 — Drift check
 
@@ -58,7 +58,7 @@ Work through the tasks in order. When the ticket carries an explicit task list, 
 #### a. Implement the task
 - Follow the ticket's specification for this task, and match the patterns already present in the files you're editing.
 - Update the code the change reaches — imports, callers, call sites.
-- Write the tests for the behavior this task adds or alters, together with the task.
+- Write the tests for the behavior this task adds or alters, together with the task — unless the project has no test suite (Step 2).
 
 #### b. Verify as you go
 **Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none — acceptance criteria without checks, or a task written without one — run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter on the changed file. A task goes **green** when its check passes, and a red task gets fixed before the next one starts. Step 7 runs the full suite; this per-task gate is what keeps Step 7 from becoming a pile-up.
@@ -73,7 +73,7 @@ Beyond matching the surrounding file's patterns (5a), prefer in order: precedent
 
 ### Step 6 — Close the testing strategy
 
-This step is the sweep that proves the change left nothing untested:
+This step is the sweep that proves the change left nothing untested. With no test suite (Step 2) there is nothing to sweep: *Tests added* says so, and the run moves on to Step 7.
 
 - Every test file and every test case the ticket's **Testing strategy** names now exists, runs, and asserts the behavior it is named for.
 - Every behavior the change adds or alters — an observable outcome an acceptance criterion or the unit's public interface names — has at least one test that exercises it. Only a change with no testable behavior, such as docs or config that changes no observable outcome, goes without one, and the report's *Tests added* says so.
@@ -102,7 +102,7 @@ Confirm the implementation report's path. Next: `piv-review-changes` gates the w
 ## Success criteria
 
 - ✅ Every task on the list from Step 3 is implemented.
-- ✅ Every test the ticket asks for exists, runs and passes, and every behavior the change adds or alters has a test.
+- ✅ Every test the ticket asks for exists, runs and passes, and every behavior the change adds or alters has a test — or the project has no test suite, and the report's *Tests added* says so.
 - ✅ The full test suite and every other check run in Step 7 are green, apart from the baseline's red tests Step 7 leaves red.
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.
 - ✅ The change matches the patterns of the files it touched (Step 5a).

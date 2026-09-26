@@ -32,6 +32,8 @@ A blocking finding is observed, so it sits outside the severity scale and holds 
 
 A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to **medium** (Step 6). A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — a bug ticket's, or a repair the implementation report's *Summary* names — is this change's to turn green whatever the base shows.
 
+**A project with no test suite holds the change to no test.** `piv-implement-ticket` builds there without tests rather than setting a suite up, so *missing* and *untested* do not apply, and *red* and *weakened* cannot arise. Say so in *Checks run*, naming the behaviors the change adds or alters that go untested, and raise no finding for them.
+
 ## Process
 
 ### Step 1 — Resolve the change under review
@@ -81,7 +83,7 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 Take each candidate through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
-- Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. Run each *red* test on the base branch too, in a worktree created outside the repository and removed afterwards, so the change under review stays untouched. The project has no test suite → say so in *Checks run*; *untested* still applies.
+- Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. Run each *red* test on the base branch too, in a worktree created outside the repository and removed afterwards, so the change under review stays untouched. The project has no test suite → say so in *Checks run*, naming the untested behaviors; **Posture** says why no finding follows.
 - Run the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferral tickets Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
@@ -111,6 +113,6 @@ The review report is the artifact this run leaves behind, so hand over its path 
 - ✅ Every file in the change under review was read end to end — by you, or by the subagent it was dispatched to — and every class in Step 5 was hunted over each of them.
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
-- ✅ The full test suite ran on the branch, and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
+- ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
 - ✅ The change was held to the **Testing strategy** read from the ticket or the plan document, when there is one.
 - ✅ The report follows the template in **Output**, and its path was handed to whatever runs next.

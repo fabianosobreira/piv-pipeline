@@ -33,4 +33,4 @@ No findings.
 …
 
 ## Checks run
-<the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned>
+<the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned; with no test suite, "no test suite" and the behaviors left untested>

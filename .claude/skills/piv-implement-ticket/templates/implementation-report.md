@@ -15,7 +15,7 @@
 - <task> → `path/to/file` (MODIFIED/ADDED/DELETED)
 
 ## Tests added
-<test files + cases + results>
+<test files + cases + results, or "none — the project has no test suite">
 
 ## Validation results
 <tests / type-check / lint / build — green/red with counts, naming each test that was already red on the baseline>
