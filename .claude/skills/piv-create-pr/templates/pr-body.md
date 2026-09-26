@@ -25,7 +25,7 @@
 <every finding the review report left standing — on a PASS, its medium and low ones — one per line, blocking first, as **<blocking or severity>** — <one-line claim> — `<path>:<line>`, or "none">
 
 ## Open problems
-<the implementation report's *Issues encountered* — what it left unfinished — or "none", or "unknown — no implementation report available"; a PARTIAL status names them here>
+<the implementation report's *Problems encountered* — what it left unfinished — or "none", or "unknown — no implementation report available"; a PARTIAL status names them here, and after a fix round and a PASS review that followed it each one is marked "reported by the implementation before the PASS review">
 
 ## Linked
 <ticket ids, or "none">

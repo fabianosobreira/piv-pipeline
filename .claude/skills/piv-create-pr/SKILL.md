@@ -51,7 +51,7 @@ Push it to the remote, tracking it so later pushes need no arguments.
 
 Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` when an id was found in Step 3 — the same shape `docs/GIT-CONVENTIONS.md` gives the commit subjects — and without the `(<ticket id>)` suffix when none was.
 
-- **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the issues it lists.
+- **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the problems it lists — unless a fix report is newer than the implementation report and the review report is PASS and newer than that fix report. Then the PARTIAL was worked through a fix round and a fresh review: open it ready for review, and mark each problem under *Open problems* as reported by the implementation before the PASS review, never as resolved. A PASS proves no blocking, critical or high finding survived, not that every problem was cleared — the review runs no build, for one.
 - **No implementation report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.
 
 **Then close the ticket's loop**: do what the **Ticket status** section of `docs/ISSUE-TRACKER.md` assigns to this step, and nothing beyond it. That section names one owner per transition precisely so this skill doesn't have to know which tracker it is talking to.
@@ -69,7 +69,7 @@ Next: a human reviews, approves and merges. The agent's loop ends at the merge.
 ## Success criteria
 
 - ✅ The PR title follows `<tag>: <concise description> (<ticket id>)` whenever an id was found.
-- ✅ The PR is a draft when the implementation report's status is `PARTIAL`, and ready for review otherwise.
+- ✅ The PR is a draft when the implementation report's status is `PARTIAL`, unless a fix round followed it and a PASS review followed that fix round, and ready for review otherwise.
 - ✅ The body carries the implementation report's documented deviations and open problems, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which of the implementation and review reports was unavailable. A missing fix report goes unmentioned.
 - ✅ The reports themselves stay local: the body is their distillation, and nothing is attached or embedded.
 - ✅ Whenever a ticket was found, the mark `docs/ISSUE-TRACKER.md` assigns to this step is on it.
