@@ -30,7 +30,7 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 
 A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix-findings` never defers one — a deferred red test would reach PASS still red.
 
-A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to **medium** (Step 6). A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — a bug ticket's, or a repair the implementation report's *Summary* names — is this change's to turn green whatever the base shows.
+A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium** (Step 6): a `bug`'s proof would be the test itself turning red without the fix, which is circular for a test that is already red. A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — the defect a bug ticket describes, or the one the implementation report's *Summary* names as repaired — is this change's to turn green whatever the base shows.
 
 **A project with no test suite holds the change to no test.** `piv-implement-ticket` builds there without tests rather than setting a suite up, so *missing* and *untested* do not apply, and *red* and *weakened* cannot arise. Say so in *Checks run*, naming the behaviors the change adds or alters that go untested, and raise no finding for them.
 
@@ -44,13 +44,13 @@ Nothing to review — a clean tree with no commits ahead of the base → **STOP*
 
 **Then look for the implementation report**, which says what the author meant to build. `docs/ISSUE-TRACKER.md` says where reports live and how their names are built. `$ARGUMENTS` carries the ticket id when one was handed to you; otherwise take it from the branch name, in the form `docs/GIT-CONVENTIONS.md` defines. With an id, the report's name follows from it.
 
-**No id** — the work has no ticket, so the reports are named for its `intent-slug`, and the branch's `<short-slug>` is not reliably that slug. Match existing reports first: scan the reports directory and compare the **Branch** header of every report there — implementation, review and fix reports alike, since all of one branch's reports carry it — against the branch you are on. The matches all carry one `intent-slug` → that is the slug this run uses from here on, and the implementation report under it, when there is one, is the report. No match → there is no report. Matches carrying more than one `intent-slug` → ask the user which one covers this branch. **GATE.**
+**No id** — the work has no ticket, so the reports are named for its `intent-slug`, and the branch's `<short-slug>` is not reliably that slug. Match existing reports first: scan the reports directory and compare the **Branch** header of every report there — implementation, review and fix reports alike, since all of one branch's reports carry it — against the branch you are on. The matches all carry one `intent-slug` → that is the slug this run uses from here on, and the implementation report under it, when there is one, is the report. No match → there is no report, and the intent-slug falls back to the branch name's `<short-slug>` in the form `docs/GIT-CONVENTIONS.md` gives it. Matches carrying more than one `intent-slug` → ask the user which one covers this branch. **GATE.**
 
-Take from the report the ticket it implemented, its status, and above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. There is no report → review the change on its own terms; this skill never requires one.
+Take from the report the ticket it implemented, and above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. There is no report → review the change on its own terms; this skill never requires one.
 
 **Then read the Testing strategy the change was held to**, from its source: the ticket, where `docs/ISSUE-TRACKER.md` says tickets live, or the plan document the report's `Plan` names. The report's *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. A ticket that can't be read — missing, or the system unreachable — or a `Plan` naming a file that can't be read → **STOP** and say which it was. With neither a ticket nor a plan, the project's testing standard is the only bar.
 
-**Settle the `intent-slug` once, and write it down.** With an id or a report, it comes from there. With neither, fall back to the branch name's `<short-slug>` in the form `docs/GIT-CONVENTIONS.md` gives it — and because that fallback is the weakest derivation, the review report records the slug it used in its header. A later run reuses the slug from an existing review report instead of re-deriving it, so a re-review overwrites the report it should overwrite rather than writing a second one beside it.
+**Settle the `intent-slug` once, and write it down.** With an id or a report, take it from the ticket's or the report's header block; with neither, it is the branch-name fallback above — and because that fallback is the weakest derivation, the review report records the slug it used in its header. A later run reuses the slug from an existing review report instead of re-deriving it, so a re-review overwrites the report it should overwrite rather than writing a second one beside it.
 
 ### Step 2 — Resolve the deferrals
 
@@ -60,13 +60,13 @@ A previous review of this branch may sit at the review report path `docs/ISSUE-T
 
 A rule you can cite is a rule you can enforce; a rule you cannot point at is your own taste wearing the project's name. Read what the project documents about how its code is written: `CLAUDE.md`, `AGENTS.md`, `README.md`, and the linter, formatter and type-checker configs the repo ships.
 
-Then read enough of the surrounding module to know what "matches the existing patterns" means here.
+Then read, for each kind of unit the change adds or edits, one existing sibling that does the same job, to know what "matches the existing patterns" means here.
 
 ### Step 4 — Read every changed file end to end
 
 Every file the change touches, whole — not the diff. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements. New files get read in full for the same reason.
 
-**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers.
+**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. Hand each subagent the standards from Step 3, the ticket or plan with its Testing strategy, the implementation report, and this skill's **Posture** and Step 5 — without them Standards, Coverage and the code smells check against nothing. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers.
 
 ### Step 5 — Build the case
 
@@ -75,7 +75,7 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
 3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
-4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them. Also match the diff against the code smells catalogued in `references/code-smells.md`.
+4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them, and every entry in `references/code-smells.md` matched against the diff.
 5. **Standards** — the rules gathered in Step 3: lint, typing, formatting, logging, error handling, and the testing standard. Cite the document and the rule.
 6. **Coverage** — the tests the change brought, and the ones it should have. Hunt the blocking kinds (**Posture**). Within a tested behavior, a branch nobody exercises is a finding; so is a test that asserts the implementation instead of the behavior.
 
@@ -83,12 +83,12 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 Take each candidate through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
-- Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. Run each *red* test on the base branch too, in a worktree created outside the repository and removed afterwards, so the change under review stays untouched. The project has no test suite → say so in *Checks run*, naming the untested behaviors; **Posture** says why no finding follows.
+- Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. Run each *red* test on the base branch too, in a worktree created outside the repository and removed afterwards, so the change under review stays untouched, and confirm it against the conditions **Posture** sets for a base-red test. The project has no test suite → say so in *Checks run* the way **Posture** requires.
 - Run the type-checker and linter on the changed files.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferral tickets Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
 
-A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — `piv-fix-findings` types a deferral from it — and a severity:
+A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — a test demoted from *red* by the base-red check (**Posture**) is **coverage** — `piv-fix-findings` types a deferral from it — and a severity:
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
 - **high** — wrong behavior on a path users reach.
