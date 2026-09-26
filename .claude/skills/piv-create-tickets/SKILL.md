@@ -131,6 +131,6 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 - ✅ **One provable concern each**, with verifiable acceptance criteria and enough context to be picked up cold.
 - ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type.
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked.
-- ✅ **The user confirmed the breakdown** before anything was created.
+- ✅ **The user confirmed the breakdown** before anything was created — or declined the GATE, and the calls made for them are recorded as **(decided-by-default)**.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.
 - ✅ **Every ticket resolves `Intent-slug`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.

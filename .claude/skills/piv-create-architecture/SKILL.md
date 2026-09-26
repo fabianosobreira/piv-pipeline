@@ -11,7 +11,7 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 **Input intent**: $ARGUMENTS. If it is a reference to somewhere else (a URL, a page key, a ticket ID), fetch it from the source first, with whatever tool reaches that system. Blank → ask *"What do you want to build? A few sentences."* **GATE.**
 
-**Reference docs (optional):** if any paths were passed alongside the intent — API docs, product/engineering docs, ADRs, prior research, a competitor teardown, a wiki page — **read them first.** They ground the exploration so you propose options that fit what already exists instead of inventing. If none were passed, **ask whether any exist** before you start exploring — a lot of the context you need is usually already written down.
+**Reference docs (optional):** if any paths were passed alongside the intent — API docs, product/engineering docs, ADRs, prior research, a competitor teardown, a wiki page — **read them first.** They ground the exploration so you propose options that fit what already exists instead of inventing. If none were passed, **ask whether any exist** before you start exploring — a lot of the context you need is usually already written down. **GATE.**
 
 ## Your role
 
@@ -25,7 +25,7 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 
 ### Step 1 — Establish the shape of the work
 
-**Do this before you propose anything.** Infer both answers below from the intent and the workspace; if either is genuinely unclear, **ask**. Then **state what you inferred out loud**, so the user can correct you cheaply.
+**Do this before you propose anything.** Infer both answers below from the intent and the workspace; if either is genuinely unclear, **ask**. **GATE.** Then **state what you inferred out loud**, so the user can correct you cheaply.
 
 - **What shape of work is this?** A new application · a data pipeline · an infrastructure change · an integration between systems that already exist · a migration · a change that produces no new artifact at all. "Architecture" is not always a stack choice, and this answer selects your questions from the menu below — a stack question aimed at a migration is noise, and asking it signals you assumed the project type.
 - **New build, or existing system?**
@@ -62,7 +62,7 @@ Each round's answers reshape the tree: settled decisions push the frontier outwa
 
 The tree is worked when the frontier is empty — every branch visited, nothing silently assumed. **Nothing gets written until the user confirms you've reached a shared understanding.**
 
-**If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf, put the two or three most expensive or least reversible ones to them anyway, and record the rest in **Key decisions**, each closed with the label **(decided-by-default)** — never as though they were settled with the user. **Open questions** stays for what is genuinely still open.
+**If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf and put the two or three most expensive or least reversible ones to them anyway. **GATE.** Record the rest in **Key decisions**, each closed with the label **(decided-by-default)** — never as though they were settled with the user. **Open questions** stays for what is genuinely still open.
 
 ### Step 4 — What to explore
 
@@ -110,7 +110,7 @@ Confirm where you wrote it, summarize the recommended approach + the key calls i
 
 ## Success criteria
 
-- ✅ Every decision was GATED — the user made each call before anything was written.
+- ✅ Every decision was GATED — the user made each call before anything was written, or declined the interview and the calls made for them were named.
 - ✅ Every recommendation names the alternatives rejected and why.
 - ✅ Every skipped menu item was named out loud.
 - ✅ Every one-way or uncertain call has a spike with a decision rule, not a guess.

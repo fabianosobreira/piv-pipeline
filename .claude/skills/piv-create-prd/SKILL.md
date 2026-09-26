@@ -13,7 +13,7 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 Greenfield-first. **On an existing product, the input is whatever document carries the context** — a research doc, a decision plan, the existing product's docs — and the same interview applies, scoped to that context. Its architecture is decided separately with `piv-create-architecture`.
 
-**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*. If none were passed, **ask whether any exist** before interviewing.
+**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*. If none were passed, **ask whether any exist** before interviewing. **GATE.**
 
 ## Your role
 
@@ -51,7 +51,7 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.
 
-**If they decline the interview** ("just write it"): honor it, but name what you would have to guess, and offer the two or three highest-leverage questions instead of all of them. Everything still unanswered falls to the Evidence-or-TBD rule.
+**If they decline the interview** ("just write it"): honor it, but name what you would have to guess, and offer the two or three highest-leverage questions instead of all of them. **GATE.** Everything still unanswered falls to the Evidence-or-TBD rule.
 
 ### Phase 1 — Initiate
 Input given → restate and confirm. Blank → *"What do you want to build? A few sentences."* **GATE.**
@@ -107,7 +107,7 @@ Offer the next move and let the user run it — this skill does not chain into t
 
 ## Success criteria
 
-- ✅ Every phase was GATED — the user answered before you moved on.
+- ✅ Every phase was GATED — the user answered before you moved on, or declined the interview and every guess it left was named.
 - ✅ Every question shipped open — each answer in the PRD is the user's words.
 - ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
 - ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
