@@ -30,7 +30,7 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 
 A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix-findings` never defers one — a deferred red test would reach PASS still red.
 
-A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium** (Step 6): a `bug`'s proof would be the test itself turning red without the fix, which is circular for a test that is already red. A test the **Testing strategy** names, or the test that reproduces the defect the change repairs — the defect a bug ticket describes, or the one the implementation report's *Summary* names as repaired — is this change's to turn green whatever the base shows.
+A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium** (Step 6): a `bug`'s proof would be the test itself turning red without the fix, which is circular for a test that is already red. A test the **Testing strategy** names, or the test that reproduces the defect a `bug` ticket describes, is this change's to turn green whatever the base shows.
 
 **A project with no test suite holds the change to no test.** `piv-implement-ticket` builds there without tests rather than setting a suite up, so *missing* and *untested* do not apply, and *red* and *weakened* cannot arise. Say so in *Checks run*, naming the behaviors the change adds or alters that go untested, and raise no finding for them.
 
@@ -42,15 +42,11 @@ The **change under review** is everything this branch added on top of the base b
 
 Nothing to review — a clean tree with no commits ahead of the base → **STOP** and say so.
 
-**Then look for the implementation report**, which says what the author meant to build. `docs/ISSUE-TRACKER.md` says where reports live and how their names are built. `$ARGUMENTS` carries the ticket id when one was handed to you; otherwise take it from the branch name, in the form `docs/GIT-CONVENTIONS.md` defines. With an id, the report's name follows from it.
+**Then resolve the ticket id.** `$ARGUMENTS` carries it when one was handed to you; otherwise take it from the branch name, in the form `docs/GIT-CONVENTIONS.md` defines. Neither carries one → ask the user for it. **GATE.**
 
-**No id** — the work has no ticket, so the reports are named for its `intent-slug`, and the branch's `<short-slug>` is not reliably that slug. Match existing reports first: scan the reports directory and compare the **Branch** header of every report there — implementation, review and fix reports alike, since all of one branch's reports carry it — against the branch you are on. The matches all carry one `intent-slug` → that is the slug this run uses from here on, and the implementation report under it, when there is one, is the report. No match → there is no report, and the intent-slug falls back to the branch name's `<short-slug>` in the form `docs/GIT-CONVENTIONS.md` gives it. Matches carrying more than one `intent-slug` → ask the user which one covers this branch. **GATE.**
+**Then read the ticket**, where `docs/ISSUE-TRACKER.md` says tickets live, and take its **Testing strategy** — the bar the change was held to — and its `Intent-slug`. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
 
-Take from the report the ticket it implemented, and above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. There is no report → review the change on its own terms; this skill never requires one.
-
-**Then read the Testing strategy the change was held to**, from its source: the ticket, where `docs/ISSUE-TRACKER.md` says tickets live, or the plan document the report's `Plan` names. The report's *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. A ticket that can't be read — missing, or the system unreachable — or a `Plan` naming a file that can't be read → **STOP** and say which it was. With neither a ticket nor a plan, the project's testing standard is the only bar.
-
-**Settle the `intent-slug` once, and write it down.** With an id or a report, take it from the ticket's or the report's header block; with neither, it is the branch-name fallback above — and because that fallback is the weakest derivation, the review report records the slug it used in its header. A later run reuses the slug from an existing review report instead of re-deriving it, so a re-review overwrites the report it should overwrite rather than writing a second one beside it.
+**Then look for the implementation report** at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one.
 
 ### Step 2 — Resolve the deferrals
 
@@ -97,13 +93,13 @@ A surviving blocking finding stays **blocking**, and its kind names it. Give eve
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id or the `intent-slug` resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count of blocking findings and the count per severity.
+Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count of blocking findings and the count per severity.
 
 The blocking heading and every severity heading are present on every run, and one that survived nothing reads "No findings." The verdict is **CHANGES REQUESTED** when any blocking, critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
 
 ## Hand off
 
-The review report is the artifact this run leaves behind, so hand over its path by name — with the ticket id when there is one. Offer the next move and let the user run it — this skill does not chain into the next one:
+The review report is the artifact this run leaves behind, so hand over its path by name, with the ticket id. Offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **PASS** → run `piv-commit-changes`, in a session of its own, handed the ticket id. The medium and low findings stay in the report; `piv-create-pr` carries them into the PR body.
 - **CHANGES REQUESTED** → run `piv-fix-findings`, in a session of its own, handed the review report's path as the review to work from.
@@ -114,5 +110,5 @@ The review report is the artifact this run leaves behind, so hand over its path 
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
-- ✅ The change was held to the **Testing strategy** read from the ticket or the plan document, when there is one.
+- ✅ The change was held to the **Testing strategy** read from the ticket.
 - ✅ The report follows the template in **Output**, and its path was handed to whatever runs next.

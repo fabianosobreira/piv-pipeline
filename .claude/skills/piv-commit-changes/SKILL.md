@@ -17,7 +17,9 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 `docs/GIT-CONVENTIONS.md` defines which branch is the base branch. Work belongs on its own branch: when you are on the base branch, ask the user before committing anything. **GATE.** Go ahead when they confirm — a solo project with no PR coming commits on the base branch by design.
 
-**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines — named from the ticket id — the one `$ARGUMENTS` carries, or the one the branch name carries — or, with no id, by comparing each review report's **Branch** header against this branch. More than one match → ask the user which one covers this branch. **GATE.** Read its **Verdict** and nothing else, and check whether a fix report beside it is newer than it. The verdict is not PASS, there is no review report, or the fix report is newer — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
+**Then resolve the ticket id** — the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/GIT-CONVENTIONS.md` defines. Neither carries one → ask the user for it. **GATE.**
+
+**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. Read its **Verdict** and nothing else, and check whether a fix report beside it is newer than it. The verdict is not PASS, there is no review report, or the fix report is newer — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
 
 ### Step 2 — Inspect
 
@@ -29,7 +31,7 @@ One group per coherent piece of work, and the groups cover everything uncommitte
 
 ### Step 4 — Commit each group
 
-Take one group at a time — stage it, then commit it with a subject line in the form `docs/GIT-CONVENTIONS.md` defines: `<tag>: <atomic description> (<ticket id>)`. The id is the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/GIT-CONVENTIONS.md` defines. No id in either place → drop the suffix.
+Take one group at a time — stage it, then commit it with a subject line in the form `docs/GIT-CONVENTIONS.md` defines: `<tag>: <atomic description> (<ticket id>)`, with the id resolved in Step 1.
 
 ### Step 5 — Add a body when the subject isn't enough
 
@@ -47,12 +49,12 @@ Done when every group is committed and the working tree is clean.
 
 Confirm each commit by its short hash and subject, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Open the PR** — run `piv-create-pr`, in this same session. The ticket id travels on the branch name, in the form `docs/GIT-CONVENTIONS.md` defines, and that is where the next skill reads it from.
+- **Open the PR** — run `piv-create-pr`, in this same session, handed the ticket id.
 
 ## Success criteria
 
 - ✅ The latest review report's verdict was PASS, with no fix report newer than it — or the user ruled to commit anyway.
 - ✅ Every uncommitted change landed in a group, or the user decided where it goes.
 - ✅ Every group is one coherent piece of work its subject can name.
-- ✅ Every subject follows `<tag>: <atomic description> (<ticket id>)`, with the tag the work earns and the id present whenever one exists.
+- ✅ Every subject follows `<tag>: <atomic description> (<ticket id>)`, with the tag the work earns.
 - ✅ The working tree is clean at the end of the run.

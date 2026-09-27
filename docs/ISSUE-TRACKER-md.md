@@ -39,9 +39,9 @@ The three reports use the same header block, with the fields their own templates
 
 - **Plans** (architecture docs, PRDs) — `docs/.plans/<intent-slug>.architecture.md`, `docs/.plans/<intent-slug>.prd.md`.
 - **Tickets** — `docs/.tickets/<intent-slug>.md`.
-- **Implementation reports** — `docs/.reports/<ticket-id>-report.md`, or `docs/.reports/<intent-slug>-report.md` when the work has no ticket.
-- **Review reports** — `docs/.reports/<ticket-id>-review.md`, or `docs/.reports/<intent-slug>-review.md` when there is no ticket, so a ticket's reports sit side by side.
-- **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`, or `docs/.reports/<intent-slug>-fixes.md` when there is no ticket.
+- **Implementation reports** — `docs/.reports/<ticket-id>-report.md`.
+- **Review reports** — `docs/.reports/<ticket-id>-review.md`, so a ticket's reports sit side by side.
+- **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`.
 
 Plans stay local, so intent and architecture stay separable and get reviewed beside the code.
 
@@ -61,7 +61,7 @@ The other lines of a block come from the creating skill's own template, one line
 
 ## Finding a review's deferrals
 
-A deferral is a block in the intent's breakdown file whose `Origin:` line carries the review report's path verbatim in its `Review` field. With a ticket behind the review, that line also carries the ticket's id; with none, the path alone identifies it. Read the `Origin:` lines of `docs/.tickets/<intent-slug>.md`; a block whose `Review` field matches the path exactly is one of that review's deferrals.
+A deferral is a block in the intent's breakdown file whose `Origin:` line carries the reviewed ticket's id in its `Ticket` field. Read the `Origin:` lines of `docs/.tickets/<intent-slug>.md`; a block whose `Ticket` field matches the id exactly is one of that review's deferrals.
 
 ## Intent-slug
 

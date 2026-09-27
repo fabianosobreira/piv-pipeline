@@ -64,14 +64,14 @@ An issue type that doesn't exist yet is created before the first ticket that nee
 
 ## Finding a review's deferrals
 
-With a ticket behind the review, its deferrals are the issues linked to that ticket as *relates to* whose *Origin* `Ticket` line names it. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Run a text search over project `<KEY>`'s issues for the path; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+A review's deferrals are the issues linked to the reviewed ticket as *relates to* whose *Origin* `Ticket` line names it.
 
 ## Paths
 
 - **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic as above.
-- **Implementation reports** — `docs/.reports/<ticket-id>-report.md`, or `docs/.reports/<intent-slug>-report.md` when the work has no ticket. A Jira key is already filename-safe: write it as it is, `PROJ-123-report.md`.
-- **Review reports** — `docs/.reports/<ticket-id>-review.md`, or `docs/.reports/<intent-slug>-review.md` when there is no ticket. Same form, so a ticket's reports sit side by side.
-- **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`, or `docs/.reports/<intent-slug>-fixes.md` when there is no ticket. Same form again.
+- **Implementation reports** — `docs/.reports/<ticket-id>-report.md`. A Jira key is already filename-safe: write it as it is, `PROJ-123-report.md`.
+- **Review reports** — `docs/.reports/<ticket-id>-review.md`. Same form, so a ticket's reports sit side by side.
+- **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`. Same form again.
 
 ## Intent-slug
 

@@ -10,6 +10,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **A published plan is frozen.** Changing it after the tickets exist means a new PRD or architecture doc and a new `piv-create-tickets` run. Refused: documenting a manual revision procedure in the tracker docs, and giving revision an owning skill.
 - **`piv-create-tickets` does not guard against a second epic for the same `Intent-slug`.** Not adopted: a STOP or a GATE after searching the tracker for an existing epic.
 - **`piv-create-tickets` offers `piv-create-architecture` at a GATE before Step 1**, when it holds a PRD only and the work has real technical uncertainty. Refused: folding the offer into the Step 5 GATE — Steps 1-4 would already be spent slicing against a guessed architecture.
+- **Every run downstream of `piv-create-tickets` carries a ticket id.** A skill that finds none asks for it at a GATE. Removed earlier rule: a plan document as `piv-implement-ticket`'s input, with reports named by `intent-slug` and deferrals found by the review report's path.
 - **`piv-implement-ticket` names `piv-review-changes` flatly instead of offering a menu.** The asymmetry with the other six skills is deliberate — do not normalize it.
 
 ## Reports and the PR
@@ -20,7 +21,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **`piv-create-pr` never reads the ticket id from commit bodies.** Refused: keeping bodies as a source — a body mentioning another ticket would put its header block on the PR and close it at the merge.
 - **The review report's *Checks run* is not a source for the PR's *Validation*.** Not adopted: a PASS already implies a green suite.
 - **`piv-review-changes` does not read the PR body.** It runs before any PR exists; a reviewer's agent working from the PR sits outside the loop.
-- **The fix report is overwritten each round; a re-review finds earlier deferrals on the tracker.** Refused: accumulating the fix report's *Deferred* section across rounds, and accepting that a round-1 deferral resurfaces in round 3 of work with no ticket.
+- **The fix report is overwritten each round; a re-review finds earlier deferrals on the tracker, through their link to the reviewed ticket.** Refused: accumulating the fix report's *Deferred* section across rounds.
 - **The triage's default cut defers every low.** Refused: defaulting low to *Noise / won't-fix* — a low dropped without a deferral comes back every round. The asymmetry with the PASS path, which sends the same findings only to the PR body, is accepted.
 - **A *Noise / won't-fix* ruling is evidence the re-review weighs, never a closure.** Refused: treating it as a prior decision that drops the finding outright, and ignoring it — a false positive ruled high would block PASS every round.
 - **Test facts block the verdict outside the severity scale.** Not adopted: mapping the blocking kinds onto `high` — they are observed, not judged.

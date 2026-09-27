@@ -1,7 +1,7 @@
-# Fix report — <feature or ticket title>
+# Fix report — <ticket title>
 
 - **Intent-slug**: <intent-slug>
-- **Ticket**: <id or "none">
+- **Ticket**: <id>
 - **Branch**: <branch>
 - **Review**: <path of the review report>
 

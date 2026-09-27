@@ -11,11 +11,11 @@ This continues the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes:
 
 A review produced findings — but a review is **input, not a work order**: you propose where each one lands, and the user rules on the split at the GATE below.
 
-`$ARGUMENTS` carries the review report's path. **No path handed to you** — go find the report written for this branch, where `docs/ISSUE-TRACKER.md` says review reports live. With a ticket id on the branch name, in the form `docs/GIT-CONVENTIONS.md` gives it, the report's name follows from the id. With no id, the branch's `<short-slug>` is not reliably the report's `intent-slug`: scan the review reports and compare each one's **Branch** header against the branch you are on. One match → that is the report. More than one → ask the user which one covers this branch. **GATE.** Not found — the name built from the id doesn't exist, or no **Branch** header matches — **STOP** and ask the user for the report to work from; until a report exists there is nothing to triage.
+`$ARGUMENTS` carries the review report's path. **No path handed to you** — go find the report written for this branch, at the review report path `docs/ISSUE-TRACKER.md` defines, named from the ticket id on the branch name, in the form `docs/GIT-CONVENTIONS.md` gives it. No id on the branch name → ask the user for it. **GATE.** No report at that path → **STOP** and ask the user for the report to work from; until a report exists there is nothing to triage.
 
 **Read it end to end first**, so you understand every finding before triaging — the report is what you work from, and its findings arrive with the evidence and the severity that make each one actionable.
 
-Take the ticket id and the `intent-slug` from the review report's header. They are what the fix report is named for, so the two reports sit side by side.
+Take the ticket id from the review report's header. It is what the fix report is named for, so the two reports sit side by side.
 
 **A fix report already at that path, its `Review` header naming this review report** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review-changes` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report older than the review report belongs to an earlier round: triage from scratch.
 
@@ -42,16 +42,14 @@ A **blocking** finding — a red, missing or weakened test, or an untested behav
 
 ### Step 2 — Open a ticket for each deferral
 
-A deferral is a ticket: create it by the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket* — the same rules `piv-create-tickets` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement-ticket` can pick it up cold. Fill the template at `templates/deferral.md`, taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's per-ticket context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first, and the *Origin* `Review` path is only the key the next review finds the deferral by.
+A deferral is a ticket: create it by the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket* — the same rules `piv-create-tickets` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement-ticket` can pick it up cold. Fill the template at `templates/deferral.md`, taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's per-ticket context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
 
-With a ticket behind the review, read that ticket where `docs/ISSUE-TRACKER.md` says tickets live — it is where the deferral's epic and header block come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was; an epic or header block filled from a guess files the deferral where no filter finds it.
+Read the reviewed ticket where `docs/ISSUE-TRACKER.md` says tickets live — it is where the deferral's epic and header block come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was; an epic or header block filled from a guess files the deferral where no filter finds it.
 
 - **Type** — the type ruled at the GATE.
 - **Epic and header block** — the reviewed ticket's epic as its parent, and its `Intent-slug`, `Intent` and `Architecture` copied verbatim.
 - **Link** — linked to the reviewed ticket, the way *Creating a ticket* says a deferral is. That link is what lets the next review find the deferral once this fix report is overwritten, and what the PR body points at.
 - **Depends on** — the reviewed ticket: the code the finding names only exists once that ticket lands.
-
-**No ticket behind the review** — there is no epic or ticket to copy or link. Copy `Intent-slug`, `Intent` and `Architecture` from the implementation report `docs/ISSUE-TRACKER.md` names for this intent, or, with no implementation report, take the `Intent-slug` from the review report's header and write "none" for the other two. Create the deferral with no parent, no link, and "none" under *Depends on*. Its *Origin* `Review` line, copied verbatim, is then the only thing the next review finds it by, so never shorten or reword that path.
 
 Leave the epic's body as it is — its *Tickets* list and its dependency graph alike: `piv-create-tickets` owns both, the deferral reaches the epic through the epic link *Creating a ticket* gives it, and a deferral blocks nothing — it only depends on the reviewed ticket.
 
@@ -82,7 +80,7 @@ Finish the fix report started in Step 1 — every bucket settled, *Checks run* f
 
 Confirm the fix report's path and each deferral ticket's id, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- Run `piv-review-changes` again over the branch, in a session of its own. It reads the deferral tickets this run opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id when there is one, and tell the user to clear every *Needs a human look* item by hand before starting it: the next fix run overwrites this report, and an item still open by then drops off the record.
+- Run `piv-review-changes` again over the branch, in a session of its own. It reads the deferral tickets this run opened, so what was deferred on the record stays closed and only what is genuinely still open comes back. Hand it the ticket id, and tell the user to clear every *Needs a human look* item by hand before starting it: the next fix run overwrites this report, and an item still open by then drops off the record.
 
 ## Success criteria
 

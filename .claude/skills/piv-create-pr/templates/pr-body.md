@@ -1,6 +1,6 @@
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the ticket's `Intent` — the implementation report's when there is no ticket — copied verbatim, or "none">
-- **Architecture**: <the ticket's `Architecture` — the implementation report's when there is no ticket — copied verbatim, or "none">
+- **Intent**: <the ticket's `Intent`, copied verbatim, or "none">
+- **Architecture**: <the ticket's `Architecture`, copied verbatim, or "none">
 
 ## Summary
 <1–2 sentences: what this branch delivers, from the implementation report's *Summary*>
@@ -28,8 +28,7 @@
 <the implementation report's *Problems encountered* — what it left unfinished — or "none", or "unknown — no implementation report available"; a PARTIAL status names them here, and after a fix round and a PASS review that followed it each one is marked "reported by the implementation before the PASS review">
 
 ## Linked
-<ticket ids, or "none">
-<with a ticket and a fix report: "Findings deferred during review live on the tracker as tickets linked to <ticket id>.">
-<with no ticket and a fix report: "Findings deferred during review live on the tracker as tickets whose *Origin* names `<review report path>`.">
+<the ticket id>
+<with a fix report: "Findings deferred during review live on the tracker as tickets linked to <ticket id>.">
 
 <_Ready for review._ | _Draft — waiting on the open problems above._>

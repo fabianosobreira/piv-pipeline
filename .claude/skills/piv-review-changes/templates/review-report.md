@@ -1,7 +1,7 @@
-# Review report — <feature or ticket title>
+# Review report — <ticket title>
 
 - **Intent-slug**: <intent-slug>
-- **Ticket**: <id or "none">
+- **Ticket**: <id>
 - **Branch**: <branch>
 - **Verdict**: PASS | CHANGES REQUESTED
 

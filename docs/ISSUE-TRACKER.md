@@ -68,14 +68,14 @@ The epic follows the same missing-label rule for its `epic` label, and carries `
 
 ## Finding a review's deferrals
 
-With a ticket behind the review, its deferrals are the issues on that ticket's timeline whose *Origin* `Ticket` line names it. The timeline alone is not the filter: a sliced ticket that names it under *Depends on* cross-references it too, and carries no *Origin*. With none, a deferral has nothing to link to, so it is found by the review report's path instead: every deferral carries that path verbatim on its *Origin* `Review` line. Search this repo's issues for the path as text; an issue whose `Review` line matches it exactly is one of that review's deferrals.
+A review's deferrals are the issues on the reviewed ticket's timeline whose *Origin* `Ticket` line names it. The timeline alone is not the filter: a sliced ticket that names it under *Depends on* cross-references it too, and carries no *Origin*.
 
 ## Paths
 
 - **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic as above.
-- **Implementation reports** — `docs/.reports/<ticket-id>-report.md`, or `docs/.reports/<intent-slug>-report.md` when the work has no ticket. Normalize the id for filenames first: `#123` → `123`.
-- **Review reports** — `docs/.reports/<ticket-id>-review.md`, or `docs/.reports/<intent-slug>-review.md` when there is no ticket. Same normalization, so a ticket's reports sit side by side.
-- **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`, or `docs/.reports/<intent-slug>-fixes.md` when there is no ticket. Same normalization again.
+- **Implementation reports** — `docs/.reports/<ticket-id>-report.md`. Normalize the id for filenames first: `#123` → `123`.
+- **Review reports** — `docs/.reports/<ticket-id>-review.md`. Same normalization, so a ticket's reports sit side by side.
+- **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`. Same normalization again.
 
 ## Intent-slug
 

@@ -320,7 +320,7 @@
           <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, issues encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code>.</dd>
 
           <dt>How it runs</dt>
-          <dd>Resolve the ticket → work on a branch → read the ticket end to end → drift check → execute tasks in order → close the testing strategy → run the checks → final verification.</dd>
+          <dd>Resolve the ticket → work on a branch → read the ticket end to end and check for drift → execute tasks in order → close the testing strategy → run the checks → final verification.</dd>
 
           <dt>Next move</dt>
           <dd><code>piv-review-changes</code>, in a session of its own, handed the ticket id.</dd>
@@ -466,7 +466,6 @@
         <span class="tag">The intent-slug</span>
         <p>Every artifact of one intent carries the same <code>intent-slug</code>: the kebab-slug of the epic or product title. Every artifact opens with a <strong>header block</strong> — a short markdown list, one bold field per line — and the slug is its first field. Later steps <strong>read it from the artifact instead of re-deriving it</strong> — so a PRD written as <code>user-auth.prd.md</code> never grows an <code>authentication.architecture.md</code> beside it.</p>
       </div>
-      <p>When the work has no ticket, the <code>intent-slug</code> takes the ticket id's place in the report filenames.</p>
     </section>
 
     <section id="house-rules">
