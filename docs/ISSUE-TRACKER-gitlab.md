@@ -8,7 +8,7 @@ Where a project's plans and tickets live. The skills read that file instead of a
 
 One name per artifact, used the same way across every skill:
 
-- **intent** — the *what and why*: a PRD, an epic, or a brief.
+- **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
 - **ticket** — one provable unit of work, sliced out of the two above.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
@@ -43,13 +43,11 @@ The PRD and the architecture doc are **written as local files** while the plan i
 
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
-1. **Creates the epic** — a group-level epic — unless it was handed one that already exists. It never creates a second epic for an intent that already has one.
+1. **Creates the epic** — a group-level epic.
 2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart.
 3. **Writes the two upload URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the upload list.
 
 An attachment is the raw markdown file: a plan of any size travels whole, there is nothing to split across comments, and nothing the tracker's renderer can mangle on the way in.
-
-**A revised plan is uploaded again under the same name**, and the epic's field and description are repointed at the new upload. **So is every ticket linked to the epic whose `Intent` or `Architecture` still carries the old URL** — deferrals included — because each one copied that URL verbatim, and a ticket picked up cold reads its own field first. When GitLab becomes unreachable partway, say so and stop, naming the tickets still pointing at the old upload. The superseded upload stays where it is — GitLab keeps every one — so the fields are the only thing that says which is current. Reports and merge requests already written keep the URL they carry: they record the plan the work was built against.
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them. **The epic lives at the group level while the tickets are project issues**, so the plans sit one level above the backlog they generated — link the epic from each ticket so the trace survives that gap.
 

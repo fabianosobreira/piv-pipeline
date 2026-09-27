@@ -6,7 +6,7 @@ Where this project's plans and tickets live. The skills read this file instead o
 
 One name per artifact, used the same way across every skill:
 
-- **intent** — the *what and why*: a PRD, an epic, or a brief.
+- **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
 - **ticket** — one provable unit of work, sliced out of the two above.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
@@ -41,15 +41,13 @@ The PRD and the architecture doc are **written as local files** while the plan i
 
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
-1. **Creates the epic** — an issue carrying the `epic` label, filled from the epic template — unless it was handed one that already exists. It never creates a second epic for an intent that already has one.
+1. **Creates the epic** — an issue carrying the `epic` label, filled from the epic template.
 2. **Posts the PRD and the architecture doc as two separate comments** on that epic. Each opens with its own heading — `# PRD — <title>`, `# Architecture — <title>` — and that heading is how a later reader tells the two apart among the epic's other comments.
 3. **Writes the two comment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with.
 
 An issue body — the epic's, a ticket's — carries no heading of its own, because the issue title already is one. Only comments carry a heading, because a comment has no title.
 
 A plan too large for one comment splits across several, each still opening with its own heading; a doc from these templates never comes close to the limit.
-
-**A revised plan edits its comment in place**, heading kept, rather than posting a new one: every ticket copied the comment URL verbatim, and an edit keeps that URL pointing at the current plan. A revision that no longer fits adds a comment after the last one of that plan, opening with the same heading.
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them.
 

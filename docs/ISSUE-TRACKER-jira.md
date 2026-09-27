@@ -6,7 +6,7 @@
 
 One name per artifact, used the same way across every skill:
 
-- **intent** — the *what and why*: a PRD, an epic, or a brief.
+- **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
 - **ticket** — one provable unit of work, sliced out of the two above.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
@@ -41,13 +41,11 @@ The PRD and the architecture doc are **written as local files** while the plan i
 
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
-1. **Creates the epic** — an issue of type **Epic** — unless it was handed one that already exists. It never creates a second epic for an intent that already has one.
+1. **Creates the epic** — an issue of type **Epic**.
 2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart.
 3. **Writes the two attachment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the attachment list.
 
 An attachment is the raw markdown file, which is what makes this the right shape on Jira in particular: **Jira does not store markdown.** A description or a comment becomes Atlassian Document Format on the way in, and that conversion is lossy — an attachment goes in and comes back out byte for byte.
-
-**A revised plan is attached again under the same name**, and the epic's field and description are repointed at the new attachment. **So is every child of the epic whose `Intent` or `Architecture` still carries the old URL** — deferrals included — because each one copied that URL verbatim, and a ticket picked up cold reads its own field first. When Jira becomes unreachable partway, say so and stop, naming the tickets still pointing at the old attachment. Jira keeps the superseded one, so the fields are the only thing that says which is current. Reports and pull requests already written keep the URL they carry: they record the plan the work was built against.
 
 Published this way, the plans travel with the epic rather than with the machine that wrote them.
 

@@ -4,10 +4,12 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 
 ## Who owns what in the pipeline
 
-- **The epic is born in `piv-create-tickets` and is never an input to `piv-create-prd` or `piv-create-architecture`.** Neither planning skill may take, name or depend on an epic; `piv-create-tickets` is the single point that publishes a plan.
+- **The epic is born in `piv-create-tickets` and is never an input to any skill.** No planning skill may take, name or depend on an epic; `piv-create-tickets` is the single point that creates it and publishes a plan.
+- **`piv-create-tickets` takes a PRD from `piv-create-prd`, an architecture doc from `piv-create-architecture`, or both — nothing else.** Removed earlier rule: slicing an epic that already exists or a free-form brief — neither is a real scenario, and both loaded the skill with decisions it never needs.
 - **An architecture doc's `Intent` names a PRD or says "none" — nothing else.** Refused: pointing the field at a brief or idea and having `piv-create-tickets` publish it as the intent — it publishes whatever the field names as the PRD.
-- **`piv-create-tickets` offers `piv-create-architecture` at a GATE before Step 1**, when it holds intent only and the work has real technical uncertainty. Refused: folding the offer into the Step 5 GATE — Steps 1-4 would already be spent slicing against a guessed architecture.
-- **`piv-create-tickets` GATEs when a local plan differs from its published one.** Refused: leaving revisions to no skill — tickets would be sliced from one version while their header points at the other.
+- **A published plan is frozen.** Changing it after the tickets exist means a new PRD or architecture doc and a new `piv-create-tickets` run. Refused: documenting a manual revision procedure in the tracker docs, and giving revision an owning skill.
+- **`piv-create-tickets` does not guard against a second epic for the same `Intent-slug`.** Not adopted: a STOP or a GATE after searching the tracker for an existing epic.
+- **`piv-create-tickets` offers `piv-create-architecture` at a GATE before Step 1**, when it holds a PRD only and the work has real technical uncertainty. Refused: folding the offer into the Step 5 GATE — Steps 1-4 would already be spent slicing against a guessed architecture.
 - **`piv-implement-ticket` names `piv-review-changes` flatly instead of offering a menu.** The asymmetry with the other six skills is deliberate — do not normalize it.
 
 ## Reports and the PR
@@ -35,7 +37,6 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **A branch name keeps the ticket id's case.** Refused: lowercasing the id and restoring the tracker's form on the way back — nothing named the restore, a lowercased id misses the report files on a case-sensitive filesystem, and Jira/Git integrations match on the key as Jira writes it.
 - **A deferral is a ticket, created by the same *Creating a ticket* rules as every other.** Its origin goes in the body's `## Origin`, not a new header field — the header block stays the ticket contract. Refused: appending the deferral to the epic's *Tickets* list — `piv-create-tickets` is the one owner of the epic's body.
 - **A ticket carries no group.** Removed earlier rule: a group label on every ticket — a ticket with no group read as an error, and the fix reached for was creating a label.
-- **On GitLab and Jira, revising a published plan repoints every ticket still carrying the old URL.** Refused: resolving the URL through the epic at read time (it breaks the verbatim copy), and repointing open PRs.
 - **Templates stay inside their own skill's `templates/` directory.** Refused: a shared `docs/templates/`.
 
 ## Artifact format

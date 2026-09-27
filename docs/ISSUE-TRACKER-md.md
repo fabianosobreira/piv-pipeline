@@ -8,7 +8,7 @@ Where this project's plans and tickets live. The skills read this file instead o
 
 One name per artifact, used the same way across every skill:
 
-- **intent** — the *what and why*: a PRD, an epic, or a brief.
+- **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent.
 - **ticket** — one provable unit of work, sliced out of the two above.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
