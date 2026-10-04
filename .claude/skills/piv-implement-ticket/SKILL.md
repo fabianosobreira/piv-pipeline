@@ -21,17 +21,19 @@ From here on, **the ticket governs the run**. If it carries no actionable tasks 
 
 When the ticket's type is `bug`, this run is a **repair**, and the instructions marked **Repair:** apply on top of the normal ones. A repair run is done only when every instruction marked **Repair:** is satisfied.
 
-**Check the dependencies.** When the ticket names a **Depends on**, confirm that dependency is implemented — merged, or committed on the base branch. It isn't → **STOP** and say which ticket has to land first; building against a sliced-but-unbuilt dependency plans against a guess.
+**Fetch the base branch** `docs/GIT-CONVENTIONS.md` defines. From here on, *the base* is its remote tip: the local copy lags whatever merged since the last pull.
+
+**Check the dependencies.** When the ticket names a **Depends on**, confirm that dependency is implemented — merged into the base. It isn't → **STOP** and say which ticket has to land first; building against a sliced-but-unbuilt dependency plans against a guess.
 
 ### Step 2 — Work on a branch
 
-The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVENTIONS.md` defines the base branch and the branch name — read it before creating anything.
+The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVENTIONS.md` defines the branch name — read it before creating anything. A branch this run creates starts from the base.
 
-- **On the base branch, clean** → record the baseline on it, then create a branch following that convention. The ticket id belongs in the name: every later step of the loop reads the id back out of it.
+- **On the base branch, clean** → create the branch, then record the baseline on it. The ticket id belongs in the name: every later step of the loop reads the id back out of it.
 - **Already on a feature branch or in a worktree** → record the baseline in a worktree of the base, then use the branch. Warn if the branch name doesn't reference it.
 - **On the base branch with uncommitted changes** → **STOP**: commit or stash first.
 
-**The baseline** is the project's full test suite run against the base branch before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so Step 6 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. **The project has no test suite** → say so, skip the baseline, and carry on without tests: this run implements the ticket, and setting up a suite is not its job. Every test instruction below then falls away, and the report's *Tests added* says why.
+**The baseline** is the project's full test suite run against the base before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so Step 6 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. **The project has no test suite** → say so, skip the baseline, and carry on without tests: this run implements the ticket, and setting up a suite is not its job. Every test instruction below then falls away, and the report's *Tests added* says why.
 
 ### Step 3 — Read the ticket end to end
 
