@@ -93,7 +93,7 @@ A surviving blocking finding stays **blocking**, and its kind names it. Give eve
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Then print the verdict with the count of blocking findings and the count per severity.
+Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md`, built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Its **Round** is 1 on a first review and the previous review's **Round** plus one on a re-review. Then print the verdict with the count of blocking findings and the count per severity.
 
 The blocking heading and every severity heading are present on every run, and one that survived nothing reads "No findings." The verdict is **CHANGES REQUESTED** when any blocking, critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
 

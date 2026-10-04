@@ -3,6 +3,7 @@
 - **Intent-slug**: <intent-slug>
 - **Ticket**: <id>
 - **Branch**: <branch>
+- **Round**: <n>
 - **Verdict**: PASS | CHANGES REQUESTED
 
 ## Scope

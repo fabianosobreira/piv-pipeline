@@ -4,6 +4,7 @@
 - **Ticket**: <id>
 - **Branch**: <branch>
 - **Review**: <path of the review report>
+- **Round**: <the review report's Round>
 
 ## Fixed
 - **<the finding's one-line claim>** — `path/to/file.py:42` → <what changed> · proof: <the test or check that proves it> | not fixed — <pending, or why the run stopped>

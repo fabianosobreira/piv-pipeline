@@ -17,7 +17,7 @@ A review produced findings — but a review is **input, not a work order**: you 
 
 Take the ticket id from the review report's header. It is what the fix report is named for, so the two reports sit side by side.
 
-**A fix report already at that path, its `Review` header naming this review report** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review-changes` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report older than the review report belongs to an earlier round: triage from scratch.
+**A fix report already at that path, its Round matching this review report's** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review-changes` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report with a lower Round belongs to an earlier review: triage from scratch.
 
 ## Process
 
