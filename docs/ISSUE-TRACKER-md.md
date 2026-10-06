@@ -57,7 +57,7 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Status** — `Status: todo`.
 - **Acceptance criteria** — a markdown checklist under the literal bold line `Acceptance criteria`.
 
-The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:`, `Evidence:` and `Suggested fix:` where a sliced ticket carries `Scope:` and `Per-ticket context:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
+The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:`, `Evidence:` and `Suggested fix:` where a sliced ticket carries `Scope:` and `Entry context:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
 
 ## Finding a review's deferrals
 
@@ -99,12 +99,12 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 ### <INTENT-SLUG>-1 — <title>
 - Status: todo
 - Type: <bug | feature | task>
-- Description: <what and why> — traced to <the intent or architecture section it came from>
+- Description: <what and why>
 - Root cause: <type bug only: the root cause, with path:line evidence>
 - Reproduction: <type bug only: the input, the observed outcome and the expected one — concrete enough to become a failing test>
 - Scope: <one provable concern: the surfaces it touches · rough size · the docs the change makes stale, or "none">
 - Out of scope: <surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
-- Per-ticket context: <the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the intent">
+- Entry context: Decisions: <the architecture IDs, or the intent or architecture sections, this ticket implements, cited and never copied, plus any unsettled fact it depends on> · Starting code: <`path:line`, and what that code does today> · External references: <references outside this repository, or "none"> · Neighbors: <what adjacent tickets own in the same files, or "none">
 - Depends on: <none, or <INTENT-SLUG>-x>
 - Testing strategy: <the test or check that proves each acceptance criterion, named per criterion — "project defaults" covers how the checks run, never which ones>
 

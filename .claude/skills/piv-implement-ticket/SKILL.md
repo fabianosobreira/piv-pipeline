@@ -37,9 +37,11 @@ The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVEN
 
 ### Step 3 — Read the ticket end to end
 
-Before any edit, read the ticket's **`Architecture`** field and its **Per-ticket context** first — the architecture doc, the guides and seams it names; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list**, when they already read as one; criteria written as outcome prose instead carry no explicit order, so derive the task list from them yourself, and check the list covers everything the ticket asks for before you touch any code. **Repair:** also the root cause, and whether the proposed fix still addresses it.
+Before any edit, read the ticket's **`Architecture`** field and its **Entry context** first — the decisions it cites, the starting code, the external references and what the neighbors own; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list**, when they already read as one; criteria written as outcome prose instead carry no explicit order, so derive the task list from them yourself, and check the list covers everything the ticket asks for before you touch any code. **Repair:** also the root cause, and whether the proposed fix still addresses it.
 
 **If the `Architecture` field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/ISSUE-TRACKER.md` says plans live. Unresolvable there → **STOP**, asking for it; building without the architecture the ticket was sliced against plans against a guess.
+
+**When *Entry context › Decisions* cites sections of the intent**, resolve the ticket's `Intent` field the same way and read those sections. The ticket cites the intent instead of copying it, so the run has to read what it cites. Unresolvable → **STOP**, asking for it.
 
 **The Testing strategy says which tests, never whether.** "project defaults" means the project's own testing standard applies. A strategy that waives the tests for a behavior the ticket adds or alters → ask whether to write them anyway or rework the ticket. **GATE.** With no test suite (Step 2), skip this.
 

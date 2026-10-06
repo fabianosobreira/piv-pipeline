@@ -3,7 +3,7 @@
 - **Architecture**: <the epic's `Architecture`, copied verbatim, or "none">
 
 ## Description
-<what and why> — traced to <the intent or architecture section it came from>
+<what and why>
 
 ## Root cause
 <type bug only: the root cause, with path:line evidence>
@@ -17,8 +17,11 @@
 ## Out of scope
 <surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
 
-## Per-ticket context
-<the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the epic" — plus any unsettled fact this ticket depends on>
+## Entry context
+- **Decisions**: <the architecture IDs, or the intent or architecture sections, this ticket implements — cited, never copied — plus any unsettled fact it depends on>
+- **Starting code**: <`path:line`, and what that code does today>
+- **External references**: <references that live outside this repository, or "none">
+- **Neighbors**: <what adjacent tickets own in the same files, or "none">
 
 ## Depends on
 <the ids of the tickets this one waits on, or "none">
