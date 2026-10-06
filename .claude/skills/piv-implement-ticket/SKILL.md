@@ -37,7 +37,7 @@ The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVEN
 
 ### Step 3 — Read the ticket end to end
 
-Before any edit, read the ticket's **`Architecture`** field and its **Entry context** first — the decisions it cites, the starting code, the external references and what the neighbors own; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list**, when they already read as one; criteria written as outcome prose instead carry no explicit order, so derive the task list from them yourself, and check the list covers everything the ticket asks for before you touch any code. **Repair:** also the root cause, and whether the proposed fix still addresses it.
+Before any edit, read the ticket's **`Architecture`** field and its **Entry context** first — the decisions it cites, the starting code, the external references and what the neighbors own; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list**, when they already read as one; criteria written as outcome prose instead carry no explicit order, so derive the task list from them yourself, and check the list covers everything the ticket asks for before you touch any code. **Repair:** also the root cause — on a sliced ticket, its *Root cause*; on a deferral, *Origin › Location* and *Evidence* — and whether the proposed fix still addresses it.
 
 **If the `Architecture` field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/ISSUE-TRACKER.md` says plans live. Unresolvable there → **STOP**, asking for it; building without the architecture the ticket was sliced against plans against a guess.
 
@@ -45,7 +45,7 @@ Before any edit, read the ticket's **`Architecture`** field and its **Entry cont
 
 **The Testing strategy says which tests, never whether.** "project defaults" means the project's own testing standard applies. A strategy that waives the tests for a behavior the ticket adds or alters → ask whether to write them anyway or rework the ticket. **GATE.** With no test suite (Step 2), skip this.
 
-**Then check for drift.** Where the ticket quotes existing code or cites line refs, open those files and compare. Drift → **STOP**, saying the ticket needs to be redone against the current code: any quoted code that no longer exists, has moved, or changed in a way that makes the ticket's instruction for it unperformable. Cosmetic differences (formatting, renamed locals, shifted line numbers with identical code) are not drift. **Repair:** also confirm the defect still reproduces before changing anything — it doesn't → **STOP**, saying the ticket is stale or already fixed.
+**Then check for drift.** Where the ticket quotes existing code or cites line refs, open those files and compare. Drift → **STOP**, saying the ticket needs to be redone against the current code: any quoted code that no longer exists, has moved, or changed in a way that makes the ticket's instruction for it unperformable. Cosmetic differences (formatting, renamed locals, shifted line numbers with identical code) are not drift. **Repair:** also confirm the defect still reproduces before changing anything, by the ticket's *Reproduction* — on a deferral, by its *Evidence* — and when it doesn't → **STOP**, saying the ticket is stale or already fixed.
 
 **Then mark the ticket in flight**, the way `docs/ISSUE-TRACKER.md` says this project marks it. That is what keeps a parallel wave from picking up the same ticket twice.
 
@@ -104,4 +104,4 @@ Confirm the implementation report's path. Next: `piv-review-changes` gates the w
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.
 - ✅ The change matches the patterns of the files it touched (Step 4a).
 - ✅ Documentation the change made stale is updated.
-- ✅ **Repair:** the reproduction steps no longer reproduce the defect, and the tests around the touched code still pass.
+- ✅ **Repair:** the ticket's *Reproduction* — on a deferral, its *Evidence* — no longer reproduces the defect, and the tests around the touched code still pass.
