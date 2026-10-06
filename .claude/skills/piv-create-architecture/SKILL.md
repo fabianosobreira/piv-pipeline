@@ -74,6 +74,7 @@ A menu, not a checklist. Take what fits the shape of work, **name what you're sk
 - **Data model** — the main entities, their relationships, and how they're stored — at the model level (the shape), not columns and migrations. Skip it when the work doesn't own data.
 - **Boundaries & contracts** — **name the trust boundaries this work crosses**: security/auth posture, secrets, external dependencies, and the major interface boundaries. **Rarely skippable** — almost every change crosses one somewhere.
 - **Operational shape** — how it runs, gets observed, and fails: deployment/rollout, failure modes, recovery. Often where the real risk lives for infra and pipeline work.
+- **Testability** — the seams the tests will need that the code doesn't offer yet (clock, external services, static or `new`-constructed dependencies), and how each is injected. Brownfield: check what the target platform provides before choosing a mechanism.
 - **Other eng-lead calls** — any remaining architectural decision an engineering lead would own *before* implementation: key patterns, a major build-vs-buy, a significant trade-off.
 - **Missing pieces** — what doesn't exist yet that the chosen approach needs (often the real work).
 - **Spikes & experiments** — anything uncertain or expensive-to-reverse → see below.
