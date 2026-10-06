@@ -34,7 +34,7 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 - **What shape of work is this?** A new application · a data pipeline · an infrastructure change · an integration between systems that already exist · a migration · a change that produces no new artifact at all. "Architecture" is not always a stack choice, and this answer selects your questions from the menu below — a stack question aimed at a migration is noise, and asking it signals you assumed the project type.
 - **New build, or existing system?**
   - **Greenfield** — an intent with nothing built yet. Explore the *solution space*: approaches, the web for current best practices and options, first principles. The architecture is what you *decide*.
-  - **Brownfield** — work landing on a system that already runs. Explore *how this lands*: where it plugs in, what it reuses, what it must not break. **Exploring what already exists is your first move here** — read the relevant surfaces yourself rather than relying on a prior orientation step. The architecture is partly what *is*, partly what you decide on top — keep the read high-level, not an exhaustive audit.
+  - **Brownfield** — work landing on a system that already runs. Explore *how this lands*: where it plugs in, what it reuses, what it must not break. **Exploring what already exists is your first move here** — read the relevant surfaces yourself rather than relying on a prior orientation step. The architecture is partly what *is*, partly what you decide on top — keep the read high-level, not an exhaustive audit. For every rule this work replaces, record in *Behavior changes vs today* the checks the code runs today and what happens to each — only those rules, not the whole system.
 
 ### Step 2 — Interaction mode: grilling
 
@@ -120,5 +120,6 @@ Confirm where you wrote it, summarize the recommended approach + the key calls i
 - ✅ The doc contains no task list or step-by-step breakdown.
 - ✅ The doc's header block carries the `Intent-slug` and the `Intent`.
 - ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open questions** holds only what is still open.
+- ✅ Brownfield: every rule the work replaces has its current checks listed in *Behavior changes vs today*, each one kept, changed or dropped.
 - ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly — never a summary it would have to re-derive.
 - ✅ Every link and code reference resolves from where the doc is published: a reference outside this repository names its repository and revision, and nothing links to a file that stays local, such as a report. Every literal the implementation must reproduce — messages, constants — is quoted in full.
