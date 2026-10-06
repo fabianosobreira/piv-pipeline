@@ -76,6 +76,7 @@ Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim en
 For every ticket, draft:
 - **Title** — imperative and specific (`Add token refresh endpoint`, not `Auth`).
 - **Description** — what and why, traced back to the intent section it came from.
+- **Root cause** and **Reproduction** — type `bug` only, left out of every other type: taken from the intent or architecture section that states the defect, or from the code read in Step 2, with `path:line` evidence.
 - **Acceptance criteria** — a checklist a reviewer can verify.
 - **Scope** — the surfaces it touches, enumerated from Step 2, and a rough size.
 - **Out of scope** — the surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does.
@@ -97,7 +98,7 @@ With a PRD only and no architecture, keep this graph coarse and say so — real 
 
 The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets live. Say which one you are writing to.
 
-**GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
+**GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, and the root cause of a `bug` slice that no source or code read supports with `path:line` evidence, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
 **If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Open questions* and to the *Per-ticket context* of each ticket it affects, never resolved silently.
 
@@ -139,6 +140,7 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 - ✅ **One provable concern each**, with verifiable acceptance criteria and enough context to be picked up cold.
 - ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type.
 - ✅ **Every ticket carries an enumerated *Scope* and an *Out of scope*,** and every unsettled fact is on the *Unsettled* list — with the GATE skipped, also in the *Per-ticket context* of each ticket it affects.
+- ✅ **Every `bug` ticket carries a *Root cause* with `path:line` evidence and a *Reproduction* — or its root cause is on the *Unsettled* list, and with the GATE skipped, also in the ticket's *Per-ticket context*.**
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked.
 - ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.
