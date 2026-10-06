@@ -15,6 +15,9 @@
 ## Key decisions
 <one sub-section per menu item this work actually raised, named after the menu item it came from — **Building blocks**, **Data model**, **Boundaries & contracts**, **Operational shape**, **Testability**, **Other eng-lead calls**. State each decision as prose; a call made without the user closes with the literal label **(decided-by-default)**>
 
+## Behavior changes vs today
+<brownfield only: for each rule this work replaces, the checks the code runs today (`path:line`) and what happens to each — kept, changed or dropped>
+
 ## Missing pieces
 <what has to exist that doesn't yet — the building blocks this approach depends on>
 
