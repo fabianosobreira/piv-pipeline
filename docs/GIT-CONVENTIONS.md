@@ -30,4 +30,4 @@ This repo ships skills: its markdown is the product, not documentation of it. Pi
 - **`docs`** — what only people read: `README.md`, `pages/`.
 - **`chore`** — `tools/`, `.claude/settings*`, repo configuration.
 
-The docs an agent loads — `CLAUDE.md`, `docs/PIV-LOOP.md`, `docs/MEMORY.md`, `docs/ISSUE-TRACKER*.md`, this file — count as skills, not as `docs`. A change that mixes effects is split into one commit per effect; when it can't be split, the largest effect names the tag.
+The docs an agent loads — `CLAUDE.md`, `docs/PIV-LOOP.md`, `docs/RULINGS.md`, `docs/ISSUE-TRACKER*.md`, this file — count as skills, not as `docs`. A change that mixes effects is split into one commit per effect; when it can't be split, the largest effect names the tag.

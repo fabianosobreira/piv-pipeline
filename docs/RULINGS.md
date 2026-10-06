@@ -1,6 +1,6 @@
-# Memory — rules settled by the maintainer
+# Rulings — rules settled by the maintainer
 
-Decisions the maintainer ruled on, recorded so a later session doesn't re-propose what was already settled. An entry is either a ruling with the alternative it refused, or a convention for editing this repo that no skill carries. Behavior a skill or a tracker doc already states stays there, not here — and the skill keeps its own reasons (see *Skill-writing conventions*). Each entry is a ruling: **change one only when the maintainer says to.**
+Decisions the maintainer ruled on, recorded so a later session doesn't re-propose what was already settled. An entry is either a ruling with the alternative it refused, or a convention for editing this repo that no skill carries. Behavior a skill or a tracker doc already states stays there, not here — and the skill keeps its own reasons. Each entry is a ruling: **change one only when the maintainer says to.**
 
 ## Who owns what in the pipeline
 
@@ -34,27 +34,13 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 ## Skills vs. tracker docs
 
 - **Anything tracker-specific belongs in `docs/ISSUE-TRACKER.md`, never inside a skill.** The tracker is swappable; a skill that branches on which tracker is in use is a defect — it delegates the procedure instead.
-- **A skill says "ticket", never "issue", and assumes no labels.** A skill names the tracker item a *ticket*, the epic "an epic of its own" when the tracker keeps one, and a ticket's classification its *type*; "issue" and "label" are one tracker's words and survive only in `docs/ISSUE-TRACKER*.md`. A problem is a *problem* — the reports say *Problems encountered* and *Open problems*.
 - **A branch name keeps the ticket id's case.** Refused: lowercasing the id and restoring the tracker's form on the way back — nothing named the restore, a lowercased id misses the report files on a case-sensitive filesystem, and Jira/Git integrations match on the key as Jira writes it.
 - **A deferral is a ticket, created by the same *Creating a ticket* rules as every other.** Its origin goes in the body's `## Origin`, not a new header field — the header block stays the ticket contract. Refused: appending the deferral to the epic's *Tickets* list — `piv-create-tickets` is the one owner of the epic's body.
 - **A ticket carries no group.** Removed earlier rule: a group label on every ticket — a ticket with no group read as an error, and the fix reached for was creating a label.
-- **Templates stay inside their own skill's `templates/` directory.** Refused: a shared `docs/templates/`.
-
-## Artifact format
-
-- **Header block, not YAML front matter.**
-- **Template placeholders are `<...>`**, in every template — not `{...}`, not `[...]`. Literal illustrative values (`` `path/to/file.py:42` ``, `PASS | CHANGES REQUESTED`) are not placeholders. The rule reaches every block a skill hands the run to fill — the hypothesis, the JTBD line, the spike — not only the files under `templates/`.
-- **Template headings are sentence case** — `Problem statement`, `Target user & JTBD`. Acronyms keep their capitals, and a skill citing a heading cites it in the same case. Refused: keeping the mixed case because the terms already matched across artifacts.
 
 ## Skill-writing conventions
 
-- **All eight skills carry `disable-model-invocation: true`**, and their descriptions carry no `Use when …` clause.
-- **No command examples.** Write the instruction in prose — "post each as an issue comment", not a `gh` invocation. Naming the tool a tracker is reached with is fine; spelling out its flags is not.
-- **`PIV-LOOP.md` is a reference an agent loads, not documentation for people.** Write it as terse rules the run can apply: the rule over its explanation, a short list over a table, no cost walkthroughs, examples or lists of what goes wrong. The explaining belongs in `pages/`.
-- **Centralizing vocabulary in `PIV-LOOP.md` does not license deleting the repetitions from the skills.** A skill restating a loop rule is carrying it into the run that needs it; leave it.
-- **A skill carries its own reasons.** `MEMORY.md` is local to this repo and never ships with the skills, which run in other projects' repos. A ruling recorded here still needs its rationale inside the skill that applies it, so a reason living in both places is not duplication to prune.
 - **Every "stop and ask, then carry on" in the skills was converted to `GATE` deliberately.** The remaining `STOP`s are the terminal ones. Don't reclassify either direction without a ruling.
-- `## Output` may legitimately contain numbered process steps when the output *is* those steps, as in `piv-create-tickets`.
 
 ## Working style
 
