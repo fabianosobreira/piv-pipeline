@@ -120,3 +120,4 @@ Confirm where you wrote it, summarize the recommended approach + the key calls i
 - ✅ The doc's header block carries the `Intent-slug` and the `Intent`.
 - ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open questions** holds only what is still open.
 - ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly — never a summary it would have to re-derive.
+- ✅ Every link and code reference resolves from where the doc is published: a reference outside this repository names its repository and revision, and nothing links to a file that stays local, such as a report. Every literal the implementation must reproduce — messages, constants — is quoted in full.
