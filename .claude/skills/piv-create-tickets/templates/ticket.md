@@ -5,6 +5,12 @@
 ## Description
 <what and why> — traced to <the intent or architecture section it came from>
 
+## Root cause
+<type bug only: the root cause, with path:line evidence>
+
+## Reproduction
+<type bug only: the input, the observed outcome and the expected one — concrete enough to become a failing test>
+
 ## Scope
 <one provable concern: the surfaces it touches · rough size>
 

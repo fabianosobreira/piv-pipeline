@@ -1,6 +1,6 @@
 # Rulings — rules settled by the maintainer
 
-Decisions the maintainer ruled on, recorded so a later session doesn't re-propose what was already settled. An entry is either a ruling with the alternative it refused, or a convention for editing this repo that no skill carries. Behavior a skill or a tracker doc already states stays there, not here — and the skill keeps its own reasons. Each entry is a ruling: **change one only when the maintainer says to.**
+Decisions the maintainer ruled on, recorded so a later session doesn't re-propose what was already settled. An entry is either a ruling with the alternative it refused, or a convention for editing this repo that no skill carries. Behavior a skill or a tracker doc already states stays there, not here. Each entry is a ruling: **change one only when the maintainer says to.**
 
 ## Who owns what in the pipeline
 
