@@ -53,7 +53,7 @@ If the intent carries explicit phases, use them as the grouping. If it doesn't, 
 
 ### Step 2 — Orient on the existing surface
 
-Slicing needs enough awareness of what already exists to judge what's independent vs dependent — overlap between slices, shared seams. If the session is already oriented, skip this. Otherwise **explore it yourself**: starting from the architecture's named seams (or, with a PRD only, from wherever this work would land), read the relevant surfaces to see what exists, what's reused, and where the new work goes. **Done when you can name, for every candidate slice, the surfaces it touches and where they overlap** — not a full re-derivation. Greenfield with nothing built yet: skip it, and say so.
+Slicing needs enough awareness of what already exists to judge what's independent vs dependent — overlap between slices, shared seams. **Explore it yourself**, unless the session is already oriented — that skips the reading, never the list below: starting from the architecture's named seams (or, with a PRD only, from wherever this work would land), read the relevant surfaces to see what exists, what's reused, and where the new work goes. **Done when**, for every symbol a slice changes, you have listed every caller found by searching the code — the search named — and, for every surface in the same role the slice leaves alone, why it stays out. Counts in a ticket come from that list, never from an estimate. The list also shows where the slices overlap. Greenfield with nothing built yet: skip it, and say so.
 
 ### Step 3 — Decompose into agent-sized slices
 
@@ -65,7 +65,7 @@ The size test is **behavioral, not numeric**. A well-sized ticket:
 - Is one coherent unit — a vertical slice of behavior, not a horizontal layer.
 - Has clear acceptance criteria of its own.
 - Is small enough that **one focused loop can finish it without losing the thread** — not so large that the work drifts and returns diminish.
-- Fits on one screen when described. A ticket that doesn't is two tickets.
+- Fits on one screen when described — the enumerated *Scope* and *Out of scope* lists aside. A ticket whose description doesn't is two tickets.
 
 Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim end-to-end slice that proves the whole flow thinly, fattened next loop — whatever makes each ticket easiest to prove. The *planning detail* stays high regardless — it's the *scope* that's larger.
 
@@ -77,7 +77,8 @@ For every ticket, draft:
 - **Title** — imperative and specific (`Add token refresh endpoint`, not `Auth`).
 - **Description** — what and why, traced back to the intent section it came from.
 - **Acceptance criteria** — a checklist a reviewer can verify.
-- **Scope** — the surfaces it touches, from Step 2, and a rough size.
+- **Scope** — the surfaces it touches, enumerated from Step 2, and a rough size.
+- **Out of scope** — the surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does.
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
 - **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own testing standard and checks are enough. "Project defaults" never waives the tests: every behavior the ticket adds or alters still gets one.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
@@ -96,9 +97,9 @@ With a PRD only and no architecture, keep this graph coarse and say so — real 
 
 The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets live. Say which one you are writing to.
 
-**GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph, then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
+**GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them.
+**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Open questions* and to the *Per-ticket context* of each ticket it affects, never resolved silently.
 
 ## Output — create the tickets
 
@@ -137,6 +138,7 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 - ✅ **Every ticket traces back to a specific section** of the intent or architecture.
 - ✅ **One provable concern each**, with verifiable acceptance criteria and enough context to be picked up cold.
 - ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type.
+- ✅ **Every ticket carries an enumerated *Scope* and an *Out of scope*,** and every unsettled fact is on the *Unsettled* list — with the GATE skipped, also in the *Per-ticket context* of each ticket it affects.
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked.
 - ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.

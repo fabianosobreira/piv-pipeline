@@ -6,10 +6,13 @@
 <what and why> — traced to <the intent or architecture section it came from>
 
 ## Scope
-<one provable concern: the surfaces it touches (estimate) · rough size>
+<one provable concern: the surfaces it touches · rough size>
+
+## Out of scope
+<surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
 
 ## Per-ticket context
-<the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the epic">
+<the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the epic" — plus any unsettled fact this ticket depends on>
 
 ## Depends on
 <the ids of the tickets this one waits on, or "none">

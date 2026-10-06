@@ -100,7 +100,8 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 - Status: todo
 - Type: <bug | feature | task>
 - Description: <what and why> — traced to <the intent or architecture section it came from>
-- Scope: <one provable concern: the surfaces it touches (estimate) · rough size>
+- Scope: <one provable concern: the surfaces it touches · rough size>
+- Out of scope: <surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
 - Per-ticket context: <the doc sections, guides and seams this ticket needs — e.g. "source-adapter guide · seam: adapter interface · success metrics 2 and 4 from the intent">
 - Depends on: <none, or <INTENT-SLUG>-x>
 - Testing strategy: <the tests this ticket needs and the checks that prove it, or "project defaults">
