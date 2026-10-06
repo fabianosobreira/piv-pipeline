@@ -168,7 +168,7 @@
           <tr>
             <td>Um ticket id pronto para construir</td>
             <td><code class="skill">piv-implement-ticket</code></td>
-            <td>Tickets carregam o próprio contexto, então o loop pega um do zero só pelo id.</td>
+            <td>Tickets citam o architecture e o intent, então o loop pega um só pelo id e lê as fontes por conta própria.</td>
           </tr>
           <tr>
             <td>Trabalho construído numa branch, ainda não commitado</td>
@@ -273,7 +273,7 @@
           <dd>O path de um PRD, o path de um architecture doc, ou ambos — escritos por <code>piv-create-prd</code> e <code>piv-create-architecture</code>.</dd>
 
           <dt>Output</dt>
-          <dd>O epic, com o PRD e o architecture doc publicados nele — e tickets reais embaixo dele, cada um com descrição, escopo, contexto próprio, <em>depends on</em> e acceptance criteria. Todo ticket referencia o epic de volta, para que o rastro sobreviva.</dd>
+          <dd>O epic, com o PRD e o architecture doc publicados nele — e tickets reais embaixo dele, cada um com descrição, escopo, entry context, <em>depends on</em> e acceptance criteria. Todo ticket referencia o epic de volta, para que o rastro sobreviva.</dd>
 
           <dt>Como roda</dt>
           <dd>Não interativa durante a decomposição e o mapeamento de dependências, e então <strong>um gate</strong> onde você confirma a divisão antes que qualquer coisa seja criada.</dd>
@@ -286,7 +286,7 @@
         </dl>
 
         <div class="usewhen">
-          <strong>Use quando</strong> um intent estiver resolvido e você precisar fatiá-lo em unidades que um agent consiga terminar e comprovar. Cada ticket carrega o próprio contexto, então pode ser pego do zero.
+          <strong>Use quando</strong> um intent estiver resolvido e você precisar fatiá-lo em unidades que um agent consiga terminar e comprovar. Cada ticket cita o architecture e o intent que implementa em vez de copiá-los, então as fontes ficam num só lugar.
         </div>
       </article>
     </section>

@@ -34,7 +34,7 @@ You rarely need all eight. Find the row that matches what you have in hand.
 | A product idea, nothing written | `piv-create-prd` | You need the *what and why* pinned down before anyone argues about the how. |
 | A PRD or an epic, and real technical uncertainty | `piv-create-architecture` | Decide the approach deliberately instead of letting tickets encode it by accident. |
 | A clear intent with little technical risk | `piv-create-tickets` | A legitimate shortcut — just know you skipped the architecture step on purpose. |
-| A ticket id ready to build | `piv-implement-ticket` | Tickets carry their own context, so the loop picks one up cold from its id alone. |
+| A ticket id ready to build | `piv-implement-ticket` | Tickets cite the architecture and the intent, so the loop picks one up from its id alone and reads the sources itself. |
 | Work built on a branch, not yet committed | `piv-review-changes` | This is the gate that decides whether the change earns a commit. |
 | A review report with findings | `piv-fix-findings` | Findings are input, not a work order — you rule on each one. |
 | A PASS verdict | `piv-commit-changes` | Atomic commits, then the PR. |

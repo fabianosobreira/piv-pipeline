@@ -179,7 +179,7 @@
           <tr>
             <td>A ticket id ready to build</td>
             <td><code class="skill">piv-implement-ticket</code></td>
-            <td>Tickets carry their own context, so the loop picks one up cold from its id alone.</td>
+            <td>Tickets cite the architecture and the intent, so the loop picks one up from its id alone and reads the sources itself.</td>
           </tr>
           <tr>
             <td>Work built on a branch, not yet committed</td>
@@ -284,7 +284,7 @@
           <dd>A PRD path, an architecture doc path, or both — written by <code>piv-create-prd</code> and <code>piv-create-architecture</code>.</dd>
 
           <dt>Output</dt>
-          <dd>The epic, with the PRD and the architecture doc published onto it — and real tickets under it, each with description, scope, per-ticket context, <em>depends on</em>, and acceptance criteria. Every ticket links back to the epic so the trace survives.</dd>
+          <dd>The epic, with the PRD and the architecture doc published onto it — and real tickets under it, each with description, scope, entry context, <em>depends on</em>, and acceptance criteria. Every ticket links back to the epic so the trace survives.</dd>
 
           <dt>How it runs</dt>
           <dd>Non-interactive through decomposition and dependency mapping, then <strong>one gate</strong> where you confirm the breakdown before anything is created.</dd>
@@ -297,7 +297,7 @@
         </dl>
 
         <div class="usewhen">
-          <strong>Use it when</strong> an intent is settled and you need it sliced into units an agent can finish and prove. Each ticket carries its own context, so it can be picked up cold.
+          <strong>Use it when</strong> an intent is settled and you need it sliced into units an agent can finish and prove. Each ticket cites the architecture and intent it implements instead of copying them, so the sources stay in one place.
         </div>
       </article>
     </section>
