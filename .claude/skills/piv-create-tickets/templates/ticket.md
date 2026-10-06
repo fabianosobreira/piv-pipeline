@@ -19,7 +19,7 @@
 
 ## Entry context
 - **Decisions**: <the architecture IDs, or the intent or architecture sections, this ticket implements — cited, never copied — plus any unsettled fact it depends on>
-- **Starting code**: <`path:line`, and what that code does today>
+- **Starting code**: <`path:line` inside this repository, and what that code does today>
 - **External references**: <references that live outside this repository, or "none">
 - **Neighbors**: <what adjacent tickets own in the same files, or "none">
 
