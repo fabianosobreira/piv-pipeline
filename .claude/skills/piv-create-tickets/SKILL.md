@@ -49,7 +49,7 @@ If the intent carries explicit phases, use them as the grouping. If it doesn't, 
 
 **Too vague to decompose → flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable. **GATE.**
 
-**Done when** every MVP line, JTBD, success metric, non-goal and open question — and, with an architecture, every named missing piece and *Spikes & experiments* entry — maps to a candidate slice, a decision ticket, or a note for Step 7's *not ticketed* list.
+**Done when** every MVP line, JTBD, success metric, non-goal and open question — and, with an architecture, every named missing piece and *Spikes & experiments* entry — maps to a candidate slice, a decision ticket, or a note for the epic's *Not ticketed* section and Step 7's *not ticketed* list.
 
 ### Step 2 — Orient on the existing surface
 
@@ -102,7 +102,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, an absorbed or replaced symbol whose removing ticket no source names, a compared edge no source settles, and the root cause of a `bug` slice that no source or code read supports with `path:line` evidence, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Open questions* and to the *Per-ticket context* of each ticket it affects, never resolved silently.
+**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Not ticketed* section and to the *Per-ticket context* of each ticket it affects, never resolved silently.
 
 ## Output — create the tickets
 
