@@ -42,7 +42,7 @@ A **blocking** finding — a red, missing or weakened test, or an untested behav
 
 ### Step 2 — Open a ticket for each deferral
 
-A deferral is a ticket: create it by the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket* — the same rules `piv-create-tickets` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement-ticket` can pick it up cold. Fill the template at `templates/deferral.md`, taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's per-ticket context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
+A deferral is a ticket: create it by the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket* — the same rules `piv-create-tickets` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement-ticket` can pick it up cold. Fill the template at `templates/deferral.md`, taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's entry context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
 
 Read the reviewed ticket where `docs/ISSUE-TRACKER.md` says tickets live — it is where the deferral's epic and header block come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was; an epic or header block filled from a guess files the deferral where no filter finds it.
 

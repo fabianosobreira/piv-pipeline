@@ -75,12 +75,12 @@ Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim en
 
 For every ticket, draft:
 - **Title** — imperative and specific (`Add token refresh endpoint`, not `Auth`).
-- **Description** — what and why, traced back to the intent section it came from.
+- **Description** — what and why. The sections it traces to go under *Entry context › Decisions*, never here.
 - **Root cause** and **Reproduction** — type `bug` only, left out of every other type: taken from the intent or architecture section that states the defect, or from the code read in Step 2, with `path:line` evidence.
 - **Acceptance criteria** — a checklist a reviewer can verify. A criterion that restates an architecture rule quotes it or links it, never paraphrases it. A criterion that compares values pins its edges — inclusive or exclusive bounds, date vs datetime, null values, ties — from the sources; an edge no source settles goes on the Step 5 *Unsettled* list, never decided here. A criterion that removes or relaxes a check the code applies today names that check, taken from the architecture's *Behavior changes vs today* when it has one.
 - **Scope** — the surfaces it touches, enumerated from Step 2, a rough size, and the docs the change makes stale — comments, docstrings, guides — found by searching for what the change overturns, or "none".
 - **Out of scope** — the surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does.
-- **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic. Every reference it carries resolves from the ticket alone — the repository named when it isn't this one — and every literal is quoted in full. One that can't be resolved or completed from the sources goes on the Step 5 *Unsettled* list.
+- **Entry context** — the four fields of the template: *Decisions*, *Starting code*, *External references* and *Neighbors*. The *Entry context* cites the architecture and the intent and never copies text from them; it holds only what is the ticket's own — starting code, external references, and how the work splits with its neighbors. The implementation run reads the architecture in full and the intent sections the ticket cites, and a copy can drift from its source. Every reference resolves from the ticket alone — the repository named when it isn't this one. One that can't be resolved or completed from the sources goes on the Step 5 *Unsettled* list.
 - **Testing strategy** — the test or check that proves each acceptance criterion, named per criterion. "Project defaults" covers how the checks run, never which ones, and never waives the tests: every behavior the ticket adds or alters still gets one.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
 
@@ -102,7 +102,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 
 **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, an absorbed or replaced symbol whose removing ticket no source names, a compared edge no source settles, and the root cause of a `bug` slice that no source or code read supports with `path:line` evidence, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Not ticketed* section and to the *Per-ticket context* of each ticket it affects, never resolved silently.
+**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Not ticketed* section and to the *Entry context › Decisions* of each ticket it affects, never resolved silently.
 
 ## Output — create the tickets
 
@@ -113,7 +113,7 @@ The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets l
 Then create one ticket per slice, in the same place, reaching that system with whatever tool fits. Fill the body from `templates/ticket.md`. **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic, its `Acceptance criteria` heading — the same rules `piv-fix-findings` follows for a deferral, so every ticket in the backlog reads the same and one filter finds them all. What those rules mean for a sliced ticket, and what it carries besides:
 
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal `Acceptance criteria` heading *Creating a ticket* names. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
-- The Step 3 context this ticket needs goes in the template's *Per-ticket context* field — that's what makes later orientation optional.
+- The Step 3 entry context goes in the template's *Entry context* section, cited rather than copied — the run reads the cited sources itself.
 - Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
 - Fill the header block's `Intent-slug`, `Intent` and `Architecture` from the epic's own fields, copied verbatim once the epic's fields point at the published plans — a ticket picked up cold still resolves both plans.
 - Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines, and, when the tracker keeps an epic of its own, add its line to the epic's *Tickets* list. That id is what every later step is handed.
@@ -139,10 +139,10 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 ## Success criteria
 
 - ✅ **Every ticket traces back to a specific section** of the intent or architecture.
-- ✅ **One provable concern each**, with verifiable acceptance criteria and enough context to be picked up cold.
+- ✅ **One provable concern each**, with verifiable acceptance criteria and an *Entry context* that cites its sources instead of copying them.
 - ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type.
-- ✅ **Every ticket carries an enumerated *Scope* and an *Out of scope*,** and every unsettled fact is on the *Unsettled* list — with the GATE skipped, also in the *Per-ticket context* of each ticket it affects.
-- ✅ **Every `bug` ticket carries a *Root cause* with `path:line` evidence and a *Reproduction* — or its root cause is on the *Unsettled* list, and with the GATE skipped, also in the ticket's *Per-ticket context*.**
+- ✅ **Every ticket carries an enumerated *Scope* and an *Out of scope*,** and every unsettled fact is on the *Unsettled* list — with the GATE skipped, also in the *Entry context › Decisions* of each ticket it affects.
+- ✅ **Every `bug` ticket carries a *Root cause* with `path:line` evidence and a *Reproduction* — or its root cause is on the *Unsettled* list, and with the GATE skipped, also in the ticket's *Entry context › Decisions*.**
 - ✅ **Every acceptance criterion quotes or links the architecture rule it restates, pins the edges of every comparison from the sources, and names each current check it removes or relaxes** — an edge no source settles is on the *Unsettled* list, never decided in the criterion.
 - ✅ **Every acceptance criterion maps to a named test or check in the *Testing strategy*, and each *Scope* names the docs the change makes stale, or "none".**
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked, and every absorbed or replaced symbol has a removing ticket in the graph or a line on the *Unsettled* list — with each ticket that touches it, other than the one that removes it, stating under *Out of scope* what it keeps.
