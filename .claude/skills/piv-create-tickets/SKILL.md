@@ -78,10 +78,10 @@ For every ticket, draft:
 - **Description** — what and why, traced back to the intent section it came from.
 - **Root cause** and **Reproduction** — type `bug` only, left out of every other type: taken from the intent or architecture section that states the defect, or from the code read in Step 2, with `path:line` evidence.
 - **Acceptance criteria** — a checklist a reviewer can verify. A criterion that restates an architecture rule quotes it or links it, never paraphrases it. A criterion that compares values pins its edges — inclusive or exclusive bounds, date vs datetime, null values, ties — from the sources; an edge no source settles goes on the Step 5 *Unsettled* list, never decided here. A criterion that removes or relaxes a check the code applies today names that check, taken from the architecture's *Behavior changes vs today* when it has one.
-- **Scope** — the surfaces it touches, enumerated from Step 2, and a rough size.
+- **Scope** — the surfaces it touches, enumerated from Step 2, a rough size, and the docs the change makes stale — comments, docstrings, guides — found by searching for what the change overturns, or "none".
 - **Out of scope** — the surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does.
 - **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic. Every reference it carries resolves from the ticket alone — the repository named when it isn't this one — and every literal is quoted in full. One that can't be resolved or completed from the sources goes on the Step 5 *Unsettled* list.
-- **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own testing standard and checks are enough. "Project defaults" never waives the tests: every behavior the ticket adds or alters still gets one.
+- **Testing strategy** — the test or check that proves each acceptance criterion, named per criterion. "Project defaults" covers how the checks run, never which ones, and never waives the tests: every behavior the ticket adds or alters still gets one.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
 
 ### Step 4 — Map dependencies and parallelism
@@ -144,6 +144,7 @@ Confirm where the tickets landed, then offer the next move and let the user run 
 - ✅ **Every ticket carries an enumerated *Scope* and an *Out of scope*,** and every unsettled fact is on the *Unsettled* list — with the GATE skipped, also in the *Per-ticket context* of each ticket it affects.
 - ✅ **Every `bug` ticket carries a *Root cause* with `path:line` evidence and a *Reproduction* — or its root cause is on the *Unsettled* list, and with the GATE skipped, also in the ticket's *Per-ticket context*.**
 - ✅ **Every acceptance criterion quotes or links the architecture rule it restates, pins the edges of every comparison from the sources, and names each current check it removes or relaxes** — an edge no source settles is on the *Unsettled* list, never decided in the criterion.
+- ✅ **Every acceptance criterion maps to a named test or check in the *Testing strategy*, and each *Scope* names the docs the change makes stale, or "none".**
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked, and every absorbed or replaced symbol has a removing ticket in the graph or a line on the *Unsettled* list — with each ticket that touches it, other than the one that removes it, stating under *Out of scope* what it keeps.
 - ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
 - ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.

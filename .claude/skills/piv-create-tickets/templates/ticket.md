@@ -12,7 +12,7 @@
 <type bug only: the input, the observed outcome and the expected one — concrete enough to become a failing test>
 
 ## Scope
-<one provable concern: the surfaces it touches · rough size>
+<one provable concern: the surfaces it touches · rough size · the docs the change makes stale, or "none">
 
 ## Out of scope
 <surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
@@ -24,7 +24,7 @@
 <the ids of the tickets this one waits on, or "none">
 
 ## Testing strategy
-<the tests this ticket needs and the checks that prove it, or "project defaults">
+<the test or check that proves each acceptance criterion, named per criterion — "project defaults" covers how the checks run, never which ones>
 
 ## Acceptance criteria
 - [ ] <criterion a reviewer can verify>
