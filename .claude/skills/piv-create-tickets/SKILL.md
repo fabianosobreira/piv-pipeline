@@ -80,7 +80,7 @@ For every ticket, draft:
 - **Acceptance criteria** — a checklist a reviewer can verify.
 - **Scope** — the surfaces it touches, enumerated from Step 2, and a rough size.
 - **Out of scope** — the surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does.
-- **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic.
+- **Per-ticket context** — the doc sections, guides, and seams this ticket needs. This is what lets a loop pick the ticket up later without re-reading the whole epic. Every reference it carries resolves from the ticket alone — the repository named when it isn't this one — and every literal is quoted in full. One that can't be resolved or completed from the sources goes on the Step 5 *Unsettled* list.
 - **Testing strategy** — the tests this ticket needs and the checks that prove it, or "project defaults" when the project's own testing standard and checks are enough. "Project defaults" never waives the tests: every behavior the ticket adds or alters still gets one.
 - **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
 
