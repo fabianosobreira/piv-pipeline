@@ -43,6 +43,8 @@ Before any edit, read the ticket's **`Architecture`** field and its **Entry cont
 
 **When *Entry context › Decisions* cites sections of the intent**, resolve the ticket's `Intent` field the same way and read those sections. The ticket cites the intent instead of copying it, so the run has to read what it cites. Unresolvable → **STOP**, asking for it.
 
+**What the architecture and the intent describe beyond the decisions the ticket cites is context, not scope.** *Scope*, *Out of scope* and the acceptance criteria draw the boundary of the run.
+
 **The Testing strategy says which tests, never whether.** "project defaults" means the project's own testing standard applies. A strategy that waives the tests for a behavior the ticket adds or alters → ask whether to write them anyway or rework the ticket. **GATE.** With no test suite (Step 2), skip this.
 
 **Then check for drift.** Where the ticket quotes existing code or cites line refs inside this repository, open those files and compare. The references under *External references* are context, not drift-checked: the run may not be able to open them, and an unreachable file is not evidence of drift. Drift → **STOP**, saying the ticket needs to be redone against the current code: any quoted code that no longer exists, has moved, or changed in a way that makes the ticket's instruction for it unperformable. Cosmetic differences (formatting, renamed locals, shifted line numbers with identical code) are not drift. **Repair:** also confirm the defect still reproduces before changing anything, by the ticket's *Reproduction* — on a deferral, by its *Evidence* — and when it doesn't → **STOP**, saying the ticket is stale or already fixed.
