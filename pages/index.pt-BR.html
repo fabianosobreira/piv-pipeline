@@ -205,10 +205,10 @@
           <dd><code>[ideia de produto]</code> e, opcionalmente, caminhos para research docs — entrevistas com usuários, temas de tickets de suporte, analytics, análises de concorrentes. Em branco, começa pelas perguntas.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code> — problem statement, evidências, tese, hipótese, usuário-alvo e JTBD, MVP, métricas de sucesso, não-objetivos, questões em aberto.</dd>
+          <dd><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code> — problem statement, evidências, tese, hipótese, usuário-alvo e JTBD, restrições, MVP, métricas de sucesso, não-objetivos, questões em aberto.</dd>
 
           <dt>Como roda</dt>
-          <dd>Uma entrevista agrupada em cinco fases, cada uma terminando em um gate onde ela espera por você.</dd>
+          <dd>Uma entrevista agrupada em cinco fases, cada uma terminando em um gate onde ela espera por você. As perguntas são numeradas ao longo de toda a rodada, e a hipótese volta para você, montada com as suas próprias palavras, antes de ser fechada.</dd>
 
           <dt>Guards</dt>
           <dd>
@@ -246,7 +246,7 @@
           <dd><code>docs/.plans/&lt;intent-slug&gt;.architecture.md</code> — problema e objetivos, abordagens consideradas, abordagem recomendada, decisões-chave, peças faltantes, spikes e experimentos, questões em aberto.</dd>
 
           <dt>Como roda</dt>
-          <dd><strong>Modo grilling.</strong> Ela contesta suas premissas em vez de transcrevê-las, e sinaliza as portas de mão única que merecem um spike antes do compromisso.</dd>
+          <dd><strong>Modo grilling.</strong> Ela contesta suas premissas em vez de transcrevê-las, e sinaliza as portas de mão única que merecem um spike antes do compromisso. Toda recomendação diz em que se apoia — o código, o intent, uma convenção — ou diz que não se apoia em nada.</dd>
 
           <dt>Próximo passo</dt>
           <dd><code>piv-create-tickets &lt;caminho do intent&gt; docs/.plans/&lt;intent-slug&gt;.architecture.md</code>, nesta sessão ou em uma nova — ou construir antes um spike que esteja bloqueando.</dd>
@@ -279,7 +279,7 @@
           <dd>Não interativa durante a decomposição e o mapeamento de dependências, e então <strong>um gate</strong> onde você confirma a divisão antes que qualquer coisa seja criada.</dd>
 
           <dt>Guard</dt>
-          <dd>Sem architecture doc, ela avisa, mantém os tickets no formato de resultado em vez de implementação, e oferece <code>piv-create-architecture</code> primeiro quando a incerteza técnica é real.</dd>
+          <dd>Sem architecture doc, ela avisa, mantém os tickets no formato de resultado em vez de implementação, e oferece <code>piv-create-architecture</code> primeiro quando a incerteza técnica é real. Todo critério de aceite é um que a implementação consegue cumprir dentro do repositório; um passo que pertence a outro sistema ou a outra pessoa — uma mudança no banco, um cadastro em outro sistema — vai para as referências externas do ticket e para o <em>Not ticketed</em> do epic.</dd>
 
           <dt>Próximo passo</dt>
           <dd><code>piv-implement-ticket &lt;ticket-id&gt;</code>, em uma sessão própria, uma por ticket — ou iniciar em paralelo uma leva de tickets independentes, cada um em uma sessão própria.</dd>
@@ -303,10 +303,10 @@
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[ticket-id | caminho-do-plan-document]</code>. Em branco, ela pergunta qual ticket.</dd>
+          <dd><code>[ticket id]</code>. Em branco, ela pergunta qual ticket.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — resumo, tasks concluídas, testes adicionados, resultados de validação, <strong>desvios em relação ao ticket</strong>, problemas encontrados. O status é <code>COMPLETE</code> ou <code>PARTIAL</code>.</dd>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — resumo, tasks concluídas, testes adicionados, resultados de validação, <strong>desvios em relação ao ticket</strong>, problemas encontrados. O status é <code>COMPLETE</code> ou <code>PARTIAL</code> — <code>PARTIAL</code> também quando um arquivo alterado é ignorado pelo git, porque ele nunca viaja com a branch.</dd>
 
           <dt>Como roda</dt>
           <dd>Resolver o ticket → trabalhar em uma branch → ler o ticket de ponta a ponta e checar o drift → executar as tasks em ordem → fechar a estratégia de testes → rodar as checks → verificação final.</dd>
@@ -343,7 +343,7 @@
           <dd><strong>CHANGES REQUESTED</strong> quando qualquer finding blocking, critical ou high sobrevive. <strong>PASS</strong> caso contrário — um PASS com findings medium e low é normal.</dd>
 
           <dt>Como roda</dt>
-          <dd>Resolver a mudança → resolver as deferrals anteriores → ler os padrões que a mudança precisa cumprir → ler cada arquivo alterado de ponta a ponta → montar o caso → aplicar três filtros que eliminam findings não comprovadas.</dd>
+          <dd>Resolver a mudança → resolver as deferrals anteriores → ler os padrões que a mudança precisa cumprir → ler cada arquivo alterado de ponta a ponta → montar o caso → aplicar três filtros que eliminam findings não comprovadas. A mudança é cobrada pelos critérios de aceite do ticket, além da testing strategy: um critério que o código não cumpre vira uma finding <code>high</code>.</dd>
 
           <dt>Próximo passo</dt>
           <dd><strong>PASS</strong> → <code>piv-commit-changes</code>, em uma sessão própria. <strong>CHANGES REQUESTED</strong> → <code>piv-fix-findings</code>, em uma sessão própria, recebendo o caminho deste report.</dd>
@@ -409,7 +409,7 @@
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[base branch]</code> — em branco, usa a base branch do projeto.</dd>
+          <dd><code>[base branch] · [ticket id]</code> — em branco, usa a base branch do projeto, com o ticket id lido do nome da branch.</dd>
 
           <dt>Output</dt>
           <dd>Uma branch publicada e um review request aberto: resumo, o que mudou, validação, notas para o reviewer, questões em aberto, ticket vinculado. Ela reporta o número do PR, a URL e as branches base ← head.</dd>
@@ -448,12 +448,12 @@
           <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code class="skill">piv-review-changes</code></td><td>fix-findings, re-review, commit, PR</td></tr>
           <tr><td>Fix report</td><td><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code></td><td><code class="skill">piv-fix-findings</code></td><td>re-review, PR</td></tr>
         </tbody>
-        <caption>Os ticket ids são normalizados para nomes de arquivo antes — <code>#123</code> vira <code>123</code> — para que os reports de um ticket fiquem lado a lado. Os plans são escritos localmente e continuam lá; <code class="skill">piv-create-tickets</code> publica uma cópia no epic — um comentário no GitHub, um attachment no GitLab e no Jira — para que as decisões viajem com o trabalho em vez de ficarem na máquina que as escreveu.</caption>
+        <caption>Os ticket ids são normalizados para nomes de arquivo antes — <code>#123</code> vira <code>123</code> — para que os reports de um ticket fiquem lado a lado. Os plans são escritos localmente e continuam lá; <code class="skill">piv-create-tickets</code> publica uma cópia no epic — um comentário no GitHub, um attachment no GitLab e no Jira — para que as decisões viajem com o trabalho em vez de ficarem na máquina que as escreveu. O PRD é publicado primeiro, e a cópia publicada da arquitetura aponta para ele, não para o arquivo local.</caption>
       </table>
 
       <div class="callout">
         <span class="tag">O intent-slug</span>
-        <p>Todo artifact de um mesmo intent carrega o mesmo <code>intent-slug</code>: o kebab-slug do título do epic ou do produto. Todo artifact abre com um <strong>header block</strong> — uma lista markdown curta, um campo em negrito por linha — e o slug é o primeiro campo dela. Os passos seguintes <strong>leem o slug do artifact em vez de derivá-lo de novo</strong> — assim, um PRD escrito como <code>user-auth.prd.md</code> nunca ganha um <code>authentication.architecture.md</code> ao lado.</p>
+        <p>Todo artifact de um mesmo intent carrega o mesmo <code>intent-slug</code>: o kebab-slug do título do epic ou do produto, em ASCII minúsculo e sem acentos. Todo artifact abre com um <strong>header block</strong> — uma lista markdown curta, um campo em negrito por linha — e o slug é o primeiro campo dela. Os passos seguintes <strong>leem o slug do artifact em vez de derivá-lo de novo</strong> — assim, um PRD escrito como <code>user-auth.prd.md</code> nunca ganha um <code>authentication.architecture.md</code> ao lado.</p>
       </div>
     </section>
 
@@ -465,6 +465,7 @@
         <li><strong>Skills param em vez de adivinhar.</strong> Nenhum tracker escolhido, um ticket id ambíguo, uma árvore suja com trabalho que não cabe em nenhum grupo, um review report que não existe — a rodada para e pergunta.</li>
         <li><strong>Review e fixes são rodadas separadas.</strong> O reviewer escreve as findings e não toca em código; a rodada de triagem decide o que acontece com cada uma, com você decidindo a divisão.</li>
         <li><strong>O loop fecha em um PASS.</strong> Uma rodada de fix sempre devolve para um review novo, que lê as issues de deferral para que o que foi decidido permaneça decidido.</li>
+        <li><strong>Um idioma por intent.</strong> O PRD — ou, sem PRD, o architecture doc — é escrito no idioma da entrevista, e todo artifact seguinte o acompanha. Os headings e rótulos dos templates ficam como os templates os escrevem.</li>
       </ol>
 
       <div class="callout warn">

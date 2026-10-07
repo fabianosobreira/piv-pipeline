@@ -59,7 +59,7 @@ Work the task list from Step 3, in order.
 - Write the tests for the behavior this task adds or alters, together with the task — unless the project has no test suite (Step 2).
 
 #### b. Verify as you go
-**Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none — acceptance criteria without checks, or a task written without one — run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter on the changed file. A task goes **green** when its check passes, and a red task gets fixed before the next one starts. When a failure survives a few honest attempts, apply the same escape Step 6 uses: record it and carry the run to Step 7 as PARTIAL rather than block here. Step 6 runs the full suite; this per-task gate is what keeps Step 6 from becoming a pile-up.
+**Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none — acceptance criteria without checks, or a task written without one — run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter the project ships on the changed file, when it ships one. A task goes **green** when its check passes, and a red task gets fixed before the next one starts. When a failure survives a few honest attempts, apply the same escape Step 6 uses: record it and carry the run to Step 7 as PARTIAL rather than block here. Step 6 runs the full suite; this per-task gate is what keeps Step 6 from becoming a pile-up.
 
 **Stay in scope:** implement what the ticket specifies. Refactors, improvements, and unrelated problems you find along the way each become their own ticket, and this branch carries this ticket's work only. When you must deviate, note what changed and why, and surface it in the report's *Deviations from the ticket*.
 
@@ -86,7 +86,7 @@ When a failure survives a few honest attempts, or its cause sits outside what th
 
 ### Step 7 — Final verification
 
-Before you write the report, walk the **Success criteria** at the end of this skill, line by line. Every line true → the status is COMPLETE. Any line that isn't true → the status is PARTIAL, and that line goes into the report's *Problems encountered*, named.
+Before you write the report, compare every file the change touched against the git status: a file the repository ignores never reaches the diff, the commit or the PR, so a change to one stays on this machine. Then walk the **Success criteria** at the end of this skill, line by line. Every line true → the status is COMPLETE. Any line that isn't true → the status is PARTIAL, and that line goes into the report's *Problems encountered*, named.
 
 ## Output — write an implementation report
 
@@ -99,6 +99,7 @@ Confirm the implementation report's path. Next: `piv-review-changes` gates the w
 ## Success criteria
 
 - ✅ Every task on the list from Step 3 is implemented.
+- ✅ Every file the change touched shows in the git status — none is one the repository ignores.
 - ✅ Every test the ticket asks for exists, runs and passes, and every behavior the change adds or alters has a test — or the project has no test suite, and the report's *Tests added* says so.
 - ✅ The full test suite and every other check run in Step 6 are green, apart from the baseline's red tests Step 6 leaves red.
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.

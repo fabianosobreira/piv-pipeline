@@ -43,7 +43,7 @@ The PRD and the architecture doc are **written as local files** while the plan i
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
 1. **Creates the epic** — an issue carrying the `epic` label, filled from the epic template.
-2. **Posts the PRD and the architecture doc as two separate comments** on that epic. Each opens with its own heading — `# PRD — <title>`, `# Architecture — <title>` — and that heading is how a later reader tells the two apart among the epic's other comments.
+2. **Posts the PRD and the architecture doc as two separate comments** on that epic. Each opens with its own heading — `# PRD — <title>`, `# Architecture — <title>` — and that heading is how a later reader tells the two apart among the epic's other comments. The PRD goes first, and the architecture's published copy carries the PRD comment's URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so a published doc pointing there points at nothing.
 3. **Writes the two comment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with.
 
 An issue body — the epic's, a ticket's — carries no heading of its own, because the issue title already is one. Only comments carry a heading, because a comment has no title.
@@ -59,7 +59,7 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Where** — an issue in this repo, its body filled from the creating skill's own template.
 - **Header block** — `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
 - **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
-- **Epic** — a sub-issue of its epic, when the intent has one.
+- **Epic** — a sub-issue of its epic, when the intent has one. `gh` has no command for it: the link goes through the REST API's sub-issues endpoint, which takes the ticket's database id, not its number.
 - **Link** — a deferral names the ticket the review covered under its *Origin*, which puts the cross-reference on that ticket's timeline.
 - **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
 
@@ -80,7 +80,7 @@ A review's deferrals are the issues on the reviewed ticket's timeline whose *Ori
 
 ## Intent-slug
 
-Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title. The PRD, the architecture doc, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
+Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. The PRD, the architecture doc, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
 
 ## Ticket id form
 
@@ -92,4 +92,4 @@ Write the id the way GitHub writes it — `#123`. Commit subjects and PR titles 
 
 - **Assignee** — `piv-implement-ticket` assigns the issue to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
 - **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
-- **PR link** — `piv-create-pr` links the pull request to the issue, which is what carries it into review and closes it at the merge.
+- **PR link** — `piv-create-pr` links the pull request to the issue with a closing keyword before the issue number in the PR body, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

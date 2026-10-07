@@ -15,7 +15,10 @@
 <the RIGHT/WRONG "We believe …" block from Phase 4>
 
 ## Target user & JTBD
-<primary user, the job-to-be-done, non-users, constraints>
+<primary user, the job-to-be-done, non-users>
+
+## Constraints
+<what any solution must respect — who may see or do what, regulation, deadlines, who approves — or "none">
 
 ## MVP
 <the thinnest line that proves the hypothesis end to end — and its door: one-way (spike first) or two-way (just build it)>

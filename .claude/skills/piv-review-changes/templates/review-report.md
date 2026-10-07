@@ -28,10 +28,10 @@ Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
 No findings.
 
 ### Medium
-…
+<findings in the Critical form, or "No findings.">
 
 ### Low
-…
+<findings in the Critical form, or "No findings.">
 
 ## Checks run
 <the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned; with no test suite, "no test suite" and the behaviors left untested>

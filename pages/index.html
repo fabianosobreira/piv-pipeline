@@ -216,10 +216,10 @@
           <dd><code>[product idea]</code> plus optional paths to research docs — user interviews, support-ticket themes, analytics, competitor teardowns. Blank starts with questions.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code> — problem statement, evidence, thesis, hypothesis, target user &amp; JTBD, MVP, success metrics, non-goals, open questions.</dd>
+          <dd><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code> — problem statement, evidence, thesis, hypothesis, target user &amp; JTBD, constraints, MVP, success metrics, non-goals, open questions.</dd>
 
           <dt>How it runs</dt>
-          <dd>A clustered interview in five phases, each ending at a gate where it waits for you.</dd>
+          <dd>A clustered interview in five phases, each ending at a gate where it waits for you. Questions are numbered across the whole run, and the hypothesis comes back to you assembled from your own words before it is final.</dd>
 
           <dt>Guards</dt>
           <dd>
@@ -257,7 +257,7 @@
           <dd><code>docs/.plans/&lt;intent-slug&gt;.architecture.md</code> — problem &amp; goals, approaches considered, recommended approach, key decisions, missing pieces, spikes &amp; experiments, open questions.</dd>
 
           <dt>How it runs</dt>
-          <dd><strong>Grilling mode.</strong> It pushes back on your assumptions rather than transcribing them, and flags the one-way doors that deserve a spike before you commit.</dd>
+          <dd><strong>Grilling mode.</strong> It pushes back on your assumptions rather than transcribing them, and flags the one-way doors that deserve a spike before you commit. Every recommendation names its basis — the code, the intent, a convention — or says it has none.</dd>
 
           <dt>Next move</dt>
           <dd><code>piv-create-tickets &lt;intent path&gt; docs/.plans/&lt;intent-slug&gt;.architecture.md</code>, here or in a fresh session — or go build a blocking spike first.</dd>
@@ -290,7 +290,7 @@
           <dd>Non-interactive through decomposition and dependency mapping, then <strong>one gate</strong> where you confirm the breakdown before anything is created.</dd>
 
           <dt>Guard</dt>
-          <dd>With no architecture doc, it says so, keeps tickets outcome-shaped instead of implementation-shaped, and offers <code>piv-create-architecture</code> first when the technical uncertainty is real.</dd>
+          <dd>With no architecture doc, it says so, keeps tickets outcome-shaped instead of implementation-shaped, and offers <code>piv-create-architecture</code> first when the technical uncertainty is real. Every acceptance criterion is one the implementation can meet inside the repository; a step another system or person owns — a database change, an entry in another system — goes to the ticket's external references and the epic's <em>Not ticketed</em>.</dd>
 
           <dt>Next move</dt>
           <dd><code>piv-implement-ticket &lt;ticket-id&gt;</code>, in a session of its own, one per ticket — or start a wave of independent tickets in parallel, each in a session of its own.</dd>
@@ -314,10 +314,10 @@
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[ticket-id | path-to-plan-document]</code>. Blank and it asks which ticket.</dd>
+          <dd><code>[ticket id]</code>. Blank and it asks which ticket.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, problems encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code>.</dd>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, problems encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code> — <code>PARTIAL</code> also when a changed file is one git ignores, since it never travels with the branch.</dd>
 
           <dt>How it runs</dt>
           <dd>Resolve the ticket → work on a branch → read the ticket end to end and check for drift → execute tasks in order → close the testing strategy → run the checks → final verification.</dd>
@@ -354,7 +354,7 @@
           <dd><strong>CHANGES REQUESTED</strong> when any blocking, critical or high finding survives. <strong>PASS</strong> otherwise — a PASS with medium and low findings is normal.</dd>
 
           <dt>How it runs</dt>
-          <dd>Resolve the change → resolve prior deferrals → read the standards the change must meet → read every changed file end to end → build the case → run three filters that kill unproven findings.</dd>
+          <dd>Resolve the change → resolve prior deferrals → read the standards the change must meet → read every changed file end to end → build the case → run three filters that kill unproven findings. The change is held to the ticket's acceptance criteria as well as its testing strategy: a criterion the code doesn't meet is a <code>high</code> finding.</dd>
 
           <dt>Next move</dt>
           <dd><strong>PASS</strong> → <code>piv-commit-changes</code>, in a session of its own. <strong>CHANGES REQUESTED</strong> → <code>piv-fix-findings</code>, in a session of its own, handed this report's path.</dd>
@@ -420,7 +420,7 @@
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[base branch]</code> — blank and it uses the project's base branch.</dd>
+          <dd><code>[base branch] · [ticket id]</code> — blank and it uses the project's base branch, with the ticket id read off the branch name.</dd>
 
           <dt>Output</dt>
           <dd>A published branch and an open review request: summary, what changed, validation, notes for the reviewer, open issues, linked ticket. It reports the PR number, the URL and the base ← head branches.</dd>
@@ -459,12 +459,12 @@
           <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code class="skill">piv-review-changes</code></td><td>fix-findings, re-review, commit, PR</td></tr>
           <tr><td>Fix report</td><td><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code></td><td><code class="skill">piv-fix-findings</code></td><td>re-review, PR</td></tr>
         </tbody>
-        <caption>Ticket ids are normalized for filenames first — <code>#123</code> becomes <code>123</code> — so a ticket's reports sit side by side. The plans are written locally and stay there; <code class="skill">piv-create-tickets</code> publishes a copy onto the epic — a comment on GitHub, an attachment on GitLab and Jira — so the decisions travel with the work instead of with the machine that wrote them.</caption>
+        <caption>Ticket ids are normalized for filenames first — <code>#123</code> becomes <code>123</code> — so a ticket's reports sit side by side. The plans are written locally and stay there; <code class="skill">piv-create-tickets</code> publishes a copy onto the epic — a comment on GitHub, an attachment on GitLab and Jira — so the decisions travel with the work instead of with the machine that wrote them. The PRD is published first, and the architecture's published copy points at it instead of at the local file.</caption>
       </table>
 
       <div class="callout">
         <span class="tag">The intent-slug</span>
-        <p>Every artifact of one intent carries the same <code>intent-slug</code>: the kebab-slug of the epic or product title. Every artifact opens with a <strong>header block</strong> — a short markdown list, one bold field per line — and the slug is its first field. Later steps <strong>read it from the artifact instead of re-deriving it</strong> — so a PRD written as <code>user-auth.prd.md</code> never grows an <code>authentication.architecture.md</code> beside it.</p>
+        <p>Every artifact of one intent carries the same <code>intent-slug</code>: the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. Every artifact opens with a <strong>header block</strong> — a short markdown list, one bold field per line — and the slug is its first field. Later steps <strong>read it from the artifact instead of re-deriving it</strong> — so a PRD written as <code>user-auth.prd.md</code> never grows an <code>authentication.architecture.md</code> beside it.</p>
       </div>
     </section>
 
@@ -476,6 +476,7 @@
         <li><strong>Skills stop rather than guess.</strong> No tracker chosen, an ambiguous ticket id, a dirty tree with work that fits no group, a review report that doesn't exist — the run stops and asks.</li>
         <li><strong>Review and fixes are separate runs.</strong> The reviewer writes findings and touches no code; the triage run decides what happens to each one, with you ruling on the split.</li>
         <li><strong>The loop closes on a PASS.</strong> A fix run always hands back to a fresh review, which reads the deferral issues so settled findings stay settled.</li>
+        <li><strong>One language per intent.</strong> The PRD — or, with no PRD, the architecture doc — is written in the language you interview in, and every later artifact follows it. Template headings and labels stay as the templates write them.</li>
       </ol>
 
       <div class="callout warn">

@@ -22,6 +22,10 @@ Two words for two different things, and a skill means exactly one of them:
 - **GATE** — post what you have, **end the turn, and wait**. The user's answer is the only thing that moves the run forward, and the run picks up from where it stopped. Your own recommendation is never their answer, and your own judgement is never their approval.
 - **STOP** — the run **ends here**. Name the condition that ended it and what would let it run again. Nothing continues on a guess.
 
+## Language
+
+Every artifact of one intent is written in one language: the one the user runs the first planning interview in, which the PRD — or, with no PRD, the architecture doc — sets. Every later step takes it from the intent, since a fresh session has no conversation to take it from. Template labels — headings, header block fields, literal labels — stay as the templates write them, because the skills find them by their literal text.
+
 ## Nothing chains itself
 
 Every step is started by the user. A skill ends by naming the next move; it never runs it.

@@ -11,7 +11,7 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 **Input intent**: $ARGUMENTS. If it is a reference to somewhere else (a URL, a page key, a ticket id), fetch it from the source first, with whatever tool reaches that system. Blank → ask *"What do you want to build? A few sentences."* **GATE.**
 
-**Reference docs (optional):** if any paths were passed alongside the intent — API docs, product/engineering docs, ADRs, prior research, a competitor teardown, a wiki page — **read them first.** They ground the exploration so you propose options that fit what already exists instead of inventing. If none were passed, **ask whether any exist** before you start exploring — a lot of the context you need is usually already written down. **GATE.**
+**Reference docs (optional):** if any paths were passed alongside the intent — API docs, product/engineering docs, ADRs, prior research, a competitor teardown, a wiki page — **read them first.** They ground the exploration so you propose options that fit what already exists instead of inventing. If none were passed, **ask whether any exist** in the Step 1 message, naming the docs your first look at the workspace turned up — a lot of the context you need is usually already written down. One GATE covers both.
 
 ## Your role
 
@@ -29,30 +29,32 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 
 ### Step 1 — Establish the shape of the work
 
-**Do this before you propose anything.** Infer both answers below from the intent and the workspace; if either is genuinely unclear, **ask**. Then **state what you inferred out loud**, so the user can correct you cheaply. **GATE.**
+**Do this before you propose anything.** Infer both answers below from the intent and the workspace; if either is genuinely unclear, **ask**. Then **state what you inferred out loud**, so the user can correct you cheaply, in one message with the question about reference docs. **GATE.**
 
 - **What shape of work is this?** A new application · a data pipeline · an infrastructure change · an integration between systems that already exist · a migration · a change that produces no new artifact at all. "Architecture" is not always a stack choice, and this answer selects your questions from the menu in `references/explore-menu.md` — a stack question aimed at a migration is noise, and asking it signals you assumed the project type.
 - **New build, or existing system?**
   - **Greenfield** — an intent with nothing built yet. Explore the *solution space*: approaches, the web for current best practices and options, first principles. The architecture is what you *decide*.
-  - **Brownfield** — work landing on a system that already runs. Explore *how this lands*: where it plugs in, what it reuses, what it must not break. **Exploring what already exists is your first move here** — read the relevant surfaces yourself rather than relying on a prior orientation step. The architecture is partly what *is*, partly what you decide on top — keep the read high-level, not an exhaustive audit. For every rule this work replaces, record in *Behavior changes vs today* the checks the code runs today and what happens to each — only those rules, not the whole system.
+  - **Brownfield** — work landing on a system that already runs. Explore *how this lands*: where it plugs in, what it reuses, what it must not break. **Exploring what already exists is your first move here** — read the relevant surfaces yourself rather than relying on a prior orientation step. The architecture is partly what *is*, partly what you decide on top — keep the read high-level, not an exhaustive audit. For every rule this work replaces, record in *Behavior changes vs today* the checks the code runs today and what happens to each — only those rules, not the whole system. Read the rules the project documents too — `CLAUDE.md` and `AGENTS.md`, those in the subdirectories the intent lands in included, since no session loads them on its own. A documented rule that conflicts with the intent is a frontier question the moment you find it, never settled silently.
+
+**Done when** the shape of work and new-vs-existing are stated and, brownfield, every surface the intent lands on is named by path, with every rule the work replaces and every documented rule that conflicts with the intent.
 
 ### Step 2 — Interaction mode: grilling
 
 Interview the user **relentlessly** until you reach a shared understanding. Map the decisions as a **design tree**: every decision branches into the ones that hang off it. The tree's nodes are the menu items in `references/explore-menu.md`: take what fits the shape of work, and name what you skip. **Approaches** is usually the root — it gates what you can meaningfully ask about Building blocks, Data model, and Boundaries & contracts, so it settles first. A one-way call gets a spike, in the form the file's *Spikes* section gives.
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: what you can ask *now* without guessing at answers you haven't heard yet. Ask the whole frontier in one round, numbered, each with your recommended answer **and the alternatives you rejected, and why** — converging on a single answer is visible work, every time.
+Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: what you can ask *now* without guessing at answers you haven't heard yet. Ask the whole frontier in one round, numbered, each with your recommended answer, **its basis — the code, the intent, a convention — and the alternatives you rejected, and why** — converging on a single answer is visible work, every time. A recommendation with no basis says so in the question; a decision the user accepts on one closes with the literal label **(no basis)** in *Key decisions*. The numbers run on across rounds, never restarting, so an answer that cites one names exactly one question.
 
 ```
 🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices (A, B, C)>
 
-💡 <your recommended answer — and the alternatives you rejected, and why>
+💡 <your recommended answer and its basis, or "no basis" — and the alternatives you rejected, and why>
 ```
 
 **GATE.** Post the round, stop, wait. Never roll into the next round on your own, and never treat your own recommendation as the user's answer.
 
 Each round's answers reshape the tree: settled decisions push the frontier outward and unblock what depended on them. Recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a *later* round.
 
-**Finding facts is your job, never the user's.** When a frontier question needs a fact from the environment, dispatch a subagent to find it. Don't block on it: only the questions downstream of that exploration wait; ask the rest of the frontier now.
+**Finding facts is your job, never the user's.** When a frontier question needs a fact from the environment, dispatch a subagent to find it. Don't block on it: only the questions downstream of that exploration wait; ask the rest of the frontier now. Open every `path:line` a subagent hands back before it enters the doc. A fact no subagent can reach — production data, a system outside the workspace — goes to the user as a question of fact, labelled so, and its answer enters the doc as evidence the user gave, never as a decision.
 
 The tree is worked when the frontier is empty — every branch visited, nothing silently assumed. **Nothing gets written until the user confirms you've reached a shared understanding. GATE.**
 
@@ -79,13 +81,13 @@ Confirm where you wrote it, summarize the recommended approach + the key calls i
 ## Success criteria
 
 - ✅ Every decision was GATED — the user made each call before anything was written, or declined the interview and the calls made for them were named.
-- ✅ Every recommendation names the alternatives rejected and why.
+- ✅ Every recommendation names its basis, or says it has none, and the alternatives rejected and why.
 - ✅ Every skipped menu item was named out loud.
 - ✅ Every one-way or uncertain call has a spike with a decision rule, not a guess.
 - ✅ The doc contains no task list or step-by-step breakdown.
 - ✅ The doc's header block carries the `Intent-slug` and the `Intent`.
 - ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open questions** holds only what is still open.
-- ✅ Brownfield: every rule the work replaces has its current checks listed in *Behavior changes vs today*, each one kept, changed or dropped.
+- ✅ Brownfield: every rule the work replaces has its current checks listed in *Behavior changes vs today*, each one kept, changed or dropped — or the section says "none" with its reason.
 - ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly, or cites the `D<n>` that does — never a summary it would have to re-derive.
 - ✅ Each fact lives in exactly one section: every rule or call lives in *Key decisions* under its `D<n>`, and every other section — *Problem & goals* included — cites that ID instead of restating it. Three calls keep their home in their own section, and *Key decisions* cites them instead: the recommended approach in *Approaches considered*, each spike's decision rule in *Spikes & experiments*, and each rule's disposition in *Behavior changes vs today*. *Recommended approach* states the shape of the solution, not the rules; *Missing pieces* and any cross-index the doc builds, such as a matrix, cite `D<n>` instead of restating the decision. Tickets cite these IDs, and a fact stated twice can drift.
 - ✅ Every link and code reference resolves from where the doc is published: a reference outside this repository names its repository and revision, and nothing links to a file that stays local, such as a report. Every literal the implementation must reproduce — messages, constants — is quoted in full.

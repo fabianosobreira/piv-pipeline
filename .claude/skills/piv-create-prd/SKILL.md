@@ -13,7 +13,7 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 Greenfield-first. **On an existing product, the input is whatever document carries the context** — a research doc, a decision plan, the existing product's docs — and the same interview applies, scoped to that context. Its architecture is decided separately with `piv-create-architecture`.
 
-**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*. If none were passed, **ask whether any exist** before interviewing. **GATE.**
+**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*. If none were passed, **ask whether any exist** before interviewing, in the same message as Phase 1 — one GATE covers both.
 
 ## Your role
 
@@ -27,7 +27,7 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
    - *Solution-prescriptive:* "Add a reply button to every message."
    - *Intent-framed:* "Past ~100 msgs/day, conversations collide and active users disengage — give them a way to group related replies so they stay."
    - **Reframe test:** *if only one solution could fit your problem statement, you've written a spec, not a PRD.* A good problem leaves room for more than one answer.
-2. **A PRD must NEVER decide engineering** *(these are architecture decisions → `piv-create-architecture`)*: library & version (e.g. "React 18 + Vite," not "a React app") · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. Skipped engineering decisions don't vanish — hand each one to `piv-create-architecture` by name.
+2. **A PRD must NEVER decide engineering** *(these are architecture decisions → `piv-create-architecture`)*: library & version (e.g. "React 18 + Vite," not "a React app") · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — hand each one to `piv-create-architecture` by name.
 
 ## Process
 
@@ -39,7 +39,7 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 - **Look up facts, ask for decisions and lived experience.** If something is discoverable in the environment or in the reference docs you were given, go read it instead of spending a question on it.
 - **Reflect thin answers back and dig.** "Users want it faster" is not an answer.
 
-**Format each cluster like so** — numbered, titled, each ending on the question itself:
+**Format each cluster like so** — numbered, titled, each ending on the question itself. The numbers run on across the whole interview, never restarting at a new phase, so an answer that cites one names exactly one question:
 
 ```
 🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs>
@@ -50,7 +50,7 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 **If they decline the interview** ("just write it"): honor it, but name what you would have to guess, and offer the two or three highest-leverage questions instead of all of them. **GATE.** Everything still unanswered falls to the Evidence-or-TBD rule.
 
 ### Phase 1 — Initiate
-Input given → restate and confirm. Blank → *"What do you want to build? A few sentences."* **GATE.**
+Input given → restate and confirm. Blank → *"What do you want to build? A few sentences."* Either way, the question about reference docs rides in this message when none were passed. **GATE.**
 
 ### Phase 2 — Foundation (the thesis + differentiation)
 1. **Who** has this problem (a specific role, not "users")?
@@ -71,7 +71,7 @@ Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When 
 **GATE.**
 
 ### Phase 4 — Hypothesis (the falsifiable bet)
-Co-write the hypothesis. The **wrong condition is the most-skipped line — and the one that makes it falsifiable:**
+Ask for each slot of the block below as an open question. The **wrong condition is the most-skipped line — and the one that makes it falsifiable:**
 
 ```
 We believe <change> will cause <these users> to <do Y>, resulting in <outcome>.
@@ -80,10 +80,10 @@ We'll know we're WRONG if <counter-signal / a guardrail moves>.
 ```
 
 - **Success metrics** — turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement".
-- **GATE.** No hypothesis ships without a wrong condition.
+- **GATE.** Then assemble the block and the metrics from the user's words alone and post them back for confirmation — assembling their words is not a recommended answer. **GATE.** No hypothesis ships without a wrong condition.
 
 ### Phase 5 — MVP & doors
-- **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." Holds → decide the architecture and build it proper. Doesn't → you threw away a *slice*, not six months.
+- **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." Holds → decide the architecture and build it proper. Doesn't → you threw away a *slice*, not six months. **The MVP has to be able to prove it:** the hypothesis's RIGHT and WRONG signals must be observable within the MVP — its users, its sample — before the `<timeframe>` runs out. When one isn't, put the mismatch to the user at this phase's GATE; they change the target or the MVP, never you.
 - **Door check** *(informs the spike-vs-build call `piv-create-architecture` makes):* two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first.
 - **Non-goals** — what this explicitly will not do, the MVP's cut included. They are the boundary `piv-create-tickets` never slices a ticket across.
 - **GATE** before generating.
@@ -110,6 +110,7 @@ Offer the next move and let the user run it — this skill does not chain into t
 - ✅ Every phase was GATED — the user answered before you moved on, or declined the interview and every guess it left was named.
 - ✅ Every question shipped open — each answer in the PRD is the user's words.
 - ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
+- ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `<timeframe>`.
 - ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
 - ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
 - ✅ Every problem statement admits more than one solution (the reframe test).

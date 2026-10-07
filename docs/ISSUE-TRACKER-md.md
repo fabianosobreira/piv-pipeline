@@ -66,7 +66,7 @@ A deferral is a block in the intent's breakdown file whose `Origin:` line carrie
 
 ## Intent-slug
 
-Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title. The PRD, the architecture doc, the ticket breakdown and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
+Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. The PRD, the architecture doc, the ticket breakdown and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
 
 ## Ticket id form
 
@@ -105,7 +105,7 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 - Reproduction: <type bug only: the input, the observed outcome and the expected one — concrete enough to become a failing test>
 - Scope: <one provable concern: the surfaces it touches · rough size · the docs the change makes stale, or "none">
 - Out of scope: <surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
-- Entry context: Decisions: <the architecture IDs, or the intent or architecture sections, this ticket implements, cited and never copied, plus any unsettled fact it depends on> · Starting code: <`path:line` inside this repository, and what that code does today> · External references: <references outside this repository, or "none"> · Neighbors: <what adjacent tickets own in the same files, or "none">
+- Entry context: Decisions: <the architecture IDs, or the intent or architecture sections, this ticket implements, cited and never copied, plus any unsettled fact it depends on> · Starting code: <`path:line` inside this repository, and what that code does today> · External references: <references outside this repository, and every step another system or person owns, or "none"> · Neighbors: <what adjacent tickets own in the same files, or "none">
 - Depends on: <none, or <INTENT-SLUG>-x>
 - Testing strategy: <the test or check that proves each acceptance criterion, named per criterion — "project defaults" covers how the checks run, never which ones>
 

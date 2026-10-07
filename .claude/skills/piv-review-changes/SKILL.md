@@ -44,9 +44,9 @@ Nothing to review — a clean tree with no commits ahead of the base → **STOP*
 
 **Then resolve the ticket id.** `$ARGUMENTS` carries it when one was handed to you; otherwise take it from the branch name, in the form `docs/GIT-CONVENTIONS.md` defines. Neither carries one → ask the user for it. **GATE.**
 
-**Then read the ticket**, where `docs/ISSUE-TRACKER.md` says tickets live, and take its **Testing strategy** — the bar the change was held to — and its `Intent-slug`. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
+**Then read the ticket**, where `docs/ISSUE-TRACKER.md` says tickets live, and take its **Acceptance criteria** — what the change has to do — its **Testing strategy** — the bar the change was held to — and its `Intent-slug`. The implementation report's status is the author's own account of the criteria; this gate checks them independently. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
 
-**Then look for the implementation report** at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one. **Done when** the change under review, the ticket id, the ticket's Testing strategy and `Intent-slug`, and the implementation report — or its absence — are in hand.
+**Then look for the implementation report** at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one. **Done when** the change under review, the ticket id, the ticket's Acceptance criteria, Testing strategy and `Intent-slug`, and the implementation report — or its absence — are in hand.
 
 ### Step 2 — Resolve the deferrals
 
@@ -60,15 +60,15 @@ Then read, for each kind of unit the change adds or edits, one existing sibling 
 
 ### Step 4 — Read every changed file end to end
 
-Every file the change touches, whole — not the diff. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements. New files get read in full for the same reason.
+Every file the change touches, whole — not the diff. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements. New files get read in full for the same reason. A file a tool generates — a lockfile, a generated config — is the one exception: read its changed hunks, check that the whole file still parses, and say so in the report's *Scope*.
 
-**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. Hand each subagent the standards from Step 3, the ticket with its Testing strategy, the implementation report, and this skill's **Posture** and Step 5 — without them Standards, Coverage and the code smells check against nothing. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers. **Done when** every changed file has been read whole, by you or by the subagent its group went to.
+**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. Hand each subagent the standards from Step 3, the ticket with its Acceptance criteria and Testing strategy, the implementation report, and this skill's **Posture** and Step 5 — without them Standards, Coverage and the code smells check against nothing. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers. **Done when** every changed file has been read whole, by you or by the subagent its group went to.
 
 ### Step 5 — Build the case
 
 Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing. **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line.
 
-1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds.
+1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds — and every acceptance criterion of the ticket the code doesn't meet.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
 3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
 4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them, and every entry in `references/code-smells.md` matched against the diff.
@@ -87,7 +87,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — a test demoted from *red* by the base-red check (**Posture**) is **coverage** — `piv-fix-findings` types a deferral from it — and a severity from the scale below. **Done when** every candidate either survived all three filters with its class and severity — or its blocking kind — or was dropped by a named filter.
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
-- **high** — wrong behavior on a path users reach.
+- **high** — wrong behavior on a path users reach, and every acceptance criterion the code doesn't meet.
 - **medium** — wrong behavior on an edge path, or a documented standard violated.
 - **low** — quality and maintainability, correct today.
 
@@ -110,5 +110,5 @@ The review report is the artifact this run leaves behind, so hand over its path 
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
-- ✅ The change was held to the **Testing strategy** read from the ticket.
+- ✅ The change was held to the **Acceptance criteria** and the **Testing strategy** read from the ticket.
 - ✅ The report follows the template in **Output**, and its path was handed to whatever runs next.

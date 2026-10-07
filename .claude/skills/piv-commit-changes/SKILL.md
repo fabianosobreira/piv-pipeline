@@ -19,7 +19,7 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 **Then resolve the ticket id** — the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/GIT-CONVENTIONS.md` defines. Neither carries one → ask the user for it. **GATE.**
 
-**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. Read its **Verdict** and **Round** and nothing else, then the **Round** of the fix report beside it. The verdict is not PASS, there is no review report, or the fix report's **Round** matches the review's — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
+**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. Read its **Verdict** and **Round** and nothing else, then the **Round** of the fix report beside it, when there is one. The verdict is not PASS, there is no review report, or the fix report's **Round** matches the review's — fixes nobody re-reviewed → say which, and ask the user whether to commit anyway. **GATE.** The loop closes on a PASS; committing past one that never came is the user's call, never yours.
 
 ### Step 2 — Inspect
 

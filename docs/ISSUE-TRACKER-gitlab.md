@@ -45,7 +45,7 @@ The PRD and the architecture doc are **written as local files** while the plan i
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
 1. **Creates the epic** — a group-level epic, filled from the epic template.
-2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart.
+2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart. The PRD goes up first, and the architecture doc goes up with the PRD's upload URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so an attached doc pointing there points at nothing.
 3. **Writes the two upload URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the upload list.
 
 An attachment is the raw markdown file: a plan of any size travels whole, there is nothing to split across comments, and nothing the tracker's renderer can mangle on the way in.
@@ -78,7 +78,7 @@ A review's deferrals are the issues related to the reviewed ticket whose *Origin
 
 ## Intent-slug
 
-Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title. The PRD, the architecture doc, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
+Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. The PRD, the architecture doc, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
 
 ## Ticket id form
 
@@ -90,4 +90,4 @@ Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic.
 
 - **Assignee** — `piv-implement-ticket` assigns the issue to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
 - **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
-- **Merge request link** — `piv-create-pr` links the merge request to the issue, which is what carries it into review and closes it at the merge.
+- **Merge request link** — `piv-create-pr` links the merge request to the issue with a closing pattern before the issue number in the merge request description, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

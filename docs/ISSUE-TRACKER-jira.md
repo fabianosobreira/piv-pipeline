@@ -45,7 +45,7 @@ The PRD and the architecture doc are **written as local files** while the plan i
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
 1. **Creates the epic** — an issue of type **Epic**, filled from the epic template.
-2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart.
+2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart. The PRD goes up first, and the architecture doc goes up with the PRD's attachment URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so an attached doc pointing there points at nothing.
 3. **Writes the two attachment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the attachment list.
 
 An attachment is the raw markdown file, which is what makes this the right shape on Jira in particular: **Jira does not store markdown.** A description or a comment becomes Atlassian Document Format on the way in, and that conversion is lossy — an attachment goes in and comes back out byte for byte.
@@ -78,7 +78,7 @@ A review's deferrals are the issues linked to the reviewed ticket as *relates to
 
 ## Intent-slug
 
-Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title. The PRD, the architecture doc, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
+Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. The PRD, the architecture doc, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.architecture.md` beside it.
 
 The slug is not the Jira key and never replaces it: the key names one ticket, the slug groups everything belonging to one intent.
 
