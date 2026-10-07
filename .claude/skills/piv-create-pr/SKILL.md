@@ -15,7 +15,7 @@ The motion is the same wherever the team works — a pull request on GitHub, a m
 
 ### Step 1 — Resolve the base branch
 
-`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, in the id form `docs/ISSUE-TRACKER.md` defines. No base branch handed to you → resolve it the way `docs/GIT-CONVENTIONS.md` defines. Call the result `<base>`. A ticket id handed to you overrides any the branch name or the commit subjects carry.
+`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, in the id form `docs/ISSUE-TRACKER.md` defines. No base branch handed to you → resolve it the way `docs/GIT-CONVENTIONS.md` defines. Call the result `<base>`. A ticket id handed to you overrides any the branch name or the commit subjects carry. **Done when** `<base>` is resolved, and any ticket id handed to you is told apart from it.
 
 ### Step 2 — Check the branch is in a shippable state
 
@@ -41,11 +41,11 @@ The commit subjects since `<base>` and, when Step 1 wasn't handed one, the ticke
 
 The body is the reports' distillation: carry what they say into its sections and leave the files themselves local.
 
-When the repo ships a pull request template, fill that template; otherwise fill each section of `templates/pr-body.md` from the material gathered here.
+When the repo ships a pull request template, fill that template; otherwise fill each section of `templates/pr-body.md` from the material gathered here. **Done when** every section of the body is filled, or says which report was unavailable.
 
 ### Step 4 — Publish the branch
 
-Push it to the remote, tracking it so later pushes need no arguments.
+Push it to the remote, tracking it so later pushes need no arguments. **Done when** the remote branch tracks the local one and holds every commit ahead of `<base>`.
 
 ### Step 5 — Open the review request
 
@@ -56,7 +56,7 @@ Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` �
 
 **Then close the ticket's loop**: do what the **Ticket status** section of `docs/ISSUE-TRACKER.md` assigns to this step, and nothing beyond it. That section names one owner per transition precisely so this skill doesn't have to know which tracker it is talking to.
 
-Done when a review request is open for the branch and its URL is reported.
+**Done when** a review request is open for the branch and its URL is reported.
 
 ## Output — report the review request
 

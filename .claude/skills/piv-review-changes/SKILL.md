@@ -46,27 +46,27 @@ Nothing to review — a clean tree with no commits ahead of the base → **STOP*
 
 **Then read the ticket**, where `docs/ISSUE-TRACKER.md` says tickets live, and take its **Testing strategy** — the bar the change was held to — and its `Intent-slug`. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
 
-**Then look for the implementation report** at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one.
+**Then look for the implementation report** at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one. **Done when** the change under review, the ticket id, the ticket's Testing strategy and `Intent-slug`, and the implementation report — or its absence — are in hand.
 
 ### Step 2 — Resolve the deferrals
 
-A previous review of this branch may sit at the review report path `docs/ISSUE-TRACKER.md` defines; when it is there, this is a re-review. Read it, the fix report beside it, and every deferral ticket an earlier round opened, found the way `docs/ISSUE-TRACKER.md` says under *Finding a review's deferrals* — together they are what the prior-decision filter reads. The fix report holds only the latest round, so the tracker is what still carries the earlier ones.
+A previous review of this branch may sit at the review report path `docs/ISSUE-TRACKER.md` defines; when it is there, this is a re-review. Read it, the fix report beside it, and every deferral ticket an earlier round opened, found the way `docs/ISSUE-TRACKER.md` says under *Finding a review's deferrals* — together they are what the prior-decision filter reads. The fix report holds only the latest round, so the tracker is what still carries the earlier ones. **Done when** this is a first review, or the previous review report, the fix report beside it and every deferral ticket an earlier round opened have been read.
 
 ### Step 3 — Read the standards the change has to meet
 
 A rule you can cite is a rule you can enforce; a rule you cannot point at is your own taste wearing the project's name. Read what the project documents about how its code is written: `CLAUDE.md`, `AGENTS.md`, `README.md`, and the linter, formatter and type-checker configs the repo ships.
 
-Then read, for each kind of unit the change adds or edits, one existing sibling that does the same job, to know what "matches the existing patterns" means here.
+Then read, for each kind of unit the change adds or edits, one existing sibling that does the same job, to know what "matches the existing patterns" means here. **Done when** every rule you will cite names its document, and each kind of unit the change adds or edits has a sibling read.
 
 ### Step 4 — Read every changed file end to end
 
 Every file the change touches, whole — not the diff. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements. New files get read in full for the same reason.
 
-**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. Hand each subagent the standards from Step 3, the ticket or plan with its Testing strategy, the implementation report, and this skill's **Posture** and Step 5 — without them Standards, Coverage and the code smells check against nothing. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers.
+**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. Hand each subagent the standards from Step 3, the ticket with its Testing strategy, the implementation report, and this skill's **Posture** and Step 5 — without them Standards, Coverage and the code smells check against nothing. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*: end-to-end still holds, it just happened across several readers. **Done when** every changed file has been read whole, by you or by the subagent its group went to.
 
 ### Step 5 — Build the case
 
-Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing.
+Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing. **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line.
 
 1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
@@ -84,7 +84,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferral tickets Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons.
 
-A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — a test demoted from *red* by the base-red check (**Posture**) is **coverage** — `piv-fix-findings` types a deferral from it — and a severity:
+A surviving blocking finding stays **blocking**, and its kind names it. Give every other survivor the Step 5 class it was found under — a test demoted from *red* by the base-red check (**Posture**) is **coverage** — `piv-fix-findings` types a deferral from it — and a severity from the scale below. **Done when** every candidate either survived all three filters with its class and severity — or its blocking kind — or was dropped by a named filter.
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
 - **high** — wrong behavior on a path users reach.

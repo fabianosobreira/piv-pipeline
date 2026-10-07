@@ -31,25 +31,19 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 
 **Do this before you propose anything.** Infer both answers below from the intent and the workspace; if either is genuinely unclear, **ask**. Then **state what you inferred out loud**, so the user can correct you cheaply. **GATE.**
 
-- **What shape of work is this?** A new application · a data pipeline · an infrastructure change · an integration between systems that already exist · a migration · a change that produces no new artifact at all. "Architecture" is not always a stack choice, and this answer selects your questions from the menu below — a stack question aimed at a migration is noise, and asking it signals you assumed the project type.
+- **What shape of work is this?** A new application · a data pipeline · an infrastructure change · an integration between systems that already exist · a migration · a change that produces no new artifact at all. "Architecture" is not always a stack choice, and this answer selects your questions from the menu in `references/explore-menu.md` — a stack question aimed at a migration is noise, and asking it signals you assumed the project type.
 - **New build, or existing system?**
   - **Greenfield** — an intent with nothing built yet. Explore the *solution space*: approaches, the web for current best practices and options, first principles. The architecture is what you *decide*.
   - **Brownfield** — work landing on a system that already runs. Explore *how this lands*: where it plugs in, what it reuses, what it must not break. **Exploring what already exists is your first move here** — read the relevant surfaces yourself rather than relying on a prior orientation step. The architecture is partly what *is*, partly what you decide on top — keep the read high-level, not an exhaustive audit. For every rule this work replaces, record in *Behavior changes vs today* the checks the code runs today and what happens to each — only those rules, not the whole system.
 
 ### Step 2 — Interaction mode: grilling
 
-Interview the user **relentlessly** until you reach a shared understanding. Map the decisions as a **design tree**: every decision branches into the ones that hang off it. The tree's nodes are the menu items in "What to explore" below; **Approaches** is usually the root — it gates what you can meaningfully ask about Building blocks, Data model, and Boundaries & contracts, so it settles first.
+Interview the user **relentlessly** until you reach a shared understanding. Map the decisions as a **design tree**: every decision branches into the ones that hang off it. The tree's nodes are the menu items in `references/explore-menu.md`: take what fits the shape of work, and name what you skip. **Approaches** is usually the root — it gates what you can meaningfully ask about Building blocks, Data model, and Boundaries & contracts, so it settles first. A one-way call gets a spike, in the form the file's *Spikes* section gives.
 
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: what you can ask *now* without guessing at answers you haven't heard yet. Ask the whole frontier in one round, numbered, each with your recommended answer **and the alternatives you rejected, and why** — converging on a single answer is visible work, every time.
 
 ```
-🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices>
-
-💡 <your recommended answer — and the alternatives you rejected, and why>
-
----
-
-🔎 **Q2** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices>
+🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs, including multiple choices (A, B, C)>
 
 💡 <your recommended answer — and the alternatives you rejected, and why>
 ```
@@ -63,35 +57,6 @@ Each round's answers reshape the tree: settled decisions push the frontier outwa
 The tree is worked when the frontier is empty — every branch visited, nothing silently assumed. **Nothing gets written until the user confirms you've reached a shared understanding. GATE.**
 
 **If they decline the interview** ("just pick something and write it up"): honor it, but name the calls you're making on their behalf and put the two or three most expensive or least reversible ones to them anyway. **GATE.** Record the rest in **Key decisions**, each closed with the label **(decided-by-default)** — never as though they were settled with the user. **Open questions** stays for what is genuinely still open.
-
-#### What to explore
-
-A menu, not a checklist. Take what fits the shape of work, **name what you're skipping and why**, and add anything the domain needs that isn't listed.
-
-- **Approaches** *(always)* — 2–3 genuinely different ways to solve it, from different angles, with trade-offs.
-- **First principles** *(always)* — what fundamentally has to be true for this to work.
-- **Building blocks** — what you'd build it with, and *why* (fit, maturity, familiarity, what they already run) — with alternatives. Languages and libraries for new code; equally: services, platforms, protocols, or existing systems when the work isn't a new codebase.
-- **Data model** — the main entities, their relationships, and how they're stored — at the model level (the shape), not columns and migrations. Skip it when the work doesn't own data.
-- **Boundaries & contracts** — **name the trust boundaries this work crosses**: security/auth posture, secrets, external dependencies, and the major interface boundaries. **Rarely skippable** — almost every change crosses one somewhere.
-- **Operational shape** — how it runs, gets observed, and fails: deployment/rollout, failure modes, recovery. Often where the real risk lives for infra and pipeline work.
-- **Testability** — the seams the tests will need that the code doesn't offer yet (clock, external services, static or `new`-constructed dependencies), and how each is injected. Brownfield: check what the target platform provides before choosing a mechanism.
-- **Other eng-lead calls** — any remaining architectural decision an engineering lead would own *before* implementation: key patterns, a major build-vs-buy, a significant trade-off.
-- **Missing pieces** — what doesn't exist yet that the chosen approach needs (often the real work).
-- **Spikes & experiments** — anything uncertain or expensive-to-reverse → see below.
-
-#### Spikes (for the risky / one-way calls)
-
-When a decision is a **one-way door** — uncertain or expensive to undo — recommend a **spike** instead of guessing:
-
-```
-Question:      <what we're unsure about>
-Spike:         <the smallest thing we can build or test to learn> over <timebox>
-Decision rule: go with <X> if <signal> / <Y> if <counter-signal>
-```
-
-Reversible, low-cost calls skip the spike — recommend an answer as an ordinary frontier question instead of guessing on the user's behalf.
-
-When the intent is a PRD, its *MVP* records the door `piv-create-prd` called: a one-way door there is a spike candidate here. That door is the MVP's as a whole, so a two-way MVP can still hold a one-way decision — judge each decision by its own door.
 
 ## Output — a high-level architecture decision doc
 

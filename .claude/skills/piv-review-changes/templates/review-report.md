@@ -12,25 +12,25 @@ Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
 
 ## Findings
 
-### blocking
+### Blocking
 - **<one-line claim: the red, missing or weakened test, or the untested behavior — its kind named>** — <the test's `file:line`, or the code's for an absent test or an untested behavior>
   - **Evidence**: <the failing output, the test the Testing strategy names, the diff line that weakened it, or the acceptance criterion or interface naming the untested behavior>
   - **Impact**: <what the missing proof leaves unguarded>
   - **Fix**: <the concrete change>
 
-### critical
+### Critical
 - **<one-line claim>** — `path/to/file.py:42` · <the Step 5 class: logic, security, performance, quality, standards or coverage>
   - **Evidence**: <the quoted line or the traced path that proves it>
   - **Impact**: <what breaks, and for whom>
   - **Fix**: <the concrete change>
 
-### high
+### High
 No findings.
 
-### medium
+### Medium
 …
 
-### low
+### Low
 …
 
 ## Checks run

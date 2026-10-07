@@ -23,17 +23,17 @@ When the ticket's type is `bug`, this run is a **repair**, and the instructions 
 
 **Fetch the base branch** `docs/GIT-CONVENTIONS.md` defines. From here on, *the base* is its remote tip: the local copy lags whatever merged since the last pull.
 
-**Check the dependencies.** When the ticket names a **Depends on**, confirm that dependency is implemented — merged into the base. It isn't → **STOP** and say which ticket has to land first; building against a sliced-but-unbuilt dependency plans against a guess.
+**Check the dependencies.** When the ticket names a **Depends on**, confirm that dependency is implemented — merged into the base. It isn't → **STOP** and say which ticket has to land first; building against a sliced-but-unbuilt dependency plans against a guess. **Done when** the ticket is read and governs the run, the base is fetched, and every ticket it *Depends on* is merged into the base.
 
 ### Step 2 — Work on a branch
 
 The work gets built on its own branch, so it can become one PR. `docs/GIT-CONVENTIONS.md` defines the branch name — read it before creating anything. A branch this run creates starts from the base.
 
 - **On the base branch, clean** → create the branch, then record the baseline on it. The ticket id belongs in the name: every later step of the loop reads the id back out of it.
-- **Already on a feature branch or in a worktree** → record the baseline in a worktree of the base, then use the branch. Warn if the branch name doesn't reference it.
+- **Already on a feature branch or in a worktree** → record the baseline in a worktree of the base, then use the branch. Warn if the branch name doesn't carry the ticket id.
 - **On the base branch with uncommitted changes** → **STOP**: commit or stash first.
 
-**The baseline** is the project's full test suite run against the base before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so Step 6 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. **The project has no test suite** → say so, skip the baseline, and carry on without tests: this run implements the ticket, and setting up a suite is not its job. Every test instruction below then falls away, and the report's *Tests added* says why.
+**The baseline** is the project's full test suite run against the base before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so Step 6 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. **The project has no test suite** → say so, skip the baseline, and carry on without tests: this run implements the ticket, and setting up a suite is not its job. Every test instruction below then falls away, and the report's *Tests added* says why. **Done when** the run sits on the ticket's branch and the baseline names every test red on the base — or the project has no test suite and that is said.
 
 ### Step 3 — Read the ticket end to end
 
@@ -47,7 +47,7 @@ Before any edit, read the ticket's **`Architecture`** field and its **Entry cont
 
 **Then check for drift.** Where the ticket quotes existing code or cites line refs inside this repository, open those files and compare. The references under *External references* are context, not drift-checked: the run may not be able to open them, and an unreachable file is not evidence of drift. Drift → **STOP**, saying the ticket needs to be redone against the current code: any quoted code that no longer exists, has moved, or changed in a way that makes the ticket's instruction for it unperformable. Cosmetic differences (formatting, renamed locals, shifted line numbers with identical code) are not drift. **Repair:** also confirm the defect still reproduces before changing anything, by the ticket's *Reproduction* — on a deferral, by its *Evidence* — and when it doesn't → **STOP**, saying the ticket is stale or already fixed.
 
-**Then mark the ticket in flight**, the way `docs/ISSUE-TRACKER.md` says this project marks it. That is what keeps a parallel wave from picking up the same ticket twice.
+**Then mark the ticket in flight**, the way `docs/ISSUE-TRACKER.md` says this project marks it. That is what keeps a parallel wave from picking up the same ticket twice. **Done when** the task list, every check the ticket names and its Testing strategy are in your notes, every source the ticket cites is read, the drift check came back clean, and the ticket is marked in flight.
 
 ### Step 4 — Execute tasks in order
 
@@ -66,7 +66,7 @@ Work the task list from Step 3, in order.
 #### c. When a decision is missing or contradicted
 A detail the ticket leaves unspecified: beyond matching the surrounding file's patterns (Step 4a), prefer in order the precedent the ticket or its architecture doc already cites, then the smallest change consistent with the ticket's decision.
 
-Two things are not yours to settle: something you hit mid-task that undercuts an assumption a decision rests on — not just a missing detail — and a choice that would move an architectural boundary the ticket never drew. Name the assumption and the evidence against it, or the boundary and the options, along with the decision it affects and whether that decision's rationale survives. The user resolves it before the architecture changes. **GATE.**
+Two things are not yours to settle: something you hit mid-task that undercuts an assumption a decision rests on — not just a missing detail — and a choice that would move an architectural boundary the ticket never drew. Name the assumption and the evidence against it, or the boundary and the options, along with the decision it affects and whether that decision's rationale survives. The user resolves it before the architecture changes. **GATE.** **Step 4 is done when** every task on the list is green, or its failure is recorded for Step 7's PARTIAL.
 
 ### Step 5 — Close the testing strategy
 
@@ -82,7 +82,7 @@ Run every check the ticket names, in the order it gives them, then the project's
 
 When a check goes red: fix the cause, re-run, and continue once it is green. A test goes green by the code changing: its assertions, and whether it runs at all, change only when the ticket changes the behavior it pins — the review blocks any other change to a test, whatever *Deviations from the ticket* says. A test failing the same assertion the baseline recorded stays red, unless the **Testing strategy** names it or it reproduces the defect a **Repair** fixes: that one is this change's to turn green.
 
-When a failure survives a few honest attempts, or its cause sits outside what the ticket asks you to change, stop working it: record the check, the failure, and what you tried in the report's *Problems encountered*, and carry the run to Step 7 as PARTIAL.
+When a failure survives a few honest attempts, or its cause sits outside what the ticket asks you to change, stop working it: record the check, the failure, and what you tried in the report's *Problems encountered*, and carry the run to Step 7 as PARTIAL. **Done when** every check is green, apart from the baseline's red tests this step leaves red, or each one still red is recorded in *Problems encountered*.
 
 ### Step 7 — Final verification
 

@@ -4,18 +4,19 @@
 
 Where a project's plans and tickets live. The skills read that file instead of asking the user.
 
-## The six words
+## The seven words
 
 One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
-- **ticket** — one provable unit of work, sliced out of the two above.
+- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-create-tickets`, never an input to any skill.
+- **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
 - **fix report** — what the triage of a review leaves behind: which findings were fixed, deferred, flagged for a human, or dropped.
 
-"Report" on its own is fine in prose when only one of the three is in play; name which one whenever more than one could be meant. "Epic", "plan", "task", "slice" and "breakdown" are loose synonyms that show up in prose; when it matters which artifact is meant, use one of the six.
+"Report" on its own is fine in prose when only one of the three is in play; name which one whenever more than one could be meant. "Plan", "slice" and "breakdown" are loose synonyms that show up in prose; when it matters which artifact is meant, use one of the seven.
 
 ## Where tickets live
 
@@ -43,7 +44,7 @@ The PRD and the architecture doc are **written as local files** while the plan i
 
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
-1. **Creates the epic** — a group-level epic.
+1. **Creates the epic** — a group-level epic, filled from the epic template.
 2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart.
 3. **Writes the two upload URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the upload list.
 
@@ -62,7 +63,7 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Link** — a deferral is linked to the ticket the review covered as *relates to*.
 - **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
 
-A type label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type is one the filters never find. The type labels are the only labels a ticket carries.
+A type label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type is one the filters never find. A ticket carries its type label and no other.
 
 ## Finding a review's deferrals
 

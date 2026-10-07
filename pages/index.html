@@ -167,12 +167,12 @@
             <td>You need the <em>what and why</em> pinned down before anyone argues about the how.</td>
           </tr>
           <tr>
-            <td>A PRD or an epic, and real technical uncertainty</td>
+            <td>A PRD, and real technical uncertainty</td>
             <td><code class="skill">piv-create-architecture</code></td>
             <td>Decide the approach deliberately instead of letting tickets encode it by accident.</td>
           </tr>
           <tr>
-            <td>A clear intent with little technical risk</td>
+            <td>A PRD with little technical risk</td>
             <td><code class="skill">piv-create-tickets</code></td>
             <td>A legitimate shortcut — just know you skipped the architecture step on purpose.</td>
           </tr>
@@ -317,7 +317,7 @@
           <dd><code>[ticket-id | path-to-plan-document]</code>. Blank and it asks which ticket.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, issues encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code>.</dd>
+          <dd><code>docs/.reports/&lt;ticket-id&gt;-report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, problems encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code>.</dd>
 
           <dt>How it runs</dt>
           <dd>Resolve the ticket → work on a branch → read the ticket end to end and check for drift → execute tasks in order → close the testing strategy → run the checks → final verification.</dd>
@@ -451,12 +451,12 @@
           <tr><th>Artifact</th><th>Path</th><th>Written by</th><th>Read by</th></tr>
         </thead>
         <tbody>
-          <tr><td>PRD</td><td><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code>, then published onto the epic</td><td><code class="skill">piv-create-prd</code></td><td>architecture, tickets</td></tr>
+          <tr><td>PRD</td><td><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code>, then published onto the epic</td><td><code class="skill">piv-create-prd</code></td><td>architecture, tickets, implement</td></tr>
           <tr><td>Architecture doc</td><td><code>docs/.plans/&lt;intent-slug&gt;.architecture.md</code>, then published onto the epic</td><td><code class="skill">piv-create-architecture</code></td><td>tickets, implement</td></tr>
-          <tr><td>Epic</td><td>the project's tracker</td><td><code class="skill">piv-create-tickets</code></td><td>tickets</td></tr>
-          <tr><td>Tickets</td><td>the project's tracker</td><td><code class="skill">piv-create-tickets</code></td><td>implement, review, commit, PR</td></tr>
+          <tr><td>Epic</td><td>the project's tracker</td><td><code class="skill">piv-create-tickets</code></td><td>none — never an input</td></tr>
+          <tr><td>Tickets</td><td>the project's tracker</td><td><code class="skill">piv-create-tickets</code></td><td>implement, review, fix-findings, PR</td></tr>
           <tr><td>Implementation report</td><td><code>docs/.reports/&lt;ticket-id&gt;-report.md</code></td><td><code class="skill">piv-implement-ticket</code></td><td>review, PR</td></tr>
-          <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code class="skill">piv-review-changes</code></td><td>fix-findings</td></tr>
+          <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code class="skill">piv-review-changes</code></td><td>fix-findings, re-review, commit, PR</td></tr>
           <tr><td>Fix report</td><td><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code></td><td><code class="skill">piv-fix-findings</code></td><td>re-review, PR</td></tr>
         </tbody>
         <caption>Ticket ids are normalized for filenames first — <code>#123</code> becomes <code>123</code> — so a ticket's reports sit side by side. The plans are written locally and stay there; <code class="skill">piv-create-tickets</code> publishes a copy onto the epic — a comment on GitHub, an attachment on GitLab and Jira — so the decisions travel with the work instead of with the machine that wrote them.</caption>

@@ -43,10 +43,6 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 
 ```
 🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs>
-
----
-
-🔎 **Q2** — **<question title>**: <question body, may be multiple paragraphs>
 ```
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.
@@ -76,11 +72,13 @@ Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When 
 
 ### Phase 4 — Hypothesis (the falsifiable bet)
 Co-write the hypothesis. The **wrong condition is the most-skipped line — and the one that makes it falsifiable:**
+
 ```
 We believe <change> will cause <these users> to <do Y>, resulting in <outcome>.
 We'll know we're RIGHT if <leading signal> within <timeframe>.
 We'll know we're WRONG if <counter-signal / a guardrail moves>.
 ```
+
 - **Success metrics** — turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement".
 - **GATE.** No hypothesis ships without a wrong condition.
 
@@ -113,7 +111,7 @@ Offer the next move and let the user run it — this skill does not chain into t
 - ✅ Every question shipped open — each answer in the PRD is the user's words.
 - ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
 - ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
-- ✅ (guard) No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
+- ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
 - ✅ Every problem statement admits more than one solution (the reframe test).
 - ✅ The doc's header block carries the `Intent-slug`.
 - ✅ Every section states a fact, decision, or named boundary `piv-create-architecture` and `piv-create-tickets` can slice from directly — never a summary they'd have to re-derive.

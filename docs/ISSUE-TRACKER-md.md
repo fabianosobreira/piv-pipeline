@@ -4,24 +4,25 @@
 
 Where this project's plans and tickets live. The skills read this file instead of asking the user.
 
-## The six words
+## The seven words
 
 One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent.
-- **ticket** — one provable unit of work, sliced out of the two above.
+- **epic** — none of its own: the ticket breakdown, born in `piv-create-tickets`, stands in for it; never an input to any skill.
+- **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
 - **fix report** — what the triage of a review leaves behind: which findings were fixed, deferred, flagged for a human, or dropped.
 
-"Report" on its own is fine in prose when only one of the three is in play; name which one whenever more than one could be meant. "Epic", "plan", "task", "slice" and "breakdown" are loose synonyms that show up in prose; when it matters which artifact is meant, use one of the six.
+"Report" on its own is fine in prose when only one of the three is in play; name which one whenever more than one could be meant. "Plan", "slice" and "breakdown" are loose synonyms that show up in prose; when it matters which artifact is meant, use one of the seven.
 
 ## Where tickets live
 
 **Tickets are blocks inside a local markdown breakdown** — `docs/.tickets/<intent-slug>.md`, one breakdown per intent. A ticket id names a block inside it; the breakdown file as a whole is never a ticket.
 
-An epic is the intent doc itself, under `docs/.plans/`. There is no separate system to reach — the breakdown is a file in this repo, read and written like any other.
+There is no epic of its own: the breakdown file stands in for it, its header block carrying the epic's fields. There is no separate system to reach — the breakdown is a file in this repo, read and written like any other.
 
 ## Header block
 
@@ -43,7 +44,7 @@ The three reports use the same header block, with the fields their own templates
 - **Review reports** — `docs/.reports/<ticket-id>-review.md`, so a ticket's reports sit side by side.
 - **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`.
 
-Plans stay local, so intent and architecture stay separable and get reviewed beside the code.
+Plans stay local — `piv-create-tickets` publishes nothing, and the breakdown's header block points at their paths — so intent and architecture stay separable and get reviewed beside the code.
 
 ## Creating a ticket
 
@@ -52,7 +53,7 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Where** — a block appended to the intent's breakdown file, in the form shown under *The breakdown file*, with the next free number. When the intent has no breakdown yet, create the file with its header block first.
 - **Header block** — none of its own: the block inherits the breakdown's `Intent-slug`, `Intent` and `Architecture`.
 - **Type** — a `Type:` line carrying exactly one of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
-- **Epic** — none of its own: the breakdown file belongs to the intent doc.
+- **Epic** — none of its own: the block belongs to the breakdown file that stands in for it.
 - **Link** — a deferral's `Origin:` line carries the id of the ticket the review covered; that id is the link.
 - **Status** — `Status: todo`.
 - **Acceptance criteria** — a markdown checklist under the literal bold line `Acceptance criteria`.
@@ -85,7 +86,7 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 ## The breakdown file
 
 ```markdown
-# Ticket Breakdown — <intent name>
+# Ticket breakdown — <intent name>
 
 - **Intent-slug**: <intent-slug>
 - **Intent**: <the PRD path these tickets trace to, or "none">
@@ -120,6 +121,9 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 ## Suggested execution order
 Wave 1 (parallel): <INTENT-SLUG>-1, <INTENT-SLUG>-3
 Wave 2: <INTENT-SLUG>-2 (after <INTENT-SLUG>-1 is implemented)
+
+## Not ticketed
+<one line per item the plans left without a ticket: the plan section it comes from and why it got no ticket, without restating it>
 ```
 
-The **Acceptance criteria** heading is the contract an implementation loop reads as the ticket's task list, and the dependency graph lives here because no single ticket carries it.
+The **Acceptance criteria** heading is the contract an implementation loop reads as the ticket's task list, and the dependency graph lives here because no single ticket carries it. With no epic of its own, the breakdown file stands in for the epic's body: what a skill writes to the epic's *Dependency graph and execution order* goes under *Dependency graph* and *Suggested execution order*, and what it writes to the epic's *Not ticketed* goes under *Not ticketed*.

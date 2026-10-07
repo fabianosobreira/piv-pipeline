@@ -13,13 +13,7 @@ This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
 `$ARGUMENTS` carries the path of a PRD written by `piv-create-prd`, the path of an architecture doc written by `piv-create-architecture`, or both — local files where `docs/ISSUE-TRACKER.md` says plans live. Nothing passed → ask for them. **GATE.** Handed anything else — an idea, a brief, a research doc → **STOP**: it is not sliceable yet, and `piv-create-prd` or `piv-create-architecture` turns it into a plan first.
 
-Read what you were handed, end to end. An architecture doc handed alone names its intent in its `Intent` field: when that field names a PRD, read it too — you are holding both, and only a field that says "none" puts you in the *architecture only* row below. **What you end up holding is the one branch that changes how you slice**, so establish it before anything else:
-
-| What you have | What it means for slicing |
-|---|---|
-| **PRD + architecture** (the strong case) | The architecture is **load-bearing**: it names the seams, the data model, the boundaries, and the missing pieces the slices must respect. Slice along those seams. |
-| **PRD only** | You have the *what*, not the *how*. Slice by outcome — see the guard below. |
-| **architecture only** | No PRD — the work was architected straight from an idea, a brief or a research doc. Slice along the architecture's seams same as the strong case; the architecture's *Problem & goals* stands in for the intent wherever it doesn't cover one. |
+Read what you were handed, end to end. An architecture doc handed alone names its intent in its `Intent` field: when that field names a PRD, read it too — you are holding both, and only a field that says "none" leaves you with the architecture only. **What you end up holding — PRD + architecture, PRD only, or architecture only — is the one branch that changes how you slice**, so establish it before anything else; *Sources* in `references/slicing.md` says what each one means for slicing.
 
 **The epic is this skill's output, never its input.** Step 6 creates it and publishes the plans onto it, the way `docs/ISSUE-TRACKER.md` says, before any ticket exists.
 
@@ -27,25 +21,13 @@ Read what you were handed, end to end. An architecture doc handed alone names it
 
 Slice from what the intent states, never from a guessed *how*. If no architecture exists, you are decomposing intent alone. Name that out loud, keep the tickets outcome-shaped rather than implementation-shaped, and when the work has real technical uncertainty, **offer `piv-create-architecture` first — before Step 1**, so no slicing is spent against a guess: slicing against a guessed architecture produces a backlog that quietly encodes decisions nobody made. **GATE.** If the user wants to proceed anyway, do it, and flag which tickets are most likely to move once the architecture is decided.
 
-## Interaction mode: non-interactive until the GATE
-
-**Steps 1-4 are work you do, not questions you ask.** Decompose, then stop once at the Step 5 GATE. Besides asking for an intent when none was passed, ask before or mid-process only in two cases: the *Guard*'s offer of `piv-create-architecture` when you hold a PRD only, and an intent too vague to decompose (see Step 1).
+**Steps 1-4 are work you do, not questions you ask.** Decompose, then stop once at the Step 5 GATE. Besides asking for the plans when none were passed, ask before or mid-process only in two cases: the offer of `piv-create-architecture` above when you hold a PRD only, and an intent too vague to decompose (see Step 1).
 
 ## Process
 
 ### Step 1 — Read the sources
 
-**From the PRD** — a problem-first PRD gives you no build plan, so decompose from what it does carry:
-
-- **MVP** — the thinnest line that proves the hypothesis end to end. The primary source of tickets: what has to exist for that line to work?
-- **Target user & JTBD** — each job-to-be-done becomes one or more tickets, phrased as user-visible outcomes.
-- **Success metrics** — anything that has to be measured is itself work; a metric with no way to observe it is a missing ticket.
-- **Non-goals** — the boundary every ticket stays inside.
-- **Open questions** — surface them, or track them as explicit decision tickets with a decision rule; keep them out of every implementation ticket. A ticket built on an unanswered question is a guess.
-
-**From the architecture, when it exists** — *Recommended approach*, the *Key decisions* sub-sections (*Building blocks*, *Data model*, *Boundaries & contracts*, **Operational shape** — deploy, observability, failure modes, usually its own ticket or two — *Testability* and *Other eng-lead calls*), *Behavior changes vs today* (the checks each replaced rule keeps, changes or drops — every one lands in a ticket's acceptance criteria), *Missing pieces*, and **Spikes & experiments** and its own *Open questions* (the architecture's risky and unsettled calls; same rule as the PRD's *Open questions* — never an implementation ticket). The slicing has to respect those calls — a call labeled **(decided-by-default)** included — and **every named missing piece is usually a ticket**.
-
-If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose. The grouping organizes the breakdown and the execution order; it is never written onto a ticket.
+Decompose from the PRD and architecture sections *Sources* in `references/slicing.md` names, by the rule it gives each one. If the intent carries explicit phases, use them as the grouping. If it doesn't, **group by outcome** and say which grouping you chose. The grouping organizes the breakdown and the execution order; it is never written onto a ticket.
 
 **Too vague to decompose → flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable. **GATE.**
 
@@ -57,50 +39,23 @@ Slicing needs enough awareness of what already exists to judge what's independen
 
 ### Step 3 — Decompose into agent-sized slices
 
-**Scope these for whoever picks them up.** An agent loop carries far more than a traditional human ticket — a small-to-medium implementation *phase* rather than a single task — so size each ticket as a phase when agents will run it. A small intent might be a single ticket, and on greenfield the same slicing applies to MVP phases instead of epic tickets.
+**Scope these for whoever picks them up.** An agent loop carries far more than a traditional human ticket — a small-to-medium implementation *phase* rather than a single task — so size each ticket as a phase when agents will run it. A small intent might be a single ticket.
 
-The size test is **behavioral, not numeric**. A well-sized ticket:
-
-- Is **one provable concern** — easy to verify, review, and prove on its own.
-- Is one coherent unit — a vertical slice of behavior, not a horizontal layer.
-- Has clear acceptance criteria of its own.
-- Is small enough that **one focused loop can finish it without losing the thread** — not so large that the work drifts and returns diminish.
-- Fits on one screen when described — the enumerated *Scope* and *Out of scope* lists aside. A ticket whose description doesn't is two tickets.
-
-Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim end-to-end slice that proves the whole flow thinly, fattened next loop — whatever makes each ticket easiest to prove. The *planning detail* stays high regardless — it's the *scope* that's larger.
-
-**Done when** every candidate slice from Step 1 either became a ticket or was folded into one, each ticket passes the size test above, and every field below is drafted.
-
-*Calibration, not a rule:* for code work with a current-generation agent, this has tended to land around 500–1500 lines of change (a healthy share of it tests) and roughly 8–10 subtasks. Treat those numbers as a sanity check on your own judgment, and recalibrate for the agent, the domain, and work that produces no code at all.
-
-For every ticket, draft:
-- **Title** — imperative and specific (`Add token refresh endpoint`, not `Auth`).
-- **Description** — what and why. The sections it traces to go under *Entry context › Decisions*, never here.
-- **Root cause** and **Reproduction** — type `bug` only, left out of every other type: taken from the intent or architecture section that states the defect, or from the code read in Step 2, with `path:line` evidence. The repair `piv-implement-ticket` runs on a `bug` ticket needs a root cause and a reproduction, and a root cause belongs to one ticket: the architecture may mix the causes of several tickets, or not exist.
-- **Acceptance criteria** — a checklist a reviewer can verify. A criterion that enforces an architecture rule takes one of two forms: it cites the rule's ID — `D<n>`, or `D<n>·<row label>` for a table row — and states a check that stands on its own, a concrete case with its expected outcome; or it quotes the rule verbatim. The criterion is the implementation run's task list, so a paraphrase that changes the rule gets built. A criterion that compares values pins its edges — inclusive or exclusive bounds, date vs datetime, null values, ties — from the sources; an edge no source settles goes on the Step 5 *Unsettled* list, never decided here. A criterion that removes or relaxes a check the code applies today names that check, taken from the architecture's *Behavior changes vs today* when it has one.
-- **Scope** — the surfaces it touches, enumerated from Step 2, a rough size, and the docs the change makes stale — comments, docstrings, guides — found by searching for what the change overturns, or "none".
-- **Out of scope** — the surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does.
-- **Entry context** — the four fields of the template: *Decisions*, *Starting code*, *External references* and *Neighbors*. The *Entry context* cites the architecture and the intent and never copies text from them; it holds only what is the ticket's own — starting code, external references, and how the work splits with its neighbors. *Starting code* holds only files inside this repository; every reference to a file outside it goes under *External references*, because the implementation run drift-checks the starting code and cannot open a file outside the repository. The implementation run reads the architecture in full and the intent sections the ticket cites, and a copy can drift from its source. Every reference resolves from the ticket alone — the repository named when it isn't this one. One that can't be resolved or completed from the sources goes on the Step 5 *Unsettled* list.
-- **Testing strategy** — the test or check that proves each acceptance criterion, named per criterion. "Project defaults" covers how the checks run, never which ones, and never waives the tests: every behavior the ticket adds or alters still gets one.
-- **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
+Size each ticket by the behavioral size test under *Sizing* in `references/slicing.md`, and split the way it gives. For every ticket, draft its title, its type and every field `templates/ticket.md` names, by the rules under *Ticket fields* in the same file. **Done when** every candidate slice from Step 1 either became a ticket or was folded into one, each ticket passes the size test, and every field is drafted by its rule.
 
 ### Step 4 — Map dependencies and parallelism
 
-**Independent tickets** — ones that don't touch the same surfaces or rely on each other's output — **can run in parallel**, in whatever isolation the project supports (separate checkouts, branches, environments). Mark which tickets are independent and which form a dependency chain. Slicing along vertical seams maximizes independence.
+**Independent tickets** — ones that don't touch the same surfaces or rely on each other's output — **can run in parallel**, in whatever isolation the project supports (separate checkouts, branches, environments). Mark which tickets are independent and which form a dependency chain. Slicing along vertical seams maximizes independence. With a PRD only and no architecture, keep this graph coarse and say so — real dependencies usually surface from the seams the architecture names.
 
 **Plan just-in-time:** a dependent ticket waits until its dependency is *implemented*, not just sliced — building the dependency informs the dependent's plan, so planning it early plans against a guess. Independent tickets can be planned and run in parallel; dependent ones wait their turn.
 
 **Retire every absorbed symbol exactly once.** For every existing symbol the architecture absorbs or replaces, name the ticket that removes it, and write that ticket into the dependency graph. Every ticket that touches the symbol, other than the one that removes it, says under *Out of scope* that it keeps the symbol, and for which callers. When the sources don't say which ticket removes it, the symbol goes on the Step 5 *Unsettled* list — never pick one here, since a removal picked without a source invents a dependency between tickets.
 
-With a PRD only and no architecture, keep this graph coarse and say so — real dependencies usually surface from the seams the architecture names.
-
 **Done when** every ticket is marked independent or placed in a dependency chain, with nothing left unclassified, and every absorbed or replaced symbol has a removing ticket or a line on the *Unsettled* list, and every ticket touching it says what it keeps.
 
 ### Step 5 — GATE: confirm the breakdown
 
-The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets live. Say which one you are writing to.
-
-**GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, an absorbed or replaced symbol whose removing ticket no source names, a compared edge no source settles, and the root cause of a `bug` slice that no source or code read supports with `path:line` evidence, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
+The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets live. Say which one you are writing to, then **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open — a surface in the same role that no ticket owns, an absorbed or replaced symbol whose removing ticket no source names, a compared edge no source settles, and the root cause of a `bug` slice that no source or code read supports with `path:line` evidence, among others — for the user to rule on. Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
 **If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Not ticketed* section and to the *Entry context › Decisions* of each ticket it affects, never resolved silently.
 
@@ -124,28 +79,22 @@ Then create one ticket per slice, in the same place, reaching that system with w
 
 ### Step 7 — Report
 
-- A table: ticket title → type → created id and URL.
-- The intent (and architecture) the backlog was generated from.
-- The execution order — which tickets can start now, in parallel, and which are waiting.
-- **What you deliberately did *not* ticket** — open questions, non-goals, anything blocked on a spike.
+Report a table of ticket title → type → created id and URL; the intent (and architecture) the backlog was generated from; the execution order — which tickets can start now, in parallel, and which are waiting; and **what you deliberately did *not* ticket** — open questions, non-goals, anything blocked on a spike.
 
 ## Hand off
 
-Confirm where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
+Confirm the epic's id and where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **Start the first ticket** — run `piv-implement-ticket <ticket-id>`, in a session of its own, one per ticket.
 - **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time, each in a session of its own.
 
 ## Success criteria
 
-- ✅ **Every ticket traces back to a specific section** of the intent or architecture.
-- ✅ **One provable concern each**, with verifiable acceptance criteria and an *Entry context* that cites its sources instead of copying them.
-- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules**, carrying exactly one type.
-- ✅ **Every ticket carries an enumerated *Scope* and an *Out of scope*,** and every unsettled fact is on the *Unsettled* list — with the GATE skipped, also in the *Entry context › Decisions* of each ticket it affects.
+- ✅ **Every ticket traces back to a specific section** of the intent or architecture, and **none crosses a stated non-goal**, rests on an open question, or invents an architecture decision.
+- ✅ **One provable concern each**, with an enumerated *Scope* and *Out of scope* and an *Entry context* that cites its sources instead of copying them — and every unsettled fact is on the *Unsettled* list, with the GATE skipped also in the *Entry context › Decisions* of each ticket it affects.
 - ✅ **Every `bug` ticket carries a *Root cause* with `path:line` evidence and a *Reproduction* — or its root cause is on the *Unsettled* list, and with the GATE skipped, also in the ticket's *Entry context › Decisions*.**
 - ✅ **Every acceptance criterion pins the edges of every comparison from the sources, names each current check it removes or relaxes, and, when it enforces an architecture rule, cites its ID with a concrete case and outcome or quotes the rule verbatim** — an edge no source settles is on the *Unsettled* list, never decided in the criterion.
 - ✅ **Every acceptance criterion maps to a named test or check in the *Testing strategy*, and each *Scope* names the docs the change makes stale, or "none".**
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked, and every absorbed or replaced symbol has a removing ticket in the graph or a line on the *Unsettled* list — with each ticket that touches it, other than the one that removes it, stating under *Out of scope* what it keeps.
 - ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
-- ✅ **No ticket crosses a stated non-goal**, rests on an open question, or invents an architecture decision.
-- ✅ **Every ticket resolves `Intent-slug`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.
+- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules with exactly one type, resolves `Intent-slug`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.

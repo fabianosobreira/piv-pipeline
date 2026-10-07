@@ -2,18 +2,21 @@
 
 **This file is an example, not this project's configuration.** It shows what `docs/ISSUE-TRACKER.md` looks like when the tickets live in Jira instead of GitHub. Nothing reads it: to actually run the loop on Jira, copy it over `docs/ISSUE-TRACKER.md` and fill in the project key.
 
-## The six words
+Where this project's plans and tickets live. The skills read this file instead of asking the user.
+
+## The seven words
 
 One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
-- **ticket** — one provable unit of work, sliced out of the two above.
+- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-create-tickets`, never an input to any skill.
+- **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
 - **fix report** — what the triage of a review leaves behind: which findings were fixed, deferred, flagged for a human, or dropped.
 
-"Report" on its own is fine in prose when only one of the three is in play; name which one whenever more than one could be meant. "Epic", "plan", "task", "slice" and "breakdown" are loose synonyms that show up in prose; when it matters which artifact is meant, use one of the six.
+"Report" on its own is fine in prose when only one of the three is in play; name which one whenever more than one could be meant. "Plan", "slice" and "breakdown" are loose synonyms that show up in prose; when it matters which artifact is meant, use one of the seven.
 
 ## Where tickets live
 
@@ -41,7 +44,7 @@ The PRD and the architecture doc are **written as local files** while the plan i
 
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
-1. **Creates the epic** — an issue of type **Epic**.
+1. **Creates the epic** — an issue of type **Epic**, filled from the epic template.
 2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart.
 3. **Writes the two attachment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the attachment list.
 

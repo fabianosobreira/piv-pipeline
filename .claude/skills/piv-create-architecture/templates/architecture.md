@@ -22,7 +22,7 @@
 <what has to exist that doesn't yet — the building blocks this approach depends on>
 
 ## Spikes & experiments
-<the uncertain / expensive calls to de-risk first, each in the Question / Spike / Decision rule form from Step 5>
+<the uncertain / expensive calls to de-risk first, each in the Question / Spike / Decision rule form the *Spikes* section of the skill's `references/explore-menu.md` gives>
 
 ## Open questions
 <decisions deliberately left open — named, not hidden — and what would settle each>

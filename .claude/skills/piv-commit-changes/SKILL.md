@@ -23,15 +23,15 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 ### Step 2 — Inspect
 
-Inspect everything uncommitted: the working tree status plus the full diff against the last commit, tracked files and untracked alike.
+Inspect everything uncommitted: the working tree status plus the full diff against the last commit, tracked files and untracked alike. **Done when** every uncommitted path, tracked and untracked, is on the list Step 3 groups.
 
 ### Step 3 — Group it
 
-One group per coherent piece of work, and the groups cover everything uncommitted. When something belongs to no group, ask the user what it is — a group of its own, a stash, or something to drop — before you commit anything. **GATE.**
+One group per coherent piece of work, and the groups cover everything uncommitted. When something belongs to no group, ask the user what it is — a group of its own, a stash, or something to drop — before you commit anything. **GATE.** **Done when** every path from Step 2 sits in exactly one group, or the user decided where it goes.
 
 ### Step 4 — Commit each group
 
-Take one group at a time — stage it, then commit it with a subject line in the form `docs/GIT-CONVENTIONS.md` defines: `<tag>: <atomic description> (<ticket id>)`, with the id resolved in Step 1.
+Take one group at a time — stage it, then commit it with a subject line in the form `docs/GIT-CONVENTIONS.md` defines: `<tag>: <atomic description> (<ticket id>)`, with the id resolved in Step 1. **Done when** every group is a commit whose subject follows that form.
 
 ### Step 5 — Add a body when the subject isn't enough
 
@@ -39,7 +39,7 @@ When the subject alone leaves the work unexplained, add a body after one blank l
 
 Write that body from the diff in front of you. **This step deliberately does not read the implementation report or the fix report** — the narrative of why the change looks like this belongs in the PR, where a human reviewer meets it, and `piv-create-pr` is what reads both, along with the review report, to build it. A commit body that duplicates a report ages into a second, stale copy of it.
 
-Done when every group is committed and the working tree is clean.
+**Done when** every group is committed — with a body wherever its subject leaves the work unexplained — and the working tree is clean.
 
 ## Output — the commit summary
 

@@ -38,7 +38,7 @@ A **blocking** finding — a red, missing or weakened test, or an untested behav
 
 **GATE** — post the split, each deferral with the title and type its ticket will carry, and wait for the user's ruling. No code moves and no ticket is created until they rule.
 
-**Once they rule, write the fix report** at the fix report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/fix-report.md` with the split — every *Fixed* entry marked *not fixed* and every *Deferred* entry marked *not created* from this first write, each flipped only once it lands. Keep it current through the steps below: each deferral's ticket id as it is created, each fix as it goes green. A run that stops midway, for any reason, still leaves the ruling on record, with whatever hasn't landed still marked pending. Running this skill again resumes from that record once the cause is cleared.
+**Once they rule, write the fix report** at the fix report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/fix-report.md` with the split — every *Fixed* entry marked *not fixed* and every *Deferred* entry marked *not created* from this first write, each flipped only once it lands. Keep it current through the steps below: each deferral's ticket id as it is created, each fix as it goes green. A run that stops midway, for any reason, still leaves the ruling on record, with whatever hasn't landed still marked pending. Running this skill again resumes from that record once the cause is cleared. **Done when** the user has ruled and the fix report holds every finding in its ruled bucket.
 
 ### Step 2 — Open a ticket for each deferral
 
@@ -53,7 +53,7 @@ Read the reviewed ticket where `docs/ISSUE-TRACKER.md` says tickets live — it 
 
 Leave the epic's body as it is — its *Tickets* list and its dependency graph alike: `piv-create-tickets` owns both, the deferral reaches the epic through the epic link *Creating a ticket* gives it, and a deferral blocks nothing — it only depends on the reviewed ticket.
 
-Record each created ticket's id against its finding in the fix report. A deferral with nothing to point at is not a deferral: the next review raises the finding again.
+Record each created ticket's id against its finding in the fix report. A deferral with nothing to point at is not a deferral: the next review raises the finding again. **Done when** every *Defer* finding has a created ticket whose id is in the fix report.
 
 ### Step 3 — Fix the *Fix now* set, one at a time
 
@@ -64,13 +64,13 @@ For each finding, blocking first, then in severity order:
 3. Prove it. A blocking finding's proof is the test itself: the red test green through a change to the code — or to its assertions, when the ticket changed the behavior it pins — the missing test written and passing, the weakened test restored and passing, the untested behavior exercised by a new test that passes. A finding typed `bug` gets a test that fails without the fix and passes with it. Any other gets the check that shows its claim no longer holds: the lint or type-check rule it broke, or, for a coverage finding, the test it asked for.
 4. Run that proof. The finding goes **green** when it passes, and a red finding gets fixed before the next one starts.
 
-Fix what the finding names and stop there. A repair that grows into a refactor is out of scope: say so, and leave the user to open it as its own ticket.
+Fix what the finding names and stop there. A repair that grows into a refactor is out of scope: say so, and leave the user to open it as its own ticket. **Done when** every *Fix now* finding is green and marked fixed in the fix report.
 
 ### Step 4 — Validate
 
 Run the project's own checks — the test, lint, type-check, and build commands the repo exposes. When a check goes red: fix the cause, re-run, and continue once it is green.
 
-When a failure survives a few honest attempts, or its cause sits outside what the findings ask you to change, stop working it: record the check, the failure, and what you tried in the fix report's *Checks run*. The re-review re-runs the test suite, the type-checker and the linter — it runs no build — and raises whatever of those is still red as blocking; `piv-create-pr` reads this *Checks run* ahead of the implementation report's for its own Validation.
+When a failure survives a few honest attempts, or its cause sits outside what the findings ask you to change, stop working it: record the check, the failure, and what you tried in the fix report's *Checks run*. The re-review re-runs the test suite, the type-checker and the linter — it runs no build — and raises whatever of those is still red as blocking; `piv-create-pr` reads this *Checks run* ahead of the implementation report's for its own Validation. **Done when** every check is green, or each one still red is recorded in *Checks run*.
 
 ## Output — finish the fix report
 

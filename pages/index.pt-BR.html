@@ -156,12 +156,12 @@
             <td>Você precisa fixar o <em>o quê e por quê</em> antes que alguém discuta o como.</td>
           </tr>
           <tr>
-            <td>Um PRD ou um epic, com incerteza técnica real</td>
+            <td>Um PRD, com incerteza técnica real</td>
             <td><code class="skill">piv-create-architecture</code></td>
             <td>Decidir a abordagem deliberadamente, em vez de deixar os tickets a codificarem por acidente.</td>
           </tr>
           <tr>
-            <td>Um intent claro, com pouco risco técnico</td>
+            <td>Um PRD com pouco risco técnico</td>
             <td><code class="skill">piv-create-tickets</code></td>
             <td>Um atalho legítimo — só saiba que você pulou a etapa de arquitetura de propósito.</td>
           </tr>
@@ -440,12 +440,12 @@
           <tr><th>Artifact</th><th>Caminho</th><th>Escrito por</th><th>Lido por</th></tr>
         </thead>
         <tbody>
-          <tr><td>PRD</td><td><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code>, depois publicado no epic</td><td><code class="skill">piv-create-prd</code></td><td>architecture, tickets</td></tr>
+          <tr><td>PRD</td><td><code>docs/.plans/&lt;intent-slug&gt;.prd.md</code>, depois publicado no epic</td><td><code class="skill">piv-create-prd</code></td><td>architecture, tickets, implement</td></tr>
           <tr><td>Architecture doc</td><td><code>docs/.plans/&lt;intent-slug&gt;.architecture.md</code>, depois publicado no epic</td><td><code class="skill">piv-create-architecture</code></td><td>tickets, implement</td></tr>
-          <tr><td>Epic</td><td>o tracker do projeto</td><td><code class="skill">piv-create-tickets</code></td><td>tickets</td></tr>
-          <tr><td>Tickets</td><td>o tracker do projeto</td><td><code class="skill">piv-create-tickets</code></td><td>implement, review, commit, PR</td></tr>
+          <tr><td>Epic</td><td>o tracker do projeto</td><td><code class="skill">piv-create-tickets</code></td><td>nenhum — nunca é input</td></tr>
+          <tr><td>Tickets</td><td>o tracker do projeto</td><td><code class="skill">piv-create-tickets</code></td><td>implement, review, fix-findings, PR</td></tr>
           <tr><td>Implementation report</td><td><code>docs/.reports/&lt;ticket-id&gt;-report.md</code></td><td><code class="skill">piv-implement-ticket</code></td><td>review, PR</td></tr>
-          <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code class="skill">piv-review-changes</code></td><td>fix-findings</td></tr>
+          <tr><td>Review report</td><td><code>docs/.reports/&lt;ticket-id&gt;-review.md</code></td><td><code class="skill">piv-review-changes</code></td><td>fix-findings, re-review, commit, PR</td></tr>
           <tr><td>Fix report</td><td><code>docs/.reports/&lt;ticket-id&gt;-fixes.md</code></td><td><code class="skill">piv-fix-findings</code></td><td>re-review, PR</td></tr>
         </tbody>
         <caption>Os ticket ids são normalizados para nomes de arquivo antes — <code>#123</code> vira <code>123</code> — para que os reports de um ticket fiquem lado a lado. Os plans são escritos localmente e continuam lá; <code class="skill">piv-create-tickets</code> publica uma cópia no epic — um comentário no GitHub, um attachment no GitLab e no Jira — para que as decisões viajem com o trabalho em vez de ficarem na máquina que as escreveu.</caption>
