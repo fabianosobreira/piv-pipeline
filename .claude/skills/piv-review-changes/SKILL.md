@@ -3,7 +3,10 @@ name: piv-review-changes
 description: Reviews the finished change for bugs, security defects and standards violations, and writes a review report.
 argument-hint: "[ticket id] (blank = taken from the branch name)"
 disable-model-invocation: true
-allowed-tools: Bash(sh *scripts/diff-hash.sh *)
+allowed-tools:
+  - Bash(sh *scripts/diff-hash.sh *)
+  - Bash(sh *scripts/check-report.sh *)
+  - Bash(sh *scripts/locate.sh *)
 ---
 
 # Review Changes: Prove the Change Wrong
@@ -35,16 +38,6 @@ A *red* test **confirmed red on the base** — it ran on the base branch, with t
 
 **A project with no test suite holds the change to no test.** *Missing* and *untested* do not apply, and *red* and *weakened* cannot arise. Say so in *Checks run*, naming the behaviors the change adds or alters that go untested, and raise no finding for them.
 
-Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
-
-- [ ] 1. Resolve the change under review
-- [ ] 2. Resolve the deferrals
-- [ ] 3. Read the standards the change has to meet
-- [ ] 4. Read every changed file end to end
-- [ ] 5. Build the case
-- [ ] 6. Run the three filters
-- [ ] 7. Validate the report
-
 ## Success criteria
 
 - ✅ Every file in the change under review was read end to end — by you, or by the subagent it was dispatched to — and every class in Step 5 was hunted over each of them.
@@ -52,7 +45,7 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
 - ✅ The change was held to the **Acceptance criteria**, the **Testing strategy**, the **Scope** and the **Out of scope** read from the ticket.
-- ✅ The report follows the template in **Output**, and its path was handed to whatever runs next.
+- ✅ The report follows the template in **Output**, `scripts/check-report.sh` exits 0 on it with every cited line saying what its finding claims, and its path was handed to whatever runs next.
 
 ## Process
 
@@ -86,7 +79,7 @@ Every file the change touches, whole — not the diff. A diff hides the caller t
 
 ### Step 5 — Build the case
 
-Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing. **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line.
+Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing. **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line. Take every line number from the bundled `scripts/locate.sh`, run with `sh` as `locate.sh <file> <text>` from the repository root: it prints `file:line` for each line containing the text, so the number you cite is the one the file has, not one counted by hand.
 
 1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds — every acceptance criterion of the ticket the code doesn't meet, and a change outside the ticket's *Scope*, or inside its *Out of scope*, that the implementation report doesn't list as a deviation.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
@@ -126,11 +119,11 @@ A surviving blocking finding stays **blocking**, and its kind names it. A *red* 
 
 Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md` — use it exactly — built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Its **Round** is 1 on a first review and the previous review's **Round** plus one on a re-review. Its **Base** and **Diff** record the change reviewed, so `piv-commit-changes` can tell whether the tree still matches it. The **Diff** is what the bundled `scripts/diff-hash.sh` prints — run it with `sh` (it needs `git` and a POSIX shell), handed the **Base** and the exclude globs `docs/ISSUE-TRACKER.md` lists under *Paths*; there is no need to read it.
 
+Everything the template leaves to you — each finding's claim, evidence, impact and fix, the notes under *Scope*, and *Checks run* — is written in the intent's language; only the template's labels and headings stay as written.
+
 The blocking heading and every severity heading are present on every run, and one that survived nothing reads "No findings." *Dropped by prior ruling* is present too, reading "None." when nothing was dropped. The verdict is **CHANGES REQUESTED** when any blocking, critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
 
-### Step 7 — Validate the report
-
-Reopen every `path:line` the report cites and confirm the line exists and says what its finding claims, then confirm every heading of the template is present. Any check that fails → fix the report and run the whole check again. **Done when** every cite and every heading passes. Then print the verdict with the count of blocking findings and the count per severity.
+Check the report before handing it on, whatever the verdict. Run the bundled `scripts/check-report.sh` with `sh` from the repository root, handed the report's path: it confirms the header fields and headings, that the verdict agrees with the findings, and that every cited `path:line` exists. Any problem it prints → fix the report and run it again, until it exits 0. It cannot tell whether a cited line says what its finding claims, so reopen each cited line for that. Then print the verdict, the count of blocking findings and the count per severity.
 
 ## Hand off
 

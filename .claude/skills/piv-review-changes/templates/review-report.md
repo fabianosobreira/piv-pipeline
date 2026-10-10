@@ -9,7 +9,6 @@
 - **Verdict**: PASS | CHANGES REQUESTED
 
 ## Scope
-Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
 <every file read, one per line — `path/to/file.py` (MODIFIED/ADDED/DELETED). Say here when the reading was dispatched across subagents, and which group each took.>
 
 ## Findings
