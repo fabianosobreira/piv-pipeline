@@ -17,7 +17,7 @@ Rules for writing any document an agent consumes — a skill, a template, a trac
 
 ## Context pointers
 
-A **context pointer** is a line in the agent's context that names out-of-context material and states when to reach it — a skill's `description`, a line in `SKILL.md` or `CLAUDE.md` naming a doc.
+A **context pointer** is a line in the agent's context that names out-of-context material and states when to reach it — a skill's `description`, a line in `SKILL.md`, `AGENTS.md` or `CLAUDE.md` naming a doc.
 
 - A pointer states what the material is and when to reach it, listing the distinct branches that trigger it.
 - Use the words a user or a run actually produces for each branch. Collapse only restatements the author invented.

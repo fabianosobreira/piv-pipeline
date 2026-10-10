@@ -74,7 +74,7 @@ A previous review of this branch may sit at the review report path `docs/ISSUE-T
 
 ### Step 3 — Read the standards the change has to meet
 
-Read what the project documents about how its code is written: `CLAUDE.md` and `AGENTS.md` at the root and in each directory the change touches, `README.md`, and the linter, formatter and type-checker configs the repo ships.
+Read what the project documents about how its code is written: `AGENTS.md` and `CLAUDE.md` at the root and in each directory the change touches, `README.md`, and the linter, formatter and type-checker configs the repo ships.
 
 Then read, for each kind of unit the change adds or edits, one existing sibling that does the same job, to know what "matches the existing patterns" means here. **Done when** every rule you will cite names its document, and each kind of unit the change adds or edits has a sibling read.
 
