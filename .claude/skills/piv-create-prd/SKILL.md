@@ -84,13 +84,9 @@ Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When 
 **GATE.**
 
 ### Phase 4 — Hypothesis (the falsifiable bet)
-Ask for each slot of the block below as an open question. The **wrong condition is the most-skipped line — and the one that makes it falsifiable:**
+Ask for each slot of the paragraph below as an open question, and show it to the user in the interview's language — frame, RIGHT and WRONG included. The **wrong condition is the most-skipped sentence — and the one that makes it falsifiable:**
 
-```
-We believe <change> will cause <these users> to <do Y>, resulting in <outcome>.
-We'll know we're RIGHT if <leading signal> within <timeframe>.
-We'll know we're WRONG if <counter-signal / a guardrail moves>.
-```
+We believe <change> will cause <these users> to <do Y>, resulting in <outcome>. We'll know we're RIGHT if <leading signal> within <timeframe>. We'll know we're WRONG if <counter-signal / a guardrail moves>.
 
 - **Success metrics** — turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement".
 - **GATE.** Then assemble the block and the metrics from the user's words alone and post them back for confirmation — assembling their words is not a recommended answer. **GATE.** No hypothesis ships without a wrong condition.
