@@ -40,7 +40,7 @@ Read that ticket where `docs/ISSUE-TRACKER.md` says tickets live, reaching that 
 
 From here on, **the ticket governs the run**. If it has no `Acceptance criteria` heading, or the checklist under it is empty → **STOP**: say so, and that the ticket needs reworking before it can be built.
 
-Assigned to someone else → **STOP**, naming the assignee. Otherwise mark it in flight now, the way `docs/ISSUE-TRACKER.md` says.
+Assigned to someone else → **STOP**, naming the assignee. Otherwise mark it in flight now, the way `docs/ISSUE-TRACKER.md` says. A STOP after this mark puts the ticket back to the status it had; a GATE leaves it, since the user is still there.
 
 When the ticket's type is `bug`, this run is a **repair**, and the instructions marked **Repair:** apply on top of the normal ones. A repair run is done only when every instruction marked **Repair:** is satisfied.
 
@@ -55,7 +55,7 @@ When the ticket's type is `bug`, this run is a **repair**, and the instructions 
 - **On the base branch, clean** → create the branch, then record the baseline on it.
 - **Already on a branch carrying this ticket's id** → when the base's remote tip is not an ancestor of the branch, **STOP**: rebase the branch onto the base first. Otherwise record the baseline in a worktree of the base, then use the branch.
 - **On a branch carrying another ticket's id or no id** → **STOP**: switch to the base or to this ticket's branch first.
-- **On the base branch with uncommitted changes** → **STOP**: commit or stash first.
+- **On the base branch with uncommitted changes** → **STOP**: commit or stash first. The in-flight mark on the ticket is not one of them.
 
 **The baseline** is the project's full test suite run against the base before you change anything, with the setup the branch run will use, noting every test that failed an assertion there and which one — so Step 6 can tell the failures this change caused from the ones it found. A worktree for it goes outside the repository and is removed afterwards. **The project has no test suite** → say so, skip the baseline, and carry on without tests: this run implements the ticket, and setting up a suite is not its job. Every test instruction below then falls away, and the report's *Tests added* says why. **Done when** the run sits on the ticket's branch and the baseline names every test red on the base — or the project has no test suite and that is said.
 
@@ -73,7 +73,9 @@ Before any edit, read the ticket's **`Architecture`** field and its **Entry cont
 
 **Then check for drift.** Where the ticket quotes existing code or cites line refs inside this repository, open those files and compare. The references under *External references* are context, not drift-checked: the run may not be able to open them, and an unreachable file is not evidence of drift. Drift is any quoted code that no longer exists, has moved, or changed in a way that makes the ticket's instruction for it unperformable. Cosmetic differences (formatting, renamed locals, shifted line numbers with identical code) are not drift. Drift caused by a ticket this one *Depends on* → **GATE**: post the drift and the task list adapted to the current code, for the user to approve. Any other drift → **STOP**, naming what changed; the user edits the ticket before rerunning. **Repair:** also confirm the defect still reproduces before changing anything, by the ticket's *Reproduction* — on a deferral, by its *Evidence* — and when it doesn't → **STOP**, saying the ticket is stale or already fixed.
 
-**Done when** the task list, every check the ticket names and its Testing strategy are in your notes, every source the ticket cites is read, and the drift check came back clean or its drift was approved.
+**Then settle the unsettled facts.** The ticket's *Entry context* may list facts as unsettled — a value, an error code, an edge case no source defines. For each one a task needs, settle it from the repository's own precedent when one exists (the existing code or schema already answers the same question), and list it in the report's *Deviations*. Propose the smallest value consistent with the ticket's decisions for each one no precedent answers, and post those together for the user to settle. A fact no task needs stays unsettled. **GATE** only when some fact has no precedent.
+
+**Done when** the task list, every check the ticket names and its Testing strategy are in your notes, every source the ticket cites is read, the drift check came back clean or its drift was approved, and every unsettled fact a task needs has a value, from precedent or from the user.
 
 ### Step 4 — Execute tasks in order
 
