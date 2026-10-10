@@ -2,6 +2,11 @@
 
 Rules for writing any document an agent consumes — a skill, a template, a tracker doc, `CLAUDE.md`. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
 
+## Language and wrapping
+
+- Write `SKILL.md` and everything that ships with a skill in plain English with soft wraps: templates, disclosed references, examples, bundled scripts and their messages, and the labels and placeholders inside them.
+- The artifacts a run writes follow the intent's language; only the template labels stay as the template writes them.
+
 ## Frontmatter and invocation
 
 - `name`: `piv-<verb>-<object>`, lowercase letters, digits and hyphens, at most 64 characters.
