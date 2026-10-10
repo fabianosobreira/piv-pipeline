@@ -33,6 +33,7 @@ The PRD, the architecture doc and the ticket breakdown open with one **header bl
 - **`Intent-slug`** — the key defined below. Every artifact of one intent carries the same one.
 - **`Intent`** — the path the *what and why* lives at. The PRD is itself the intent, so the PRD alone carries no `Intent` field.
 - **`Architecture`** — the architecture doc's path, or "none".
+- **`Language`** — the BCP 47 tag of the intent's language, such as `pt-BR`: set by the PRD — or, with no PRD, the architecture doc — and copied verbatim into every other artifact that carries it.
 
 The three reports use the same header block, with the fields their own templates name. Each ticket block inside the breakdown inherits the breakdown's header rather than repeating it.
 
@@ -54,7 +55,7 @@ Plans stay local — `piv-create-tickets` publishes nothing, and the breakdown's
 Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the breakdown reads the same:
 
 - **Where** — a block appended to the intent's breakdown file, in the form shown under *The breakdown file* — use it exactly — with the next free number. When the intent has no breakdown yet, create the file with its header block first.
-- **Header block** — none of its own: the block inherits the breakdown's `Intent-slug`, `Intent` and `Architecture`.
+- **Header block** — none of its own: the block inherits the breakdown's `Intent-slug`, `Language`, `Intent` and `Architecture`.
 - **Type** — a `Type:` line carrying exactly one of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
 - **Epic** — none of its own: the block belongs to the breakdown file that stands in for it.
 - **Link** — a deferral's `Origin:` line carries the id of the ticket the review covered; that id is the link.
@@ -92,6 +93,7 @@ A markdown ticket carries `Status: todo | in progress | in review | done` in its
 # Ticket breakdown — <intent name>
 
 - **Intent-slug**: <intent-slug>
+- **Language**: <the PRD's `Language`, or the architecture doc's when there is no PRD, copied verbatim>
 - **Intent**: <the PRD path these tickets trace to, or "none">
 - **Architecture**: <the architecture doc path these tickets trace to, or "none">
 

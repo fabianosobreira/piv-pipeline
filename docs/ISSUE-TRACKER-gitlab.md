@@ -31,6 +31,7 @@ The PRD, the architecture doc, the epic and every ticket open with one **header 
 - **`Intent-slug`** — the key defined below. Every artifact of one intent carries the same one.
 - **`Intent`** — where the *what and why* lives: the PRD's path until the plans are on the epic, its attachment URL from then on. The PRD is itself the intent, so the PRD alone carries no `Intent` field.
 - **`Architecture`** — the architecture doc's path until it is on the epic, its attachment URL from then on, or "none".
+- **`Language`** — the BCP 47 tag of the intent's language, such as `pt-BR`: set by the PRD — or, with no PRD, the architecture doc — and copied verbatim into every other artifact that carries it.
 
 Once the plans are on the epic, the attachment URL is the value: every ticket, implementation report and merge request copies it verbatim, even where the local file is at hand.
 
@@ -57,7 +58,7 @@ Published this way, the plans travel with the epic rather than with the machine 
 Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
 
 - **Where** — an issue in this project, its description filled from the creating skill's own template.
-- **Header block** — `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
+- **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
 - **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
 - **Epic** — linked to its epic, when the intent has one.
 - **Link** — a deferral is linked to the ticket the review covered as *relates to*.

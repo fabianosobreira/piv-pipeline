@@ -8,7 +8,7 @@ allowed-tools: Bash(sh *scripts/diff-hash.sh *)
 
 # Review Changes: Prove the Change Wrong
 
-This opens the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's, read in Step 1; template labels stay as written.
+This opens the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
 
 ## Posture
 

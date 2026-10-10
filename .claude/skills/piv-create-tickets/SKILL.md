@@ -47,7 +47,7 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 - ✅ **Every acceptance criterion is one the implementation run can meet inside the repository**, and every step another system or person owns is under the ticket's *External references* and the epic's *Not ticketed*.
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked, and every absorbed or replaced symbol has a removing ticket in the graph or a line on the *Unsettled* list — with each ticket that touches it, other than the one that removes it, stating under *Out of scope* what it keeps.
 - ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
-- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules with exactly one type, resolves `Intent-slug`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.
+- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules with exactly one type, resolves `Intent-slug`, `Language`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.
 
 ## Process
 
@@ -152,7 +152,7 @@ Then create one ticket per slice, in the same place, reaching that system with w
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal `Acceptance criteria` heading *Creating a ticket* names. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - The Step 3 entry context goes in the template's *Entry context* section, cited rather than copied — the run reads the cited sources itself.
 - Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
-- Fill the header block's `Intent-slug`, `Intent` and `Architecture` from the epic's own fields, copied verbatim once the epic's fields point at the published plans — a ticket picked up cold still resolves both plans.
+- Fill the header block's `Intent-slug`, `Language`, `Intent` and `Architecture` from the epic's own fields, copied verbatim once the epic's fields point at the published plans — a ticket picked up cold still resolves both plans.
 - Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines, and add its line to the epic's *Tickets* list. That id is what every later step is handed.
 
 **Then write the dependency graph and the execution order down** in the epic's *Dependency graph and execution order* section. It is the one part of the breakdown no single ticket carries.

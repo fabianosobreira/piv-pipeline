@@ -1,6 +1,7 @@
 # PRD — <product title>
 
 - **Intent-slug**: <intent-slug>
+- **Language**: <the BCP 47 tag of the language this interview ran in, such as pt-BR>
 
 ## Problem statement
 <who has what problem, and the cost of not solving it>

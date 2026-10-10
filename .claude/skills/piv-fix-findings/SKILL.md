@@ -17,9 +17,9 @@ A review produced findings — but a review is **input, not a work order**: you 
 
 Take the ticket id from the review report's header.
 
-Read the reviewed ticket where `docs/ISSUE-TRACKER.md` says tickets live — it is where the language this run writes in and the deferral's epic and header block come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
+Read the reviewed ticket where `docs/ISSUE-TRACKER.md` says tickets live — it is where the `Language` this run writes in and the deferral's epic and header block come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
 
-Write the fix report and every deferral in the intent's language — the reviewed ticket's, read above; template labels stay as written.
+Write the fix report and every deferral in the intent's language — the reviewed ticket's `Language`, read above, or with no such field the language its body is written in; template labels stay as written.
 
 **A fix report already at the fix report path `docs/ISSUE-TRACKER.md` defines, its Round matching this review report's** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. A *Needs a human look* item the user has since ruled on counts as pending in its new bucket. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review-changes` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report with a lower Round belongs to an earlier review: triage from scratch.
 
@@ -66,7 +66,7 @@ A **blocking** finding — a red, missing or weakened test, or an untested behav
 A deferral is a ticket: create it by the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket* — the same rules `piv-create-tickets` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement-ticket` can pick it up cold. Fill the template at `templates/deferral.md` — use it exactly — taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's entry context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
 
 - **Type** — the type ruled at the GATE.
-- **Epic and header block** — the reviewed ticket's epic as its parent, and its `Intent-slug`, `Intent` and `Architecture` copied verbatim.
+- **Epic and header block** — the reviewed ticket's epic as its parent, and its `Intent-slug`, `Language`, `Intent` and `Architecture` copied verbatim.
 - **Link** — linked to the reviewed ticket, the way *Creating a ticket* says a deferral is. That link is what lets the next review find the deferral once this fix report is overwritten, and what the PR body points at.
 - **Depends on** — the reviewed ticket: the code the finding names only exists once that ticket lands.
 

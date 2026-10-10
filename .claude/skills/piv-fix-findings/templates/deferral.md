@@ -1,4 +1,5 @@
 - **Intent-slug**: <intent-slug>
+- **Language**: <the reviewed ticket's `Language`, copied verbatim>
 - **Intent**: <the reviewed ticket's `Intent`, copied verbatim, or "none">
 - **Architecture**: <the reviewed ticket's `Architecture`, copied verbatim, or "none">
 

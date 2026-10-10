@@ -24,7 +24,7 @@ Two words for two different things, and a skill means exactly one of them:
 
 ## Language
 
-Every artifact of one intent is written in one language: the one the user runs the first planning interview in, which the PRD — or, with no PRD, the architecture doc — sets. Every later step takes it from the intent, since a fresh session has no conversation to take it from. Template labels — headings, header block fields, literal labels — stay as the templates write them, because the skills find them by their literal text.
+Every artifact of one intent is written in one language: the one the user runs the first planning interview in, which the PRD — or, with no PRD, the architecture doc — sets. Every later step takes it from the `Language` field of the artifact it reads, since a fresh session has no conversation to take it from. Template labels — headings, header block fields, literal labels — stay as the templates write them, because the skills find them by their literal text.
 
 ## Nothing chains itself
 

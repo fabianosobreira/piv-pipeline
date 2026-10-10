@@ -48,7 +48,7 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 - ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
 - ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
 - ✅ Every problem statement admits more than one solution (the reframe test).
-- ✅ The doc's header block carries the `Intent-slug`.
+- ✅ The doc's header block carries the `Intent-slug` and the `Language`.
 
 ## Process
 
@@ -115,7 +115,7 @@ Ask as open questions: the thinnest end-to-end slice, whether it is costly to un
 
 Write it where `docs/ISSUE-TRACKER.md` says plans live, under the `intent-slug` it defines. Before writing, check the path. If a file exists there, **GATE**: ask whether to revise it or pick a different slug.
 
-Fill the `Intent-slug` field as `docs/ISSUE-TRACKER.md` defines it.
+Fill the `Intent-slug` field as `docs/ISSUE-TRACKER.md` defines it, and the `Language` field with the BCP 47 tag of the language this interview ran in.
 
 Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md` — use it exactly.
 

@@ -32,7 +32,7 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 - ✅ Every skipped menu item was named out loud.
 - ✅ Every call that is both uncertain and expensive to undo has a spike with a decision rule, not a guess; every expensive call with no real uncertainty records why it's safe.
 - ✅ The doc contains no task list or step-by-step breakdown.
-- ✅ The doc's header block carries the `Intent-slug` and the `Intent`.
+- ✅ The doc's header block carries the `Intent-slug`, the `Language` and the `Intent`.
 - ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open questions** holds only what is still open.
 - ✅ Brownfield: every rule the work replaces has its current checks listed in *Behavior changes vs today*, each one kept, changed or dropped — or the section says "none" with its reason.
 - ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly, or cites the `D<n>` that does.
@@ -113,7 +113,7 @@ Only after the calls are made. Write it where `docs/ISSUE-TRACKER.md` says plans
 
 Write in the intent's language; with no PRD, in the language the user runs this interview in. Template labels stay as written.
 
-**Write the `Intent-slug` and the `Intent` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. The `Intent` is the PRD's location as `docs/ISSUE-TRACKER.md` defines it (local path, or its published URL once published), or "none" when there is no PRD. An intent that is not a PRD — an idea, a brief, a research doc — is never named there: `piv-create-tickets` publishes the field's target as the PRD, so carry what that input says into *Problem & goals* instead, and let this doc stand on its own. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one.
+**Write the `Intent-slug`, the `Language` and the `Intent` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. The `Intent` is the PRD's location as `docs/ISSUE-TRACKER.md` defines it (local path, or its published URL once published), or "none" when there is no PRD. An intent that is not a PRD — an idea, a brief, a research doc — is never named there: `piv-create-tickets` publishes the field's target as the PRD, so carry what that input says into *Problem & goals* instead, and let this doc stand on its own. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one, and copy its `Language` the same way; with no PRD, write the BCP 47 tag of the language this interview ran in.
 
 Fill the template at `templates/architecture.md` — use it exactly.
 

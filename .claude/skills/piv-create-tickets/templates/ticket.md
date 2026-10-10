@@ -1,4 +1,5 @@
 - **Intent-slug**: <intent-slug>
+- **Language**: <the epic's `Language`, copied verbatim>
 - **Intent**: <the epic's `Intent`, copied verbatim, or "none">
 - **Architecture**: <the epic's `Architecture`, copied verbatim, or "none">
 
