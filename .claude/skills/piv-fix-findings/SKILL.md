@@ -95,6 +95,8 @@ When three attempts, each on a different hypothesis about the cause, leave a fai
 
 Finish the fix report started in Step 1 — every bucket settled, *Checks run* filled from Step 4 — and print the summary.
 
+Everything the template leaves to you — each entry's description, its proof or reason, and *Checks run* — is written in the intent's language; only the template's labels and headings stay as written.
+
 ## Hand off
 
 Confirm the fix report's path and each deferral ticket's id, then offer the next move and let the user run it — this skill does not chain into the next one:
