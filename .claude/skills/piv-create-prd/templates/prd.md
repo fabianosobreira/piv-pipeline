@@ -27,7 +27,7 @@
 <specific and outcome-shaped (not "engagement"): metric · target · how measured>
 
 ## Non-goals
-<what you're explicitly NOT doing>
+<what you're explicitly not doing>
 
 ## Open questions
 <named, not hidden, as checkboxes, each with what would settle it>

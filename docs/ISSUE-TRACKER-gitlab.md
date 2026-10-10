@@ -45,8 +45,8 @@ The PRD and the architecture doc are **written as local files** while the plan i
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
 1. **Creates the epic** — a group-level epic, filled from the epic template.
-2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart. The PRD goes up first, and the architecture doc goes up with the PRD's upload URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so an attached doc pointing there points at nothing.
-3. **Writes the two upload URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the upload list.
+2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart. The PRD goes up first, and the architecture doc goes up with the PRD's attachment URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so an attached doc pointing there points at nothing.
+3. **Writes the two attachment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the upload list.
 
 An attachment is the raw markdown file: a plan of any size travels whole, there is nothing to split across comments, and nothing the tracker's renderer can mangle on the way in.
 
@@ -88,6 +88,6 @@ Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic.
 
 **GitLab owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
-- **Assignee** — `piv-implement-ticket` assigns the issue to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
+- **Assignee** — `piv-implement-ticket` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
 - **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
 - **Merge request link** — `piv-create-pr` links the merge request to the issue with a closing pattern before the issue number in the merge request description, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

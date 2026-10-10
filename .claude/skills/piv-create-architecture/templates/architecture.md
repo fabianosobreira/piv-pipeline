@@ -1,7 +1,7 @@
 # Architecture — <intent name>
 
 - **Intent-slug**: <intent-slug>
-- **Intent**: <the PRD's path, or "none" when there is no PRD — an idea, a brief or a research doc is never named here>
+- **Intent**: <the PRD's location as `docs/ISSUE-TRACKER.md` defines it (local path, or its published URL once published), or "none" when there is no PRD — an idea, a brief or a research doc is never named here>
 
 ## Problem & goals
 <one paragraph: the user goal this serves (from the intent) — the lens every decision below is judged against, and what fundamentally has to be true for this to work. With no PRD, what the idea, brief or research doc said, carried here in full enough to slice from, and the success metrics it states>
@@ -22,7 +22,7 @@
 <what has to exist that doesn't yet — the building blocks this approach depends on>
 
 ## Spikes & experiments
-<the uncertain / expensive calls to de-risk first, each in the Question / Spike / Decision rule form the *Spikes* section of the skill's `references/explore-menu.md` gives; or "none", with the one-line reason no call is one-way or uncertain>
+<the calls that are both uncertain and expensive to undo, to de-risk first, each in the Question / Spike / Decision rule form the *Spikes* section of the skill's `SKILL.md` gives; or "none", with the one-line reason no call is both>
 
 ## Open questions
 <decisions deliberately left open — named, not hidden — and what would settle each>

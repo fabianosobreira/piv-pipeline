@@ -90,7 +90,7 @@ Write the id the way Jira writes it — `PROJ-123`, the project key and the issu
 
 **Jira's workflow owns a ticket's status**, and no status field lives in this project's own artifacts. Each transition has exactly one owner:
 
-- **In Progress** — `piv-implement-ticket` transitions the issue and assigns it to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
+- **In Progress** — `piv-implement-ticket` transitions the issue and assigns it to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
 - **In Review** — `piv-create-pr` transitions the issue and puts the pull request URL on it.
 - **Done** — set at the merge, which happens outside this loop.
 

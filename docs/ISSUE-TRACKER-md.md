@@ -4,6 +4,8 @@
 
 Where this project's plans and tickets live. The skills read this file instead of asking the user.
 
+Contents: *The seven words* · *Where tickets live* · *Header block* · *Paths — always local* · *Creating a ticket* · *Finding a review's deferrals* · *Intent-slug* · *Ticket id form* · *Ticket status* · *The breakdown file*.
+
 ## The seven words
 
 One name per artifact, used the same way across every skill:
@@ -50,7 +52,7 @@ Plans stay local — `piv-create-tickets` publishes nothing, and the breakdown's
 
 Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the breakdown reads the same:
 
-- **Where** — a block appended to the intent's breakdown file, in the form shown under *The breakdown file*, with the next free number. When the intent has no breakdown yet, create the file with its header block first.
+- **Where** — a block appended to the intent's breakdown file, in the form shown under *The breakdown file* — use it exactly — with the next free number. When the intent has no breakdown yet, create the file with its header block first.
 - **Header block** — none of its own: the block inherits the breakdown's `Intent-slug`, `Intent` and `Architecture`.
 - **Type** — a `Type:` line carrying exactly one of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
 - **Epic** — none of its own: the block belongs to the breakdown file that stands in for it.
@@ -58,7 +60,7 @@ Every ticket follows these rules, whichever skill creates it — `piv-create-tic
 - **Status** — `Status: todo`.
 - **Acceptance criteria** — a markdown checklist under the literal bold line `Acceptance criteria`.
 
-The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:`, `Evidence:` and `Suggested fix:` where a sliced ticket carries `Scope:` and `Entry context:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
+The other lines of a block come from the creating skill's own template, one line per section of it — a deferral carries `Origin:`, `Evidence:` and `Suggested fix:` where a sliced ticket carries `Entry context:`, and both carry `Scope:` and `Out of scope:`. A section that is a list becomes one line, its fields separated by ` · `. The template's header block is dropped: the block inherits the breakdown's.
 
 ## Finding a review's deferrals
 
@@ -79,7 +81,7 @@ The prefix is what lets the id resolve to its own breakdown file: an implementat
 A markdown ticket carries `Status: todo | in progress | in review | done` in its block — the field exists because a breakdown file has nowhere else to keep it. Each transition has exactly one owner:
 
 - **`todo`** — written when the ticket is created: by `piv-create-tickets` for a sliced ticket, by `piv-fix-findings` for a deferral, one block per deferred finding.
-- **`in progress`** — set by `piv-implement-ticket` once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
+- **`in progress`** — set by `piv-implement-ticket` as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
 - **`in review`** — set by `piv-create-pr` when the review request opens: it rewrites the `Status:` line in that ticket's block inside `docs/.tickets/<intent-slug>.md` and appends the PR URL beside it. There is no tracker to own this, so the breakdown file is what records it.
 - **`done`** — set at the merge, which happens outside this loop.
 
@@ -126,4 +128,4 @@ Wave 2: <INTENT-SLUG>-2 (after <INTENT-SLUG>-1 is implemented)
 <one line per item the plans left without a ticket: the plan section it comes from and why it got no ticket, without restating it>
 ```
 
-The **Acceptance criteria** heading is the contract an implementation loop reads as the ticket's task list, and the dependency graph lives here because no single ticket carries it. With no epic of its own, the breakdown file stands in for the epic's body: what a skill writes to the epic's *Dependency graph and execution order* goes under *Dependency graph* and *Suggested execution order*, and what it writes to the epic's *Not ticketed* goes under *Not ticketed*.
+The **Acceptance criteria** heading is the contract an implementation loop reads as the ticket's task list, and the dependency graph lives here because no single ticket carries it. With no epic of its own, the breakdown file stands in for the epic's body: what a skill writes to the epic's *Dependency graph and execution order* goes under *Dependency graph* and *Suggested execution order*, what it writes to the epic's *Not ticketed* goes under *Not ticketed*, and what it writes to the epic's *Context* goes under *Summary*. The epic's *Tickets* list is the blocks' own `### <INTENT-SLUG>-<n> — <title>` headings: no line is added for them.

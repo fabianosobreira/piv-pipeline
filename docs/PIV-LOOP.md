@@ -13,7 +13,7 @@
 7. **`piv-commit-changes`** — the atomic history, one coherent piece of work per commit.
 8. **`piv-create-pr`** — the hand-off out of the loop, to a human who reviews, approves and merges.
 
-Steps 1 and 2 are entry points, not obligations: work with no open product question starts at the architecture, and work with no technical uncertainty starts at the tickets. Steps 5 and 6 repeat until a fresh review returns PASS.
+Steps 1 and 2 are entry points, not obligations: work with no open product question starts at the architecture, and work whose PRD has a two-way MVP door and names no technical unknown starts at the tickets. Steps 5 and 6 repeat until a fresh review returns PASS.
 
 ## GATE and STOP
 

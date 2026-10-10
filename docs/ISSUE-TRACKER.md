@@ -90,6 +90,6 @@ Write the id the way GitHub writes it — `#123`. Commit subjects and PR titles 
 
 **GitHub owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
-- **Assignee** — `piv-implement-ticket` assigns the issue to the user running it once the branch exists, so a parallel wave doesn't pick up the same ticket twice.
+- **Assignee** — `piv-implement-ticket` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
 - **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
 - **PR link** — `piv-create-pr` links the pull request to the issue with a closing keyword before the issue number in the PR body, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

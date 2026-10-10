@@ -9,17 +9,19 @@ disable-model-invocation: true
 
 This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
 
+Write the PRD in the language the user runs this interview in; template labels stay as written.
+
 **Input**: $ARGUMENTS
 
-Greenfield-first. **On an existing product, the input is whatever document carries the context** — a research doc, a decision plan, the existing product's docs — and the same interview applies, scoped to that context. Its architecture is decided separately with `piv-create-architecture`.
+**On an existing product, the input is whatever document carries the context** — a research doc, a decision plan, the existing product's docs — and the interview is scoped to that context.
 
-**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*. If none were passed, **ask whether any exist** before interviewing, in the same message as Phase 1 — one GATE covers both.
+**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*.
 
 ## Your role
 
-A sharp product manager who demands **evidence** and thinks in **hypotheses, not solutions**.
+A product manager who thinks in **hypotheses, not solutions**.
 
-**Evidence-or-TBD rule:** every requirement traces to something the user said or a reference doc showed — invent nothing. Unknown → write **"TBD — needs validation"**.
+**Evidence-or-TBD rule:** every requirement traces to the user's answers, a reference doc, or a fact read from the environment (cite the path) — invent nothing. Unknown → write **"TBD — needs validation"**.
 
 ## Guards
 
@@ -27,7 +29,26 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
    - *Solution-prescriptive:* "Add a reply button to every message."
    - *Intent-framed:* "Past ~100 msgs/day, conversations collide and active users disengage — give them a way to group related replies so they stay."
    - **Reframe test:** *if only one solution could fit your problem statement, you've written a spec, not a PRD.* A good problem leaves room for more than one answer.
-2. **A PRD must NEVER decide engineering** *(these are architecture decisions → `piv-create-architecture`)*: library & version (e.g. "React 18 + Vite," not "a React app") · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — hand each one to `piv-create-architecture` by name.
+2. **A PRD decides no engineering** *(these are architecture decisions → `piv-create-architecture`)*: any named library, framework or version (e.g. React, Vite) · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — record each one under *Open questions* as `Architecture: <decision>`.
+
+Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
+
+- [ ] 1. Phase 1 — Initiate
+- [ ] 2. Phase 2 — Foundation (the thesis + differentiation)
+- [ ] 3. Phase 3 — Deep dive (users)
+- [ ] 4. Phase 4 — Hypothesis (the falsifiable bet)
+- [ ] 5. Phase 5 — MVP & doors
+
+## Success criteria
+
+- ✅ Every phase was GATED — the user answered before you moved on, or declined the interview and every unanswered item shipped as TBD.
+- ✅ Every question shipped open — each answer in the PRD traces to an allowed source.
+- ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
+- ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `<timeframe>`.
+- ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
+- ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
+- ✅ Every problem statement admits more than one solution (the reframe test).
+- ✅ The doc's header block carries the `Intent-slug`.
 
 ## Process
 
@@ -35,9 +56,9 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 
 **Ask in clusters, one phase at a time.** The questions here are **facts about the user's world** — who has the pain, what the evidence is, how they cope today.
 
-- **The user's words are the only answers.** Supply none yourself — every question ships open, with no recommended answer and no option list to pick from, and your own reasoning is never theirs.
+- **The user's words are the only answers to the questions.** Supply none yourself — every question ships open, with no recommended answer and no option list to pick from, and your own reasoning is never theirs.
 - **Look up facts, ask for decisions and lived experience.** If something is discoverable in the environment or in the reference docs you were given, go read it instead of spending a question on it.
-- **Reflect thin answers back and dig.** "Users want it faster" is not an answer.
+- **Reflect thin answers back and dig.** "Users want it faster" is not an answer. A phase is done when every item has a concrete answer (a role, an observed behaviour, a number or date) or the user marks it TBD.
 
 **Format each cluster like so** — numbered, titled, each ending on the question itself. The numbers run on across the whole interview, never restarting at a new phase, so an answer that cites one names exactly one question:
 
@@ -47,7 +68,7 @@ A sharp product manager who demands **evidence** and thinks in **hypotheses, not
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.
 
-**If they decline the interview** ("just write it"): honor it, but name what you would have to guess, and offer the two or three highest-leverage questions instead of all of them. **GATE.** Everything still unanswered falls to the Evidence-or-TBD rule.
+**If they decline the interview** ("just write it"): honor it, but name each item that will ship as TBD, and offer three questions instead of all of them: who has the pain and what it is (Phase 2 items 1-2), why they'd move from today's cope (item 5), and the WRONG condition (Phase 4). **GATE.** Everything still unanswered falls to the Evidence-or-TBD rule.
 
 ### Phase 1 — Initiate
 Input given → restate and confirm. Blank → *"What do you want to build? A few sentences."* Either way, the question about reference docs rides in this message when none were passed. **GATE.**
@@ -57,14 +78,14 @@ Input given → restate and confirm. Blank → *"What do you want to build? A fe
 2. **What** is the observable pain today?
 3. **Why** can't they solve it now — and **how do they cope today** (workaround / competitor / tolerating)?
 4. **Why now** — what changed?
-5. **Differentiation:** solving the pain is table stakes. Is this enough better than how they cope today that they'd actually move to it? (Internal or single-team work: the "cope" is the current manual process or existing tool, not a competitor.) If the honest answer is no, say so before going further.
+5. **Differentiation:** solving the pain is table stakes. Is this enough better than how they cope today that they'd actually move to it? (Internal or single-team work: the "cope" is the current manual process or existing tool, not a competitor.) If the user's answer gives no reason to move, reflect that back and ask whether to continue.
 
 **If the answers to 1-5 come back thin, pressure-test with the four risks:** **Value** (do they want it — more than the current cope?) · **Usability** (can they use it?) · **Feasibility** (can we build it?) · **Viability** (does it work for the business?).
 
-- **GATE.** The *why* and the *move to it* are the heart — keep digging if vague.
+- **GATE.** The *why* and the *move to it* are the heart.
 
 ### Phase 3 — Deep dive (users)
-Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When <situation>, I want to <motivation>, so I can <outcome>") · **non-users** (who it's explicitly NOT for) · constraints.
+Vision (one sentence) · primary user (role/context/trigger) · **JTBD** ("When <situation>, I want to <motivation>, so I can <outcome>") · **non-users** (who it's explicitly not for) · constraints.
 
 **Solo builder building for themselves:** they *are* the primary user — record that in *Target user & JTBD*, and take their own experience as evidence rather than asking for external signal. Building for someone else: no introspection counts as evidence; Phase 2 item 2 still needs an observation.
 
@@ -83,18 +104,20 @@ We'll know we're WRONG if <counter-signal / a guardrail moves>.
 - **GATE.** Then assemble the block and the metrics from the user's words alone and post them back for confirmation — assembling their words is not a recommended answer. **GATE.** No hypothesis ships without a wrong condition.
 
 ### Phase 5 — MVP & doors
-- **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." Holds → decide the architecture and build it proper. Doesn't → you threw away a *slice*, not six months. **The MVP has to be able to prove it:** the hypothesis's RIGHT and WRONG signals must be observable within the MVP — its users, its sample — before the `<timeframe>` runs out. When one isn't, put the mismatch to the user at this phase's GATE; they change the target or the MVP, never you.
+Ask as open questions: the thinnest end-to-end slice, whether it is costly to undo, and what it will not do.
+
+- **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." **The MVP has to be able to prove it:** the hypothesis's RIGHT and WRONG signals must be observable within the MVP — its users, its sample — before the `<timeframe>` runs out. When one isn't, put the mismatch to the user at this phase's GATE; they change the target or the MVP, never you.
 - **Door check** *(informs the spike-vs-build call `piv-create-architecture` makes):* two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first.
 - **Non-goals** — what this explicitly will not do, the MVP's cut included. They are the boundary `piv-create-tickets` never slices a ticket across.
 - **GATE** before generating.
 
 ## Output — a product PRD
 
-Write it where `docs/ISSUE-TRACKER.md` says plans live, under the `intent-slug` it defines. The slug is what keeps a second PRD from overwriting the first.
+Write it where `docs/ISSUE-TRACKER.md` says plans live, under the `intent-slug` it defines. Before writing, check the path. If a file exists there, **GATE**: ask whether to revise it or pick a different slug.
 
-**Write the `Intent-slug` into the doc's header block**, the form `docs/ISSUE-TRACKER.md` defines. Every later step reads it from there instead of re-deriving it — that is what keeps this PRD, its architecture doc, its epic, its tickets and its reports pointing at each other. The PRD is itself the intent, so it carries no `Intent` field: the artifacts downstream point at *it*.
+Fill the `Intent-slug` field as `docs/ISSUE-TRACKER.md` defines it.
 
-Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md`.
+Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md` — use it exactly.
 
 ## Hand off
 
@@ -103,16 +126,4 @@ Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypo
 Offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **Decide *how* to build it** — run `piv-create-architecture <the PRD's path>` to make the engineering decisions this PRD deliberately left open — here or in a fresh session. Then `piv-create-tickets` turns the two into a backlog.
-- **Go straight to tickets** — when the work has little technical uncertainty, running `piv-create-tickets <the PRD's path>`, here or in a fresh session, is fine; say that it's a shortcut, not the default.
-
-## Success criteria
-
-- ✅ Every phase was GATED — the user answered before you moved on, or declined the interview and every guess it left was named.
-- ✅ Every question shipped open — each answer in the PRD is the user's words.
-- ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
-- ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `<timeframe>`.
-- ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
-- ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
-- ✅ Every problem statement admits more than one solution (the reframe test).
-- ✅ The doc's header block carries the `Intent-slug`.
-- ✅ Every section states a fact, decision, or named boundary `piv-create-architecture` and `piv-create-tickets` can slice from directly — never a summary they'd have to re-derive.
+- **Go straight to tickets** — when the MVP door is two-way and no constraint or open question names a technical unknown, running `piv-create-tickets <the PRD's path>`, here or in a fresh session, is fine; say that it's a shortcut, not the default.

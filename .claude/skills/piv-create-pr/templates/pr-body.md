@@ -28,7 +28,7 @@
 <the implementation report's *Problems encountered* — what it left unfinished — or "none", or "unknown — no implementation report available"; a PARTIAL status names them here, and after a fix round and a PASS review that followed it each one is marked "reported by the implementation before the PASS review">
 
 ## Linked
-<the ticket id, in the link form the **Ticket status** section of `docs/ISSUE-TRACKER.md` gives>
+<the ticket id, in the link form the **Ticket status** section of `docs/ISSUE-TRACKER.md` gives, or the bare id when it gives none>
 <with a fix report: "Findings deferred during review live on the tracker as tickets linked to <ticket id>.">
 
 <_Ready for review._ | _Draft — waiting on the open problems above._>

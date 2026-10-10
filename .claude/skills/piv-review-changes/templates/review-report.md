@@ -4,6 +4,8 @@
 - **Ticket**: <id>
 - **Branch**: <branch>
 - **Round**: <n>
+- **Base**: <hash of the base commit the diff was taken against>
+- **Diff**: <the hash `scripts/diff-hash.sh` prints for that commit: the full diff against it, untracked files included, the loop's own artifacts left out>
 - **Verdict**: PASS | CHANGES REQUESTED
 
 ## Scope
@@ -25,13 +27,16 @@ Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
   - **Fix**: <the concrete change>
 
 ### High
-No findings.
+<findings in the Critical form, or "No findings.">
 
 ### Medium
 <findings in the Critical form, or "No findings.">
 
 ### Low
 <findings in the Critical form, or "No findings.">
+
+## Dropped by prior ruling
+<one per line: the candidate (`path/to/file.py:42` and its claim) — the filter that dropped it (prior decision or mitigation) — the deferral ticket or the *Noise / won't-fix* reason, or "None.">
 
 ## Checks run
 <the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned; with no test suite, "no test suite" and the behaviors left untested>

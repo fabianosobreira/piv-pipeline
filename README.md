@@ -18,7 +18,7 @@ Two properties hold the whole thing together. **Every step reads the artifact th
 
 ### The chain at a glance
 
-- **Plan** — `piv-create-prd` or/and `piv-create-architecture` → `piv-create-tickets`
+- **Plan** — `piv-create-prd`, `piv-create-architecture`, or both → `piv-create-tickets`
 - **Implement** — `piv-implement-ticket`
 - **Verify** — `piv-review-changes` → `piv-fix-findings` → `piv-commit-changes` → `piv-create-pr`
   **The loop closes on a PASS.** `piv-fix-findings` always hands back to a fresh `piv-review-changes`. Only a PASS verdict earns a commit.
@@ -32,13 +32,16 @@ You rarely need all eight. Find the row that matches what you have in hand.
 | What you have | Start with | Why |
 | --- | --- | --- |
 | A product idea, nothing written | `piv-create-prd` | You need the *what and why* pinned down before anyone argues about the how. |
-| A PRD, and real technical uncertainty | `piv-create-architecture` | Decide the approach deliberately instead of letting tickets encode it by accident. |
-| A PRD with little technical risk | `piv-create-tickets` | A legitimate shortcut — just know you skipped the architecture step on purpose. |
+| A PRD whose MVP door is one-way, or that names a technical unknown | `piv-create-architecture` | Decide the approach deliberately instead of letting tickets encode it by accident. |
+| Any other PRD | `piv-create-tickets` | A legitimate shortcut — just know you skipped the architecture step on purpose. |
 | A ticket id ready to build | `piv-implement-ticket` | Tickets cite the architecture and the intent, so the loop picks one up from its id alone and reads the sources itself. |
 | Work built on a branch, not yet committed | `piv-review-changes` | This is the gate that decides whether the change earns a commit. |
 | A review report with findings | `piv-fix-findings` | Findings are input, not a work order — you rule on each one. |
 | A PASS verdict | `piv-commit-changes` | Atomic commits, then the PR. |
 
+### Keep the loop's artifacts out of git
+
+The plans and the three reports stay on your machine. Add the paths `docs/ISSUE-TRACKER.md` lists under *Paths* — `docs/.plans/` and `docs/.reports/` — to your `.gitignore`.
 
 ## License
 

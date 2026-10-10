@@ -1,0 +1,2 @@
+# Every text file is stored and checked out with LF; the bundled shell scripts break on CRLF.
+* text=auto eol=lf
