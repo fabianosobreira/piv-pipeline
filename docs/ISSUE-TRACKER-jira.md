@@ -75,6 +75,7 @@ A review's deferrals are the issues linked to the reviewed ticket as *relates to
 - **Implementation reports** — `docs/.reports/<ticket-id>-report.md`. A Jira key is already filename-safe: write it as it is, `PROJ-123-report.md`.
 - **Review reports** — `docs/.reports/<ticket-id>-review.md`. Same form, so a ticket's reports sit side by side.
 - **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`. Same form again.
+- **Exclude globs** — `docs/.plans/*.prd.md` `docs/.plans/*.architecture.md` `docs/.reports/*-report.md` `docs/.reports/*-review.md` `docs/.reports/*-fixes.md`: the paths above, in the form `diff-hash.sh` takes them.
 
 ## Intent-slug
 

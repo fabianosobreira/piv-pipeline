@@ -60,7 +60,7 @@ The commit subjects since `<base>` and, when Step 1 wasn't handed one, the ticke
 
 The body is the reports' distillation: carry what they say into its sections and leave the files themselves local.
 
-Write the PR body in the intent's language; template labels stay as written.
+Write the PR body in the intent's language — the ticket's, read above; template labels stay as written.
 
 When the repo ships a pull request template, fill it, then append the header block, *Notes for the reviewer*, *Open problems* and *Linked* from `templates/pr-body.md` wherever it has no matching section; otherwise fill each section of `templates/pr-body.md` from the material gathered here — use it exactly. **Done when** every section of the body is filled, or says which report was unavailable.
 

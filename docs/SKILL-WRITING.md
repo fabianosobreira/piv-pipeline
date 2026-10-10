@@ -131,4 +131,4 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - Run each with and without the skill, in a fresh session.
 - For a model-invoked skill, measure triggering apart from output.
 - Test with every model the repo supports.
-- A disclosed file never read is unneeded or badly signalled; a file read every run belongs inline.
+- A disclosed file never read is unneeded or badly signalled; a reference file read every run belongs inline; a template stays in `templates/`.

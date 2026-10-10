@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Implement Ticket: Build from the Ticket
 
-This is the **implement** step of the PIV loop `docs/PIV-LOOP.md` describes. Write the report in the intent's language; template labels stay as written.
+This is the **implement** step of the PIV loop `docs/PIV-LOOP.md` describes. Write the report in the intent's language — the ticket's, read in Step 1; template labels stay as written.
 
 Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
 

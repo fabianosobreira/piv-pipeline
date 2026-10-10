@@ -45,6 +45,7 @@ The three reports use the same header block, with the fields their own templates
 - **Implementation reports** — `docs/.reports/<ticket-id>-report.md`.
 - **Review reports** — `docs/.reports/<ticket-id>-review.md`, so a ticket's reports sit side by side.
 - **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`.
+- **Exclude globs** — `docs/.plans/*.architecture.md` `docs/.plans/*.prd.md` `docs/.tickets/*.md` `docs/.reports/*-report.md` `docs/.reports/*-review.md` `docs/.reports/*-fixes.md`: the paths above, in the form `diff-hash.sh` takes them.
 
 Plans stay local — `piv-create-tickets` publishes nothing, and the breakdown's header block points at their paths — so intent and architecture stay separable and get reviewed beside the code.
 

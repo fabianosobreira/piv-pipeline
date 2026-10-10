@@ -75,6 +75,7 @@ A review's deferrals are the issues related to the reviewed ticket whose *Origin
 - **Implementation reports** — `docs/.reports/<ticket-id>-report.md`. Normalize the id for filenames first: `#123` → `123`.
 - **Review reports** — `docs/.reports/<ticket-id>-review.md`. Same normalization, so a ticket's reports sit side by side.
 - **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`. Same normalization again.
+- **Exclude globs** — `docs/.plans/*.prd.md` `docs/.plans/*.architecture.md` `docs/.reports/*-report.md` `docs/.reports/*-review.md` `docs/.reports/*-fixes.md`: the paths above, in the form `diff-hash.sh` takes them.
 
 ## Intent-slug
 

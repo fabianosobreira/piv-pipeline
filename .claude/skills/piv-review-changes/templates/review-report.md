@@ -36,7 +36,7 @@ Files modified: <n> · added: <n> · deleted: <n> · lines +<n> / -<n>
 <findings in the Critical form, or "No findings.">
 
 ## Dropped by prior ruling
-<one per line: the candidate (`path/to/file.py:42` and its claim) — the filter that dropped it (prior decision or mitigation) — the deferral ticket or the *Noise / won't-fix* reason, or "None.">
+<one per line: the candidate (`path/to/file.py:42` and its claim) — the filter that dropped it (prior decision, or mitigation by a *Noise / won't-fix* reason) — the deferral ticket or the *Noise / won't-fix* reason, or "None.">
 
 ## Checks run
 <the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned; with no test suite, "no test suite" and the behaviors left untested>
