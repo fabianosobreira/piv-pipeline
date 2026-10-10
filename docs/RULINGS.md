@@ -14,6 +14,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **`piv-implement-ticket` names `piv-review-changes` flatly instead of offering a menu.** The asymmetry with the other six skills is deliberate — do not normalize it.
 - **Every acceptance criterion is one the implementation run can meet with what the repository and its tooling reach.** A step another system or person owns goes under the ticket's *External references* and the epic's *Not ticketed*. Refused: an "externally owned" criterion that leaves the implementation report COMPLETE — the exception would spread across the implementation, the review and the PR.
 - **Every artifact of one intent is written in the intent's language; template labels stay as the templates write them.** Refused: every artifact in English.
+- **A skill that writes an artifact states the language rule twice: where the run starts, and again in its Output.** Refused: dropping the Output sentence as redundant — tests showed the free text of a report drifting to English when the rule sat only at the top of the skill.
 - **`piv-review-changes` checks the change against the ticket's acceptance criteria; an unmet one is a `logic` finding, `high`.** Refused: leaving an unmet criterion to the implementation report's PARTIAL — the author's own account is not an independent check.
 
 ## Reports and the PR

@@ -54,6 +54,8 @@ Write subjects and bodies in the intent's language — the ticket's `Language`, 
 
 3–6 sentences from the diff, printed for the user: what each commit changes and the key files it touches.
 
+Each commit's subject and body are in the intent's language; only the type prefix and the ticket id stay as `docs/GIT-CONVENTIONS.md` defines them.
+
 ## Hand off
 
 Confirm each commit by its short hash and subject. Committed on the base branch → no PR follows; say so and end here.

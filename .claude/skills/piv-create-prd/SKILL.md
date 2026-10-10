@@ -105,6 +105,8 @@ Write it where `docs/ISSUE-TRACKER.md` says plans live, under the `intent-slug` 
 
 Fill the `Intent-slug` field as `docs/ISSUE-TRACKER.md` defines it, and the `Language` field with the BCP 47 tag of the language this interview ran in.
 
+Everything the template leaves to you is written in the language this interview ran in; only the template's labels and headings stay as written.
+
 Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md` — use it exactly.
 
 ## Hand off

@@ -83,6 +83,8 @@ Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` �
 
 Report the PR number and URL, the base ← head branches, and **"Ready for review → a human approves and merges."** — or, for a draft, **"Draft → waiting on the open problems it lists."**
 
+The PR body's free text — the summary, the Validation and the open problems — stays in the intent's language, as written above; only the template's labels stay as written.
+
 ## Hand off
 
 Next: a human reviews, approves and merges. The agent's loop ends at the merge.

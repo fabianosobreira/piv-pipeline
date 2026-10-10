@@ -120,6 +120,8 @@ Before you write the report, compare every file the change touched against the g
 
 Write a short report at the implementation report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/implementation-report.md` — use it exactly — and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` **verbatim** into its header block. This is what the `piv-review-changes` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
 
+Everything the template leaves to you — what was built, each deviation and its reason, and the checks — is written in the intent's language; only the template's labels and headings stay as written.
+
 ## Hand off
 
 Confirm the implementation report's path. Next: `piv-review-changes` gates the work before anything is committed, in a session of its own. Hand it the ticket id.
