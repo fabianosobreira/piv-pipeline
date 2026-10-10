@@ -31,14 +31,6 @@ A product manager who thinks in **hypotheses, not solutions**.
    - **Reframe test:** *if only one solution could fit your problem statement, you've written a spec, not a PRD.* A good problem leaves room for more than one answer.
 2. **A PRD decides no engineering** *(these are architecture decisions → `piv-create-architecture`)*: any named library, framework or version (e.g. React, Vite) · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — record each one under *Open questions* as `Architecture: <decision>`.
 
-Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
-
-- [ ] 1. Phase 1 — Initiate
-- [ ] 2. Phase 2 — Foundation (the thesis + differentiation)
-- [ ] 3. Phase 3 — Deep dive (users)
-- [ ] 4. Phase 4 — Hypothesis (the falsifiable bet)
-- [ ] 5. Phase 5 — MVP & doors
-
 ## Success criteria
 
 - ✅ Every phase was GATED — the user answered before you moved on, or declined the interview and every unanswered item shipped as TBD.

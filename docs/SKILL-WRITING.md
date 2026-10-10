@@ -53,16 +53,6 @@ A document mixes **steps** (ordered actions) and **reference** (definitions, rul
 
 - Every step ends on an observable completion criterion — not "understanding reached".
 - Make the criterion exhaustive where the set is enumerable ("every modified model accounted for"); bound it where the set is open ("up to 5 risks").
-- A skill with more than three steps opens with a checklist, right after the goal and hard constraints:
-
-  ```markdown
-  Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
-
-  - [ ] 1. <step title>
-  - [ ] 2. <step title>
-  ```
-
-  One item per step, titled as the step's heading. A validation step is its own item.
 - Close quality-critical output with a feedback loop: validate → fix → validate; proceed only on a pass. Name the validator.
 - For batch or hard-to-reverse actions, plan → validate → execute.
 - Write guidance that spans the run as a standing instruction ("after every edit, run the tests").

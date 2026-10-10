@@ -14,13 +14,6 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 The loop's own artifacts — the paths `docs/ISSUE-TRACKER.md` lists under *Paths* — are never committed and stay on disk; the clean-tree check ignores them.
 
-Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
-
-- [ ] 1. Check where you are
-- [ ] 2. Inspect
-- [ ] 3. Group it
-- [ ] 4. Commit each group
-
 ## Success criteria
 
 - ✅ The latest review report's verdict was PASS, with no fix report matching its **Round** and the tree matching its **Diff** — or the user ruled to commit anyway.
