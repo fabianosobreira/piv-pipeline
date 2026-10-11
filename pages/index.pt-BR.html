@@ -45,6 +45,9 @@
       <li><a href="#chain">A chain em um relance</a></li>
       <li><a href="#picking">Por onde começar?</a></li>
 
+      <li class="group">Setup</li>
+      <li class="sub"><a href="#piv-setup">piv-setup</a></li>
+
       <li class="group">Plan</li>
       <li class="sub"><a href="#piv-create-prd">piv-create-prd</a></li>
       <li class="sub"><a href="#piv-create-architecture">piv-create-architecture</a></li>
@@ -151,6 +154,11 @@
         </thead>
         <tbody>
           <tr>
+            <td>As skills copiadas para um repo, ainda sem o <code>docs/</code> delas</td>
+            <td><code class="skill">piv-setup</code></td>
+            <td>Todo passo lê o tracker e as convenções de git em <code>docs/</code>; sem eles a primeira rodada não tem de onde partir.</td>
+          </tr>
+          <tr>
             <td>Uma ideia de produto, nada escrito</td>
             <td><code class="skill">piv-create-prd</code></td>
             <td>Você precisa fixar o <em>o quê e por quê</em> antes que alguém discuta o como.</td>
@@ -187,6 +195,51 @@
           </tr>
         </tbody>
       </table>
+    </section>
+
+    <!-- ===================== SETUP ===================== -->
+
+    <section id="setup">
+      <h2>Setup</h2>
+      <p>O setup não é um passo do loop: roda uma vez por projeto, antes do primeiro passo, e de novo sempre que chegar uma versão mais nova das skills.</p>
+
+      <article class="skill" id="piv-setup">
+        <span class="step">Setup · uma vez por projeto</span>
+        <h3>piv-setup</h3>
+        <p class="what">Instala no <code>docs/</code> do projeto os docs que todo passo lê, e incorpora ao <code>docs/git-conventions.md</code> as regras de git que o projeto já tem — as suas regras vencem os defaults que vêm com a skill.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[github | gitlab | jira | md]</code> — em branco, sugere um a partir do git remote.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/piv-loop.md</code>; <code>docs/issue-tracker.md</code> do tracker que você escolher, com os dados do projeto preenchidos; <code>docs/git-conventions.md</code>; e um <code>docs/.gitignore</code> que mantém os planos e os reports fora do git. Depois, um commit, se você aprovar.</dd>
+
+          <dt>Como roda</dt>
+          <dd>Investigar os docs existentes, o remote e o harness → rascunhar o <code>docs/git-conventions.md</code> → apresentar o plano inteiro em um único gate → instalar → mostrar a mensagem de commit e esperar por você.</dd>
+
+          <dt>Guards</dt>
+          <dd>
+            <ul>
+              <li><strong>O harness vence</strong> — regras de git de <code>CLAUDE.md</code>, <code>AGENTS.md</code>, arquivos de regras e tooling de commit prevalecem sobre o <code>git-conventions.md</code> que vem com a skill; cada uma guarda a nota de onde veio.</li>
+              <li><strong>As necessidades das skills são conferidas</strong> — base branch, formato do commit subject, formato do PR title e as commit tags são obrigatórios; uma regra que quebre um deles volta para você. Branch name ou subject sem o ticket id são permitidos, ao custo de as skills pedirem o id a cada rodada.</li>
+              <li><strong>Nada é sobrescrito em silêncio</strong> — um <code>docs/issue-tracker.md</code> existente é mantido ou substituído conforme você decidir, e um <code>docs/.gitignore</code> existente só ganha as linhas que faltam.</li>
+            </ul>
+          </dd>
+
+          <dt>Próximo passo</dt>
+          <dd>Nenhum no loop: termina no commit. Escolha o ponto de partida em <a href="#picking">Por onde começar?</a></dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use</strong>
+          <ul>
+            <li>Logo depois de copiar as skills para um repo.</li>
+            <li>Quando suas regras de git vivem em <code>CLAUDE.md</code> ou <code>AGENTS.md</code> — ela pode movê-las para o <code>docs/git-conventions.md</code> e deixar um ponteiro no lugar, se você aceitar.</li>
+            <li>Quando chegar uma versão mais nova das skills e os docs precisarem acompanhar.</li>
+          </ul>
+        </div>
+      </article>
     </section>
 
     <!-- ===================== PLAN ===================== -->
@@ -433,7 +486,7 @@
       <h2>Artifacts e onde eles vivem</h2>
       <p>Cada passo lê o artifact anterior, então os caminhos importam. Eles são definidos em <code>docs/issue-tracker.md</code>.</p>
 
-      <p><code>docs/issue-tracker.md</code> é <strong>seu para customizar</strong> — é onde um projeto declara qual tracker usa e quais são os caminhos dos artifacts, e as skills leem esse nome de arquivo e nenhum outro. A <code class="skill">piv-setup</code> o escreve para o tracker que você escolher — GitHub, GitLab, Jira ou arquivos markdown locais —, junto com <code>docs/piv-loop.md</code>, um <code>docs/git-conventions.md</code> mesclado com as regras de git que seu <code>CLAUDE.md</code>, <code>AGENTS.md</code> ou tooling de commit já definem, e um <code>docs/.gitignore</code> que mantém os planos e os reports fora do git. Rode-a uma vez antes do primeiro passo, e de novo para receber uma versão mais nova.</p>
+      <p><code>docs/issue-tracker.md</code> é <strong>seu para customizar</strong> — é onde um projeto declara qual tracker usa e quais são os caminhos dos artifacts, e as skills leem esse nome de arquivo e nenhum outro. A <a href="#piv-setup"><code class="skill">piv-setup</code></a> o escreve para o tracker que você escolher — GitHub, GitLab, Jira ou arquivos markdown locais —, junto com <code>docs/piv-loop.md</code>, um <code>docs/git-conventions.md</code> mesclado com as regras de git que seu <code>CLAUDE.md</code>, <code>AGENTS.md</code> ou tooling de commit já definem, e um <code>docs/.gitignore</code> que mantém os planos e os reports fora do git. Rode-a uma vez antes do primeiro passo, e de novo para receber uma versão mais nova.</p>
 
       <table>
         <thead>

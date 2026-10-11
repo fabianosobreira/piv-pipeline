@@ -56,6 +56,9 @@
       <li><a href="#chain">The chain at a glance</a></li>
       <li><a href="#picking">Where do I start?</a></li>
 
+      <li class="group">Setup</li>
+      <li class="sub"><a href="#piv-setup">piv-setup</a></li>
+
       <li class="group">Plan</li>
       <li class="sub"><a href="#piv-create-prd">piv-create-prd</a></li>
       <li class="sub"><a href="#piv-create-architecture">piv-create-architecture</a></li>
@@ -162,6 +165,11 @@
         </thead>
         <tbody>
           <tr>
+            <td>The skills copied into a repo, no <code>docs/</code> for them yet</td>
+            <td><code class="skill">piv-setup</code></td>
+            <td>Every step reads the tracker and the git conventions from <code>docs/</code>; without them the first run has nothing to go on.</td>
+          </tr>
+          <tr>
             <td>A product idea, nothing written</td>
             <td><code class="skill">piv-create-prd</code></td>
             <td>You need the <em>what and why</em> pinned down before anyone argues about the how.</td>
@@ -198,6 +206,51 @@
           </tr>
         </tbody>
       </table>
+    </section>
+
+    <!-- ===================== SETUP ===================== -->
+
+    <section id="setup">
+      <h2>Setup</h2>
+      <p>Setup is not a step of the loop: it runs once per project, before the first step, and again whenever a newer version of the skills arrives.</p>
+
+      <article class="skill" id="piv-setup">
+        <span class="step">Setup · once per project</span>
+        <h3>piv-setup</h3>
+        <p class="what">Installs the docs every step reads into the project's <code>docs/</code>, and folds the git rules the project already has into <code>docs/git-conventions.md</code> — your rules win over the shipped defaults.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[github | gitlab | jira | md]</code> — blank suggests one from the git remote.</dd>
+
+          <dt>Output</dt>
+          <dd><code>docs/piv-loop.md</code>; <code>docs/issue-tracker.md</code> for the tracker you pick, with its project details filled; <code>docs/git-conventions.md</code>; and a <code>docs/.gitignore</code> that keeps the plans and reports out of git. Then one commit, if you approve it.</dd>
+
+          <dt>How it runs</dt>
+          <dd>Investigate the existing docs, the remote and the harness → draft <code>docs/git-conventions.md</code> → post the whole plan at one gate → install → show the commit message and wait for you.</dd>
+
+          <dt>Guards</dt>
+          <dd>
+            <ul>
+              <li><strong>The harness wins</strong> — git rules from <code>CLAUDE.md</code>, <code>AGENTS.md</code>, rules files and commit tooling override the shipped <code>git-conventions.md</code>; each one keeps a note of where it came from.</li>
+              <li><strong>The skills' needs are checked</strong> — a base branch, a commit subject form, a PR title form and the commit tags are required; a rule that breaks one comes back to you. A branch name or subject without the ticket id is allowed, at the cost of the skills asking you for the id every run.</li>
+              <li><strong>Nothing overwritten silently</strong> — an existing <code>docs/issue-tracker.md</code> is kept or replaced at your word, and an existing <code>docs/.gitignore</code> only gains the lines it lacks.</li>
+            </ul>
+          </dd>
+
+          <dt>Next move</dt>
+          <dd>None in the loop: it ends on the commit. Pick your starting point from <a href="#picking">Where do I start?</a></dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Use it when</strong>
+          <ul>
+            <li>You have just copied the skills into a repo.</li>
+            <li>Your git rules live in <code>CLAUDE.md</code> or <code>AGENTS.md</code> — it can move them into <code>docs/git-conventions.md</code> and leave a pointer behind, at your word.</li>
+            <li>A newer version of the skills arrived and the docs should follow.</li>
+          </ul>
+        </div>
+      </article>
     </section>
 
     <!-- ===================== PLAN ===================== -->
@@ -444,7 +497,7 @@
       <h2>Artifacts &amp; where they live</h2>
       <p>Every step reads the artifact before it, so the paths matter. They are defined in <code>docs/issue-tracker.md</code>.</p>
 
-      <p><code>docs/issue-tracker.md</code> is <strong>yours to customize</strong> — it is where a project declares which tracker it uses and what the artifact paths are, and the skills read that one filename and no other. <code class="skill">piv-setup</code> writes it for the tracker you pick — GitHub, GitLab, Jira, or local markdown files — alongside <code>docs/piv-loop.md</code>, a <code>docs/git-conventions.md</code> merged with the git rules your <code>CLAUDE.md</code>, <code>AGENTS.md</code> or commit tooling already set, and a <code>docs/.gitignore</code> that keeps the plans and reports out of git. Run it once before the first step, and again to pick up a newer version.</p>
+      <p><code>docs/issue-tracker.md</code> is <strong>yours to customize</strong> — it is where a project declares which tracker it uses and what the artifact paths are, and the skills read that one filename and no other. <a href="#piv-setup"><code class="skill">piv-setup</code></a> writes it for the tracker you pick — GitHub, GitLab, Jira, or local markdown files — alongside <code>docs/piv-loop.md</code>, a <code>docs/git-conventions.md</code> merged with the git rules your <code>CLAUDE.md</code>, <code>AGENTS.md</code> or commit tooling already set, and a <code>docs/.gitignore</code> that keeps the plans and reports out of git. Run it once before the first step, and again to pick up a newer version.</p>
 
       <table>
         <thead>
