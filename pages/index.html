@@ -444,7 +444,7 @@
       <h2>Artifacts &amp; where they live</h2>
       <p>Every step reads the artifact before it, so the paths matter. They are defined in <code>docs/issue-tracker.md</code>.</p>
 
-      <p><code>docs/issue-tracker.md</code> is <strong>yours to customize</strong> — it is where a project declares which tracker it uses and what the artifact paths are, and the skills read that one filename and no other. <code>docs/</code> ships worked examples to copy over it: <code>issue-tracker-gitlab.md</code>, <code>issue-tracker-jira.md</code>, and <code>issue-tracker-md.md</code> for a project that keeps its tickets as local markdown files.</p>
+      <p><code>docs/issue-tracker.md</code> is <strong>yours to customize</strong> — it is where a project declares which tracker it uses and what the artifact paths are, and the skills read that one filename and no other. <code class="skill">piv-setup</code> writes it for the tracker you pick — GitHub, GitLab, Jira, or local markdown files — alongside <code>docs/piv-loop.md</code>, a <code>docs/git-conventions.md</code> merged with the git rules your <code>CLAUDE.md</code>, <code>AGENTS.md</code> or commit tooling already set, and a <code>docs/.gitignore</code> that keeps the plans and reports out of git. Run it once before the first step, and again to pick up a newer version.</p>
 
       <table>
         <thead>

@@ -19,7 +19,7 @@ The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Path
 - ✅ The latest review report's verdict was PASS, with no fix report matching its **Round** and the tree matching its **Diff** — or the user ruled to commit anyway.
 - ✅ Every uncommitted change landed in a group, or the user decided where it goes.
 - ✅ Every group is one coherent piece of work its subject can name.
-- ✅ Every subject follows `<tag>: <atomic description> (<ticket id>)`, with the tag the work earns, in about 72 characters.
+- ✅ Every subject follows the form `docs/git-conventions.md` defines, with the tag the work earns.
 - ✅ The working tree is clean at the end of the run, the loop's artifacts aside.
 
 ## Process
@@ -42,7 +42,7 @@ One group per effect, and the groups cover everything uncommitted. A change that
 
 ### Step 4 — Commit each group
 
-Take one group at a time — stage it, then commit it with a subject line in the form `docs/git-conventions.md` defines: `<tag>: <atomic description> (<ticket id>)`, with the id resolved in Step 1. Count the id in the length: shorten the description to fit, never the id.
+Take one group at a time — stage it, then commit it with a subject line in the form `docs/git-conventions.md` defines, with the id resolved in Step 1.
 
 Add a body after one blank line, hard-wrapped at 72 columns, when the diff does something the subject doesn't name: a second surface changed, a behavior removed, or a constraint the code alone doesn't reveal. Write the body from the diff; read neither the implementation report nor the fix report.
 

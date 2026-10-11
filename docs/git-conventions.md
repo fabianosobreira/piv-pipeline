@@ -18,7 +18,7 @@ Work gets built on its own branch, named `<tag>/<ticket-id>-<short-slug>`:
 
 ## Commit subjects
 
-`<tag>: <atomic description> (<ticket id>)` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `<tag>` is the conventional tag the work earns, as *Commit tags* below defines it. The `(<ticket id>)` suffix closes the subject whenever there is an id: the one handed to you, or the one the branch name carries. Write the id in the form `docs/issue-tracker.md` defines for the tracker in use; with no file to consult, write it exactly as it reached you. PR titles carry the same shape.
+`<tag>: <atomic description> (<ticket id>)` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `<tag>` is the conventional tag the work earns, as *Commit tags* below defines it. The `(<ticket id>)` suffix closes the subject whenever there is an id: the one handed to you, or the one the branch name carries. Write the id in the form `docs/issue-tracker.md` defines for the tracker in use; with no file to consult, write it exactly as it reached you. The id counts toward the length: shorten the description to fit, never the id. PR titles carry the same shape.
 
 ## Commit tags
 

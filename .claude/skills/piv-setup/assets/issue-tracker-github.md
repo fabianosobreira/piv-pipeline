@@ -1,8 +1,6 @@
-# Issue tracker — GitLab (example)
+# Issue tracker
 
-**This file is an example, not this project's tracker.** It shows what `docs/issue-tracker.md` looks like for a project whose tickets live on GitLab. Nothing reads this file: to use it, copy it over `docs/issue-tracker.md` and adjust the project details.
-
-Where a project's plans and tickets live. The skills read that file instead of asking the user.
+Where this project's plans and tickets live. The skills read this file instead of asking the user.
 
 ## The seven words
 
@@ -20,55 +18,59 @@ One name per artifact, used the same way across every skill:
 
 ## Where tickets live
 
-**Tickets are GitLab issues in this project**, reached with `glab`. An epic is a group-level epic, and a ticket is linked to its epic.
+**Tickets are GitHub issues in this repo**, reached with `gh`. An epic is an issue carrying the `epic` label, and a ticket is a sub-issue of its epic.
 
-When GitLab is unreachable, say so and stop. There is nowhere else this project keeps tickets, so writing them anywhere else puts a backlog where nobody will look for it.
+When GitHub is unreachable, say so and stop. There is nowhere else this project keeps tickets, so writing them anywhere else puts a backlog where nobody will look for it.
 
 ## Header block
 
-The PRD, the architecture doc, the epic and every ticket open with one **header block** — one bold label per line, directly under the title:
+The PRD, the architecture doc, the epic and every ticket open with one **header block** — one bold label per line, directly under the title — carrying the fields that tie them to each other:
 
 - **`Intent-slug`** — the key defined below. Every artifact of one intent carries the same one.
-- **`Intent`** — where the *what and why* lives: the PRD's path until the plans are on the epic, its attachment URL from then on. The PRD is itself the intent, so the PRD alone carries no `Intent` field.
-- **`Architecture`** — the architecture doc's path until it is on the epic, its attachment URL from then on, or "none".
+- **`Intent`** — where the *what and why* lives: the PRD's path until the plans are published, its comment URL from then on. The PRD is itself the intent, so the PRD alone carries no `Intent` field.
+- **`Architecture`** — where the *how* lives: the architecture doc's path until published, its comment URL from then on, or "none".
 - **`Language`** — the BCP 47 tag of the intent's language, such as `pt-BR`: set by the PRD — or, with no PRD, the architecture doc — and copied verbatim into every other artifact that carries it.
 
-Once the plans are on the epic, the attachment URL is the value: every ticket, implementation report and merge request copies it verbatim, even where the local file is at hand.
+Once the plans are published, the comment URL is the value: every ticket, implementation report and PR copies it verbatim, even where the local file is at hand.
 
 The three reports use the same header block, with the fields their own templates name.
 
-**A markdown list, not YAML front matter.** An epic and a ticket are read as GitLab descriptions, where front matter renders as a stray heading instead of as metadata. A list renders the same in a file and in an issue, and one field per line keeps each one greppable.
+**A markdown list, not YAML front matter.** These artifacts are read as GitHub issue bodies and comments, where front matter renders as a stray heading instead of as metadata. A list renders the same in a file and in an issue, and one field per line keeps each one greppable.
 
-## Where plans live — written locally, attached to the epic
+## Where plans live — written locally, published on the epic
 
 The PRD and the architecture doc are **written as local files** while the plan is still moving, which is what keeps them cheap to revise: `docs/.plans/<intent-slug>.prd.md` and `docs/.plans/<intent-slug>.architecture.md`.
 
 **`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
 
-1. **Creates the epic** — a group-level epic, filled from the epic template.
-2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart. The PRD goes up first, and the architecture doc goes up with the PRD's attachment URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so an attached doc pointing there points at nothing.
-3. **Writes the two attachment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with, and links both from the epic's description so a reader meets them without going through the upload list.
+1. **Creates the epic** — an issue carrying the `epic` label, filled from the epic template.
+2. **Posts the PRD and the architecture doc as two separate comments** on that epic. Each opens with its own heading — `# PRD — <title>`, `# Architecture — <title>` — and that heading is how a later reader tells the two apart among the epic's other comments. The PRD goes first, and the architecture's published copy carries the PRD comment's URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so a published doc pointing there points at nothing.
+3. **Writes the two comment URLs into the epic's `Intent` and `Architecture` fields**, replacing the local paths the epic was born with.
 
-An attachment is the raw markdown file: a plan of any size travels whole, there is nothing to split across comments, and nothing the tracker's renderer can mangle on the way in.
+An issue body — the epic's, a ticket's — carries no heading of its own, because the issue title already is one. Only comments carry a heading, because a comment has no title.
 
-Published this way, the plans travel with the epic rather than with the machine that wrote them. **The epic lives at the group level while the tickets are project issues**, so the plans sit one level above the backlog they generated — link the epic from each ticket so the trace survives that gap.
+A plan too large for one comment splits across several, each still opening with its own heading; a doc from these templates never comes close to the limit.
+
+Published this way, the plans travel with the epic rather than with the machine that wrote them.
 
 ## Creating a ticket
 
 Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
 
-- **Where** — an issue in this project, its description filled from the creating skill's own template.
+- **Where** — an issue in this repo, its body filled from the creating skill's own template.
 - **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
 - **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
-- **Epic** — linked to its epic, when the intent has one.
-- **Link** — a deferral is linked to the ticket the review covered as *relates to*.
+- **Epic** — a sub-issue of its epic, when the intent has one. `gh` has no command for it: the link goes through the REST API's sub-issues endpoint, which takes the ticket's database id, not its number.
+- **Link** — a deferral names the ticket the review covered under its *Origin*, which puts the cross-reference on that ticket's timeline.
 - **Acceptance criteria** — a markdown checklist under the literal heading `Acceptance criteria`.
 
 A type label that doesn't exist yet is created before the first ticket that needs it. When it can't be created, say so and stop: a ticket missing its type is one the filters never find. A ticket carries its type label and no other.
 
+The epic follows the same missing-label rule for its `epic` label, and carries `epic` and no other: it is not a ticket.
+
 ## Finding a review's deferrals
 
-A review's deferrals are the issues related to the reviewed ticket whose *Origin* `Ticket` line names it.
+A review's deferrals are the issues on the reviewed ticket's timeline whose *Origin* `Ticket` line names it. The timeline alone is not the filter: a sliced ticket that names it under *Depends on* cross-references it too, and carries no *Origin*.
 
 ## Paths
 
@@ -84,12 +86,12 @@ Every artifact of one intent carries the same `intent-slug` — the kebab-slug o
 
 ## Ticket id form
 
-Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic. Commit subjects and merge request titles carry that same form; branch names carry it without the `#`, as `docs/git-conventions.md` says.
+Write the id the way GitHub writes it — `#123`. Commit subjects and PR titles carry that same form; branch names carry it without the `#`, as `docs/git-conventions.md` says.
 
 ## Ticket status
 
-**GitLab owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
+**GitHub owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
 - **Assignee** — `piv-implement-ticket` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
 - **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
-- **Merge request link** — `piv-create-pr` links the merge request to the issue with a closing pattern before the issue number in the merge request description, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.
+- **PR link** — `piv-create-pr` links the pull request to the issue with a closing keyword before the issue number in the PR body, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

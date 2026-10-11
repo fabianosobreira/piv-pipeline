@@ -21,7 +21,7 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 
 ## Success criteria
 
-- ✅ The PR title follows `<tag>: <concise description> (<ticket id>)`.
+- ✅ The PR title follows the form `docs/git-conventions.md` defines.
 - ✅ The PR is a draft when the implementation report's status is `PARTIAL`, unless a fix round followed it and a PASS review followed that fix round, and ready for review otherwise.
 - ✅ The body carries the implementation report's documented deviations and *Problems encountered*, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which of the implementation and review reports was unavailable. A missing fix report goes unmentioned.
 - ✅ The reports themselves stay local: the body is their distillation, and nothing is attached or embedded.
@@ -48,7 +48,7 @@ Check which branch is checked out, whether the working tree is clean, which comm
 
 ### Step 3 — Gather the material for the body
 
-The commit subjects since `<base>` and, when Step 1 wasn't handed one, the ticket id. The branch name carries it, in the form `docs/git-conventions.md` defines; with none there, the `(<ticket id>)` suffix of the commit subjects does. Commit bodies are not a source. When the ids found disagree — the branch name against a subject, or one subject against another — ask the user which one this PR closes. **GATE.** No id in any of them → ask the user for it. **GATE.**
+The commit subjects since `<base>` and, when Step 1 wasn't handed one, the ticket id. The branch name carries it, in the form `docs/git-conventions.md` defines; with none there, the commit subjects do, where `docs/git-conventions.md` places it. Commit bodies are not a source. When the ids found disagree — the branch name against a subject, or one subject against another — ask the user which one this PR closes. **GATE.** No id in any of them → ask the user for it. **GATE.**
 
 **Then find the reports** at the paths `docs/issue-tracker.md` defines, named from the ticket id.
 
@@ -70,7 +70,7 @@ Push it to the remote, tracking it. **Done when** the remote branch tracks the l
 
 ### Step 5 — Open the review request
 
-Open it against `<base>`, titled `<tag>: <concise description> (<ticket id>)` — the same shape `docs/git-conventions.md` gives the commit subjects. When the commits carry different tags, the tag is the largest effect among them, as `docs/git-conventions.md` rules for a change that can't be split.
+Open it against `<base>`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the tag is the largest effect among them, as `docs/git-conventions.md` rules for a change that can't be split.
 
 - **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the problems it lists — unless a fix report is newer than the implementation report and the review report is PASS with a **Round** above that fix report's. Then the PARTIAL was worked through a fix round and a fresh review: open it ready for review, and mark each problem under *Open problems* as reported by the implementation before the PASS review, never as resolved. A PASS proves no blocking, critical or high finding survived, not that every problem was cleared — the review runs no build, for one.
 - **No implementation report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.

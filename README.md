@@ -25,6 +25,10 @@ Two properties hold the whole thing together. **Every step reads the artifact th
 
 Read the arrows as *"this is the next move offered"*, not as automation. The three verify skills before the PR are the gate; the PR itself is the handoff out of the loop, to a human who reviews, approves and merges.
 
+### Set up the loop first
+
+Copy `.claude/skills/` into your repo, then run `piv-setup`. It installs the docs the skills read: `docs/piv-loop.md`; `docs/issue-tracker.md` for your tracker — GitHub, GitLab, Jira, or local markdown files; `docs/git-conventions.md`, merged with the git rules your `CLAUDE.md`, `AGENTS.md` or commit tooling already set; and a `docs/.gitignore` that keeps the plans and the reports on your machine. It ends by showing the commit message and committing only when you say so.
+
 ### Where do I start?
 
 You rarely need all eight. Find the row that matches what you have in hand.
@@ -38,10 +42,6 @@ You rarely need all eight. Find the row that matches what you have in hand.
 | Work built on a branch, not yet committed | `piv-review-changes` | This is the gate that decides whether the change earns a commit. |
 | A review report with findings | `piv-fix-findings` | Findings are input, not a work order — you rule on each one. |
 | A PASS verdict | `piv-commit-changes` | Atomic commits, then the PR. |
-
-### Keep the loop's artifacts out of git
-
-The plans and the three reports stay on your machine. Add the paths `docs/issue-tracker.md` lists under *Paths* — `docs/.plans/` and `docs/.reports/` — to your `.gitignore`.
 
 ## License
 

@@ -9,7 +9,7 @@ Rules for writing any document an agent consumes — a skill, a template, a trac
 
 ## Frontmatter and invocation
 
-- `name`: `piv-<verb>-<object>`, lowercase letters, digits and hyphens, at most 64 characters.
+- `name`: `piv-<verb>-<object>`, or `piv-<verb>` when the verb alone names the skill; lowercase letters, digits and hyphens, at most 64 characters.
 - `description`: third person, what the skill does and when to use it, key use case first, at most 1,024 characters. No XML tags or `<...>` placeholders.
 - A PIV step skill is **user-invoked**: set `disable-model-invocation: true` and write the `description` as a one-line human-facing summary. **The human starts every step.**
 - Make a skill model-invoked only when the agent or another skill must reach it on its own. Its `description` carries the trigger branches.
