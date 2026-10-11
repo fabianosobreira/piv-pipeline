@@ -1,12 +1,12 @@
 ---
-name: piv-commit-changes
+name: piv-commit
 description: Commits the finished work as atomic, conventionally-tagged commits.
 argument-hint: "[ticket id] (blank = taken from the branch name)"
 disable-model-invocation: true
 allowed-tools: Bash(sh *scripts/diff-hash.sh *)
 ---
 
-# Commit Changes: One Coherent Piece of Work per Commit
+# Commit: One Coherent Piece of Work per Commit
 
 This is part of the **verify** step of the PIV loop `docs/piv-loop.md` describes: the change passed review, and this run turns it into a clean, atomic history before the PR opens.
 
@@ -62,4 +62,4 @@ Confirm each commit by its short hash and subject. Committed on the base branch 
 
 Otherwise offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Open the PR** — run `piv-create-pr`, in this same session, handed the ticket id.
+- **Open the PR** — run `piv-open-pr`, in this same session, handed the ticket id.

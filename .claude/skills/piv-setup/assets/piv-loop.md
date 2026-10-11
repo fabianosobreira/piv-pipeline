@@ -1,17 +1,17 @@
 # The PIV loop
 
-**PIV** is **plan → implement → verify**, the loop this project's skills run work through. **Plan** turns an idea into an intent, an architecture and a set of tickets (`piv-create-prd`, `piv-create-architecture`, `piv-create-tickets`). **Implement** builds one ticket on its own branch and writes an implementation report (`piv-implement-ticket`). **Verify** proves the change wrong before it ships: a review writes a review report, a triage run fixes or defers what it found, and the work is then committed and handed to a human reviewer (`piv-review-changes`, `piv-fix-findings`, `piv-commit-changes`, `piv-create-pr`). Each step consumes the artifact the previous one wrote — `docs/issue-tracker.md` names those artifacts and says where they live — and every step is started by the user, never by the step before it.
+**PIV** is **plan → implement → verify**, the loop this project's skills run work through. **Plan** turns an idea into an intent, an architecture and a set of tickets (`piv-write-prd`, `piv-architect`, `piv-slice`). **Implement** builds one ticket on its own branch and writes an implementation report (`piv-implement`). **Verify** proves the change wrong before it ships: a review writes a review report, a triage run fixes or defers what it found, and the work is then committed and handed to a human reviewer (`piv-review`, `piv-fix`, `piv-commit`, `piv-open-pr`). Each step consumes the artifact the previous one wrote — `docs/issue-tracker.md` names those artifacts and says where they live — and every step is started by the user, never by the step before it.
 
 ## The eight steps, in order
 
-1. **`piv-create-prd`** — the intent: what to build and why, never how.
-2. **`piv-create-architecture`** — the how: the engineering decisions the intent deliberately left open.
-3. **`piv-create-tickets`** — the breakdown: the epic, and the tickets sliced out of the two above.
-4. **`piv-implement-ticket`** — one ticket, built on its own branch, with an implementation report.
-5. **`piv-review-changes`** — the gate: the findings that survive scrutiny, with a verdict.
-6. **`piv-fix-findings`** — the triage: every finding fixed, deferred onto the tracker, flagged for a human, or dropped.
-7. **`piv-commit-changes`** — the atomic history, one coherent piece of work per commit.
-8. **`piv-create-pr`** — the hand-off out of the loop, to a human who reviews, approves and merges.
+1. **`piv-write-prd`** — the intent: what to build and why, never how.
+2. **`piv-architect`** — the how: the engineering decisions the intent deliberately left open.
+3. **`piv-slice`** — the breakdown: the epic, and the tickets sliced out of the two above.
+4. **`piv-implement`** — one ticket, built on its own branch, with an implementation report.
+5. **`piv-review`** — the gate: the findings that survive scrutiny, with a verdict.
+6. **`piv-fix`** — the triage: every finding fixed, deferred onto the tracker, flagged for a human, or dropped.
+7. **`piv-commit`** — the atomic history, one coherent piece of work per commit.
+8. **`piv-open-pr`** — the hand-off out of the loop, to a human who reviews, approves and merges.
 
 Steps 1 and 2 are entry points, not obligations: work with no open product question starts at the architecture, and work whose PRD has a two-way MVP door and names no technical unknown starts at the tickets. Steps 5 and 6 repeat until a fresh review returns PASS.
 
@@ -36,10 +36,10 @@ That is what keeps a bad plan from becoming a merged PR while nobody was watchin
 
 Hand-offs travel through artifacts, never through the conversation, so a fresh session loses nothing. Sessions are split by independence, not one per step:
 
-- **Planning** — `piv-create-prd` → `piv-create-architecture` → `piv-create-tickets` may share a session: they collaborate rather than audit each other. Past half the window, break at an artifact boundary.
-- **`piv-implement-ticket`** — a session of its own, one per ticket.
-- **`piv-review-changes`** and **`piv-fix-findings`** — each in a session of its own, every round.
-- **`piv-commit-changes` → `piv-create-pr`** — one fresh session, shared. Both are light, and the commit body comes from the diff, not from the implementation's story.
+- **Planning** — `piv-write-prd` → `piv-architect` → `piv-slice` may share a session: they collaborate rather than audit each other. Past half the window, break at an artifact boundary.
+- **`piv-implement`** — a session of its own, one per ticket.
+- **`piv-review`** and **`piv-fix`** — each in a session of its own, every round.
+- **`piv-commit` → `piv-open-pr`** — one fresh session, shared. Both are light, and the commit body comes from the diff, not from the implementation's story.
 
 A hand-off marks the next step's session with one of three phrases: "in a session of its own" (must be fresh), "here or in a fresh session" (may share), "in this same session" (shares).
 

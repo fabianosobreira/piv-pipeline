@@ -8,7 +8,7 @@ One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
-- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-create-tickets`, never an input to any skill.
+- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-slice`, never an input to any skill.
 - **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
@@ -41,7 +41,7 @@ The three reports use the same header block, with the fields their own templates
 
 The PRD and the architecture doc are **written as local files** while the plan is still moving, which is what keeps them cheap to revise: `docs/.plans/<intent-slug>.prd.md` and `docs/.plans/<intent-slug>.architecture.md`.
 
-**`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
+**`piv-slice` is what publishes them.** Before it creates any ticket, it:
 
 1. **Creates the epic** — a group-level epic, filled from the epic template.
 2. **Attaches the PRD and the architecture doc to that epic**, uploading each as its own file under its local name, so a reader sees `<intent-slug>.prd.md` and `<intent-slug>.architecture.md`. **The file name is the identifier** — an attachment has no position in a thread to be recognized by, so the name is all a later reader has to tell the two apart. The PRD goes up first, and the architecture doc goes up with the PRD's attachment URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so an attached doc pointing there points at nothing.
@@ -53,7 +53,7 @@ Published this way, the plans travel with the epic rather than with the machine 
 
 ## Creating a ticket
 
-Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
+Every ticket follows these rules, whichever skill creates it — `piv-slice` slicing an intent, `piv-fix` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
 
 - **Where** — an issue in this project, its description filled from the creating skill's own template.
 - **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
@@ -88,6 +88,6 @@ Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic.
 
 **GitLab owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
-- **Assignee** — `piv-implement-ticket` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
-- **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
-- **Merge request link** — `piv-create-pr` links the merge request to the issue with a closing pattern before the issue number in the merge request description, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.
+- **Assignee** — `piv-implement` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
+- **Deferral tickets** — `piv-fix` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
+- **Merge request link** — `piv-open-pr` links the merge request to the issue with a closing pattern before the issue number in the merge request description, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

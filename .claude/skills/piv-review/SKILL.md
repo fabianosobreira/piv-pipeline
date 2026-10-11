@@ -1,5 +1,5 @@
 ---
-name: piv-review-changes
+name: piv-review
 description: Reviews the finished change for bugs, security defects and standards violations, and writes a review report.
 argument-hint: "[ticket id] (blank = taken from the branch name)"
 disable-model-invocation: true
@@ -9,7 +9,7 @@ allowed-tools:
   - Bash(sh *scripts/locate.sh *)
 ---
 
-# Review Changes: Prove the Change Wrong
+# Review: Prove the Change Wrong
 
 This opens the **verify** step of the PIV loop `docs/piv-loop.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
 
@@ -32,7 +32,7 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 - ***weakened*** — a test that existed before and now asserts less or something different — skipped, marked to fail, its assertions loosened or its expected values changed, or deleted — while the ticket left the behavior it pins unchanged.
 - ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
 
-A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix-findings` never defers one — a deferred red test would reach PASS still red.
+A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix` never defers one — a deferred red test would reach PASS still red.
 
 A *red* test **confirmed red on the base** — it ran on the base branch, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium** (Step 6). A test that fails intermittently is re-run on the base the same number of times; one that also fails there is base-red (flaky), demoted like any base-red test. Flaky only on the branch stays *red*. A test the **Testing strategy** names, or the test that reproduces the defect a `bug` ticket describes, is this change's to turn green whatever the base shows.
 
@@ -107,7 +107,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferral tickets Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons and the previous report's *Dropped by prior ruling*. Record in this report's *Dropped by prior ruling* every candidate that a deferral or a *Noise / won't-fix* reason dropped this round, and carry forward the previous entries whose reason still holds against the code.
 
-A surviving blocking finding stays **blocking**, and its kind names it. A *red* test whose cause also leaves an acceptance criterion unmet raises that `logic` finding too. Give every other survivor the Step 5 class it was found under — a test demoted from *red* by the base-red check (**Posture**) is **coverage** — `piv-fix-findings` types a deferral from it — and a severity from the scale below. **Done when** every candidate either survived all three filters with its class and severity — or its blocking kind — or was dropped by a named filter.
+A surviving blocking finding stays **blocking**, and its kind names it. A *red* test whose cause also leaves an acceptance criterion unmet raises that `logic` finding too. Give every other survivor the Step 5 class it was found under — a test demoted from *red* by the base-red check (**Posture**) is **coverage** — `piv-fix` types a deferral from it — and a severity from the scale below. **Done when** every candidate either survived all three filters with its class and severity — or its blocking kind — or was dropped by a named filter.
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
 - **high** — wrong behavior on a path users reach, and every acceptance criterion the code doesn't meet.
@@ -117,7 +117,7 @@ A surviving blocking finding stays **blocking**, and its kind names it. A *red* 
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/issue-tracker.md` defines, filling the template at `templates/review-report.md` — use it exactly — built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Its **Round** is 1 on a first review and the previous review's **Round** plus one on a re-review. Its **Base** and **Diff** record the change reviewed, so `piv-commit-changes` can tell whether the tree still matches it. The **Diff** is what the bundled `scripts/diff-hash.sh` prints — run it with `sh` (it needs `git` and a POSIX shell), handed the **Base** and the exclude globs `docs/issue-tracker.md` lists under *Paths*; there is no need to read it.
+Write the report at the review report path `docs/issue-tracker.md` defines, filling the template at `templates/review-report.md` — use it exactly — built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Its **Round** is 1 on a first review and the previous review's **Round** plus one on a re-review. Its **Base** and **Diff** record the change reviewed, so `piv-commit` can tell whether the tree still matches it. The **Diff** is what the bundled `scripts/diff-hash.sh` prints — run it with `sh` (it needs `git` and a POSIX shell), handed the **Base** and the exclude globs `docs/issue-tracker.md` lists under *Paths*; there is no need to read it.
 
 Everything the template leaves to you — each finding's claim, evidence, impact and fix, the notes under *Scope*, and *Checks run* — is written in the intent's language; only the template's labels and headings stay as written.
 
@@ -129,5 +129,5 @@ Check the report before handing it on, whatever the verdict. Run the bundled `sc
 
 The review report is the artifact this run leaves behind, so hand over its path by name, with the ticket id. Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **PASS** → run `piv-commit-changes`, in a session of its own, handed the ticket id. The medium and low findings stay in the report; `piv-create-pr` carries them into the PR body.
-- **CHANGES REQUESTED** → run `piv-fix-findings`, in a session of its own, handed the review report's path as the review to work from.
+- **PASS** → run `piv-commit`, in a session of its own, handed the ticket id. The medium and low findings stay in the report; `piv-open-pr` carries them into the PR body.
+- **CHANGES REQUESTED** → run `piv-fix`, in a session of its own, handed the review report's path as the review to work from.

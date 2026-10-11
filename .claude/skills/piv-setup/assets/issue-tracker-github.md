@@ -8,7 +8,7 @@ One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
-- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-create-tickets`, never an input to any skill.
+- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-slice`, never an input to any skill.
 - **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
@@ -41,7 +41,7 @@ The three reports use the same header block, with the fields their own templates
 
 The PRD and the architecture doc are **written as local files** while the plan is still moving, which is what keeps them cheap to revise: `docs/.plans/<intent-slug>.prd.md` and `docs/.plans/<intent-slug>.architecture.md`.
 
-**`piv-create-tickets` is what publishes them.** Before it creates any ticket, it:
+**`piv-slice` is what publishes them.** Before it creates any ticket, it:
 
 1. **Creates the epic** — an issue carrying the `epic` label, filled from the epic template.
 2. **Posts the PRD and the architecture doc as two separate comments** on that epic. Each opens with its own heading — `# PRD — <title>`, `# Architecture — <title>` — and that heading is how a later reader tells the two apart among the epic's other comments. The PRD goes first, and the architecture's published copy carries the PRD comment's URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so a published doc pointing there points at nothing.
@@ -55,7 +55,7 @@ Published this way, the plans travel with the epic rather than with the machine 
 
 ## Creating a ticket
 
-Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
+Every ticket follows these rules, whichever skill creates it — `piv-slice` slicing an intent, `piv-fix` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
 
 - **Where** — an issue in this repo, its body filled from the creating skill's own template.
 - **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
@@ -92,6 +92,6 @@ Write the id the way GitHub writes it — `#123`. Commit subjects and PR titles 
 
 **GitHub owns a ticket's status**: an issue is open until the merge closes it. No status field lives in this project's own artifacts. Three loop steps leave a mark on the issue anyway, and each has exactly one owner:
 
-- **Assignee** — `piv-implement-ticket` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
-- **Deferral tickets** — `piv-fix-findings` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
-- **PR link** — `piv-create-pr` links the pull request to the issue with a closing keyword before the issue number in the PR body, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.
+- **Assignee** — `piv-implement` assigns the issue to the user running it as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
+- **Deferral tickets** — `piv-fix` opens one ticket per deferred finding, by the rules under *Creating a ticket*, and links it to this ticket.
+- **PR link** — `piv-open-pr` links the pull request to the issue with a closing keyword before the issue number in the PR body, which is what carries it into review and closes it at the merge. A bare issue number only cross-references it and closes nothing.

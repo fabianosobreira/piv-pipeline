@@ -14,7 +14,7 @@ Work gets built on its own branch, named `<tag>/<ticket-id>-<short-slug>`:
 - **`<ticket-id>`** — the ticket id in the form `docs/issue-tracker.md` defines, case kept, with only the leading `#` dropped: `#123` → `123`, `PROJ-123` stays as it is. Keeping the case is what lets the id match the tracker's own form and the report file names built from it.
 - **`<short-slug>`** — two to four words of the title.
 
-`piv-review-changes`, `piv-fix-findings`, `piv-commit-changes` and `piv-create-pr` read the ticket id back out of this name, so the id has to survive it. Reading it back, put the `#` back when the tracker's form carries one: `123` → `#123`.
+`piv-review`, `piv-fix`, `piv-commit` and `piv-open-pr` read the ticket id back out of this name, so the id has to survive it. Reading it back, put the `#` back when the tracker's form carries one: `123` → `#123`.
 
 ## Commit subjects
 

@@ -1,11 +1,11 @@
 ---
-name: piv-create-pr
+name: piv-open-pr
 description: Opens the pull request for the finished branch and hands the URL to a human reviewer.
 argument-hint: "[base branch] · [ticket id] (blank = the project's base branch, with the id read off the branch name)"
 disable-model-invocation: true
 ---
 
-# Create PR: Open the Pull Request, Hand Off for Review
+# Open PR: Open the Pull Request, Hand Off for Review
 
 This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: the implementation is committed on a feature branch, and the review request hands it to a human reviewer.
 

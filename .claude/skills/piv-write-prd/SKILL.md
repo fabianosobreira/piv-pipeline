@@ -1,11 +1,11 @@
 ---
-name: piv-create-prd
+name: piv-write-prd
 description: Interviews the user to pin down the problem, why to build it, and a falsifiable hypothesis, then writes a product-level PRD — intent (what/why), never engineering decisions (how).
 argument-hint: "[product idea, or the path of a doc that carries the context] · [optional: research doc paths] (blank = starts by asking what to build)"
 disable-model-invocation: true
 ---
 
-# Create PRD: Intent, Not Instructions
+# Write PRD: Intent, Not Instructions
 
 This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
 
@@ -29,7 +29,7 @@ A product manager who thinks in **hypotheses, not solutions**.
    - *Solution-prescriptive:* "Add a reply button to every message."
    - *Intent-framed:* "Past ~100 msgs/day, conversations collide and active users disengage — give them a way to group related replies so they stay."
    - **Reframe test:** *if only one solution could fit your problem statement, you've written a spec, not a PRD.* A good problem leaves room for more than one answer.
-2. **A PRD decides no engineering** *(these are architecture decisions → `piv-create-architecture`)*: any named library, framework or version (e.g. React, Vite) · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — record each one under *Open questions* as `Architecture: <decision>`.
+2. **A PRD decides no engineering** *(these are architecture decisions → `piv-architect`)*: any named library, framework or version (e.g. React, Vite) · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — record each one under *Open questions* as `Architecture: <decision>`.
 
 ## Success criteria
 
@@ -38,7 +38,7 @@ A product manager who thinks in **hypotheses, not solutions**.
 - ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
 - ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `<timeframe>`.
 - ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
-- ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-create-architecture`.
+- ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-architect`.
 - ✅ Every problem statement admits more than one solution (the reframe test).
 - ✅ The doc's header block carries the `Intent-slug` and the `Language`.
 
@@ -95,8 +95,8 @@ We believe <change> will cause <these users> to <do Y>, resulting in <outcome>. 
 Ask as open questions: the thinnest end-to-end slice, whether it is costly to undo, and what it will not do.
 
 - **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." **The MVP has to be able to prove it:** the hypothesis's RIGHT and WRONG signals must be observable within the MVP — its users, its sample — before the `<timeframe>` runs out. When one isn't, put the mismatch to the user at this phase's GATE; they change the target or the MVP, never you.
-- **Door check** *(informs the spike-vs-build call `piv-create-architecture` makes):* two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first.
-- **Non-goals** — what this explicitly will not do, the MVP's cut included. They are the boundary `piv-create-tickets` never slices a ticket across.
+- **Door check** *(informs the spike-vs-build call `piv-architect` makes):* two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first.
+- **Non-goals** — what this explicitly will not do, the MVP's cut included. They are the boundary `piv-slice` never slices a ticket across.
 - **GATE** before generating.
 
 ## Output — a product PRD
@@ -107,7 +107,7 @@ Fill the `Intent-slug` field as `docs/issue-tracker.md` defines it, and the `Lan
 
 Everything the template leaves to you is written in the language this interview ran in; only the template's labels and headings stay as written.
 
-Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-create-architecture` or `piv-create-tickets` reads it next as structured input to slice from. Fill the template at `templates/prd.md` — use it exactly.
+Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-architect` or `piv-slice` reads it next as structured input to slice from. Fill the template at `templates/prd.md` — use it exactly.
 
 ## Hand off
 
@@ -115,5 +115,5 @@ Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypo
 
 Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Decide *how* to build it** — run `piv-create-architecture <the PRD's path>` to make the engineering decisions this PRD deliberately left open — here or in a fresh session. Then `piv-create-tickets` turns the two into a backlog.
-- **Go straight to tickets** — when the MVP door is two-way and no constraint or open question names a technical unknown, running `piv-create-tickets <the PRD's path>`, here or in a fresh session, is fine; say that it's a shortcut, not the default.
+- **Decide *how* to build it** — run `piv-architect <the PRD's path>` to make the engineering decisions this PRD deliberately left open — here or in a fresh session. Then `piv-slice` turns the two into a backlog.
+- **Go straight to tickets** — when the MVP door is two-way and no constraint or open question names a technical unknown, running `piv-slice <the PRD's path>`, here or in a fresh session, is fine; say that it's a shortcut, not the default.

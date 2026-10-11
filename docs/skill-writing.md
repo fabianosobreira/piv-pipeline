@@ -61,7 +61,7 @@ A document mixes **steps** (ordered actions) and **reference** (definitions, rul
 - Close quality-critical output with a feedback loop: validate → fix → validate; proceed only on a pass. Name the validator.
 - For batch or hard-to-reverse actions, plan → validate → execute.
 - Write guidance that spans the run as a standing instruction ("after every edit, run the tests").
-- `## Output` may contain numbered process steps when the output _is_ those steps, as in `piv-create-tickets`.
+- `## Output` may contain numbered process steps when the output _is_ those steps, as in `piv-slice`.
 - Against premature completion, sharpen the bound first. Split only when the bound is irreducibly fuzzy and the rush is observed, and only across a real context boundary: the hand-off to the human, or a `context: fork` subagent.
 
 ## When to split

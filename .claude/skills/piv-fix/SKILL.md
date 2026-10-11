@@ -1,11 +1,11 @@
 ---
-name: piv-fix-findings
+name: piv-fix
 description: Triages the findings of a review report, fixes the ones you choose one at a time with tests, defers the rest as tickets, then validates and writes a fix report.
 argument-hint: "[review report path] (blank = the review report written for this branch)"
 disable-model-invocation: true
 ---
 
-# Fix Findings: Triage, Fix, Validate
+# Fix: Triage, Fix, Validate
 
 This continues the **verify** step of the PIV loop `docs/piv-loop.md` describes: the review raised findings, and this run settles every one of them — the loop only closes when the fresh review this hands back to returns PASS.
 
@@ -21,7 +21,7 @@ Read the reviewed ticket where `docs/issue-tracker.md` says tickets live — it 
 
 Write the fix report and every deferral in the intent's language — the reviewed ticket's `Language`, read above, or with no such field the language its body is written in; template labels stay as written.
 
-**A fix report already at the fix report path `docs/issue-tracker.md` defines, its Round matching this review report's** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. A *Needs a human look* item the user has since ruled on counts as pending in its new bucket. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review-changes` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report with a lower Round belongs to an earlier review: triage from scratch.
+**A fix report already at the fix report path `docs/issue-tracker.md` defines, its Round matching this review report's** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. A *Needs a human look* item the user has since ruled on counts as pending in its new bucket. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report with a lower Round belongs to an earlier review: triage from scratch.
 
 Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
 
@@ -38,7 +38,7 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 - ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its id in the fix report.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
 - ✅ The triage outcome was written to the fix report path, not only printed.
-- ✅ The run ended by handing the branch back to `piv-review-changes`, which is the only thing that closes the loop.
+- ✅ The run ended by handing the branch back to `piv-review`, which is the only thing that closes the loop.
 
 ## Process
 
@@ -49,7 +49,7 @@ A finding's type follows its class, never its claim, the way `docs/issue-tracker
 Sort the findings into four buckets. The review's blocking findings and severities are the default cut you propose: blocking, critical and high in *Fix now*, medium and low in *Defer*. Low goes to *Defer* too, not to *Noise*: for a finding that is real, a deferral is the only thing that closes it.
 
 - **Fix now** — real, in-scope, belongs with this change.
-- **Defer** — real but later; don't bloat this change. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-create-tickets` titles its tickets — and its type from the class above.
+- **Defer** — real but later; don't bloat this change. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-slice` titles its tickets — and its type from the class above.
 - **Needs a human look** — anything the user should inspect or test by hand before trusting it; flag it here rather than fixing it yourself.
 - **Noise / won't-fix** — say why, then drop it. The next review weighs that reason against the code, so make it one the code can bear out: a reason that shows the problem is not there keeps the finding from coming back; "not worth fixing" does not.
 
@@ -63,7 +63,7 @@ A **blocking** finding — a red, missing or weakened test, or an untested behav
 
 ### Step 2 — Open a ticket for each deferral
 
-A deferral is a ticket: create it by the rules `docs/issue-tracker.md` gives under *Creating a ticket* — the same rules `piv-create-tickets` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement-ticket` can pick it up cold. Fill the template at `templates/deferral.md` — use it exactly — taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's entry context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
+A deferral is a ticket: create it by the rules `docs/issue-tracker.md` gives under *Creating a ticket* — the same rules `piv-slice` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement` can pick it up cold. Fill the template at `templates/deferral.md` — use it exactly — taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's entry context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
 
 - **Type** — the type ruled at the GATE.
 - **Epic and header block** — the reviewed ticket's epic as its parent, and its `Intent-slug`, `Language`, `Intent` and `Architecture` copied verbatim.
@@ -89,7 +89,7 @@ Fix what the finding names and stop there. A repair that grows into a refactor i
 
 Run the project's own checks — the test, lint, type-check, and build commands the repo exposes. When a check goes red: fix the cause, re-run, and continue once it is green.
 
-When three attempts, each on a different hypothesis about the cause, leave a failure red, or its cause sits outside what the findings ask you to change, stop working it: record the check, the failure, and what you tried in the fix report's *Checks run*. `piv-create-pr` reads this *Checks run* ahead of the implementation report's for its own Validation. **Done when** every check is green, or each one still red is recorded in *Checks run*.
+When three attempts, each on a different hypothesis about the cause, leave a failure red, or its cause sits outside what the findings ask you to change, stop working it: record the check, the failure, and what you tried in the fix report's *Checks run*. `piv-open-pr` reads this *Checks run* ahead of the implementation report's for its own Validation. **Done when** every check is green, or each one still red is recorded in *Checks run*.
 
 ## Output — finish the fix report
 
@@ -101,5 +101,5 @@ Everything the template leaves to you — each entry's description, its proof or
 
 Confirm the fix report's path and each deferral ticket's id, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- Run `piv-review-changes` again over the branch, in a session of its own. It reads the deferral tickets this run opened. Hand it the ticket id.
-- Once the user has looked at the *Needs a human look* items, rerun this skill, here or in a fresh session: their verdict moves each item into *Fix now*, *Defer* or *Noise / won't-fix*, and the run resumes from there. A *Needs a human look* item still open blocks the hand-off to `piv-review-changes`.
+- Run `piv-review` again over the branch, in a session of its own. It reads the deferral tickets this run opened. Hand it the ticket id.
+- Once the user has looked at the *Needs a human look* items, rerun this skill, here or in a fresh session: their verdict moves each item into *Fix now*, *Defer* or *Noise / won't-fix*, and the run resumes from there. A *Needs a human look* item still open blocks the hand-off to `piv-review`.

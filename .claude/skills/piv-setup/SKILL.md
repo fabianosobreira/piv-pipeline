@@ -27,15 +27,15 @@ Write the docs in English, whatever language the harness is in: the skills find 
 
 **Required** — without these the loop breaks:
 
-- **Base branch** — how to resolve it. `piv-implement-ticket`, `piv-review-changes`, `piv-commit-changes` and `piv-create-pr` all start from it.
-- **Commit subject form** — the shape `piv-commit-changes` writes, including where the ticket id goes, if anywhere.
-- **PR title form** — the shape `piv-create-pr` writes.
-- **Commit tags** — the set of tags, and the rule for a change that mixes effects: one commit per effect, and the largest effect names the tag when it can't be split. `piv-commit-changes` groups by it and `piv-create-pr` titles by it.
+- **Base branch** — how to resolve it. `piv-implement`, `piv-review`, `piv-commit` and `piv-open-pr` all start from it.
+- **Commit subject form** — the shape `piv-commit` writes, including where the ticket id goes, if anywhere.
+- **PR title form** — the shape `piv-open-pr` writes.
+- **Commit tags** — the set of tags, and the rule for a change that mixes effects: one commit per effect, and the largest effect names the tag when it can't be split. `piv-commit` groups by it and `piv-open-pr` titles by it.
 
 **Recommended** — without these the loop runs, with a GATE in every run:
 
-- **Ticket id in the branch name**, in a form that reads back to the tracker's id. Without it `piv-review-changes`, `piv-fix-findings`, `piv-commit-changes` and `piv-create-pr` ask the user for the id each run.
-- **Ticket id in the commit subject.** Without it `piv-create-pr` has only the branch name to find the id in.
+- **Ticket id in the branch name**, in a form that reads back to the tracker's id. Without it `piv-review`, `piv-fix`, `piv-commit` and `piv-open-pr` ask the user for the id each run.
+- **Ticket id in the commit subject.** Without it `piv-open-pr` has only the branch name to find the id in.
 
 ## Where the harness keeps git rules
 

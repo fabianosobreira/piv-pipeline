@@ -1,11 +1,11 @@
 ---
-name: piv-create-architecture
+name: piv-architect
 description: Weighs the options for how to build an intent (a PRD, a brief, or an idea) and recommends a direction, then writes an architecture decision doc — approach, building blocks, data model, risks — never an implementation plan.
 argument-hint: "[PRD / brief path, or a free-form idea] · [optional: reference doc paths] (blank = starts by asking what to build)"
 disable-model-invocation: true
 ---
 
-# Create Architecture: Explore the Approach, Decide the Architecture
+# Architect: Explore the Approach, Decide the Architecture
 
 This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
 
@@ -23,7 +23,7 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 
 ## Guard
 
-**This is a high-level decision doc, not an implementation plan.** You're choosing the *approach* and the *shape* — not a task-by-task build plan; the task-level detail is the ticket's acceptance criteria, written later by `piv-create-tickets`. When the intent is a PRD, its **Non-goals** is a boundary no recommendation here may cross either — the same boundary `piv-create-tickets` never slices a ticket across.
+**This is a high-level decision doc, not an implementation plan.** You're choosing the *approach* and the *shape* — not a task-by-task build plan; the task-level detail is the ticket's acceptance criteria, written later by `piv-slice`. When the intent is a PRD, its **Non-goals** is a boundary no recommendation here may cross either — the same boundary `piv-slice` never slices a ticket across.
 
 ## Success criteria
 
@@ -35,7 +35,7 @@ A pragmatic **CTO / staff-engineer advisor**. Optimize for:
 - ✅ The doc's header block carries the `Intent-slug`, the `Language` and the `Intent`.
 - ✅ Anything decided without the user is recorded in **Key decisions** as **(decided-by-default)**, and **Open questions** holds only what is still open.
 - ✅ Brownfield: every rule the work replaces has its current checks listed in *Behavior changes vs today*, each one kept, changed or dropped — or the section says "none" with its reason.
-- ✅ Every section states a fact or decision `piv-create-tickets` can slice from directly, or cites the `D<n>` that does.
+- ✅ Every section states a fact or decision `piv-slice` can slice from directly, or cites the `D<n>` that does.
 - ✅ Each fact lives in one section; every other section cites its `D<n>`.
 - ✅ Every link and code reference resolves from where the doc is published: a reference outside this repository names its repository and revision, and nothing links to a file that stays local, such as a report. Every literal the implementation must reproduce is quoted in full.
 
@@ -111,7 +111,7 @@ Reversible or well-understood calls skip the spike — recommend an answer as an
 
 A spike is a frontier question like any other: post it in a round in the form above, with no GATE of its own. If the user hands it back ("you decide"), the spike stands as proposed and is recorded as **(decided-by-default)**. A spike the user accepts or asks to run stays unlabeled; only one they hand back takes the label.
 
-When the intent is a PRD, its *MVP* records the door `piv-create-prd` called: a one-way door there is a spike candidate here when it is also uncertain. That door is the MVP's as a whole, so a two-way MVP can still hold a one-way decision — judge each decision by its own door.
+When the intent is a PRD, its *MVP* records the door `piv-write-prd` called: a one-way door there is a spike candidate here when it is also uncertain. That door is the MVP's as a whole, so a two-way MVP can still hold a one-way decision — judge each decision by its own door.
 
 ## Output — a high-level architecture decision doc
 
@@ -119,7 +119,7 @@ Only after the calls are made. Write it where `docs/issue-tracker.md` says plans
 
 Write in the intent's language; with no PRD, in the language the user runs this interview in. Template labels stay as written.
 
-**Write the `Intent-slug`, the `Language` and the `Intent` into the doc's header block**, the form `docs/issue-tracker.md` defines. The `Intent` is the PRD's location as `docs/issue-tracker.md` defines it (local path, or its published URL once published), or "none" when there is no PRD. An intent that is not a PRD — an idea, a brief, a research doc — is never named there: `piv-create-tickets` publishes the field's target as the PRD, so carry what that input says into *Problem & goals* instead, and let this doc stand on its own. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one, and copy its `Language` the same way; with no PRD, write the BCP 47 tag of the language this interview ran in.
+**Write the `Intent-slug`, the `Language` and the `Intent` into the doc's header block**, the form `docs/issue-tracker.md` defines. The `Intent` is the PRD's location as `docs/issue-tracker.md` defines it (local path, or its published URL once published), or "none" when there is no PRD. An intent that is not a PRD — an idea, a brief, a research doc — is never named there: `piv-slice` publishes the field's target as the PRD, so carry what that input says into *Problem & goals* instead, and let this doc stand on its own. When the intent is a PRD that already carries a slug, copy that slug rather than deriving a second one, and copy its `Language` the same way; with no PRD, write the BCP 47 tag of the language this interview ran in.
 
 Fill the template at `templates/architecture.md` — use it exactly.
 
@@ -127,12 +127,12 @@ Each fact lives in one section. Every rule or call lives in *Key decisions* unde
 
 Quote in full every literal the implementation must reproduce — messages, constants.
 
-**Two readers:** the user, who settled its calls at the GATEs, comes back to it for context; `piv-create-tickets` reads it next as structured input it slices tickets from.
+**Two readers:** the user, who settled its calls at the GATEs, comes back to it for context; `piv-slice` reads it next as structured input it slices tickets from.
 
 ## Hand off
 
 Confirm where you wrote it, summarize the recommended approach + the key calls in a few lines, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Slice it into tickets** — run `piv-create-tickets <the PRD's path> <this doc's path>` — or this doc's path alone when its `Intent` is "none" — to slice the intent and this doc into agent-sized tickets with a dependency graph, and create them wherever the team's work lives — here or in a fresh session.
+- **Slice it into tickets** — run `piv-slice <the PRD's path> <this doc's path>` — or this doc's path alone when its `Intent` is "none" — to slice the intent and this doc into agent-sized tickets with a dependency graph, and create them wherever the team's work lives — here or in a fresh session.
 - **Keep refining here** — stay in this conversation to revisit a decision before slicing.
 - **Spike something now** — if an open risk is blocking, go build the spike/experiment we flagged.

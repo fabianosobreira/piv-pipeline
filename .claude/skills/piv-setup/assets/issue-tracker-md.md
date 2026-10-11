@@ -10,7 +10,7 @@ One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
 - **architecture** — the *how*: the decision doc written beside the intent.
-- **epic** — the tracker item that groups an intent's tickets: born in `piv-create-tickets`, never an input to any skill.
+- **epic** — the tracker item that groups an intent's tickets: born in `piv-slice`, never an input to any skill.
 - **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
@@ -45,11 +45,11 @@ The three reports use the same header block, with the fields their own templates
 - **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`.
 - **Exclude globs** — `docs/.plans/*.architecture.md` `docs/.plans/*.prd.md` `docs/.tickets/*/*.md` `docs/.reports/*-report.md` `docs/.reports/*-review.md` `docs/.reports/*-fixes.md`: the paths above, in the form `diff-hash.sh` takes them.
 
-Plans stay local — `piv-create-tickets` publishes nothing, and the epic's header block points at their paths — so intent and architecture stay separable and get reviewed beside the code.
+Plans stay local — `piv-slice` publishes nothing, and the epic's header block points at their paths — so intent and architecture stay separable and get reviewed beside the code.
 
 ## Creating a ticket
 
-Every ticket follows these rules, whichever skill creates it — `piv-create-tickets` slicing an intent, `piv-fix-findings` deferring a finding — so every ticket in the folder reads the same:
+Every ticket follows these rules, whichever skill creates it — `piv-slice` slicing an intent, `piv-fix` deferring a finding — so every ticket in the folder reads the same:
 
 - **Where** — a file `docs/.tickets/<intent-slug>/<ticket-id>.md`, its body filled from the creating skill's own template, with the next free number. When the intent has no folder yet, create it with its `epic.md` first.
 - **Title** — the file's first line is `# <ticket-id> — <title>`: a file has no issue title to stand in for one.
@@ -80,9 +80,9 @@ The prefix is what lets the id resolve to its own file: an implementation loop h
 
 A markdown ticket carries `Status: todo | in progress | in review | done` in its file — the field exists because a file has nowhere else to keep it. Each transition has exactly one owner:
 
-- **`todo`** — written when the ticket is created: by `piv-create-tickets` for a sliced ticket, by `piv-fix-findings` for a deferral, one file per deferred finding.
-- **`in progress`** — set by `piv-implement-ticket` as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
-- **`in review`** — set by `piv-create-pr` when the review request opens: it rewrites the `Status:` line in that ticket's file and appends the PR URL beside it. There is no tracker to own this, so the ticket file is what records it.
+- **`todo`** — written when the ticket is created: by `piv-slice` for a sliced ticket, by `piv-fix` for a deferral, one file per deferred finding.
+- **`in progress`** — set by `piv-implement` as soon as it has read the ticket, before anything else runs, so a parallel wave doesn't pick up the same ticket twice.
+- **`in review`** — set by `piv-open-pr` when the review request opens: it rewrites the `Status:` line in that ticket's file and appends the PR URL beside it. There is no tracker to own this, so the ticket file is what records it.
 - **`done`** — set at the merge, which happens outside this loop.
 
 ## The epic file

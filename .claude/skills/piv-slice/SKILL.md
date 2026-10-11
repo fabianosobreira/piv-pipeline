@@ -1,17 +1,17 @@
 ---
-name: piv-create-tickets
+name: piv-slice
 description: Decomposes a PRD, an architecture doc, or both into agent-sized tickets with acceptance criteria and a dependency graph, then creates the epic and the tickets on the project's tracker.
 argument-hint: "[PRD path] · [architecture doc path] (either or both; blank = starts by asking for them)"
 disable-model-invocation: true
 ---
 
-# Create Tickets: Intent → Provable Units of Work
+# Slice: Intent → Provable Units of Work
 
 This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
 
 ## Input — a PRD, an architecture doc, or both
 
-`$ARGUMENTS` carries the path of a PRD written by `piv-create-prd`, the path of an architecture doc written by `piv-create-architecture`, or both — local files where `docs/issue-tracker.md` says plans live. Nothing passed → ask for them. **GATE.** Handed anything else — an idea, a brief, a research doc → **STOP**: it is not sliceable yet, and `piv-create-prd` or `piv-create-architecture` turns it into a plan first.
+`$ARGUMENTS` carries the path of a PRD written by `piv-write-prd`, the path of an architecture doc written by `piv-architect`, or both — local files where `docs/issue-tracker.md` says plans live. Nothing passed → ask for them. **GATE.** Handed anything else — an idea, a brief, a research doc → **STOP**: it is not sliceable yet, and `piv-write-prd` or `piv-architect` turns it into a plan first.
 
 Read what you were handed, end to end. An architecture doc handed alone names its intent in its `Intent` field: when that field names a PRD, read it too — you are holding both, and only a field that says "none" leaves you with the architecture only. **What you end up holding — PRD + architecture, PRD only, or architecture only — is the one branch that changes how you slice**, so establish it before anything else:
 
@@ -23,9 +23,9 @@ Read what you were handed, end to end. An architecture doc handed alone names it
 
 ## Guard
 
-Slice from what the intent states, never from a guessed *how*. If no architecture exists, you are decomposing intent alone. Name that out loud and keep the tickets outcome-shaped rather than implementation-shaped. With a PRD only, offer `piv-create-architecture` before Step 1 when the PRD's MVP door is one-way, or its constraints or open questions name a technical unknown, so no slicing is spent against a guess. **GATE.** If the user wants to proceed anyway, do it, and flag which tickets are most likely to move once the architecture is decided.
+Slice from what the intent states, never from a guessed *how*. If no architecture exists, you are decomposing intent alone. Name that out loud and keep the tickets outcome-shaped rather than implementation-shaped. With a PRD only, offer `piv-architect` before Step 1 when the PRD's MVP door is one-way, or its constraints or open questions name a technical unknown, so no slicing is spent against a guess. **GATE.** If the user wants to proceed anyway, do it, and flag which tickets are most likely to move once the architecture is decided.
 
-**Steps 1-4 are work you do, not questions you ask.** Decompose, then stop once at the Step 5 GATE. Besides asking for the plans when none were passed, ask before or mid-process only in two cases: the offer of `piv-create-architecture` above, and an intent too vague to decompose (see Step 1).
+**Steps 1-4 are work you do, not questions you ask.** Decompose, then stop once at the Step 5 GATE. Besides asking for the plans when none were passed, ask before or mid-process only in two cases: the offer of `piv-architect` above, and an intent too vague to decompose (see Step 1).
 
 Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
 
@@ -167,7 +167,7 @@ Report a table of ticket title → type → created id and URL; the intent (and 
 
 Confirm the epic's id and where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Start the first ticket** — run `piv-implement-ticket <ticket-id>`, in a session of its own, one per ticket.
+- **Start the first ticket** — run `piv-implement <ticket-id>`, in a session of its own, one per ticket.
 - **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time, each in a session of its own.
 
 Plan just-in-time: a dependent ticket waits until its dependency is *implemented*, because its *Starting code* was recorded before that dependency existed.

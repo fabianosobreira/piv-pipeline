@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Prints one hash for the change under review: the full diff from <base> to the
 # working tree, untracked files included, every <exclude-glob> left out.
-# piv-review-changes records it as the review report's Diff; piv-commit-changes
+# piv-review records it as the review report's Diff; piv-commit
 # recomputes it to tell whether the tree still matches. Both copies of this
 # script must stay identical, or the two hashes never match.
 #

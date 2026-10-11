@@ -5,7 +5,7 @@ title: ""
 labels: epic
 ---
 
-<!-- An epic from the PIV loop is born in piv-create-tickets, from its own template. Use this one only for an epic opened by hand. -->
+<!-- An epic from the PIV loop is born in piv-slice, from its own template. Use this one only for an epic opened by hand. -->
 
 - **Intent-slug**: <intent-slug>
 - **Intent**: <the PRD's path or URL, or "none">

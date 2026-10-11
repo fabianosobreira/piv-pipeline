@@ -1,11 +1,11 @@
 ---
-name: piv-implement-ticket
+name: piv-implement
 description: Implements a ticket task by task on its own branch, validating at every step, and writes an implementation report.
 argument-hint: "[ticket id] (blank = starts by asking which ticket)"
 disable-model-invocation: true
 ---
 
-# Implement Ticket: Build from the Ticket
+# Implement: Build from the Ticket
 
 This is the **implement** step of the PIV loop `docs/piv-loop.md` describes. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
 
@@ -118,10 +118,10 @@ Before you write the report, compare every file the change touched against the g
 
 ## Output — write an implementation report
 
-Write a short report at the implementation report path `docs/issue-tracker.md` defines, filling the template at `templates/implementation-report.md` — use it exactly — and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` **verbatim** into its header block. This is what the `piv-review-changes` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
+Write a short report at the implementation report path `docs/issue-tracker.md` defines, filling the template at `templates/implementation-report.md` — use it exactly — and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` **verbatim** into its header block. This is what the `piv-review` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
 
 Everything the template leaves to you — what was built, each deviation and its reason, and the checks — is written in the intent's language; only the template's labels and headings stay as written.
 
 ## Hand off
 
-Confirm the implementation report's path. Next: `piv-review-changes` gates the work before anything is committed, in a session of its own. Hand it the ticket id.
+Confirm the implementation report's path. Next: `piv-review` gates the work before anything is committed, in a session of its own. Hand it the ticket id.
