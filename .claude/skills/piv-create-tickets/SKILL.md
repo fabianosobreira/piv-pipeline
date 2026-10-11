@@ -7,11 +7,11 @@ disable-model-invocation: true
 
 # Create Tickets: Intent → Provable Units of Work
 
-This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
 
 ## Input — a PRD, an architecture doc, or both
 
-`$ARGUMENTS` carries the path of a PRD written by `piv-create-prd`, the path of an architecture doc written by `piv-create-architecture`, or both — local files where `docs/ISSUE-TRACKER.md` says plans live. Nothing passed → ask for them. **GATE.** Handed anything else — an idea, a brief, a research doc → **STOP**: it is not sliceable yet, and `piv-create-prd` or `piv-create-architecture` turns it into a plan first.
+`$ARGUMENTS` carries the path of a PRD written by `piv-create-prd`, the path of an architecture doc written by `piv-create-architecture`, or both — local files where `docs/issue-tracker.md` says plans live. Nothing passed → ask for them. **GATE.** Handed anything else — an idea, a brief, a research doc → **STOP**: it is not sliceable yet, and `piv-create-prd` or `piv-create-architecture` turns it into a plan first.
 
 Read what you were handed, end to end. An architecture doc handed alone names its intent in its `Intent` field: when that field names a PRD, read it too — you are holding both, and only a field that says "none" leaves you with the architecture only. **What you end up holding — PRD + architecture, PRD only, or architecture only — is the one branch that changes how you slice**, so establish it before anything else:
 
@@ -19,7 +19,7 @@ Read what you were handed, end to end. An architecture doc handed alone names it
 - **PRD only** — you have the *what*, not the *how*. Slice by outcome, under the *Guard* below.
 - **Architecture only** — no PRD: the work was architected straight from an idea, a brief or a research doc. Slice along the architecture's seams as in the strong case; its *Problem & goals* stands in for the intent wherever it doesn't cover one.
 
-**The epic is this skill's output, never its input.** Step 6 creates it and publishes the plans onto it, the way `docs/ISSUE-TRACKER.md` says, before any ticket exists.
+**The epic is this skill's output, never its input.** Step 6 creates it and publishes the plans onto it, the way `docs/issue-tracker.md` says, before any ticket exists.
 
 ## Guard
 
@@ -113,7 +113,7 @@ Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim en
   - For a dependent ticket, *Starting code* records the code as it is today; add under *Decisions*: "re-check after <dependency id>".
   - Every reference resolves from the ticket alone — the repository named when it isn't this one. One that can't be resolved or completed from the sources goes on the Step 5 *Unsettled* list.
 - **Testing strategy** — the test or check that proves each acceptance criterion, named per criterion. "Project defaults" covers how the checks run, never which ones, and never waives the tests: every behavior the ticket adds or alters still gets one.
-- **Type** — `bug`, `feature` or `task`, as `docs/ISSUE-TRACKER.md` defines them under *Creating a ticket*.
+- **Type** — `bug`, `feature` or `task`, as `docs/issue-tracker.md` defines them under *Creating a ticket*.
 
 ### Step 4 — Map dependencies and parallelism
 
@@ -125,7 +125,7 @@ Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim en
 
 ### Step 5 — GATE: confirm the breakdown
 
-The destination is already settled: `docs/ISSUE-TRACKER.md` says where tickets live. Say which one you are writing to, then **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open, for the user to rule on, including:
+The destination is already settled: `docs/issue-tracker.md` says where tickets live. Say which one you are writing to, then **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open, for the user to rule on, including:
 
 - a surface in the same role that no ticket owns
 - an absorbed or replaced symbol whose removing ticket no source names
@@ -145,15 +145,15 @@ Nothing on that list is decided by this run. Then **stop. End the turn and hand 
 
 Write the epic and the tickets in the intent's language; template labels stay as written.
 
-**The epic comes first.** Create it where `docs/ISSUE-TRACKER.md` says, filling the template at `templates/epic.md` — use it exactly. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields, the way `docs/ISSUE-TRACKER.md` says.
+**The epic comes first.** Create it where `docs/issue-tracker.md` says, filling the template at `templates/epic.md` — use it exactly. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields, the way `docs/issue-tracker.md` says.
 
-Then create one ticket per slice, in the same place, reaching that system with whatever tool fits. Fill the body from `templates/ticket.md` — use it exactly, leaving out *Root cause* and *Reproduction* on every type but `bug`. **Every ticket follows the rules `docs/ISSUE-TRACKER.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic, its `Acceptance criteria` heading. What those rules mean for a sliced ticket, and what it carries besides:
+Then create one ticket per slice, in the same place, reaching that system with whatever tool fits. Fill the body from `templates/ticket.md` — use it exactly, leaving out *Root cause* and *Reproduction* on every type but `bug`. **Every ticket follows the rules `docs/issue-tracker.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic, its `Acceptance criteria` heading. What those rules mean for a sliced ticket, and what it carries besides:
 
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal `Acceptance criteria` heading *Creating a ticket* names. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - The Step 3 entry context goes in the template's *Entry context* section, cited rather than copied — the run reads the cited sources itself.
 - Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
 - Fill the header block's `Intent-slug`, `Language`, `Intent` and `Architecture` from the epic's own fields, copied verbatim once the epic's fields point at the published plans — a ticket picked up cold still resolves both plans.
-- Capture each created ticket's id and URL as you go, in the id form `docs/ISSUE-TRACKER.md` defines, and add its line to the epic's *Tickets* list. That id is what every later step is handed.
+- Capture each created ticket's id and URL as you go, in the id form `docs/issue-tracker.md` defines, and add its line to the epic's *Tickets* list. That id is what every later step is handed.
 
 **Then write the dependency graph and the execution order down** in the epic's *Dependency graph and execution order* section. It is the one part of the breakdown no single ticket carries.
 

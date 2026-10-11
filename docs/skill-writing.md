@@ -52,7 +52,7 @@ A document mixes **steps** (ordered actions) and **reference** (definitions, rul
 - Name files by content (`ticket-schema.md`, not `ref2.md`); write paths with forward slashes.
 - Put the goal, hard constraints and completion criterion at the top of `SKILL.md`.
 - Keep the body under 500 lines. Past about 150, disclose reference or split by sequence.
-- Write a reference doc as terse rules the run can apply — `PIV-LOOP.md` is one. Add an example only where it fixes a format the rule cannot state.
+- Write a reference doc as terse rules the run can apply — `piv-loop.md` is one. Add an example only where it fixes a format the rule cannot state.
 
 ## Steps and completion criteria
 
@@ -77,7 +77,7 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - Repeat the token, never the sentence.
 - Reach for an existing word before coining one.
 - Collapse restatements into one word. "fast, deterministic, low-overhead" → _tight_; "a loop you believe in" → _red_.
-- One term per concept. A skill says "ticket", never "issue", and assumes no labels. It names a ticket's classification its _type_; "issue" and a tracker's "label" survive only in `docs/ISSUE-TRACKER*.md`. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
+- One term per concept. A skill says "ticket", never "issue", and assumes no labels. It names a ticket's classification its _type_; "issue" and a tracker's "label" survive only in `docs/issue-tracker*.md`. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
 - Match specificity to fragility. Judgement work gets goals and heuristics; a fragile sequence gets the exact order.
 - Give one default and one escape hatch, not a menu.
 - State the target behaviour. Keep a prohibition only as a hard guardrail, paired with the positive target.
@@ -92,8 +92,8 @@ A **leading word** is a compact concept already in the model's pretraining that 
 ## Pruning
 
 - Keep each meaning in a single source of truth. A leading word repeats a token on purpose; duplication repeats a meaning.
-- A skill restating a `PIV-LOOP.md` rule is not duplication — the rule travels with the run that applies it.
-- A skill carries its own reasons. `RULINGS.md` never ships with the skills.
+- A skill restating a `piv-loop.md` rule is not duplication — the rule travels with the run that applies it.
+- A skill carries its own reasons. `rulings.md` never ships with the skills.
 - Leave lookups to the environment. Cache only what looking cannot find: the unwritten convention, the reason behind a choice, the gotcha.
 - Inject load-time state with `` !`command` `` instead of a step that runs it.
 - Reach the tracker in prose ("post each finding as a comment on the ticket") — the tracker varies by project. Name the tool; leave its flags to the environment.

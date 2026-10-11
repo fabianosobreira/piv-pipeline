@@ -41,7 +41,7 @@ You rarely need all eight. Find the row that matches what you have in hand.
 
 ### Keep the loop's artifacts out of git
 
-The plans and the three reports stay on your machine. Add the paths `docs/ISSUE-TRACKER.md` lists under *Paths* — `docs/.plans/` and `docs/.reports/` — to your `.gitignore`.
+The plans and the three reports stay on your machine. Add the paths `docs/issue-tracker.md` lists under *Paths* — `docs/.plans/` and `docs/.reports/` — to your `.gitignore`.
 
 ## License
 

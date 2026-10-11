@@ -1,6 +1,6 @@
 # Issue tracker — markdown example
 
-**This file is an example**, not this project's issue tracker: it shows what `docs/ISSUE-TRACKER.md` looks like for a project that keeps its tickets in local markdown files instead of on a tracker. A project that wants this arrangement copies it over `docs/ISSUE-TRACKER.md`; the skills read that name and only that name.
+**This file is an example**, not this project's issue tracker: it shows what `docs/issue-tracker.md` looks like for a project that keeps its tickets in local markdown files instead of on a tracker. A project that wants this arrangement copies it over `docs/issue-tracker.md`; the skills read that name and only that name.
 
 Where this project's plans and tickets live. The skills read this file instead of asking the user.
 

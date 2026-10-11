@@ -86,7 +86,7 @@ Every artifact of one intent carries the same `intent-slug` — the kebab-slug o
 
 ## Ticket id form
 
-Write the id the way GitHub writes it — `#123`. Commit subjects and PR titles carry that same form; branch names carry it without the `#`, as `docs/GIT-CONVENTIONS.md` says.
+Write the id the way GitHub writes it — `#123`. Commit subjects and PR titles carry that same form; branch names carry it without the `#`, as `docs/git-conventions.md` says.
 
 ## Ticket status
 

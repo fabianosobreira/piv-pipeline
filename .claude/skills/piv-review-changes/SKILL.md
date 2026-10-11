@@ -11,7 +11,7 @@ allowed-tools:
 
 # Review Changes: Prove the Change Wrong
 
-This opens the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
+This opens the **verify** step of the PIV loop `docs/piv-loop.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
 
 ## Posture
 
@@ -51,19 +51,19 @@ A *red* test **confirmed red on the base** — it ran on the base branch, with t
 
 ### Step 1 — Resolve the change under review
 
-The **change under review** is everything this branch added on top of the base branch: the uncommitted tree — tracked and untracked alike — plus the commits sitting ahead of the base. `docs/GIT-CONVENTIONS.md` says which branch is the base. Gather the working tree status, the full diff against the base, the diff statistics, and the list of untracked files.
+The **change under review** is everything this branch added on top of the base branch: the uncommitted tree — tracked and untracked alike — plus the commits sitting ahead of the base. `docs/git-conventions.md` says which branch is the base. Gather the working tree status, the full diff against the base, the diff statistics, and the list of untracked files.
 
 Nothing to review — a clean tree with no commits ahead of the base → **STOP** and say so.
 
-**Then resolve the ticket id.** `$ARGUMENTS` carries it when one was handed to you; otherwise take it from the branch name, in the form `docs/GIT-CONVENTIONS.md` defines. Neither carries one → ask the user for it. **GATE.**
+**Then resolve the ticket id.** `$ARGUMENTS` carries it when one was handed to you; otherwise take it from the branch name, in the form `docs/git-conventions.md` defines. Neither carries one → ask the user for it. **GATE.**
 
-**Then read the ticket**, where `docs/ISSUE-TRACKER.md` says tickets live, and take its **Acceptance criteria** — what the change has to do — its **Testing strategy** — the bar the change was held to — its **Scope** and **Out of scope**, and its `Intent-slug`. The implementation report's status is the author's own account of the criteria; this gate checks them independently. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
+**Then read the ticket**, where `docs/issue-tracker.md` says tickets live, and take its **Acceptance criteria** — what the change has to do — its **Testing strategy** — the bar the change was held to — its **Scope** and **Out of scope**, and its `Intent-slug`. The implementation report's status is the author's own account of the criteria; this gate checks them independently. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
 
-**Then look for the implementation report** at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one. **Done when** the change under review, the ticket id, the ticket's Acceptance criteria, Testing strategy, Scope, Out of scope and `Intent-slug`, and the implementation report — or its absence — are in hand.
+**Then look for the implementation report** at the path `docs/issue-tracker.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one. **Done when** the change under review, the ticket id, the ticket's Acceptance criteria, Testing strategy, Scope, Out of scope and `Intent-slug`, and the implementation report — or its absence — are in hand.
 
 ### Step 2 — Resolve the deferrals
 
-A previous review of this branch may sit at the review report path `docs/ISSUE-TRACKER.md` defines; when it is there, this is a re-review. Read it with its *Dropped by prior ruling* section, the fix report beside it, and every deferral ticket an earlier round opened, found the way `docs/ISSUE-TRACKER.md` says under *Finding a review's deferrals* — together they are what the prior-decision filter reads. The fix report holds only the latest round, so the tracker carries the earlier deferrals and *Dropped by prior ruling* carries the earlier *Noise / won't-fix* reasons. **Done when** this is a first review, or the previous review report, the fix report beside it and every deferral ticket an earlier round opened have been read.
+A previous review of this branch may sit at the review report path `docs/issue-tracker.md` defines; when it is there, this is a re-review. Read it with its *Dropped by prior ruling* section, the fix report beside it, and every deferral ticket an earlier round opened, found the way `docs/issue-tracker.md` says under *Finding a review's deferrals* — together they are what the prior-decision filter reads. The fix report holds only the latest round, so the tracker carries the earlier deferrals and *Dropped by prior ruling* carries the earlier *Noise / won't-fix* reasons. **Done when** this is a first review, or the previous review report, the fix report beside it and every deferral ticket an earlier round opened have been read.
 
 ### Step 3 — Read the standards the change has to meet
 
@@ -117,7 +117,7 @@ A surviving blocking finding stays **blocking**, and its kind names it. A *red* 
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/review-report.md` — use it exactly — built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Its **Round** is 1 on a first review and the previous review's **Round** plus one on a re-review. Its **Base** and **Diff** record the change reviewed, so `piv-commit-changes` can tell whether the tree still matches it. The **Diff** is what the bundled `scripts/diff-hash.sh` prints — run it with `sh` (it needs `git` and a POSIX shell), handed the **Base** and the exclude globs `docs/ISSUE-TRACKER.md` lists under *Paths*; there is no need to read it.
+Write the report at the review report path `docs/issue-tracker.md` defines, filling the template at `templates/review-report.md` — use it exactly — built from the ticket id resolved in Step 1 — so a ticket's review sits beside its implementation report. On a re-review, this overwrites the previous one: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here. Its **Round** is 1 on a first review and the previous review's **Round** plus one on a re-review. Its **Base** and **Diff** record the change reviewed, so `piv-commit-changes` can tell whether the tree still matches it. The **Diff** is what the bundled `scripts/diff-hash.sh` prints — run it with `sh` (it needs `git` and a POSIX shell), handed the **Base** and the exclude globs `docs/issue-tracker.md` lists under *Paths*; there is no need to read it.
 
 Everything the template leaves to you — each finding's claim, evidence, impact and fix, the notes under *Scope*, and *Checks run* — is written in the intent's language; only the template's labels and headings stay as written.
 

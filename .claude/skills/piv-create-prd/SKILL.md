@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Create PRD: Intent, Not Instructions
 
-This is part of the **plan** step of the PIV loop `docs/PIV-LOOP.md` describes.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
 
 Write the PRD in the language the user runs this interview in; template labels stay as written.
 
@@ -101,9 +101,9 @@ Ask as open questions: the thinnest end-to-end slice, whether it is costly to un
 
 ## Output — a product PRD
 
-Write it where `docs/ISSUE-TRACKER.md` says plans live, under the `intent-slug` it defines. Before writing, check the path. If a file exists there, **GATE**: ask whether to revise it or pick a different slug.
+Write it where `docs/issue-tracker.md` says plans live, under the `intent-slug` it defines. Before writing, check the path. If a file exists there, **GATE**: ask whether to revise it or pick a different slug.
 
-Fill the `Intent-slug` field as `docs/ISSUE-TRACKER.md` defines it, and the `Language` field with the BCP 47 tag of the language this interview ran in.
+Fill the `Intent-slug` field as `docs/issue-tracker.md` defines it, and the `Language` field with the BCP 47 tag of the language this interview ran in.
 
 Everything the template leaves to you is written in the language this interview ran in; only the template's labels and headings stay as written.
 

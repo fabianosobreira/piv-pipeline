@@ -1,6 +1,6 @@
 # Issue tracker — GitLab (example)
 
-**This file is an example, not this project's tracker.** It shows what `docs/ISSUE-TRACKER.md` looks like for a project whose tickets live on GitLab. Nothing reads this file: to use it, copy it over `docs/ISSUE-TRACKER.md` and adjust the project details.
+**This file is an example, not this project's tracker.** It shows what `docs/issue-tracker.md` looks like for a project whose tickets live on GitLab. Nothing reads this file: to use it, copy it over `docs/issue-tracker.md` and adjust the project details.
 
 Where a project's plans and tickets live. The skills read that file instead of asking the user.
 
@@ -84,7 +84,7 @@ Every artifact of one intent carries the same `intent-slug` — the kebab-slug o
 
 ## Ticket id form
 
-Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic. Commit subjects and merge request titles carry that same form; branch names carry it without the `#`, as `docs/GIT-CONVENTIONS.md` says.
+Write the id the way GitLab writes it — `#123` for an issue, `&5` for an epic. Commit subjects and merge request titles carry that same form; branch names carry it without the `#`, as `docs/git-conventions.md` says.
 
 ## Ticket status
 

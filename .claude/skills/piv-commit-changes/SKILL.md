@@ -8,11 +8,11 @@ allowed-tools: Bash(sh *scripts/diff-hash.sh *)
 
 # Commit Changes: One Coherent Piece of Work per Commit
 
-This is part of the **verify** step of the PIV loop `docs/PIV-LOOP.md` describes: the change passed review, and this run turns it into a clean, atomic history before the PR opens.
+This is part of the **verify** step of the PIV loop `docs/piv-loop.md` describes: the change passed review, and this run turns it into a clean, atomic history before the PR opens.
 
-Commit the work as **atomic** commits — each one a coherent piece of work its subject line can name. Split by effect, the way `docs/GIT-CONVENTIONS.md` says — usually a single commit. Either way the run ends with a clean tree: everything uncommitted lands in a commit, or the user decides where it goes.
+Commit the work as **atomic** commits — each one a coherent piece of work its subject line can name. Split by effect, the way `docs/git-conventions.md` says — usually a single commit. Either way the run ends with a clean tree: everything uncommitted lands in a commit, or the user decides where it goes.
 
-The loop's own artifacts — the paths `docs/ISSUE-TRACKER.md` lists under *Paths* — are never committed and stay on disk; the clean-tree check ignores them.
+The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Paths* — are never committed and stay on disk; the clean-tree check ignores them.
 
 ## Success criteria
 
@@ -26,11 +26,11 @@ The loop's own artifacts — the paths `docs/ISSUE-TRACKER.md` lists under *Path
 
 ### Step 1 — Check where you are
 
-`docs/GIT-CONVENTIONS.md` defines which branch is the base branch. Work belongs on its own branch: when you are on the base branch, ask the user before committing anything. **GATE.**
+`docs/git-conventions.md` defines which branch is the base branch. Work belongs on its own branch: when you are on the base branch, ask the user before committing anything. **GATE.**
 
-**Then resolve the ticket id** — the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/GIT-CONVENTIONS.md` defines. Neither carries one → ask the user for it. **GATE.** Then read the ticket where `docs/ISSUE-TRACKER.md` says tickets live, for its `Language`, or with no such field the language its body is written in.
+**Then resolve the ticket id** — the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/git-conventions.md` defines. Neither carries one → ask the user for it. **GATE.** Then read the ticket where `docs/issue-tracker.md` says tickets live, for its `Language`, or with no such field the language its body is written in.
 
-**Then check the change earned its commit.** Find the review report at the path `docs/ISSUE-TRACKER.md` defines, named from the ticket id. Read its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, when there is one. Hash the diff by running the bundled `scripts/diff-hash.sh` with `sh` (it needs `git` and a POSIX shell), handed the report's **Base** and the exclude globs `docs/ISSUE-TRACKER.md` lists under *Paths*; there is no need to read it. The verdict is not PASS, there is no review report, the fix report's **Round** matches the review's — fixes nobody re-reviewed — or the hash differs from the report's **Diff** or the report records none → say which, and ask the user whether to commit anyway. **GATE.** **Done when** the run is off the base branch or the user ruled to commit on it, the ticket id is resolved and the ticket read, and the review check passed or the user ruled to commit anyway.
+**Then check the change earned its commit.** Find the review report at the path `docs/issue-tracker.md` defines, named from the ticket id. Read its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, when there is one. Hash the diff by running the bundled `scripts/diff-hash.sh` with `sh` (it needs `git` and a POSIX shell), handed the report's **Base** and the exclude globs `docs/issue-tracker.md` lists under *Paths*; there is no need to read it. The verdict is not PASS, there is no review report, the fix report's **Round** matches the review's — fixes nobody re-reviewed — or the hash differs from the report's **Diff** or the report records none → say which, and ask the user whether to commit anyway. **GATE.** **Done when** the run is off the base branch or the user ruled to commit on it, the ticket id is resolved and the ticket read, and the review check passed or the user ruled to commit anyway.
 
 ### Step 2 — Inspect
 
@@ -42,11 +42,11 @@ One group per effect, and the groups cover everything uncommitted. A change that
 
 ### Step 4 — Commit each group
 
-Take one group at a time — stage it, then commit it with a subject line in the form `docs/GIT-CONVENTIONS.md` defines: `<tag>: <atomic description> (<ticket id>)`, with the id resolved in Step 1. Count the id in the length: shorten the description to fit, never the id.
+Take one group at a time — stage it, then commit it with a subject line in the form `docs/git-conventions.md` defines: `<tag>: <atomic description> (<ticket id>)`, with the id resolved in Step 1. Count the id in the length: shorten the description to fit, never the id.
 
 Add a body after one blank line, hard-wrapped at 72 columns, when the diff does something the subject doesn't name: a second surface changed, a behavior removed, or a constraint the code alone doesn't reveal. Write the body from the diff; read neither the implementation report nor the fix report.
 
-Write subjects and bodies in the intent's language — the ticket's `Language`, read in Step 1 — as `docs/PIV-LOOP.md` says.
+Write subjects and bodies in the intent's language — the ticket's `Language`, read in Step 1 — as `docs/piv-loop.md` says.
 
 **Done when** every group is a commit whose subject follows that form, with a body wherever the rule above calls for one, and the working tree is clean.
 
@@ -54,7 +54,7 @@ Write subjects and bodies in the intent's language — the ticket's `Language`, 
 
 3–6 sentences from the diff, printed for the user: what each commit changes and the key files it touches.
 
-Each commit's subject and body are in the intent's language; only the type prefix and the ticket id stay as `docs/GIT-CONVENTIONS.md` defines them.
+Each commit's subject and body are in the intent's language; only the type prefix and the ticket id stay as `docs/git-conventions.md` defines them.
 
 ## Hand off
 

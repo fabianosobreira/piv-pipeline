@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Implement Ticket: Build from the Ticket
 
-This is the **implement** step of the PIV loop `docs/PIV-LOOP.md` describes. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
+This is the **implement** step of the PIV loop `docs/piv-loop.md` describes. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
 
 Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
 
@@ -36,21 +36,21 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 
 `$ARGUMENTS` carries the ticket id. Nothing passed → ask the user which ticket to implement. Only a ticket the user names counts. **GATE.**
 
-Read that ticket where `docs/ISSUE-TRACKER.md` says tickets live, reaching that system with whatever tool fits. When the ticket can't be read — missing, already closed, the system unreachable — **STOP** and say which it was.
+Read that ticket where `docs/issue-tracker.md` says tickets live, reaching that system with whatever tool fits. When the ticket can't be read — missing, already closed, the system unreachable — **STOP** and say which it was.
 
 From here on, **the ticket governs the run**. If it has no `Acceptance criteria` heading, or the checklist under it is empty → **STOP**: say so, and that the ticket needs reworking before it can be built.
 
-Assigned to someone else → **STOP**, naming the assignee. Otherwise mark it in flight now, the way `docs/ISSUE-TRACKER.md` says. A STOP after this mark puts the ticket back to the status it had; a GATE leaves it, since the user is still there.
+Assigned to someone else → **STOP**, naming the assignee. Otherwise mark it in flight now, the way `docs/issue-tracker.md` says. A STOP after this mark puts the ticket back to the status it had; a GATE leaves it, since the user is still there.
 
 When the ticket's type is `bug`, this run is a **repair**, and the instructions marked **Repair:** apply on top of the normal ones. A repair run is done only when every instruction marked **Repair:** is satisfied.
 
-**Fetch the base branch** `docs/GIT-CONVENTIONS.md` defines. From here on, *the base* is its remote tip: the local copy lags whatever merged since the last pull.
+**Fetch the base branch** `docs/git-conventions.md` defines. From here on, *the base* is its remote tip: the local copy lags whatever merged since the last pull.
 
 **Check the dependencies.** When the ticket names a **Depends on**, confirm that dependency is implemented — merged into the base. It isn't → **STOP** and say which ticket has to land first. **Done when** the ticket is read and governs the run, it is marked in flight, the base is fetched, and every ticket it *Depends on* is merged into the base.
 
 ### Step 2 — Work on a branch
 
-`docs/GIT-CONVENTIONS.md` defines the branch name — read it before creating anything. A branch this run creates starts from the base.
+`docs/git-conventions.md` defines the branch name — read it before creating anything. A branch this run creates starts from the base.
 
 - **On the base branch, clean** → create the branch, then record the baseline on it.
 - **Already on a branch carrying this ticket's id** → when the base's remote tip is not an ancestor of the branch, **STOP**: rebase the branch onto the base first. Otherwise record the baseline in a worktree of the base, then use the branch.
@@ -63,7 +63,7 @@ When the ticket's type is `bug`, this run is a **repair**, and the instructions 
 
 Before any edit, read the ticket's **`Architecture`** field and its **Entry context** first — the decisions it cites, the starting code, the external references and what the neighbors own; on a deferral, its **Origin** and **Evidence** — then write into your working notes: the task list with the dependencies between tasks, every check the ticket names, and its **Testing strategy**. **The ticket's Acceptance criteria are that task list**, when they already read as one; criteria written as outcome prose instead carry no explicit order, so derive the task list from them yourself, and check the list covers everything the ticket asks for before you touch any code. **Repair:** also the root cause — on a sliced ticket, its *Root cause*; on a deferral, *Origin › Location* and *Evidence* — and whether the proposed fix still addresses it.
 
-**If the `Architecture` field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/ISSUE-TRACKER.md` says plans live. Unresolvable there → **STOP**, asking for it.
+**If the `Architecture` field says `none`**, no architecture doc was produced for this ticket — proceed without one. **Otherwise it names a path or a URL** — resolve it wherever `docs/issue-tracker.md` says plans live. Unresolvable there → **STOP**, asking for it.
 
 **When *Entry context › Decisions* cites sections of the intent**, resolve the ticket's `Intent` field the same way and read those sections. The ticket cites the intent instead of copying it, so the run has to read what it cites. Unresolvable → **STOP**, asking for it.
 
@@ -118,7 +118,7 @@ Before you write the report, compare every file the change touched against the g
 
 ## Output — write an implementation report
 
-Write a short report at the implementation report path `docs/ISSUE-TRACKER.md` defines, filling the template at `templates/implementation-report.md` — use it exactly — and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` **verbatim** into its header block. This is what the `piv-review-changes` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
+Write a short report at the implementation report path `docs/issue-tracker.md` defines, filling the template at `templates/implementation-report.md` — use it exactly — and print the summary. Copy the ticket's `Intent-slug`, `Intent` and `Architecture` **verbatim** into its header block. This is what the `piv-review-changes` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
 
 Everything the template leaves to you — what was built, each deviation and its reason, and the checks — is written in the intent's language; only the template's labels and headings stay as written.
 

@@ -37,7 +37,7 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 
 ## Skills vs. tracker docs
 
-- **Anything tracker-specific belongs in `docs/ISSUE-TRACKER.md`, never inside a skill.** The tracker is swappable; a skill that branches on which tracker is in use is a defect — it delegates the procedure instead.
+- **Anything tracker-specific belongs in `docs/issue-tracker.md`, never inside a skill.** The tracker is swappable; a skill that branches on which tracker is in use is a defect — it delegates the procedure instead.
 - **A branch name keeps the ticket id's case.** Refused: lowercasing the id and restoring the tracker's form on the way back — nothing named the restore, a lowercased id misses the report files on a case-sensitive filesystem, and Jira/Git integrations match on the key as Jira writes it.
 - **A deferral is a ticket, created by the same *Creating a ticket* rules as every other.** Its origin goes in the body's `## Origin`, not a new header field — the header block stays the ticket contract. Refused: appending the deferral to the epic's *Tickets* list — `piv-create-tickets` is the one owner of the epic's body.
 - **The published architecture's `Intent` carries the published PRD's URL.** The PRD is published first, and the architecture's published copy has its `Intent` rewritten at publication — publication is not a revision of a frozen plan. Refused: publishing the architecture unchanged, its `Intent` pointing at a local file no reader of the epic can open.

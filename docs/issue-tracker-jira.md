@@ -1,6 +1,6 @@
 # Issue tracker — Jira (example)
 
-**This file is an example, not this project's configuration.** It shows what `docs/ISSUE-TRACKER.md` looks like when the tickets live in Jira instead of GitHub. Nothing reads it: to actually run the loop on Jira, copy it over `docs/ISSUE-TRACKER.md` and fill in the project key.
+**This file is an example, not this project's configuration.** It shows what `docs/issue-tracker.md` looks like when the tickets live in Jira instead of GitHub. Nothing reads it: to actually run the loop on Jira, copy it over `docs/issue-tracker.md` and fill in the project key.
 
 Where this project's plans and tickets live. The skills read this file instead of asking the user.
 

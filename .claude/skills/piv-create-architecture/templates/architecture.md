@@ -2,7 +2,7 @@
 
 - **Intent-slug**: <intent-slug>
 - **Language**: <the PRD's `Language`, copied verbatim; with no PRD, the BCP 47 tag of the language this interview ran in, such as pt-BR>
-- **Intent**: <the PRD's location as `docs/ISSUE-TRACKER.md` defines it (local path, or its published URL once published), or "none" when there is no PRD — an idea, a brief or a research doc is never named here>
+- **Intent**: <the PRD's location as `docs/issue-tracker.md` defines it (local path, or its published URL once published), or "none" when there is no PRD — an idea, a brief or a research doc is never named here>
 
 ## Problem & goals
 <one paragraph: the user goal this serves (from the intent) — the lens every decision below is judged against, and what fundamentally has to be true for this to work. With no PRD, what the idea, brief or research doc said, carried here in full enough to slice from, and the success metrics it states>
