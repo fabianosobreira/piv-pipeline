@@ -20,6 +20,10 @@ Work gets built on its own branch, named `<tag>/<ticket-id>-<short-slug>`:
 
 `<tag>: <atomic description> (<ticket id>)` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `<tag>` is the conventional tag the work earns, as *Commit tags* below defines it. The `(<ticket id>)` suffix closes the subject whenever there is an id: the one handed to you, or the one the branch name carries. Write the id in the form `docs/issue-tracker.md` defines for the tracker in use; with no file to consult, write it exactly as it reached you. The id counts toward the length: shorten the description to fit, never the id. PR titles carry the same shape.
 
+## Language
+
+Commit subjects and commit bodies are written in en-US, whatever the intent's language. The ticket's `Language` does not apply to them. The tag and the ticket id stay as this file defines them.
+
 ## Commit tags
 
 This repo ships skills: its markdown is the product, not documentation of it. Pick the tag by what the change does to the agent that loads the file, never by the file's extension:
