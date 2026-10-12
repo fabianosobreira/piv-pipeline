@@ -23,9 +23,6 @@
 ## Suggested fix
 <the finding's fix, copied from the review report>
 
-## Depends on
-<the id of the ticket the review covered>
-
 ## Testing strategy
 <the test or check that proves each acceptance criterion, named per criterion — "project defaults" covers how the checks run, never which ones>
 

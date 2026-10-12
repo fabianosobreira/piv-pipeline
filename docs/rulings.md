@@ -26,7 +26,6 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **The review report's *Checks run* is not a source for the PR's *Validation*.** Not adopted: a PASS already implies a green suite.
 - **`piv-review` does not read the PR body.** It runs before any PR exists; a reviewer's agent working from the PR sits outside the loop.
 - **The fix report is overwritten each round; a re-review finds earlier deferrals on the tracker, through their link to the reviewed ticket.** Refused: accumulating the fix report's *Deferred* section across rounds.
-- **The triage's default cut defers every low.** Refused: defaulting low to *Noise / won't-fix* — a low dropped without a deferral comes back every round. The asymmetry with the PASS path, which sends the same findings only to the PR body, is accepted.
 - **A *Noise / won't-fix* ruling is evidence the re-review weighs, never a closure.** Refused: treating it as a prior decision that drops the finding outright, and ignoring it — a false positive ruled high would block PASS every round.
 - **Test facts block the verdict outside the severity scale.** Not adopted: mapping the blocking kinds onto `high` — they are observed, not judged.
 - **A blocking finding is never deferred.** Refused: allowing the deferral — a deferred red test would reach PASS still red.

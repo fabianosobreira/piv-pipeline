@@ -34,6 +34,8 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
 - ✅ Every blocking finding landed in *Fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there.
+- ✅ Every finding the change introduced was proposed for *Fix now*, and a ruling against that is in the fix report with the user's reason.
+- ✅ Every deferred finding reproduces on the review report's *Base* without the change.
 - ✅ Every *Fix now* finding has its Step 3 proof — a test that fails without the fix for a `bug`-type finding, the check that shows the claim gone for any other.
 - ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its id in the fix report.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
@@ -46,14 +48,14 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 
 A finding's type follows its class, never its claim, the way `docs/issue-tracker.md` defines the types under *Creating a ticket*: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `task` for the rest. A deferral never delivers a new capability, so it is never a `feature`.
 
-Sort the findings into four buckets. The review's blocking findings and severities are the default cut you propose: blocking, critical and high in *Fix now*, medium and low in *Defer*. Low goes to *Defer* too, not to *Noise*: for a finding that is real, a deferral is the only thing that closes it.
+Sort the findings into four buckets. The default cut you propose is whether the change introduced the finding, whatever its severity; the change is the diff against the review report's *Base*, uncommitted work included. A real finding never goes to *Noise* for being minor: a fix or a deferral is the only thing that closes it.
 
-- **Fix now** — real, in-scope, belongs with this change.
-- **Defer** — real but later; don't bloat this change. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-slice` titles its tickets — and its type from the class above.
+- **Fix now** — real, and introduced by the change: a defect in code it touched, a break it caused elsewhere (a test it turned red), or something it left out (an unmet acceptance criterion).
+- **Defer** — real, and it reproduces on the *Base* without the change; confirm that in a worktree outside the repository, removed afterwards. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-slice` titles its tickets — and its type from the class above.
 - **Needs a human look** — anything the user should inspect or test by hand before trusting it; flag it here rather than fixing it yourself.
 - **Noise / won't-fix** — say why, then drop it. The next review weighs that reason against the code, so make it one the code can bear out: a reason that shows the problem is not there keeps the finding from coming back; "not worth fixing" does not.
 
-Every finding lands in exactly one bucket. A finding real and in scope for this change can still belong in *Defer* — "real, but later" is a valid and common call, and a clean small change beats a sprawling one.
+Every finding lands in exactly one bucket. A finding the change introduced is not deferred to keep the change small: its repair is part of the change.
 
 A **blocking** finding — a red, missing or weakened test, or an untested behavior — lands in *Fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there. Those are the two buckets that close it.
 
@@ -68,7 +70,6 @@ A deferral is a ticket: create it by the rules `docs/issue-tracker.md` gives und
 - **Type** — the type ruled at the GATE.
 - **Epic and header block** — the reviewed ticket's epic as its parent, and its `Intent-slug`, `Language`, `Intent` and `Architecture` copied verbatim.
 - **Link** — linked to the reviewed ticket, the way *Creating a ticket* says a deferral is. That link is what lets the next review find the deferral once this fix report is overwritten, and what the PR body points at.
-- **Depends on** — the reviewed ticket: the code the finding names only exists once that ticket lands.
 
 Leave the epic's body untouched.
 
@@ -83,7 +84,7 @@ For each finding, blocking first, then in severity order:
 3. Prove it. A blocking finding's proof is the test itself: the red test green through a change to the code — or to its assertions, when the ticket changed the behavior it pins — the missing test written and passing, the weakened test restored and passing, the untested behavior exercised by a new test that passes. A finding typed `bug` gets a test that fails without the fix and passes with it. Any other gets the check that shows its claim no longer holds: the lint or type-check rule it broke, or, for a coverage finding, the test it asked for.
 4. Run that proof. The finding goes **green** when it passes, and a red finding gets fixed before the next one starts. When three attempts, each on a different hypothesis about the cause, leave it red, mark it *not fixed* with what was tried, and move to the next.
 
-Fix what the finding names and stop there. A repair that grows into a refactor is out of scope: list it in the fix report's *Needs a human look* as a candidate ticket. This run creates none beyond the ruled deferrals. **Done when** every *Fix now* finding is green and marked fixed in the fix report, or marked *not fixed* with its reason.
+Fix what the finding names and stop there. A finding the change introduced is repaired in full, however large the repair. For any other finding, a repair that grows into a refactor is out of scope: list it in the fix report's *Needs a human look* as a candidate ticket. This run creates none beyond the ruled deferrals. **Done when** every *Fix now* finding is green and marked fixed in the fix report, or marked *not fixed* with its reason.
 
 ### Step 4 — Validate
 
