@@ -1,6 +1,6 @@
 ---
 name: piv-slice
-description: Decomposes a PRD, an architecture doc, or both into agent-sized tickets with acceptance criteria and a dependency graph, then creates the epic and the tickets on the project's tracker.
+description: Decomposes a PRD, an architecture doc, or both into agent-sized tickets with acceptance criteria and a dependency graph, then creates the tickets on the project's tracker, under an epic when there is more than one.
 argument-hint: "[PRD path] · [architecture doc path] (either or both; blank = starts by asking for them)"
 disable-model-invocation: true
 ---
@@ -19,7 +19,7 @@ Read what you were handed, end to end. An architecture doc handed alone names it
 - **PRD only** — you have the *what*, not the *how*. Slice by outcome, under the *Guard* below.
 - **Architecture only** — no PRD: the work was architected straight from an idea, a brief or a research doc. Slice along the architecture's seams as in the strong case; its *Problem & goals* stands in for the intent wherever it doesn't cover one.
 
-**The epic is this skill's output, never its input.** Step 6 creates it and publishes the plans onto it, the way `docs/issue-tracker.md` says, before any ticket exists.
+**The epic is this skill's output, never its input, and it exists only when the breakdown has more than one ticket.** Step 6 creates it and publishes the plans onto it, the way `docs/issue-tracker.md` says, before any ticket exists. A breakdown of one ticket has no epic: the plans are published on the ticket itself.
 
 ## Guard
 
@@ -34,7 +34,7 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 - [ ] 3. Decompose into agent-sized slices
 - [ ] 4. Map dependencies and parallelism
 - [ ] 5. GATE: confirm the breakdown
-- [ ] 6. Create the epic, publish the plans, create the tickets
+- [ ] 6. Publish the plans and create the tickets, under an epic when there is more than one
 - [ ] 7. Report
 
 ## Success criteria
@@ -44,10 +44,10 @@ Copy this checklist into your task list. Tick an item only when its step's compl
 - ✅ **Every `bug` ticket carries a *Root cause* with `path:line` evidence and a *Reproduction* — or its root cause is on the *Unsettled* list, and with the GATE skipped, also in the ticket's *Entry context › Decisions*.**
 - ✅ **Every acceptance criterion pins the edges of every comparison from the sources, names each current check it removes or relaxes, and, when it enforces an architecture rule, cites its ID with a concrete case and outcome or quotes the rule verbatim** — an edge no source settles is on the *Unsettled* list, never decided in the criterion.
 - ✅ **Every acceptance criterion maps to a named test or check in the *Testing strategy*, and each *Scope* names the docs the change makes stale, or "none".**
-- ✅ **Every acceptance criterion is one the implementation run can meet inside the repository**, and every step another system or person owns is under the ticket's *External references* and the epic's *Not ticketed*.
+- ✅ **Every acceptance criterion is one the implementation run can meet inside the repository**, and every step another system or person owns is under the ticket's *External references* and in the *Not ticketed* of the epic — or of the ticket, with no epic.
 - ✅ **Dependencies mapped**, with the parallelizable tickets marked, and every absorbed or replaced symbol has a removing ticket in the graph or a line on the *Unsettled* list — with each ticket that touches it, other than the one that removes it, stating under *Out of scope* what it keeps.
 - ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
-- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules with exactly one type, resolves `Intent-slug`, `Language`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic carries the published plans in its own, and the dependency graph is written down.
+- ✅ **Every ticket was created by the tracker doc's *Creating a ticket* rules with exactly one type, resolves `Intent-slug`, `Language`, `Intent` and `Architecture` through the header block *Creating a ticket* gives it**, the epic — or, with a single ticket, the ticket itself — carries the published plans in its own, and with an epic the dependency graph is written down.
 
 ## Process
 
@@ -70,7 +70,7 @@ If the intent carries explicit phases, use them as the grouping. If it doesn't, 
 
 **Too vague to decompose → flag it.** That's a gap in the intent, not a ticket-writing problem: name the section and what it would need to become sliceable. **GATE.**
 
-**Done when** every MVP line, JTBD, success metric, constraint, non-goal and open question — and, with an architecture, every named missing piece and *Spikes & experiments* entry — maps to a candidate slice, a decision ticket, or a note for the epic's *Not ticketed* section and Step 7's *not ticketed* list.
+**Done when** every MVP line, JTBD, success metric, constraint, non-goal and open question — and, with an architecture, every named missing piece and *Spikes & experiments* entry — maps to a candidate slice, a decision ticket, or a note for the *Not ticketed* section — the epic's, or the ticket's when there is no epic — and Step 7's *not ticketed* list.
 
 ### Step 2 — Orient on the existing surface
 
@@ -125,7 +125,7 @@ Split by **dependency**, by **concern**, or as a **tracer bullet** — a slim en
 
 ### Step 5 — GATE: confirm the breakdown
 
-The destination is already settled: `docs/issue-tracker.md` says where tickets live. Say which one you are writing to, then **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open, for the user to rule on, including:
+The destination is already settled: `docs/issue-tracker.md` says where tickets live. Say which one you are writing to and whether the breakdown gets an epic — it does when it has more than one ticket — then **GATE** — post the ticket titles, their types, their grouping and rough sizes, and the dependency graph. Post, under **Unsettled**, every fact a ticket needs that the sources leave open, for the user to rule on, including:
 
 - a surface in the same role that no ticket owns
 - an absorbed or replaced symbol whose removing ticket no source names
@@ -135,37 +135,38 @@ The destination is already settled: `docs/issue-tracker.md` says where tickets l
 
 Nothing on that list is decided by this run. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
 
-**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the epic's *Not ticketed* section and to the *Entry context › Decisions* of each ticket it affects, never resolved silently.
+**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the grouping, the sizing, the dependency graph — and record them as **(decided-by-default)** wherever Step 6 writes the dependency graph down, repeated in the Step 7 report — never as though the user had ruled on them. The *Unsettled* list goes to the *Not ticketed* section — the epic's, or the ticket's when there is no epic — and to the *Entry context › Decisions* of each ticket it affects, never resolved silently.
 
 **Done when** the user approved the breakdown and ruled on every *Unsettled* item — or skipped the GATE, and the calls made for them are named.
 
 ## Output — create the tickets
 
-### Step 6 — Create the epic, publish the plans, create the tickets
+### Step 6 — Publish the plans and create the tickets
 
-Write the epic and the tickets in the intent's language; template labels stay as written.
+Write the epic and the tickets in the intent's language; template labels stay as written. The ticket count from Step 4 picks the branch:
 
-**The epic comes first.** Create it where `docs/issue-tracker.md` says, filling the template at `templates/epic.md` — use it exactly. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields, the way `docs/issue-tracker.md` says.
+- **More than one ticket — the epic comes first.** Create it where `docs/issue-tracker.md` says, filling the template at `templates/epic.md` — use it exactly. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields, the way `docs/issue-tracker.md` says. Then create the tickets, each a sub-issue of the epic.
+- **One ticket — no epic.** Create the ticket first, its `Intent` and `Architecture` still the local paths. **Publish the plans on it**, as two comments, the way `docs/issue-tracker.md` says, then edit its body to replace both paths with the comment URLs. Its *Not ticketed* section holds the items Step 1 left without a ticket. Nothing reads the ticket between the creation and the edit, but a run that stops between them leaves local paths in the header: say so, and finish the edit first on resuming.
 
-Then create one ticket per slice, in the same place, reaching that system with whatever tool fits. Fill the body from `templates/ticket.md` — use it exactly, leaving out *Root cause* and *Reproduction* on every type but `bug`. **Every ticket follows the rules `docs/issue-tracker.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic, its `Acceptance criteria` heading. What those rules mean for a sliced ticket, and what it carries besides:
+Create one ticket per slice, in the same place, reaching that system with whatever tool fits. Fill the body from `templates/ticket.md` — use it exactly, leaving out *Root cause* and *Reproduction* on every type but `bug`, and *Not ticketed* on a ticket that has an epic or no items for it. **Every ticket follows the rules `docs/issue-tracker.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic when it has one, its `Acceptance criteria` heading. What those rules mean for a sliced ticket, and what it carries besides:
 
 - Acceptance criteria go in the ticket body as a markdown checklist under the literal `Acceptance criteria` heading *Creating a ticket* names. That heading is the contract: an implementation loop reads the checklist under it as the ticket's task list.
 - The Step 3 entry context goes in the template's *Entry context* section, cited rather than copied — the run reads the cited sources itself.
 - Preserve the dependency information — each ticket's *Depends on*, plus whatever blocking link the system offers.
-- Fill the header block's `Intent-slug`, `Language`, `Intent` and `Architecture` from the epic's own fields, copied verbatim once the epic's fields point at the published plans — a ticket picked up cold still resolves both plans.
-- Capture each created ticket's id and URL as you go, in the id form `docs/issue-tracker.md` defines, and add its line to the epic's *Tickets* list. That id is what every later step is handed.
+- Fill the header block's `Intent-slug`, `Language`, `Intent` and `Architecture` from the epic's own fields, copied verbatim once the epic's fields point at the published plans — a ticket picked up cold still resolves both plans. With no epic, they come from the PRD (the architecture doc when there is no PRD) and the comments posted on the ticket.
+- Capture each created ticket's id and URL as you go, in the id form `docs/issue-tracker.md` defines, and, with an epic, add its line to the epic's *Tickets* list. That id is what every later step is handed.
 
-**Then write the dependency graph and the execution order down** in the epic's *Dependency graph and execution order* section. It is the one part of the breakdown no single ticket carries.
+**With an epic, then write the dependency graph and the execution order down** in the epic's *Dependency graph and execution order* section. It is the one part of the breakdown no single ticket carries.
 
-**Done when** every candidate slice from Step 3 is a created ticket, each id and URL is captured, the epic's *Tickets* list is complete, and the dependency graph is written.
+**Done when** every candidate slice from Step 3 is a created ticket and each id and URL is captured; with an epic, its *Tickets* list is complete and the dependency graph is written; with one ticket, its header holds the two comment URLs.
 
 ### Step 7 — Report
 
-Report a table of ticket title → type → created id and URL; the intent (and architecture) the backlog was generated from; the execution order — which tickets can start now, in parallel, and which are waiting; and **what you deliberately did *not* ticket** — open questions, non-goals, anything blocked on a spike. **Done when** every created ticket is in the table and every item in the epic's *Not ticketed* is in the report.
+Report a table of ticket title → type → created id and URL; the intent (and architecture) the backlog was generated from; the execution order — which tickets can start now, in parallel, and which are waiting; and **what you deliberately did *not* ticket** — open questions, non-goals, anything blocked on a spike. **Done when** every created ticket is in the table and every item in the *Not ticketed* of the epic, or of the ticket, is in the report.
 
 ## Hand off
 
-Confirm the epic's id and where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
+Confirm the epic's id, when there is one, and where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **Start the first ticket** — run `piv-implement <ticket-id>`, in a session of its own, one per ticket.
 - **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time, each in a session of its own.

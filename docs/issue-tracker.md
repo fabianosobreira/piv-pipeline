@@ -7,8 +7,8 @@ Where this project's plans and tickets live. The skills read this file instead o
 One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
-- **architecture** — the *how*: the decision doc written beside the intent, and published onto the epic alongside it.
-- **epic** — the tracker item that groups an intent's tickets and carries its published plans: born in `piv-slice`, never an input to any skill.
+- **architecture** — the *how*: the decision doc written beside the intent, and published alongside it onto the epic, or onto the ticket when there is no epic.
+- **epic** — the tracker item that groups an intent's tickets and carries its published plans, for a breakdown of more than one ticket: born in `piv-slice`, never an input to any skill. A one-ticket breakdown has none.
 - **ticket** — one provable unit of work, sliced out of the intent and the architecture.
 - **implementation report** — what a finished ticket leaves behind: what was built, how it was validated, and what deviated.
 - **review report** — what the review gate leaves behind: the findings that survived it, with a verdict.
@@ -18,7 +18,7 @@ One name per artifact, used the same way across every skill:
 
 ## Where tickets live
 
-**Tickets are GitHub issues in this repo**, reached with `gh`. An epic is an issue carrying the `epic` label, and a ticket is a sub-issue of its epic.
+**Tickets are GitHub issues in this repo**, reached with `gh`. An epic is an issue carrying the `epic` label, and a ticket is a sub-issue of its epic, when it has one.
 
 When GitHub is unreachable, say so and stop. There is nowhere else this project keeps tickets, so writing them anywhere else puts a backlog where nobody will look for it.
 
@@ -37,11 +37,11 @@ The three reports use the same header block, with the fields their own templates
 
 **A markdown list, not YAML front matter.** These artifacts are read as GitHub issue bodies and comments, where front matter renders as a stray heading instead of as metadata. A list renders the same in a file and in an issue, and one field per line keeps each one greppable.
 
-## Where plans live — written locally, published on the epic
+## Where plans live — written locally, published on the epic or the ticket
 
 The PRD and the architecture doc are **written as local files** while the plan is still moving, which is what keeps them cheap to revise: `docs/.plans/<intent-slug>.prd.md` and `docs/.plans/<intent-slug>.architecture.md`.
 
-**`piv-slice` is what publishes them.** Before it creates any ticket, it:
+**`piv-slice` is what publishes them.** With more than one ticket, it publishes them onto an epic, before it creates any ticket:
 
 1. **Creates the epic** — an issue carrying the `epic` label, filled from the epic template.
 2. **Posts the PRD and the architecture doc as two separate comments** on that epic. Each opens with its own heading — `# PRD — <title>`, `# Architecture — <title>` — and that heading is how a later reader tells the two apart among the epic's other comments. The PRD goes first, and the architecture's published copy carries the PRD comment's URL in its `Intent` field in place of the local path: `docs/.plans/` stays on the machine that wrote it, so a published doc pointing there points at nothing.
@@ -51,14 +51,16 @@ An issue body — the epic's, a ticket's — carries no heading of its own, beca
 
 A plan too large for one comment splits across several, each still opening with its own heading; a doc from these templates never comes close to the limit.
 
-Published this way, the plans travel with the epic rather than with the machine that wrote them.
+**With a single ticket there is no epic**, and the plans are published on the ticket itself. The comments need an existing issue, so the order is: create the ticket with its `Intent` and `Architecture` still the local paths, post the PRD and the architecture doc as two comments on it — same headings, same order, same `Intent` rewrite on the architecture's copy — then edit the ticket's body to put the two comment URLs in those fields.
+
+Published this way, the plans travel with the epic, or with the ticket, rather than with the machine that wrote them.
 
 ## Creating a ticket
 
 Every ticket follows these rules, whichever skill creates it — `piv-slice` slicing an intent, `piv-fix` deferring a finding — so every ticket in the backlog reads the same and a filter finds all of them:
 
 - **Where** — an issue in this repo, its body filled from the creating skill's own template.
-- **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture`, copied verbatim from the epic — for a deferral, from the ticket the review covered.
+- **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture`, copied verbatim from the epic — with no epic, from the PRD (the architecture doc when there is no PRD) and the plan comments posted on the ticket itself — and for a deferral, from the ticket the review covered.
 - **Type** — exactly one label out of `bug`, `feature` and `task`. `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work.
 - **Epic** — a sub-issue of its epic, when the intent has one. `gh` has no command for it: the link goes through the REST API's sub-issues endpoint, which takes the ticket's database id, not its number.
 - **Link** — a deferral names the ticket the review covered under its *Origin*, which puts the cross-reference on that ticket's timeline.
@@ -74,7 +76,7 @@ A review's deferrals are the issues on the reviewed ticket's timeline whose *Ori
 
 ## Paths
 
-- **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic as above.
+- **Plans** — `docs/.plans/<intent-slug>.prd.md`, `docs/.plans/<intent-slug>.architecture.md`. Written locally, then published onto the epic, or the ticket, as above.
 - **Implementation reports** — `docs/.reports/<ticket-id>-report.md`. Normalize the id for filenames first: `#123` → `123`.
 - **Review reports** — `docs/.reports/<ticket-id>-review.md`. Same normalization, so a ticket's reports sit side by side.
 - **Fix reports** — `docs/.reports/<ticket-id>-fixes.md`. Same normalization again.

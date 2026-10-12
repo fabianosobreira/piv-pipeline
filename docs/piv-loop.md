@@ -6,7 +6,7 @@
 
 1. **`piv-write-prd`** — the intent: what to build and why, never how.
 2. **`piv-architect`** — the how: the engineering decisions the intent deliberately left open.
-3. **`piv-slice`** — the breakdown: the epic, and the tickets sliced out of the two above.
+3. **`piv-slice`** — the breakdown: the tickets sliced out of the two above, plus an epic when there is more than one.
 4. **`piv-implement`** — one ticket, built on its own branch, with an implementation report.
 5. **`piv-review`** — the gate: the findings that survive scrutiny, with a verdict.
 6. **`piv-fix`** — the triage: every finding fixed, deferred onto the tracker, flagged for a human, or dropped.
@@ -45,4 +45,4 @@ A hand-off marks the next step's session with one of three phrases: "in a sessio
 
 ## The hand-off
 
-Every skill closes the same way: confirm where the artifact landed and name it by path or id, then offer the next moves as a short list for the user to pick from and run. Hand on whatever the next step takes as its input — the epic id, the ticket id, the report's path.
+Every skill closes the same way: confirm where the artifact landed and name it by path or id, then offer the next moves as a short list for the user to pick from and run. Hand on whatever the next step takes as its input — the epic id when there is one, the ticket id, the report's path.

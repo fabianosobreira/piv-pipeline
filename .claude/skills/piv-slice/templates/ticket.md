@@ -1,7 +1,7 @@
 - **Intent-slug**: <intent-slug>
-- **Language**: <the epic's `Language`, copied verbatim>
-- **Intent**: <the epic's `Intent`, copied verbatim, or "none">
-- **Architecture**: <the epic's `Architecture`, copied verbatim, or "none">
+- **Language**: <the epic's `Language`, copied verbatim; with no epic, the PRD's, or the architecture doc's when there is no PRD>
+- **Intent**: <the epic's `Intent`, copied verbatim, or "none"; with no epic, the URL of the PRD comment posted on this ticket, or "none">
+- **Architecture**: <the epic's `Architecture`, copied verbatim, or "none"; with no epic, the URL of the architecture comment posted on this ticket, or "none">
 
 ## Description
 <what and why>
@@ -33,3 +33,6 @@
 ## Acceptance criteria
 - [ ] <criterion a reviewer can verify>
 - [ ] <criterion a reviewer can verify>
+
+## Not ticketed
+<optional, only on a ticket with no epic: one line per item the plans left without a ticket — the plan section it comes from and why it got no ticket, without restating it>
