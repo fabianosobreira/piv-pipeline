@@ -165,7 +165,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>The skills copied into a repo, no <code>docs/</code> for them yet</td>
+            <td>The skills installed with the <a href="#setup">install command</a>, no <code>docs/</code> for them yet</td>
             <td><code class="skill">piv-setup</code></td>
             <td>Every step reads the tracker and the git conventions from <code>docs/</code>; without them the first run has nothing to go on.</td>
           </tr>
@@ -214,6 +214,15 @@
       <h2>Setup</h2>
       <p>Setup is not a step of the loop: it runs once per project, before the first step, and again whenever a newer version of the skills arrives.</p>
 
+      <p>Install the skills from the root of your project with one command. It needs Node.js and git, on Windows with Git Bash, macOS or Linux, and it installs for Claude Code only. Then run <code>/piv-setup</code>.</p>
+      <pre><code>npx skills@1.7.2 add fabianosobreira/piv-pipeline#v1.0.0 -s '*' -a claude-code --copy -y</code></pre>
+      <ul>
+        <li><strong>Commit the lock file with the skills.</strong> The command writes <code>skills-lock.json</code> at the project root; commit it together with <code>.claude/skills/</code>.</li>
+        <li><strong>Keep your own files out of the <code>piv-*</code> folders.</strong> Each <code>.claude/skills/piv-*/</code> folder is replaced whole on every run, so a file you add there is deleted.</li>
+        <li><strong>A failed install is recovered by running the command again.</strong></li>
+        <li><strong>To update, run the command again with the newest tag</strong> in place of the tag in the command.</li>
+      </ul>
+
       <article class="skill" id="piv-setup">
         <span class="step">Setup · once per project</span>
         <h3>piv-setup</h3>
@@ -245,7 +254,7 @@
         <div class="usewhen">
           <strong>Use it when</strong>
           <ul>
-            <li>You have just copied the skills into a repo.</li>
+            <li>You have just installed the skills into a repo with the command above.</li>
             <li>Your git rules live in <code>CLAUDE.md</code> or <code>AGENTS.md</code> — it can move them into <code>docs/git-conventions.md</code> and leave a pointer behind, at your word.</li>
             <li>A newer version of the skills arrived and the docs should follow.</li>
           </ul>
