@@ -154,7 +154,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>As skills copiadas para um repo, ainda sem o <code>docs/</code> delas</td>
+            <td>As skills instaladas com o <a href="#setup">comando de instalação</a>, ainda sem o <code>docs/</code> delas</td>
             <td><code class="skill">piv-setup</code></td>
             <td>Todo passo lê o tracker e as convenções de git em <code>docs/</code>; sem eles a primeira rodada não tem de onde partir.</td>
           </tr>
@@ -203,6 +203,15 @@
       <h2>Setup</h2>
       <p>O setup não é um passo do loop: roda uma vez por projeto, antes do primeiro passo, e de novo sempre que chegar uma versão mais nova das skills.</p>
 
+      <p>Instale as skills a partir da raiz do seu projeto com um único comando. Ele exige Node.js e git, em Windows com Git Bash, macOS ou Linux, e instala só para o Claude Code. Depois, rode <code>/piv-setup</code>.</p>
+      <pre><code>npx skills@1.7.2 add fabianosobreira/piv-pipeline#v1.0.0 -s '*' -a claude-code --copy -y</code></pre>
+      <ul>
+        <li><strong>Faça o commit do lock file junto com as skills.</strong> O comando cria o <code>skills-lock.json</code> na raiz do projeto; faça o commit dele junto com o <code>.claude/skills/</code>.</li>
+        <li><strong>Não ponha arquivos seus nas pastas <code>piv-*</code>.</strong> Cada pasta <code>.claude/skills/piv-*/</code> é substituída inteira a cada execução, então um arquivo que você acrescentar ali é apagado.</li>
+        <li><strong>Uma instalação que falhou se recupera rodando o comando de novo.</strong></li>
+        <li><strong>Para atualizar, rode o comando de novo com a tag mais nova</strong> no lugar da tag do comando.</li>
+      </ul>
+
       <article class="skill" id="piv-setup">
         <span class="step">Setup · uma vez por projeto</span>
         <h3>piv-setup</h3>
@@ -234,7 +243,7 @@
         <div class="usewhen">
           <strong>Use</strong>
           <ul>
-            <li>Logo depois de copiar as skills para um repo.</li>
+            <li>Logo depois de instalar as skills num repo com o comando acima.</li>
             <li>Quando suas regras de git vivem em <code>CLAUDE.md</code> ou <code>AGENTS.md</code> — ela pode movê-las para o <code>docs/git-conventions.md</code> e deixar um ponteiro no lugar, se você aceitar.</li>
             <li>Quando chegar uma versão mais nova das skills e os docs precisarem acompanhar.</li>
           </ul>
