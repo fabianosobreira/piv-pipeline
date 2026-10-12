@@ -204,12 +204,12 @@
       <p>O setup não é um passo do loop: roda uma vez por projeto, antes do primeiro passo, e de novo sempre que chegar uma versão mais nova das skills.</p>
 
       <p>Instale as skills a partir da raiz do seu projeto com um único comando. Ele exige Node.js e git, em Windows com Git Bash, macOS ou Linux, e instala só para o Claude Code. Depois, rode <code>/piv-setup</code>.</p>
-      <pre><code>npx skills@1.7.2 add fabianosobreira/piv-pipeline#v1.0.0 -s '*' -a claude-code --copy -y</code></pre>
+      <pre><code>npx skills@1.7.2 add fabianosobreira/piv-pipeline#releases -s '*' -a claude-code --copy -y</code></pre>
       <ul>
         <li><strong>Faça o commit do lock file junto com as skills.</strong> O comando cria o <code>skills-lock.json</code> na raiz do projeto; faça o commit dele junto com o <code>.claude/skills/</code>.</li>
         <li><strong>Não ponha arquivos seus nas pastas <code>piv-*</code>.</strong> Cada pasta <code>.claude/skills/piv-*/</code> é substituída inteira a cada execução, então um arquivo que você acrescentar ali é apagado.</li>
         <li><strong>Uma instalação que falhou se recupera rodando o comando de novo.</strong></li>
-        <li><strong>Para atualizar, rode o comando de novo com a tag mais nova</strong> no lugar da tag do comando.</li>
+        <li><strong>Para atualizar, rode o mesmo comando de novo.</strong> Ele não fixa versão: instala o estado atual da branch <code>releases</code>, e o lock file registra só o hash instalado. Para fixar uma versão à mão, troque <code>#releases</code> por <code>#vX.Y.Z</code>.</li>
       </ul>
 
       <article class="skill" id="piv-setup">
