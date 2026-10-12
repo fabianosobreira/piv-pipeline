@@ -1,0 +1,98 @@
+# Cuts a release by hand: works out the version from the commit tags since the last
+# release tag, fast-forwards `releases` to the tip of `main`, tags that commit,
+# creates the GitHub Release and starts the Pages deploy.
+name: release
+
+on:
+  workflow_dispatch:
+
+# contents: push `releases` and the tag, create the Release.
+# actions: start the Pages deploy, which a push made with GITHUB_TOKEN does not trigger.
+permissions:
+  contents: write
+  actions: write
+
+# One release at a time, and a run in progress is never cancelled: a push cut
+# short between the branch and the tag is the half-done state this workflow exists to avoid.
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # The release is always cut from main, whichever ref the run was started on.
+          ref: main
+          # The version comes from the tags and the history since the last one.
+          fetch-depth: 0
+
+      - name: Check for an unfinished release
+        id: resume
+        run: |
+          last=$(bash tools/release-version.sh last-tag)
+          echo "last=$last" >> "$GITHUB_OUTPUT"
+          echo "resume=false" >> "$GITHUB_OUTPUT"
+          if [ -z "$last" ]; then
+            exit 0
+          fi
+          if out=$(gh release view "$last" 2>&1); then
+            exit 0
+          fi
+          # Only "not found" means the tag has no Release; any other failure stops the run.
+          if ! grep -qi "not found" <<< "$out"; then
+            echo "$out" >&2
+            exit 1
+          fi
+          echo "The tag $last has no GitHub Release: resuming from the Release."
+          echo "resume=true" >> "$GITHUB_OUTPUT"
+
+      - name: Calculate the version
+        id: version
+        if: steps.resume.outputs.resume != 'true'
+        run: |
+          next=$(bash tools/release-version.sh next)
+          if [ "$next" = none ]; then
+            echo "No release: nothing since ${{ steps.resume.outputs.last }} calls for one."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Next version: $next"
+          echo "release=true" >> "$GITHUB_OUTPUT"
+          echo "tag=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Push releases and the tag
+        if: steps.version.outputs.release == 'true'
+        run: |
+          # --atomic: both refs move or neither does. A releases branch that main
+          # does not fast-forward to makes the push fail instead of rewriting it.
+          git push --atomic origin "HEAD:refs/heads/releases" "HEAD:refs/tags/${{ steps.version.outputs.tag }}"
+
+      - name: Create the GitHub Release
+        if: steps.version.outputs.release == 'true' || steps.resume.outputs.resume == 'true'
+        run: |
+          tag="${{ steps.version.outputs.tag || steps.resume.outputs.last }}"
+          gh release create "$tag" --verify-tag --title "$tag" --generate-notes
+
+      - name: Deploy the site
+        run: |
+          tag="${{ steps.version.outputs.tag || steps.resume.outputs.last }}"
+          git fetch origin releases
+          releases=$(git rev-parse --verify FETCH_HEAD)
+          # The tag a release just pushed is not in this checkout: fetch it, and let a
+          # tag that is missing fail the step instead of reading as "not on the tag".
+          git fetch origin "refs/tags/$tag:refs/tags/$tag"
+          tagged=$(git rev-parse --verify "$tag^{commit}")
+          # Redispatched whenever releases sits on the last tag's commit, so a rerun
+          # after a failed deploy retries it.
+          if [ "$releases" = "$tagged" ]; then
+            gh workflow run pages.yml --ref releases
+            echo "Deploy of $tag started."
+          else
+            echo "releases is not on $tag: no deploy started."
+          fi

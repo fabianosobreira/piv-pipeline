@@ -52,9 +52,9 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 
 ## Releases
 
-- **A release is a semver tag, `vX.Y.Z`, and the first is `v1.0.0`.** The install command points at a tag because the installer resolves its ref with `git clone --branch`: branches and tags work, SHAs do not.
-- **The version rule: a renamed or removed skill bumps the major; a new skill or a change in an existing skill's behavior bumps the minor; a text fix that changes no behavior bumps the patch.** The major signals the break in contract: a renamed skill leaves the old folder in the project, and the user deletes it by hand.
-- **The maintainer cuts each release by hand, in this order:** (1) a commit that updates the tag in the install command in `README.md`, `pages/index.html` and `pages/index.pt-BR.html`; (2) `git tag vX.Y.Z` on that commit; (3) `git push --follow-tags`. The push goes out together because `.github/workflows/pages.yml` publishes the site on every push to `main`, and a commit that landed before its tag would leave the site showing a command that fails. Refused: automating the release with a release-please style workflow — too much machinery for a single maintainer.
+- **A release is a semver tag, `vX.Y.Z`, and the first is `v1.0.0`.** The install command points at `releases`, which only holds release state, so the command never changes from one release to the next. The installer resolves its ref with `git clone --branch`: branches and tags work, SHAs do not.
+- **The version rule: a renamed or removed skill bumps the major; a new skill or a change in an existing skill's behavior bumps the minor; a text fix that changes no behavior bumps the patch.** The major signals the break in contract: a renamed skill leaves the old folder in the project, and the user deletes it by hand. `tools/release-version.sh` applies the rule to the commit tags since the last release tag.
+- **The maintainer cuts each release by running the `release` workflow (`.github/workflows/release.yml`), in this order:** (1) work out the version; no relevant change since the last tag ends the run with no release; (2) one `git push --atomic` moves `releases` by fast-forward to the tip of `main` and tags that commit `vX.Y.Z`; (3) `gh release create --generate-notes` creates the GitHub Release; (4) start the Pages deploy on `releases`, because a push made with `GITHUB_TOKEN` triggers no workflow. Running it again after a failure resumes what is missing and never recreates the tag.
 
 ## Working style
 

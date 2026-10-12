@@ -30,13 +30,13 @@ Read the arrows as *"this is the next move offered"*, not as automation. The thr
 Install the skills from the root of your project with one command. It needs Node.js and git, on Windows with Git Bash, macOS or Linux, and it installs for Claude Code only:
 
 ```
-npx skills@1.7.2 add fabianosobreira/piv-pipeline#v1.0.0 -s '*' -a claude-code --copy -y
+npx skills@1.7.2 add fabianosobreira/piv-pipeline#releases -s '*' -a claude-code --copy -y
 ```
 
 - **Commit the lock file with the skills.** The command writes `skills-lock.json` at the project root; commit it together with `.claude/skills/`.
 - **Keep your own files out of the `piv-*` folders.** Each `.claude/skills/piv-*/` folder is replaced whole on every run, so a file you add there is deleted.
 - **A failed install is recovered by running the command again.**
-- **To update, run the command again with the newest tag** in place of the tag in the command.
+- **To update, run the same command again.** It pins no version: it installs the current state of the `releases` branch, and the lock file records only the hash installed. To pin a version by hand, replace `#releases` with `#vX.Y.Z`.
 
 Then run `/piv-setup`. It installs the docs the skills read: `docs/piv-loop.md`; `docs/issue-tracker.md` for your tracker — GitHub, GitLab, Jira, or local markdown files; `docs/git-conventions.md`, merged with the git rules your `CLAUDE.md`, `AGENTS.md` or commit tooling already set; and a `docs/.gitignore` that keeps the plans and the reports on your machine. It ends by showing the commit message and committing only when you say so.
 
