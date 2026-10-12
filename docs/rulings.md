@@ -50,6 +50,12 @@ Decisions the maintainer ruled on, recorded so a later session doesn't re-propos
 - **Every "stop and ask, then carry on" in the skills was converted to `GATE` deliberately.** The remaining `STOP`s are the terminal ones. Don't reclassify either direction without a ruling.
 - **A planning skill's opening asks go in one message behind one GATE** — the reference-docs question rides with `piv-write-prd`'s Phase 1 and with `piv-architect`'s Step 1. Refused: a GATE of their own each — the first one of a run was spent on the user saying "none".
 
+## Releases
+
+- **A release is a semver tag, `vX.Y.Z`, and the first is `v1.0.0`.** The install command points at a tag because the installer resolves its ref with `git clone --branch`: branches and tags work, SHAs do not.
+- **The version rule: a renamed or removed skill bumps the major; a new skill or a change in an existing skill's behavior bumps the minor; a text fix that changes no behavior bumps the patch.** The major signals the break in contract: a renamed skill leaves the old folder in the project, and the user deletes it by hand.
+- **The maintainer cuts each release by hand, in this order:** (1) a commit that updates the tag in the install command in `README.md`, `pages/index.html` and `pages/index.pt-BR.html`; (2) `git tag vX.Y.Z` on that commit; (3) `git push --follow-tags`. The push goes out together because `.github/workflows/pages.yml` publishes the site on every push to `main`, and a commit that landed before its tag would leave the site showing a command that fails. Refused: automating the release with a release-please style workflow — too much machinery for a single maintainer.
+
 ## Working style
 
 - **Resolve open decisions before editing.** When rulings conflict with each other or leave a fork, put the fork to the maintainer with a recommendation and wait — do not pick and proceed.
