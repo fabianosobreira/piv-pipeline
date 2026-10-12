@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Architect: Explore the Approach, Decide the Architecture
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. Write the architecture doc in the intent's language — the PRD's `Language`, or with no PRD the language this interview runs in; template labels stay as written.
 
 **Input intent**: $ARGUMENTS. If it is a reference to somewhere else (a URL, a page key, a ticket id), fetch it from the source first, with whatever tool reaches that system. Blank → ask *"What do you want to build? A few sentences."* **GATE.**
 

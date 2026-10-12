@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Slice: Intent → Provable Units of Work
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. Write the epic and the tickets in the intent's language — the `Language` of the PRD, or of the architecture doc when there is no PRD; template labels stay as written.
 
 ## Input — a PRD, an architecture doc, or both
 
@@ -145,7 +145,7 @@ Nothing on that list is decided by this run. Then **stop. End the turn and hand 
 
 Write the epic and the tickets in the intent's language; template labels stay as written. The ticket count from Step 4 picks the branch:
 
-- **More than one ticket — the epic comes first.** Create it where `docs/issue-tracker.md` says, filling the template at `templates/epic.md` — use it exactly. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields, the way `docs/issue-tracker.md` says. Then create the tickets, each a sub-issue of the epic.
+- **More than one ticket — the epic comes first.** Create it where `docs/issue-tracker.md` says, filling the template at `templates/epic.md` — use it exactly. Then **publish the plans onto it** and fill its `Intent` and `Architecture` fields, the way `docs/issue-tracker.md` says. Then create the tickets, each a sub-ticket of the epic.
 - **One ticket — no epic.** Create the ticket first, its `Intent` and `Architecture` still the local paths. **Publish the plans on it**, as two comments, the way `docs/issue-tracker.md` says, then edit its body to replace both paths with the comment URLs. Its *Not ticketed* section holds the items Step 1 left without a ticket. Nothing reads the ticket between the creation and the edit, but a run that stops between them leaves local paths in the header: say so, and finish the edit first on resuming.
 
 Create one ticket per slice, in the same place, reaching that system with whatever tool fits. Fill the body from `templates/ticket.md` — use it exactly, leaving out *Root cause* and *Reproduction* on every type but `bug`, and *Not ticketed* on a ticket that has an epic or no items for it. **Every ticket follows the rules `docs/issue-tracker.md` gives under *Creating a ticket*** — where it lives, its header block, its type, its epic when it has one, its `Acceptance criteria` heading. What those rules mean for a sliced ticket, and what it carries besides:

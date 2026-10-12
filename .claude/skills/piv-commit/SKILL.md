@@ -28,9 +28,9 @@ The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Path
 
 `docs/git-conventions.md` defines which branch is the base branch. Work belongs on its own branch: when you are on the base branch, ask the user before committing anything. **GATE.**
 
-**Then resolve the ticket id** — the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/git-conventions.md` defines. Neither carries one → ask the user for it. **GATE.** Then read the ticket where `docs/issue-tracker.md` says tickets live, for its `Language`, or with no such field the language its body is written in.
+**Then resolve the ticket id** — the one `$ARGUMENTS` carries, or the one the branch name carries, in the form `docs/git-conventions.md` defines. Neither carries one → ask the user for it. **GATE.**
 
-**Then check the change earned its commit.** Find the review report at the path `docs/issue-tracker.md` defines, named from the ticket id. Read its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, when there is one. Hash the diff by running the bundled `scripts/diff-hash.sh` with `sh` (it needs `git` and a POSIX shell), handed the report's **Base** and the exclude globs `docs/issue-tracker.md` lists under *Paths*; there is no need to read it. The verdict is not PASS, there is no review report, the fix report's **Round** matches the review's — fixes nobody re-reviewed — or the hash differs from the report's **Diff** or the report records none → say which, and ask the user whether to commit anyway. **GATE.** **Done when** the run is off the base branch or the user ruled to commit on it, the ticket id is resolved and the ticket read, and the review check passed or the user ruled to commit anyway.
+**Then check the change earned its commit.** Find the review report at the path `docs/issue-tracker.md` defines, named from the ticket id. Read its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, when there is one. Hash the diff by running the bundled `scripts/diff-hash.sh` with `sh` (it needs `git` and a POSIX shell), handed the report's **Base** and the exclude globs `docs/issue-tracker.md` lists under *Paths*; there is no need to read it. The verdict is not PASS, there is no review report, the fix report's **Round** matches the review's — fixes nobody re-reviewed — or the hash differs from the report's **Diff** or the report records none → say which, and ask the user whether to commit anyway. **GATE.** **Done when** the run is off the base branch or the user ruled to commit on it, the ticket id is resolved, and the review check passed or the user ruled to commit anyway.
 
 ### Step 2 — Inspect
 
@@ -46,16 +46,11 @@ Take one group at a time — stage it, then commit it with a subject line in the
 
 Add a body after one blank line, hard-wrapped at 72 columns, when the diff does something the subject doesn't name: a second surface changed, a behavior removed, or a constraint the code alone doesn't reveal. Write the body from the diff; read neither the implementation report nor the fix report.
 
-Write subjects and bodies in the intent's language — the ticket's `Language`, read in Step 1 — as `docs/piv-loop.md` says.
-
 **Done when** every group is a commit whose subject follows that form, with a body wherever the rule above calls for one, and the working tree is clean.
 
 ## Output — the commit summary
 
 3–6 sentences from the diff, printed for the user: what each commit changes and the key files it touches.
-
-Each commit's subject and body are in the intent's language; only the type prefix and the ticket id stay as `docs/git-conventions.md` defines them.
-
 ## Hand off
 
 Confirm each commit by its short hash and subject. Committed on the base branch → no PR follows; say so and end here.

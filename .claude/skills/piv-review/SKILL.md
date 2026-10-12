@@ -79,7 +79,7 @@ Every file the change touches, with the context needed to judge it — not the d
 
 ### Step 5 — Build the case
 
-Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing. **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line. Take every line number from the bundled `scripts/locate.sh`, run with `sh` as `locate.sh <file> <text>` from the repository root: it prints `file:line` for each line containing the text, so the number you cite is the one the file has, not one counted by hand.
+Work the list below over every changed file. Each class is a thing to hunt for, not a box to tick: pass over a class silently only when you looked and found nothing. **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line. Take every line number from the bundled `scripts/locate.sh`, run with `sh` (it needs a POSIX shell and `grep`) as `locate.sh <file> <text>` from the repository root: it prints `file:line` for each line containing the text, so the number you cite is the one the file has, not one counted by hand.
 
 1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds — every acceptance criterion of the ticket the code doesn't meet, and a change outside the ticket's *Scope*, or inside its *Out of scope*, that the implementation report doesn't list as a deviation.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
@@ -123,7 +123,7 @@ Everything the template leaves to you — each finding's claim, evidence, impact
 
 The blocking heading and every severity heading are present on every run, and one that survived nothing reads "No findings." *Dropped by prior ruling* is present too, reading "None." when nothing was dropped. The verdict is **CHANGES REQUESTED** when any blocking, critical or high finding survived, and **PASS** otherwise — a PASS with medium and low findings is normal.
 
-Check the report before handing it on, whatever the verdict. Run the bundled `scripts/check-report.sh` with `sh` from the repository root, handed the report's path: it confirms the header fields and headings, that the verdict agrees with the findings, and that every cited `path:line` exists. Any problem it prints → fix the report and run it again, until it exits 0. It cannot tell whether a cited line says what its finding claims, so reopen each cited line for that. Then print the verdict, the count of blocking findings and the count per severity.
+Check the report before handing it on, whatever the verdict. Run the bundled `scripts/check-report.sh` with `sh` (it needs a POSIX shell, `awk` and `wc`) from the repository root, handed the report's path: it confirms the header fields and headings, that the verdict agrees with the findings, and that every cited `path:line` exists. Any problem it prints → fix the report and run it again, until it exits 0. It cannot tell whether a cited line says what its finding claims, so reopen each cited line for that. Then print the verdict, the count of blocking findings and the count per severity.
 
 ## Hand off
 
