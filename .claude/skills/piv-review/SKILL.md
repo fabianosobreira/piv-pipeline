@@ -40,7 +40,7 @@ A *red* test **confirmed red on the base** — it ran on the base branch, with t
 
 ## Success criteria
 
-- ✅ Every file in the change under review was read end to end — by you, or by the subagent it was dispatched to — and every class in Step 5 was hunted over each of them.
+- ✅ Every file in the change under review was examined with the context needed to judge it, and every class in Step 5 was hunted over each of them.
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
@@ -67,15 +67,15 @@ A previous review of this branch may sit at the review report path `docs/issue-t
 
 ### Step 3 — Read the standards the change has to meet
 
-Read what the project documents about how its code is written: `AGENTS.md` and `CLAUDE.md` at the root and in each directory the change touches, `README.md`, and the linter, formatter and type-checker configs the repo ships.
+Read what the project documents about how its code is written: `AGENTS.md` and `CLAUDE.md` at the root and in each directory the change touches, the linter, formatter and type-checker configs the repo ships.
 
-Then read, for each kind of unit the change adds or edits, one existing sibling that does the same job, to know what "matches the existing patterns" means here. **Done when** every rule you will cite names its document, and each kind of unit the change adds or edits has a sibling read.
+Then read the closest existing sibling of each kind of unit the change adds or edits. It shows what "matches the existing patterns" means here, but documents outrank it: where a document read above contradicts the sibling, the document is the rule. **Done when** every standards rule you will cite names a document, and every pattern you will cite names a sibling that no document contradicts.
 
-### Step 4 — Read every changed file end to end
+### Step 4 — Examine every changed file in its context
 
-Every file the change touches, whole — not the diff. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements. New files get read in full for the same reason. A file a tool generates — a lockfile, a generated config — is the one exception: read its changed hunks, check that the whole file still parses, and say so in the report's *Scope*.
+Every file the change touches, with the context needed to judge it — not the diff alone. A diff hides the caller three functions up that makes the new branch unreachable, and the helper that already does what the new code reimplements.
 
-**A change too large to read in one pass gets dispatched, never sampled.** When the files no longer fit, split them into coherent groups — a module, a layer, a feature's slice — and send each group to a subagent that runs Steps 4 and 5 over its own files and reports its candidates back with the evidence attached. Hand each subagent the standards from Step 3, the ticket with its Acceptance criteria and Testing strategy, the implementation report, and this skill's **Posture** and Step 5 — without them Standards, Coverage and the code smells check against nothing. You run Step 6 over everything that comes back, so the filters stay in one place. Note the dispatch in the report's *Scope*. **Done when** every changed file has been read whole, by you or by the subagent its group went to.
+**A change too large for one pass is split into coherent groups — a module, a layer, a feature's slice — never sampled.** Send each group to a subagent that runs Step 5 over its own files, reading them in context, and reports its candidates back with the evidence attached. Give each subagent the standards from Step 3, the ticket with its Acceptance criteria and Testing strategy, the implementation report, and this skill's **Posture** and Step 5, since without them its Standards, Coverage and smell checks have no reference. Give it also the base ref, the command that prints the diff and the map of group to files, so it can read what every other group changed. Run Step 6 once over all the candidates that come back, and note the dispatch in the report's *Scope*. **Done when** every changed file has been examined, alone or as part of a dispatched group.
 
 ### Step 5 — Build the case
 

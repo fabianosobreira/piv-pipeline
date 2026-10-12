@@ -416,7 +416,7 @@
           <dd><strong>CHANGES REQUESTED</strong> when any blocking, critical or high finding survives. <strong>PASS</strong> otherwise — a PASS with medium and low findings is normal.</dd>
 
           <dt>How it runs</dt>
-          <dd>Resolve the change → resolve prior deferrals → read the standards the change must meet → read every changed file end to end → build the case → run three filters that kill unproven findings. The change is held to the ticket's acceptance criteria as well as its testing strategy: a criterion the code doesn't meet is a <code>high</code> finding.</dd>
+          <dd>Resolve the change → resolve prior deferrals → read the standards the change must meet → examine every changed file in its context → build the case → run three filters that kill unproven findings. The change is held to the ticket's acceptance criteria as well as its testing strategy: a criterion the code doesn't meet is a <code>high</code> finding.</dd>
 
           <dt>Next move</dt>
           <dd><strong>PASS</strong> → <code>piv-commit</code>, in a session of its own. <strong>CHANGES REQUESTED</strong> → <code>piv-fix</code>, in a session of its own, handed this report's path.</dd>
