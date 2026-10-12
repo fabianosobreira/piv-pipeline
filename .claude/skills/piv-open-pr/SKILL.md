@@ -70,7 +70,7 @@ Push it to the remote, tracking it. **Done when** the remote branch tracks the l
 
 ### Step 5 — Open the review request
 
-Open it against `<base>`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the tag is the largest effect among them, as `docs/git-conventions.md` rules for a change that can't be split.
+Open it against `<base>`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the tag is the largest effect among them, as `docs/git-conventions.md` rules for a commit.
 
 - **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the problems it lists — unless a fix report is newer than the implementation report and the review report is PASS with a **Round** above that fix report's. Then the PARTIAL was worked through a fix round and a fresh review: open it ready for review, and mark each problem under *Open problems* as reported by the implementation before the PASS review, never as resolved. A PASS proves no blocking, critical or high finding survived, not that every problem was cleared — the review runs no build, for one.
 - **No implementation report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.

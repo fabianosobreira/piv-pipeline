@@ -34,4 +34,4 @@ This repo ships skills: its markdown is the product, not documentation of it. Pi
 - **`docs`** — what only people read: `README.md`, `pages/`.
 - **`chore`** — `tools/`, `.claude/settings*`, repo configuration.
 
-The docs an agent loads — `AGENTS.md`, `CLAUDE.md`, `docs/piv-loop.md`, `docs/rulings.md`, `docs/issue-tracker*.md`, this file — count as skills, not as `docs`. A change that mixes effects is split into one commit per effect; when it can't be split, the largest effect names the tag.
+The docs an agent loads — `AGENTS.md`, `CLAUDE.md`, `docs/piv-loop.md`, `docs/rulings.md`, `docs/issue-tracker*.md`, this file — count as skills, not as `docs`. The work of one ticket is one commit, tagged with its largest effect. Split off only a part that stands on its own — one that could be reverted without breaking the rest or leaving it pointless, like an unrelated fix found along the way. The tag names a commit; it never decides where commits split.

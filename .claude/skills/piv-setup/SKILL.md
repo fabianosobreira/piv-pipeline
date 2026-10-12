@@ -30,7 +30,7 @@ Write the docs in English, whatever language the harness is in: the skills find 
 - **Base branch** — how to resolve it. `piv-implement`, `piv-review`, `piv-commit` and `piv-open-pr` all start from it.
 - **Commit subject form** — the shape `piv-commit` writes, including where the ticket id goes, if anywhere.
 - **PR title form** — the shape `piv-open-pr` writes.
-- **Commit tags** — the set of tags, and the rule for a change that mixes effects: one commit per effect, and the largest effect names the tag when it can't be split. `piv-commit` groups by it and `piv-open-pr` titles by it.
+- **Commit tags** — the set of tags, and the grouping rule: one commit per ticket, a part split off only when it stands on its own, and the largest effect names the tag. `piv-commit` groups by it and `piv-open-pr` titles by it.
 
 **Recommended** — without these the loop runs, with a GATE in every run:
 

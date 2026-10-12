@@ -38,4 +38,4 @@ Pick the tag by what the change does to the project's behavior, never by the fil
 - **`ci`** — the CI configuration.
 - **`chore`** — anything else that touches no shipped behavior.
 
-A change that mixes effects is split into one commit per effect; when it can't be split, the largest effect names the tag. A PR whose commits carry different tags takes the largest effect among them.
+The work of one ticket is one commit, tagged with its largest effect. Split off only a part that stands on its own — one that could be reverted without breaking the rest or leaving it pointless, like an unrelated fix found along the way. A PR whose commits carry different tags takes the largest effect among them.

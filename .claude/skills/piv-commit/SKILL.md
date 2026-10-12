@@ -10,7 +10,7 @@ allowed-tools: Bash(sh *scripts/diff-hash.sh *)
 
 This is part of the **verify** step of the PIV loop `docs/piv-loop.md` describes: the change passed review, and this run turns it into a clean, atomic history before the PR opens.
 
-Commit the work as **atomic** commits — each one a coherent piece of work its subject line can name. Split by effect, the way `docs/git-conventions.md` says — usually a single commit. Either way the run ends with a clean tree: everything uncommitted lands in a commit, or the user decides where it goes.
+Commit the work as **atomic** commits — each one a coherent piece of work its subject line can name. Group it the way `docs/git-conventions.md` says — usually a single commit. Either way the run ends with a clean tree: everything uncommitted lands in a commit, or the user decides where it goes.
 
 The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Paths* — are never committed and stay on disk; the clean-tree check ignores them.
 
@@ -38,7 +38,7 @@ Inspect everything uncommitted except the loop's artifacts: the working tree sta
 
 ### Step 3 — Group it
 
-One group per effect, and the groups cover everything uncommitted. A change that earns a tag of its own is a group, whether or not the ticket mentions it. What belongs to no group is what earns no tag — scratch files, local leftovers — and stays out of this branch: the user stashes it, moves it to another branch, or drops it. Ask which before you commit anything. **GATE.** **Done when** every path from Step 2 sits in exactly one group, or the user decided where it goes.
+Group the way `docs/git-conventions.md` says, and the groups cover everything uncommitted. A change the ticket doesn't mention lands in a group too. What belongs to no group is what earns no tag — scratch files, local leftovers — and stays out of this branch: the user stashes it, moves it to another branch, or drops it. Ask which before you commit anything. **GATE.** **Done when** every path from Step 2 sits in exactly one group, or the user decided where it goes.
 
 ### Step 4 — Commit each group
 
