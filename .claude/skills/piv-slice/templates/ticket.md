@@ -19,7 +19,7 @@
 <surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
 
 ## Entry context
-- **Decisions**: <the architecture IDs, or the intent or architecture sections, this ticket implements — cited, never copied — plus any unsettled fact it depends on>
+- **Decisions**: <the architecture IDs, or the intent or architecture sections, this ticket implements — cited, never copied — plus any unsettled fact it depends on, and, with no epic and the breakdown GATE skipped, "**(decided-by-default)** — <the type and sizing calls made without the user>">
 - **Starting code**: <`path:line` inside this repository, and what that code does today>
 - **External references**: <references that live outside this repository, and every step another system or person owns, or "none">
 - **Neighbors**: <what adjacent tickets own in the same files, or "none">

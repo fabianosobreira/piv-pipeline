@@ -7,100 +7,121 @@ disable-model-invocation: true
 
 # Fix: Triage, Fix, Validate
 
-This continues the **verify** step of the PIV loop `docs/piv-loop.md` describes: the review raised findings, and this run settles every one of them — the loop only closes when the fresh review this hands back to returns PASS.
+This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it settles every finding of a review and hands the branch back to `piv-review`, whose fresh PASS is the only thing that closes the loop. A review is **input, not a work order**: you propose where each finding lands, and the user rules.
 
-A review produced findings — but a review is **input, not a work order**: you propose where each one lands, and the user rules on the split at the GATE below.
+## Before Step 1
 
-`$ARGUMENTS` carries the review report's path. **No path handed to you** — go find the report written for this branch, at the review report path `docs/issue-tracker.md` defines, named from the ticket id on the branch name, in the form `docs/git-conventions.md` gives it. No id on the branch name → ask the user for it. **GATE.** No report at that path → **STOP** and ask the user for the report to work from; until a report exists there is nothing to triage.
+1. **Find the review report.** `$ARGUMENTS` carries its path. With no path, look at the review report path `docs/issue-tracker.md` defines, named from the ticket id on the branch name, in the form `docs/git-conventions.md` gives it. No id on the branch name → ask the user for it. No report at that path → **STOP** and ask the user for the report to work from.
+2. **Read the review report end to end**, so you understand every finding before triaging. Take the ticket id from its header.
+3. **Read the reviewed ticket** where `docs/issue-tracker.md` says tickets live. It supplies the `Language`, the header block every deferral copies, and the epic when there is one. Missing, or the system unreachable → **STOP** and say which it was.
+4. **Set the language.** The fix report and every deferral are written in the intent's language: the reviewed ticket's `Language`, or, with no such field, the language its body is written in. Template labels and headings stay as written; everything you fill in — descriptions, proofs, reasons, *Checks run* — is in the intent's language.
+5. **Check for an earlier run** at the fix report path `docs/issue-tracker.md` defines:
+   - **No fix report, or one whose *Round* is lower than the review report's** → it belongs to an earlier review. Start at Step 1.
+   - **Same *Round*, with a *Fixed* entry `not fixed — pending`, a *Deferred* entry `not created`, or a *Needs a human look* entry open** → an earlier run stopped after the user ruled. The ruling stands: skip Step 1 and its GATE. Ask the user for a verdict on each open *Needs a human look* entry — for one moved to *Defer*, propose its title and type as Step 1 does — and record each verdict in the fix report as a pending entry of its new bucket. Then resume at Step 2: create only the deferrals not yet created, fix only the findings still pending, then Step 4. When the user rules on no open entry and nothing else is pending, **STOP**: the hand-off stays blocked until they do.
+   - **Same *Round*, nothing pending and nothing open** → this review was fully triaged. **STOP** and point the user at the fix report and at running `piv-review` again; triaging again would duplicate every deferral ticket.
 
-**Read it end to end first**, so you understand every finding before triaging.
-
-Take the ticket id from the review report's header.
-
-Read the reviewed ticket where `docs/issue-tracker.md` says tickets live — it is where the `Language` this run writes in and the deferral's header block, and its epic when the ticket has one, come from. When it can't be read — missing, or the system unreachable — **STOP** and say which it was.
-
-Write the fix report and every deferral in the intent's language — the reviewed ticket's `Language`, read above, or with no such field the language its body is written in; template labels stay as written.
-
-**A fix report already at the fix report path `docs/issue-tracker.md` defines, its Round matching this review report's** — the review report has not been rewritten since — was triaged against exactly this review. A deferral marked not created or a fix marked not fixed means an earlier run stopped midway after the user ruled: resume from it. The ruling stands, so skip Step 1 and its GATE, create only the deferrals not yet created, fix only the findings not yet fixed, then carry on to Step 4. A *Needs a human look* item the user has since ruled on counts as pending in its new bucket. Nothing pending → this review was already fully triaged; **STOP** and point the user at this fix report and at running `piv-review` again, rather than re-triaging and recreating every deferral ticket as a duplicate. A fix report with a lower Round belongs to an earlier review: triage from scratch.
-
-Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
 
 - [ ] 1. Triage
 - [ ] 2. Open a ticket for each deferral
 - [ ] 3. Fix the *Fix now* set, one at a time
 - [ ] 4. Validate
+- [ ] 5. Finish the fix report and hand off
 
 ## Success criteria
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
-- ✅ Every blocking finding landed in *Fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there.
-- ✅ Every finding the change introduced was proposed for *Fix now*, and a ruling against that is in the fix report with the user's reason.
-- ✅ Every deferred finding reproduces on the review report's *Base* without the change.
-- ✅ Every *Fix now* finding has its Step 3 proof — a test that fails without the fix for a `bug`-type finding, the check that shows the claim gone for any other.
-- ✅ Every deferred finding has a ticket created by the tracker doc's *Creating a ticket* rules, and its id in the fix report.
+- ✅ No blocking finding was deferred.
+- ✅ Every finding the change introduced was proposed for *Fix now*; one the user ruled elsewhere carries the user's reason in the fix report.
+- ✅ Every finding you proposed to defer reproduces on the review report's *Base* without the change.
+- ✅ Every *Fix now* finding has its Step 3 proof passing, is marked `not fixed` with the hypotheses tried, or was moved to *Needs a human look* as a refactor.
+- ✅ Every deferred finding has a ticket created by the *Creating a ticket* rules of `docs/issue-tracker.md`, with its id in the fix report.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
-- ✅ The triage outcome was written to the fix report path, not only printed.
-- ✅ The run ended by handing the branch back to `piv-review`, which is the only thing that closes the loop.
+- ✅ The outcome is written to the fix report path, not only printed.
+- ✅ The run ended by handing the branch back to `piv-review` or, with a *Needs a human look* entry open, by asking the user to rule on it.
 
 ## Process
 
 ### Step 1 — Triage
 
-A finding's type follows its class, never its claim, the way `docs/issue-tracker.md` defines the types under *Creating a ticket*: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `task` for the rest. A deferral never delivers a new capability, so it is never a `feature`.
+**The change** is the diff against the review report's *Base*, uncommitted work included.
 
-Sort the findings into four buckets. The default cut you propose is whether the change introduced the finding, whatever its severity; the change is the diff against the review report's *Base*, uncommitted work included. A real finding never goes to *Noise* for being minor: a fix or a deferral is the only thing that closes it.
+**Type.** Every finding's type follows its class, never its claim, as `docs/issue-tracker.md` defines types under *Creating a ticket*: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `task` for the rest. Never `feature`: a deferral delivers no new capability.
+
+**Blocking.** A finding is blocking when it is a red, missing or weakened test, or an untested behavior.
+
+Sort the findings into four buckets, each finding into exactly one. Propose the cut by whether the change introduced the finding, whatever its severity. Two rules override that cut:
+
+- A blocking finding is never deferred: it goes to *Fix now*, or to *Noise / won't-fix* with a reason that shows the problem is not there.
+- A finding the change introduced is never deferred to keep the change small: its repair is part of the change.
+
+The buckets:
 
 - **Fix now** — real, and introduced by the change: a defect in code it touched, a break it caused elsewhere (a test it turned red), or something it left out (an unmet acceptance criterion).
-- **Defer** — real, and it reproduces on the *Base* without the change; confirm that in a worktree outside the repository, removed afterwards. Each one becomes a ticket in Step 2; propose its title — imperative and specific, as `piv-slice` titles its tickets — and its type from the class above.
-- **Needs a human look** — anything the user should inspect or test by hand before trusting it; flag it here rather than fixing it yourself.
-- **Noise / won't-fix** — say why, then drop it. The next review weighs that reason against the code, so make it one the code can bear out: a reason that shows the problem is not there keeps the finding from coming back; "not worth fixing" does not.
+- **Defer** — real, and it reproduces on the *Base* without the change. Confirm the reproduction in a throwaway worktree outside the repository, and remove it afterwards:
+  ```bash
+  git worktree add --detach <path outside the repository> <Base>
+  # reproduce the finding there
+  git worktree remove --force <path outside the repository>
+  ```
+  Propose the ticket's type and its title — imperative and specific, naming the defect and where it lives: `Reject an empty email in the signup handler`, not `Fix validation`.
+- **Needs a human look** — anything the user should inspect or test by hand before trusting it. Flag it; do not fix it.
+- **Noise / won't-fix** — not a real problem. The next review weighs your reason against the code, so give one the code bears out: "the handler already rejects it at `api/signup.py:31`" keeps the finding from coming back; "minor" or "not worth fixing" does not. A real finding closes only through a fix or a deferral.
 
-Every finding lands in exactly one bucket. A finding the change introduced is not deferred to keep the change small: its repair is part of the change.
+**GATE** — post the split, each deferral with its proposed title and type, and wait for the user's ruling. No code moves and no ticket is created until they rule. When the user rules a finding the change introduced out of *Fix now*, ask for their reason; it goes in the fix report.
 
-A **blocking** finding — a red, missing or weakened test, or an untested behavior — lands in *Fix now*, or in *Noise / won't-fix* with a reason that shows the problem is not there. Those are the two buckets that close it.
+**Once they rule, write the fix report** at the fix report path, filling `templates/fix-report.md` exactly. In this first write every *Fixed* entry is `not fixed — pending` and every *Deferred* entry is `not created — pending`. Flip each one as it lands: a ticket id as Step 2 creates it, a fix as Step 3 turns it green. A run that stops midway, for any reason, thus leaves the ruling on record, and the next run resumes from it.
 
-**GATE** — post the split, each deferral with the title and type its ticket will carry, and wait for the user's ruling. No code moves and no ticket is created until they rule.
-
-**Once they rule, write the fix report** at the fix report path `docs/issue-tracker.md` defines, filling the template at `templates/fix-report.md` — use it exactly — with the split — every *Fixed* entry marked *not fixed* and every *Deferred* entry marked *not created* from this first write, each flipped only once it lands. Keep it current through the steps below: each deferral's ticket id as it is created, each fix as it goes green. A run that stops midway, for any reason, still leaves the ruling on record, with whatever hasn't landed still marked pending. Running this skill again resumes from that record once the cause is cleared. **Done when** the user has ruled and the fix report holds every finding in its ruled bucket.
+**Done when** the user has ruled and the fix report holds every finding in its ruled bucket.
 
 ### Step 2 — Open a ticket for each deferral
 
-A deferral is a ticket: create it by the rules `docs/issue-tracker.md` gives under *Creating a ticket* — the same rules `piv-slice` follows — so it lands in the backlog typed and linked like every other ticket, and `piv-implement` can pick it up cold. Fill the template at `templates/deferral.md` — use it exactly — taking the claim, impact, evidence, location and fix from the finding in the review report. Its *Origin* and *Evidence* are the deferral's entry context. The review report stays local and the next review overwrites it, so a run picking the deferral up cold may never see it: the evidence and the location are what that run reads first.
+Create each deferral by the rules `docs/issue-tracker.md` gives under *Creating a ticket*, filling `templates/deferral.md` exactly. Take the claim, impact, evidence, location and fix from the finding in the review report, and copy evidence and location in full: the review report stays local and the next review overwrites it, so the ticket must stand on its own for whoever picks it up.
 
 - **Type** — the type ruled at the GATE.
-- **Epic and header block** — the reviewed ticket's epic as its parent, when it has one; with no epic the deferral stays top-level, linked only as below. Its `Intent-slug`, `Language`, `Intent` and `Architecture` are copied verbatim from the reviewed ticket.
-- **Link** — linked to the reviewed ticket, the way *Creating a ticket* says a deferral is. That link is what lets the next review find the deferral once this fix report is overwritten, and what the PR body points at.
+- **Header block** — `Intent-slug`, `Language`, `Intent` and `Architecture` copied verbatim from the reviewed ticket.
+- **Parent** — the reviewed ticket's epic, when it has one; leave the epic's body untouched. With no epic the deferral stays top-level.
+- **Link** — to the reviewed ticket, the way *Creating a ticket* says a deferral is linked. The next review and the PR find the deferral through that link.
 
-When the reviewed ticket has an epic, leave the epic's body untouched.
+Record each ticket id in the fix report as soon as the ticket is created. When a creation fails, mark that entry `not created — <the error>` and **STOP**, saying what failed; rerunning this skill once the cause is cleared resumes from there.
 
-Record each created ticket's id against its finding in the fix report. **Done when** every *Defer* finding has a created ticket whose id is in the fix report.
+**Done when** every *Defer* finding has a created ticket whose id is in the fix report.
 
 ### Step 3 — Fix the *Fix now* set, one at a time
 
-For each finding, blocking first, then in severity order:
+Blocking findings first, then by severity. For each:
 
 1. Explain what was wrong.
 2. Make the fix.
-3. Prove it. A blocking finding's proof is the test itself: the red test green through a change to the code — or to its assertions, when the ticket changed the behavior it pins — the missing test written and passing, the weakened test restored and passing, the untested behavior exercised by a new test that passes. A finding typed `bug` gets a test that fails without the fix and passes with it. Any other gets the check that shows its claim no longer holds: the lint or type-check rule it broke, or, for a coverage finding, the test it asked for.
-4. Run that proof. The finding goes **green** when it passes, and a red finding gets fixed before the next one starts. When three attempts, each on a different hypothesis about the cause, leave it red, mark it *not fixed* with what was tried, and move to the next.
+3. Pick its proof — the first that applies:
+   - **Blocking** — the test itself: the red test green through a change to the code (or to its assertions, when the ticket changed the behavior it pins); the missing test written and passing; the weakened test restored and passing; the untested behavior exercised by a new passing test.
+   - **Typed `bug`** — a test that fails without the fix and passes with it.
+   - **Any other** — the check that shows the claim no longer holds: the lint or type-check rule it broke or, for a coverage finding, the test it asked for.
+4. Run the proof. When it passes, the finding is **green**: mark it fixed in the fix report, with what changed and the proof. When it fails, work it again before starting the next finding. After three attempts, each on a different hypothesis about the cause, mark it `not fixed — <the hypotheses tried>` and move on.
 
-Fix what the finding names and stop there. A finding the change introduced is repaired in full, however large the repair. For any other finding, a repair that grows into a refactor is out of scope: list it in the fix report's *Needs a human look* as a candidate ticket. This run creates none beyond the ruled deferrals. **Done when** every *Fix now* finding is green and marked fixed in the fix report, or marked *not fixed* with its reason.
+Fix what the finding names and stop there. A finding the change introduced is repaired in full, however large the repair. For any other finding, a repair that grows into a refactor is out of scope: move the finding from *Fixed* to *Needs a human look* as a candidate ticket. Create no ticket beyond the ruled deferrals.
+
+**Done when** every *Fix now* finding is marked fixed, marked `not fixed` with the hypotheses tried, or moved to *Needs a human look*.
 
 ### Step 4 — Validate
 
-Run the project's own checks — the test, lint, type-check, and build commands the repo exposes. When a check goes red: fix the cause, re-run, and continue once it is green.
+Run the project's own checks — the test, lint, type-check and build commands the repo exposes. When one goes red, fix the cause and re-run until it is green.
 
-When three attempts, each on a different hypothesis about the cause, leave a failure red, or its cause sits outside what the findings ask you to change, stop working it: record the check, the failure, and what you tried in the fix report's *Checks run*. `piv-open-pr` reads this *Checks run* ahead of the implementation report's for its own Validation. **Done when** every check is green, or each one still red is recorded in *Checks run*.
+Stop working a red check when three attempts, each on a different hypothesis about the cause, leave it red, or when its cause sits outside what the findings ask you to change.
+
+Record every check in the fix report's *Checks run* with its result; for one left red, add the failure and what you tried.
+
+**Done when** every check is green, or each one still red is recorded in *Checks run*.
 
 ## Output — finish the fix report
 
-Finish the fix report started in Step 1 — every bucket settled, *Checks run* filled from Step 4 — and print the summary.
+Check that every entry in the fix report carries its final state, then print a summary: the fix report's path, the count in each bucket, each deferral's ticket id, every finding `not fixed`, every check still red.
 
 Everything the template leaves to you — each entry's description, its proof or reason, and *Checks run* — is written in the intent's language; only the template's labels and headings stay as written.
 
 ## Hand off
 
-Confirm the fix report's path and each deferral ticket's id, then offer the next move and let the user run it — this skill does not chain into the next one:
+Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- Run `piv-review` again over the branch, in a session of its own. It reads the deferral tickets this run opened. Hand it the ticket id.
-- Once the user has looked at the *Needs a human look* items, rerun this skill, here or in a fresh session: their verdict moves each item into *Fix now*, *Defer* or *Noise / won't-fix*, and the run resumes from there. A *Needs a human look* item still open blocks the hand-off to `piv-review`.
+- **A *Needs a human look* entry is open** → the hand-off to `piv-review` is blocked. Ask the user to inspect each entry, then rerun this skill, here or in a fresh session: their verdict moves each entry into *Fix now*, *Defer* or *Noise / won't-fix*, and the run resumes from there.
+- **None is open** → run `piv-review` again over the branch, in a session of its own, handing it the ticket id.

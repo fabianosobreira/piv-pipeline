@@ -1,22 +1,22 @@
 # Fix report — <ticket title>
 
-- **Intent-slug**: <intent-slug>
+- **Intent-slug**: <the reviewed ticket's `Intent-slug`>
 - **Ticket**: <id>
 - **Branch**: <branch>
 - **Review**: <path of the review report>
 - **Round**: <the review report's Round>
 
 ## Fixed
-- **<the finding's one-line claim>** — `path/to/file.py:42` → <what changed> · proof: <the test or check that proves it> | not fixed — <pending, or why the run stopped>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → <what changed> · proof: <the test or check that proves it> | not fixed — pending | not fixed — <the hypotheses tried>
 
 ## Deferred
-- **<the finding's one-line claim>** — `path/to/file.py:42` → ticket <id> | not created — <pending, or why the run stopped>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → ticket <id> | not created — pending | not created — <the error that stopped the run><, only for a finding the change introduced: · ruled out of Fix now: <the user's reason>>
 
 ## Needs a human look
-- **<the finding's one-line claim>** — `path/to/file.py:42` → <what to inspect or test by hand>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → <what to inspect or test by hand> | candidate ticket: <proposed title> — <why the repair outgrew this run>
 
 ## Noise / won't-fix
-- **<the finding's one-line claim>** — `path/to/file.py:42` → <why it drops>
+- **<the finding's one-line claim>** — `path/to/file.py:42` → <why it drops, in terms the code bears out><, only for a finding the change introduced: · ruled out of Fix now: <the user's reason>>
 
 ## Checks run
-<tests / type-check / lint / build — what was run and what it returned>
+- <check — test / type-check / lint / build>: <the command> → <green | red: the failure and what was tried>

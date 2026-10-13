@@ -7,79 +7,89 @@ disable-model-invocation: true
 
 # Open PR: Open the Pull Request, Hand Off for Review
 
-This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: the implementation is committed on a feature branch, and the review request hands it to a human reviewer.
+This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: the implementation is committed on a feature branch, and the PR hands it to a human reviewer.
 
-The motion is the same wherever the team works — a pull request on GitHub, a merge request on GitLab, marking a branch ready for review elsewhere. Use whatever tooling the repo already uses, and read "PR" below as that tool's review request.
+"PR" below means the review request of the tool the repo already uses — a pull request on GitHub, a merge request on GitLab, a branch marked ready for review elsewhere. Drive it through that tool's CLI or API.
 
-Copy this checklist into your task list. Tick an item only when its step's completion criterion holds.
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
 
 - [ ] 1. Resolve the base branch
 - [ ] 2. Check the branch is in a shippable state
-- [ ] 3. Gather the material for the body
+- [ ] 3. Gather the material and write the body
 - [ ] 4. Publish the branch
-- [ ] 5. Open the review request
+- [ ] 5. Open the PR
 
 ## Success criteria
 
 - ✅ The PR title follows the form `docs/git-conventions.md` defines.
-- ✅ The PR is a draft when the implementation report's status is `PARTIAL`, unless a fix round followed it and a PASS review followed that fix round, and ready for review otherwise.
-- ✅ The body carries the implementation report's documented deviations and *Problems encountered*, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which of the implementation and review reports was unavailable. A missing fix report goes unmentioned.
+- ✅ The PR is a draft or ready for review as Step 5's rule decides.
+- ✅ The body carries the implementation report's *Deviations from the ticket* and *Problems encountered*, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which of the implementation and review reports was unavailable. A missing fix report goes unmentioned.
 - ✅ The reports themselves stay local: the body is their distillation, and nothing is attached or embedded.
+- ✅ The body's header block carries the ticket's `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the ticket as read on the tracker.
 - ✅ The mark `docs/issue-tracker.md` assigns to this step is on the ticket.
-- ✅ The body's header block carries its `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the ticket as read on the tracker.
 
 ## Process
 
 ### Step 1 — Resolve the base branch
 
-`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, in the id form `docs/issue-tracker.md` defines. No base branch handed to you → resolve it the way `docs/git-conventions.md` defines. Call the result `<base>`. A ticket id handed to you overrides any the branch name or the commit subjects carry. **Done when** `<base>` is resolved, and any ticket id handed to you is told apart from it.
+`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, using the id form `docs/issue-tracker.md` defines. No base branch handed to you → resolve it the way `docs/git-conventions.md` defines. Call the result `<base>`, and fetch it: the commits "ahead of `<base>`" below are counted from its remote tip, as `docs/git-conventions.md` defines it. A fetch that fails → **STOP** and say so. A ticket id handed to you overrides any the branch name or the commit subjects carry.
+
+**Done when** `<base>` is resolved, and any ticket id handed to you is told apart from it.
 
 ### Step 2 — Check the branch is in a shippable state
 
-Check which branch is checked out, whether the working tree is clean, which commits sit ahead of `<base>`, and whether a review request is already open for this branch. Act on the first condition below that holds.
+Check which branch is checked out, whether the working tree is clean, which commits sit ahead of `<base>`, whether the PR tool's CLI is installed and authenticated, and whether a PR is already open for this branch. Act on the first condition below that holds.
 
 - **Checked out on `<base>`** → **STOP**: "The base branch doesn't become a PR — put the ticket on its own branch, or review your own diff when this project commits on the base branch by design."
-- **Uncommitted changes in the tree** → **STOP**: "Commit (or stash) before opening the PR." The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Paths* — don't count toward a dirty tree.
+- **Uncommitted changes — staged, unstaged or untracked** → **STOP**: "Commit (or stash) before opening the PR." The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Paths* — don't count.
 - **No commits ahead of `<base>`** → **STOP**: "Nothing to PR."
-- **A review request already open for this branch** → **STOP** and print its URL.
-- **Clean tree, commits ahead, nothing open yet** → proceed.
+- **The PR tool's CLI missing or not authenticated** → **STOP**: say which, and the command that installs or authenticates it.
+- **A PR already open for this branch** → **STOP** and print its URL.
+- **None of the above** → proceed.
 
 **Done when** the last condition holds.
 
-### Step 3 — Gather the material for the body
+### Step 3 — Gather the material and write the body
 
-The commit subjects since `<base>` and, when Step 1 wasn't handed one, the ticket id. The branch name carries it, in the form `docs/git-conventions.md` defines; with none there, the commit subjects do, where `docs/git-conventions.md` places it. Commit bodies are not a source. When the ids found disagree — the branch name against a subject, or one subject against another — ask the user which one this PR closes. **GATE.** No id in any of them → ask the user for it. **GATE.**
+**Ticket id.** When Step 1 handed you none, take it from the branch name, in the form `docs/git-conventions.md` defines; with none there, from the subjects of the commits ahead of `<base>`, where `docs/git-conventions.md` places it. Commit bodies are not a source. Ids that disagree — the branch name against a subject, or one subject against another → ask the user which one this PR closes. **GATE.** No id in any of them → ask the user for it. **GATE.**
 
-**Then find the reports** at the paths `docs/issue-tracker.md` defines, named from the ticket id.
+**Ticket.** Read it where `docs/issue-tracker.md` says tickets live. Missing, or the tracker unreachable → **STOP** and say which. Take its `Intent-slug`, `Intent`, `Architecture` and `Language`. The ticket is the source for these fields even when a report carries them: a report's header is only a copy, and the ticket holds the published value.
 
-**Then read the ticket itself**, where `docs/issue-tracker.md` says tickets live, and copy its `Intent-slug`, `Intent` and `Architecture` **verbatim** into the PR body's header block, so the PR resolves back to the plans it came from without a reviewer opening the ticket first. The ticket is the source for these three fields, ahead of any report: the implementation report's header is only a copy, and the ticket holds the published value. A ticket that can't be read — missing, or the system unreachable → **STOP** and say which it was. When the implementation report is there, take its status, its summary, its validation results, its **documented deviations**, and its *Problems encountered*.
+**Implementation report**, at the path `docs/issue-tracker.md` defines, named from the ticket id. Take its status, *Summary*, *Validation results*, *Deviations from the ticket* and *Problems encountered*.
 
-**Then look for the review report** at the review report path the same file defines, and take its verdict — *Validation* carries it, or "no review report available" when there is none — and every finding that survived it. On a PASS those are the medium and low findings — the reviewer's notes the review had nowhere else to send: a PASS with medium and low findings is normal, and the body is where the human reviewer meets them. When the commit went ahead on a verdict that was not PASS, the blocking, critical and high findings behind it survived too, and the human reviewer has to see what is still open. Carry each one, blocking first and then by severity, as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix. Those are the first reviewer's reasoning, and a reviewer who reads them inherits that framing instead of reading the code.
+**Review report**, at the review report path `docs/issue-tracker.md` defines. Take its verdict and every finding it left standing. On a PASS those are its medium and low findings — normal on a PASS, and the body is the only place the human reviewer meets them. When the commit went ahead on a verdict that was not PASS, its blocking, critical and high findings stand too, and the human reviewer has to see what is still open. Carry each finding as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix: a reviewer who reads the first reviewer's reasoning inherits that framing instead of reading the code.
 
-**Then look for the fix report** at the fix report path the same file defines, and take its *Needs a human look* items and its *Checks run*. Those checks fill *Validation* ahead of the implementation report's validation results. List every *Needs a human look* item the fix report still holds unresolved, as flagged, never as checked. Leave its deferrals out: they live on the tracker as tickets linked to the ticket, and the body points there rather than listing a subset. No fix report is the normal case when the first review passed: write "none" under *Flagged for a manual check*, and leave the fix report out of what the body calls unavailable.
+**Fix report**, at the fix report path `docs/issue-tracker.md` defines. Take its *Checks run* and every *Needs a human look* item it still holds unresolved; the body lists those as flagged, never as checked. Leave its deferrals out: they live on the tracker as tickets linked to the ticket, and *Linked* points there rather than listing a subset. No fix report is the normal case when the first review passed: the body doesn't call it unavailable.
 
-The body is the reports' distillation: carry what they say into its sections and leave the files themselves local.
+**Validation results.** Take them from the fix report's *Checks run*; with no fix report, from the implementation report's *Validation results*; with neither, run the project's checks now and use what they report.
 
-Write the PR body in the intent's language — the ticket's `Language`, read above, or with no such field the language its body is written in; template labels stay as written.
+**Write the body.** When the repo ships a PR template, fill it, and append the header block, *Notes for the reviewer*, *Open problems* and *Linked* from `templates/pr-body.md` for each one it has no matching section for. Otherwise fill `templates/pr-body.md` section by section, keeping its structure exactly; each placeholder says what goes there.
 
-When the repo ships a pull request template, fill it, then append the header block, *Notes for the reviewer*, *Open problems* and *Linked* from `templates/pr-body.md` wherever it has no matching section; otherwise fill each section of `templates/pr-body.md` from the material gathered here — use it exactly. **Done when** every section of the body is filled, or says which report was unavailable.
+Write the PR body in the intent's language — the ticket's `Language`, or with no such field the language its body is written in; template labels stay as written.
+
+**Done when** every section of the body is filled, or says which report was unavailable.
 
 ### Step 4 — Publish the branch
 
-Push it to the remote, tracking it. **Done when** the remote branch tracks the local one and holds every commit ahead of `<base>`.
+Push it to the remote, tracking it. A rejected push → **STOP** and report git's message; never force-push, because the remote branch may hold commits this branch lacks.
 
-### Step 5 — Open the review request
+**Done when** the remote branch tracks the local one and holds every commit ahead of `<base>`.
 
-Open it against `<base>`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the tag is the largest effect among them, as `docs/git-conventions.md` rules for a commit.
+### Step 5 — Open the PR
 
-- **Implementation report status `PARTIAL`** → open it as a draft, and say in the body that the draft is waiting on the problems it lists — unless a fix report is newer than the implementation report and the review report is PASS with a **Round** above that fix report's. Then the PARTIAL was worked through a fix round and a fresh review: open it ready for review, and mark each problem under *Open problems* as reported by the implementation before the PASS review, never as resolved. A PASS proves no blocking, critical or high finding survived, not that every problem was cleared — the review runs no build, for one.
-- **No implementation report found** → open it ready for review, fill *Validation* from the fix report's *Checks run*, or from a fresh run of the project's checks when there is no fix report either, and say in the body that no implementation report was available.
+Open it against `<base>`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the title takes the largest effect among them, as `docs/git-conventions.md` rules for a commit.
+
+Open it as a draft or ready for review by the first condition below that holds:
+
+- **Implementation report status `PARTIAL`, a fix report, and a PASS review report whose *Round* is above that fix report's** → ready for review. The PARTIAL went through a fix round and a fresh review, but a PASS proves only that no blocking, critical or high finding survived — the review runs no build, for one. Mark each problem under *Open problems* "reported by the implementation before the PASS review", never as resolved.
+- **Implementation report status `PARTIAL`** → draft. The body's closing line says it waits on the open problems it lists.
+- **Any other status, or no implementation report** → ready for review.
 
 **Then close the ticket's loop**: do what the **Ticket status** section of `docs/issue-tracker.md` assigns to this step, and nothing beyond it.
 
-**Done when** a review request is open for the branch and its URL is reported.
+**Done when** the PR is open against `<base>` in the state above and the ticket carries the mark.
 
-## Output — report the review request
+## Output — report the PR
 
 Report the PR number and URL, the base ← head branches, and **"Ready for review → a human approves and merges."** — or, for a draft, **"Draft → waiting on the open problems it lists."**
 

@@ -27,12 +27,10 @@
 ## Success metrics
 | Metric | Target | How it is measured |
 |---|---|---|
-| <specific and outcome-shaped, never "engagement"> | <target> | <how it is measured> |
-
-<one row per signal of the Hypothesis; name the signal in the metric cell, with no RIGHT or WRONG tag>
+| <one row per Hypothesis signal: the signal it watches, with no RIGHT or WRONG tag> | <target> | <how it is measured> |
 
 ## Non-goals
 <what you're explicitly not doing>
 
 ## Open questions
-<named, not hidden, as checkboxes, each with what would settle it>
+<named, not hidden, as checkboxes, each with what would settle it: every TBD in this doc, and each engineering decision left to piv-architect as `Architecture: <decision>`>

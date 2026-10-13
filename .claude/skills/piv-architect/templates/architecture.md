@@ -17,13 +17,13 @@
 <one sub-section per menu item this work actually raised, named after the menu item it came from — **Building blocks**, **Data model**, **Boundaries & contracts**, **Operational shape**, **Testability**, **Other eng-lead calls**. State each decision as prose under its own ID, `D<n>`, assigned when the decision is first raised; a decision table labels each row `D<n>·<row label>`. An ID is never renumbered or reused, so a revised doc can leave IDs out of order, and a dropped decision's number is retired. A call made without the user closes with the literal label **(decided-by-default)**, and one the user accepted on a recommendation you posted as "no basis" closes with **(no basis)** — a decision that has a basis, or that the user confirmed as a fact, never does. Close the section with one `Skipped: <menu item> — <why>` line per menu item skipped, each on its own line>
 
 ## Behavior changes vs today
-<brownfield only: for each rule this work replaces, the checks the code runs today (`path:line`) and what happens to each — kept, changed or dropped; or "none", with the one-line reason no rule is replaced>
+<for each rule this work replaces, the checks the code runs today (`path:line`) and what happens to each — kept, changed or dropped; or "none", with the one-line reason no rule is replaced — greenfield: "none — nothing runs today">
 
 ## Missing pieces
 <what has to exist that doesn't yet — the building blocks this approach depends on>
 
 ## Spikes & experiments
-<the calls that are both uncertain and expensive to undo, to de-risk first, each in the Question / Spike / Decision rule form the *Spikes* section of the skill's `SKILL.md` gives; or "none", with the one-line reason no call is both>
+<the calls that are both uncertain and expensive to undo, to de-risk first, each in the Question / Spike / Decision rule form the *Spikes* section of `SKILL.md` gives; or "none", with the one-line reason no call is both>
 
 ## Open questions
 <decisions deliberately left open — named, not hidden — and what would settle each; a surface that could not be read, as `unread: <surface> — what would settle it`>

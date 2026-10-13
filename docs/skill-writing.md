@@ -12,6 +12,7 @@ Rules for writing any document an agent consumes — a skill, a template, a trac
 - `name`: `piv-<verb>-<object>`, or `piv-<verb>` when the verb alone names the skill; lowercase letters, digits and hyphens, at most 64 characters.
 - `description`: third person, what the skill does and when to use it, key use case first, at most 1,024 characters. No XML tags or `<...>` placeholders.
 - A PIV step skill is **user-invoked**: set `disable-model-invocation: true` and write the `description` as a one-line human-facing summary. **The human starts every step.**
+- A user-invoked skill's `description` carries no "Use when…" clause: it is never in the model's listing, and neighbouring skills named in it go stale.
 - Make a skill model-invoked only when the agent or another skill must reach it on its own. Its `description` carries the trigger branches.
 - Shared reference only the agent loads is a skill with `user-invocable: false`.
 - Put reference shared by user-invoked skills in a plain file outside the skill system that each skill points at.
@@ -93,6 +94,7 @@ A **leading word** is a compact concept already in the model's pretraining that 
 
 - Keep each meaning in a single source of truth. A leading word repeats a token on purpose; duplication repeats a meaning.
 - A skill restating a `piv-loop.md` rule is not duplication — the rule travels with the run that applies it.
+- A skill that cannot reach `docs/piv-loop.md` at run time — `piv-setup` — defines GATE in one line; every other skill points at the doc.
 - A skill carries its own reasons. `rulings.md` never ships with the skills.
 - Leave lookups to the environment. Cache only what looking cannot find: the unwritten convention, the reason behind a choice, the gotcha.
 - Inject load-time state with `` !`command` `` instead of a step that runs it.

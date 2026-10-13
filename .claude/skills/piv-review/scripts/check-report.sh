@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
-# Checks a review report before it is handed on: the template's header fields and
-# headings are present, every `path:line` it cites exists in the working tree, and
-# the verdict agrees with the findings. It reads the report and the files it cites;
-# it changes nothing. The report's path is the first argument; the repository root
-# is the current directory, where the cited paths are relative to.
+# Checks a review report before it is handed on: the template's header fields are
+# filled, its headings are present and in order, no section is left empty, every
+# `path:line` it cites exists in the working tree, and the verdict agrees with the
+# findings. It reads the report and the files it cites; it changes nothing. The
+# report's path is the first argument; the repository root is the current
+# directory, where the cited paths are relative to.
 #
 # Usage: check-report.sh <report>
-# Needs: a POSIX shell, awk and wc.
+# Needs: a POSIX shell, awk, grep, sed, tr, wc, tail, sort and mktemp.
 # Exit: 0 = every check passed, 1 = at least one check failed (one line per problem on
 # stderr), 2 = usage or setup error.
 
@@ -25,17 +26,20 @@ if [ ! -f "$report" ]; then
 fi
 
 problems=$(mktemp)
-trap 'rm -f "$problems"' EXIT
+trap 'rm -f "$problems" "$problems.sections"' EXIT
 
 fail() {
   echo "check-report: $1" >&2
   echo x >> "$problems"
 }
 
-# Header fields: each must carry a value after the colon.
+# Header fields: each must carry a value after the colon, and not the template's
+# <placeholder>.
 for field in Intent-slug Ticket Branch Round Base Diff Verdict; do
   if ! grep -Eq "^- \*\*$field\*\*: [^[:space:]]" "$report"; then
     fail "header field '$field' is missing or empty"
+  elif grep -Eq "^- \*\*$field\*\*: <" "$report"; then
+    fail "header field '$field' still holds the template's <placeholder>; replace it with the value"
   fi
 done
 
@@ -66,6 +70,36 @@ else
   ' "$report")
   if [ "$in_order" != "yes" ]; then fail "headings are present but out of the template's order"; fi
 fi
+
+# Section content: every section but "## Findings" (which only holds the severity
+# headings) carries text. An empty severity section must read "No findings.", an
+# empty "Dropped by prior ruling" must read "None.", and a severity section that
+# reads "No findings." holds nothing else.
+awk '
+  { sub(/\r$/, "") }
+  /^##+ / { sec = $0; order[++n] = sec; next }
+  sec == "" || sec == "## Findings" { next }
+  $0 ~ /[^[:space:]]/ { filled[sec] = 1 }
+  $0 == "No findings." { nofind[sec] = 1; next }
+  $0 ~ /[^[:space:]]/ { other[sec] = 1 }
+  END {
+    for (i = 1; i <= n; i++) {
+      s = order[i]
+      if (s == "## Findings") continue
+      if (!(s in filled)) {
+        if (s ~ /^### /) print "\"" s "\" is empty; write \"No findings.\" when it holds none"
+        else if (s == "## Dropped by prior ruling") print "\"" s "\" is empty; write \"None.\" when nothing was dropped"
+        else print "\"" s "\" is empty"
+      } else if ((s in nofind) && (s in other)) {
+        print "\"" s "\" reads \"No findings.\" but also holds other lines; keep one or the other"
+      }
+    }
+  }
+' "$report" > "$problems.sections"
+while IFS= read -r line; do
+  fail "$line"
+done < "$problems.sections"
+rm -f "$problems.sections"
 
 # Verdict against findings: PASS holds only when Blocking, Critical and High are empty.
 # A severity section is empty when its only content is "No findings.".

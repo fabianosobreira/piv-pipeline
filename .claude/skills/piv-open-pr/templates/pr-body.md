@@ -9,8 +9,8 @@
 <the commit subjects ahead of the base branch, one per line>
 
 ## Validation
-- Tests / type-check / lint / build: <green/red from the fix report's *Checks run*, else the implementation report's *Validation results*, else a fresh run>
-- Review verdict: <PASS | CHANGES REQUESTED | "no review report available">
+- <one line per check — its name (tests, type-check, lint, build, …) and whether it passed — from the validation results Step 3 settled on>
+- Review verdict: <the review report's verdict, as it writes it, or "no review report available">
 - Implementation report: <COMPLETE | PARTIAL | "no implementation report available">
 
 ## Notes for the reviewer
@@ -22,7 +22,7 @@
 <the fix report's *Needs a human look* items — raised by the triage, not confirmed as checked — or "none">
 
 ### Surviving findings
-<every finding the review report left standing — on a PASS, its medium and low ones — one per line, blocking first, as **<blocking or severity>** — <one-line claim> — `<path>:<line>`, or "none">
+<every finding the review report left standing — on a PASS, its medium and low ones — one per line, blocking first and then by severity, as **<blocking or severity>** — <one-line claim> — `<path>:<line>`, or "none">
 
 ## Open problems
 <the implementation report's *Problems encountered* — what it left unfinished — or "none", or "unknown — no implementation report available"; a PARTIAL status names them here, and after a fix round and a PASS review that followed it each one is marked "reported by the implementation before the PASS review">

@@ -6,6 +6,8 @@ How this project names branches and writes commits. The skills read this file in
 
 The base branch is whichever branch the remote treats as its default. Ask the remote; only when the remote gives no answer, fall back to `main`.
 
+**The base** is that branch's tip on the remote — `origin/main`, say — after a fetch, never the local copy, which lags whatever merged since the last pull. The remote is `origin`, else the only remote there is; a fetch that fails stops the run, and a project with no remote has the local branch as its base. A diff of the branch against the commit it forked from is taken against `git merge-base HEAD <the base>`; when that fails — a shallow clone, or a base branch the clone never fetched — stop and say what to fetch.
+
 ## Branch names
 
 Work gets built on its own branch, named `<tag>/<ticket-id>-<short-slug>`:

@@ -7,21 +7,17 @@ disable-model-invocation: true
 
 # Write PRD: Intent, Not Instructions
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes.
-
-Write the PRD in the language the user runs this interview in; template labels stay as written.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. Write the PRD in the language the user runs this interview in; template labels stay as written.
 
 **Input**: $ARGUMENTS
 
-**On an existing product, the input is whatever document carries the context** — a research doc, a decision plan, the existing product's docs — and the interview is scoped to that context.
-
-**Reference docs / research (optional):** if any paths were passed — user interviews, support-ticket themes, analytics, a competitor teardown, existing product docs — **read them first** and use them as *evidence*.
+The input is a product idea, one or more paths, or blank. Every path passed is a **reference doc** — on an existing product, the doc that carries the context (a research doc, a decision plan, the product's docs); otherwise user interviews, support-ticket themes, analytics, a competitor teardown. Read each one before Phase 1 and use it as *evidence*: the interview asks only what the reference docs leave empty.
 
 ## Your role
 
 A product manager who thinks in **hypotheses, not solutions**.
 
-**Evidence-or-TBD rule:** every requirement traces to the user's answers, a reference doc, or a fact read from the environment (cite the path) — invent nothing. Unknown → write **"TBD — needs validation"**.
+**Evidence-or-TBD rule:** every requirement traces to the user's answers, a reference doc, or a fact read from the environment (cite the path) — invent nothing. Unknown → write **"TBD — needs validation"** and list it under *Open questions*.
 
 ## Guards
 
@@ -33,12 +29,18 @@ A product manager who thinks in **hypotheses, not solutions**.
 
 ## Success criteria
 
-- ✅ Every phase was GATED — the user answered before you moved on, or declined the interview and every unanswered item shipped as TBD.
-- ✅ Every question shipped open — each answer in the PRD traces to an allowed source.
-- ✅ The hypothesis carries a separate RIGHT and a WRONG condition.
+The interview:
+
+- ✅ Every phase was GATED — the user answered before you moved on, or declined the interview.
+- ✅ Every question shipped open — no recommended answer, option list or example list.
+
+The PRD:
+
+- ✅ Evidence-or-TBD held: every requirement traces to an allowed source; every unanswered item reads **"TBD — needs validation"** and has an *Open questions* entry.
+- ✅ *Problem statement* and *Thesis* restate the user's answers and add no reasoning of your own; the reason this beats today's cope is the user's reason, or TBD.
+- ✅ The hypothesis carries a separate RIGHT and WRONG condition, and the WRONG one is not the inverse of the RIGHT one.
 - ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `<timeframe>`.
-- ✅ Evidence-or-TBD held: every unanswered item ships as **"TBD — needs validation"**.
-- ✅ No engineering decision from the Guards list appears in the PRD — those went to `piv-architect`.
+- ✅ No engineering decision from Guard 2 appears in the PRD — each one is under *Open questions* as `Architecture: <decision>`.
 - ✅ Every problem statement admits more than one solution (the reframe test).
 - ✅ The doc's header block carries the `Intent-slug` and the `Language`.
 
@@ -46,13 +48,13 @@ A product manager who thinks in **hypotheses, not solutions**.
 
 ### Interaction mode: clustered gating
 
-**Ask in clusters, one phase at a time.** The questions here are **facts about the user's world** — who has the pain, what the evidence is, how they cope today.
+**Ask in clusters, one phase at a time.** The questions ask for what only the user knows — who has the pain, what they have observed, how they cope today.
 
 - **The user's words are the only answers to the questions.** Supply none yourself — every question ships open, with no recommended answer, no option list to pick from and no "for example" list (an example is an option list in disguise), and your own reasoning is never theirs.
-- **Look up facts, ask for decisions and lived experience.** If something is discoverable in the environment or in the reference docs you were given, go read it instead of spending a question on it.
+- **Look up facts, ask for decisions and lived experience.** If something is discoverable in the environment or in a reference doc, go read it instead of spending a question on it.
 - **Reflect thin answers back and dig.** "Users want it faster" is not an answer. A phase is done when every item has a concrete answer (a role, an observed behaviour, a number or date) or the user marks it TBD.
-- **One Q per item or slot.** A Q asks the parts of one item together and never carries a second item. Count by item, not by sentence.
-- **Ask what is still empty.** An earlier answer that covers an item fills it: show it filled, so the user corrects it at the GATE, and ask no Q for it.
+- **One Q per item or slot.** A Q asks the parts of one item together and never carries a second item, however many sentences it takes.
+- **Ask what is still empty.** An earlier answer or a reference doc that covers an item fills it: show it filled, so the user corrects it at the GATE, and ask no Q for it.
 - **Silence is not an answer.** A point left unanswered is re-asked at the next GATE; if still unanswered, it ships as TBD, never as agreement.
 
 **Format each cluster like so** — numbered, titled, each ending on the question itself. The numbers run on across the whole interview, never restarting at a new phase, so an answer that cites one names exactly one question:
@@ -63,10 +65,12 @@ A product manager who thinks in **hypotheses, not solutions**.
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.
 
-**If they decline the interview** ("just write it"): honor it, but name each item that will ship as TBD, and offer three questions instead of all of them: who has the pain and what it is (Phase 2 items 1-2), why they'd move from today's cope (Phase 2 item 3), and the WRONG condition (Phase 4). **GATE.** Everything still unanswered falls to the Evidence-or-TBD rule.
+**If they decline the interview** ("just write it"): honor it, name each item that will ship as TBD, and offer three Qs instead of the full interview — who has the pain and what it is (Phase 2 items 1-2 in one Q, the only Q allowed to carry two items), why they'd move from today's cope (Phase 2 item 3), and the WRONG condition (Phase 4). **GATE.** Then go to *Output*; everything still unanswered falls to the Evidence-or-TBD rule.
 
 ### Phase 1 — Initiate
-Input given → restate and confirm. Blank → *"What do you want to build? A few sentences."* Either way, the question about reference docs rides in this message when none were passed. **GATE.**
+Input given → restate it and ask the user to confirm. Blank → *"What do you want to build? A few sentences."* When no path was passed, the same cluster asks whether any reference docs exist. **GATE.**
+
+**Done when** the user confirmed the input and answered the reference-docs question, when it was asked.
 
 ### Phase 2 — Foundation (the thesis)
 1. **Who** has this problem (a specific role, not "users")?
@@ -74,15 +78,17 @@ Input given → restate and confirm. Blank → *"What do you want to build? A fe
 3. **Why** can't they solve it now — and **how do they cope today** (workaround / competitor / tolerating)?
 4. **Why now** — what changed?
 
-**Differentiation comes from item 3, not a separate Q:** the cope must show a reason to move to this. (Internal or single-team work: the "cope" is the current manual process or existing tool, not a competitor.) If it shows none, reflect that back and ask whether to continue.
+**Differentiation comes from item 3, not a separate Q:** the cope must show a reason to move to this. (Internal or single-team work: the "cope" is the current manual process or existing tool, not a competitor.) If it shows none, reflect that back and ask whether to continue; if the user stops, end the skill without writing a PRD.
 
-**If the answers to 1-4 come back thin, pressure-test with the four risks:** **Value** (do they want it — more than the current cope?) · **Usability** (can they use it?) · **Feasibility** (can we build it?) · **Viability** (does it work for the business?).
+**A thin answer to 1-4 gets its follow-up Q through the four risks** — still one open Q per item: **Value** (do they want it — more than the current cope?) · **Usability** (can they use it?) · **Feasibility** (can we build it?) · **Viability** (does it work for the business?).
 
-- **GATE.** The *why* and the *move to it* are the heart.
+**GATE.** Item 3 is the heart — the *why* and the *move to it*; the phase is not done while it is thin.
+
+**Done when** items 1-4 each hold a concrete answer or the user marked them TBD.
 
 ### Phase 3 — Deep dive (users)
 - **Primary user** — the role Phase 2 item 1 named; ask its context and trigger.
-- **JTBD** — "When <situation>, I want to <motivation>, so I can <outcome>".
+- **JTBD** — "When <situation>, I want to <motivation>, so I can <outcome>". Fill the slots from earlier answers and show the sentence; ask only for the empty slots.
 - **Non-users and constraints** — who it's explicitly not for, and what any solution must respect. "None" is an answer; record it as "none".
 
 The vision is not a question: the template's *Thesis* states it in one sentence from the Phase 2 answers.
@@ -91,38 +97,40 @@ The vision is not a question: the template's *Thesis* states it in one sentence 
 
 **GATE.**
 
+**Done when** the primary user, the JTBD slots and the non-users and constraints each hold an answer or the user marked them TBD.
+
 ### Phase 4 — Hypothesis (the falsifiable bet)
-Fill each slot of the paragraph below from the answers already given in Phases 2-3, in the user's words. Show the paragraph in the interview's language — frame, RIGHT and WRONG included. The **wrong condition is the most-skipped sentence — and the one that makes it falsifiable**: fill it only from a counter-signal the user stated, otherwise ask:
+The paragraph — show it in the interview's language, frame, RIGHT and WRONG included:
 
 We believe <change> will cause <these users> to <do Y>, resulting in <outcome>. We'll know we're RIGHT if <leading signal> within <timeframe>. We'll know we're WRONG if <counter-signal / a guardrail moves>.
 
-- **Success metrics** — turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement". A metric rides in the Q of its signal: the RIGHT signal's Q carries its timeframe, target and how measured, and the WRONG signal's Q carries its own target and how measured.
-- **GATE** — post the filled paragraph and the Qs for the empty slots in one cluster.
-- **Check before assembling.** The WRONG signal must differ from the inverse of the RIGHT one, and the timeframe must be a duration or a number of runs. When either fails, reflect it back and re-ask.
-- **GATE** — post the block and the metrics, assembled from the user's words alone, for confirmation. No hypothesis ships without a wrong condition.
+**Success metrics** turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement".
+
+1. **Fill** each slot from the Phase 2-3 answers, in the user's words. The WRONG slot is the most-skipped sentence and the one that makes the bet falsifiable: fill it only from a counter-signal the user stated.
+2. **Ask** — **GATE**: post the filled paragraph and one Q per empty slot in one cluster. A metric rides in the Q of its signal: the RIGHT signal's Q also asks its timeframe, target and how measured; the WRONG signal's Q asks its own target and how measured. No empty slot → step 3.
+3. **Check**: the WRONG signal must differ from the inverse of the RIGHT one, and the timeframe must be a duration or a number of runs. When either fails, reflect it back and re-ask (step 2).
+4. **Confirm** — **GATE**: post the paragraph and the metrics, assembled from the user's words alone. No hypothesis ships without a WRONG condition.
+
+**Done when** the user confirmed a paragraph whose WRONG condition and timeframe pass step 3, with a metric for each signal.
 
 ### Phase 5 — MVP & doors
-Ask as open questions: the thinnest end-to-end slice, whether it is costly to undo, and what it will not do.
-- **MVP = the thinnest line you can build to prove — end to end — that the hypothesis is right or wrong.** Not "build the product." **The MVP has to be able to prove it:** the hypothesis's RIGHT and WRONG signals must be observable within the MVP — its users, its sample — before the `<timeframe>` runs out, and so must whatever measures each signal, such as a later run of another skill on the PRD. When one isn't, put the mismatch to the user at this phase's GATE; they change the target or the MVP, never you.
-- **Door check** *(informs the spike-vs-build call `piv-architect` makes):* two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first.
-- **Non-goals** — what this explicitly will not do, the MVP's cut included. They are the boundary `piv-slice` never slices a ticket across.
-- **GATE** before generating.
+1. **Ask** — **GATE** — one open Q each:
+   - **MVP** — the thinnest line you can build to prove, end to end, that the hypothesis is right or wrong. Not "build the product."
+   - **Door** — whether it is costly to undo. Two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first. *(Informs the spike-vs-build call `piv-architect` makes.)*
+   - **Non-goals** — what this explicitly will not do, the MVP's cut included. `piv-slice` never slices a ticket across a non-goal, so each one must read as a clear boundary.
+2. **Check the MVP can prove it:** the RIGHT and WRONG signals — and whatever measures each, such as a later run of another skill on the PRD — must be observable within the MVP's users and sample before the `<timeframe>` runs out. When one isn't, **GATE**: put the mismatch to the user; they change the target or the MVP, never you. Check their answer again.
+
+**Done when** the MVP, the door and the non-goals are answered and the check in step 2 holds → *Output*.
 
 ## Output — a product PRD
 
-Write it where `docs/issue-tracker.md` says plans live, under the `intent-slug` it defines. Before writing, check the path. If a file exists there, **GATE**: ask whether to revise it or pick a different slug.
-
-Fill the `Intent-slug` field as `docs/issue-tracker.md` defines it, and the `Language` field with the BCP 47 tag of the language this interview ran in.
-
-Everything the template leaves to you is written in the language this interview ran in; only the template's labels and headings stay as written.
-
-*Problem statement* and *Thesis* restate the user's answers and add no reasoning of your own; the reason this beats today's cope is the user's reason, or TBD.
-
-Product sections only, scannable. **Two readers:** the user, who confirmed its content at the GATEs, comes back to it for context; `piv-architect` or `piv-slice` reads it next as structured input to slice from. Fill the template at `templates/prd.md` — use it exactly.
+1. **Path.** Read `docs/issue-tracker.md` for where plans live and how it defines the `intent-slug`. If a file already exists at the path, **GATE**: ask whether to revise it or pick a different slug.
+2. **Fill** the template at `templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` as `docs/issue-tracker.md` defines it, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-architect` or `piv-slice` reads it next as structured input.
+3. **Write** the file.
 
 ## Hand off
 
-Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypothesis**; show what's evidenced vs assumed and the open-questions count.
+Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypothesis**; show what's evidenced vs TBD and the open-questions count.
 
 Offer the next move and let the user run it — this skill does not chain into the next one:
 

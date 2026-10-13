@@ -4,7 +4,7 @@
 # <text> is matched as a fixed string on a single line, not as a pattern.
 #
 # Usage: locate.sh <file> <text>
-# Needs: a POSIX shell and grep.
+# Needs: a POSIX shell, grep, tr and awk.
 # Exit: 0 = at least one line matches, 1 = no line matches, 2 = usage or setup error.
 
 set -eu
