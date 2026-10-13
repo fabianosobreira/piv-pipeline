@@ -152,7 +152,7 @@ Each fact lives in one section. Every rule or call lives in *Key decisions* unde
 
 Quote in full every literal the implementation must reproduce — messages, constants.
 
-**Two readers:** the user, who settled its calls at the GATEs, comes back to it for context; `piv-slice` reads it next as structured input it slices tickets from.
+**Three readers:** the user, who settled its calls at the GATEs, comes back to it for context; `piv-slice` reads it next as structured input it slices tickets from; `piv-implement` later opens it through a ticket's `Architecture` field and reads the decisions that ticket cites.
 
 ## Hand off
 
