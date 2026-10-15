@@ -3,7 +3,7 @@ name: piv-commit
 description: Commits the finished work as atomic, conventionally-tagged commits.
 argument-hint: "[ticket id] (blank = taken from the branch name)"
 disable-model-invocation: true
-allowed-tools: Bash(sh *scripts/diff-hash.sh *)
+allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh *)
 ---
 
 # Commit: One Coherent Piece of Work per Commit

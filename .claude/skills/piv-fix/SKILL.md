@@ -11,7 +11,7 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
 
 ## Before Step 1
 
-1. **Find the review report.** `$ARGUMENTS` carries its path. With no path, look at the review report path `docs/issue-tracker.md` defines, named from the ticket id on the branch name, in the form `docs/git-conventions.md` gives it. No id on the branch name → ask the user for it. No report at that path → **STOP** and ask the user for the report to work from.
+1. **Find the review report.** `$ARGUMENTS` carries its path. With no path, look at the review report path `docs/issue-tracker.md` defines, named from the ticket id on the branch name, in the form `docs/git-conventions.md` gives it. No id on the branch name → ask the user for it. **GATE.** No report at that path → **STOP** and ask the user for the report to work from.
 2. **Read the review report end to end**, so you understand every finding before triaging. Take the ticket id from its header.
 3. **Read the reviewed ticket** where `docs/issue-tracker.md` says tickets live. It supplies the `Language`, the header block every deferral copies, and the epic (its `Part of`) when there is one. Missing, or the system unreachable → **STOP** and say which it was.
 4. **Set the language.** The fix report and every deferral are written in the intent's language: the reviewed ticket's `Language`, or, with no such field, the language its body is written in. Template labels and headings stay as written; everything you fill in — descriptions, proofs, reasons, *Checks run* — is in the intent's language.

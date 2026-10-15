@@ -4,9 +4,9 @@ description: Reviews the finished change for bugs, security defects and standard
 argument-hint: "[ticket id] (blank = taken from the branch name)"
 disable-model-invocation: true
 allowed-tools:
-  - Bash(sh *scripts/diff-hash.sh *)
-  - Bash(sh *scripts/check-report.sh *)
-  - Bash(sh *scripts/locate.sh *)
+  - Bash(sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh *)
+  - Bash(sh ${CLAUDE_SKILL_DIR}/scripts/check-report.sh *)
+  - Bash(sh ${CLAUDE_SKILL_DIR}/scripts/locate.sh *)
 ---
 
 # Review: Prove the Change Wrong

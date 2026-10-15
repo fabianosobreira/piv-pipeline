@@ -206,8 +206,9 @@ END {
   # Header block.
   nreq = split("Spec|Slice|Blocked by|Size|Intent-slug|Language", req, "|")
   for (i = 1; i <= nreq; i++) if (!(req[i] in hval)) fail("header is missing \"" req[i] "\"")
-  if ("Part of" in hval && hval["Part of"] !~ /^#[0-9]+$/)
-    errl(hline["Part of"] ": Part of must be a ticket id such as #12")
+  # Ids take the form of the tracker in use, so only the separators are checked.
+  if ("Part of" in hval && hval["Part of"] !~ /^[^ ,]+$/)
+    errl(hline["Part of"] ": Part of must be one id, with no space or comma")
   if ("Size" in hval && hval["Size"] !~ /^(S|M|L)$/)
     errl(hline["Size"] ": Size must be S, M or L")
   if ("Spec" in hval) {
@@ -225,8 +226,8 @@ END {
     errl(hline["Intent-slug"] ": Intent-slug is not the spec Intent-slug (" sp_slug ")")
   if ("Language" in hval && hval["Language"] != sp_lang)
     errl(hline["Language"] ": Language is not the spec Language (" sp_lang ")")
-  if ("Blocked by" in hval && hval["Blocked by"] != "none" && hval["Blocked by"] !~ /^#[0-9]+(, *#[0-9]+)*$/)
-    errl(hline["Blocked by"] ": Blocked by must be \"none\" or ticket ids such as #12")
+  if ("Blocked by" in hval && hval["Blocked by"] != "none" && hval["Blocked by"] !~ /^[^ ,]+(, *[^ ,]+)*$/)
+    errl(hline["Blocked by"] ": Blocked by must be \"none\" or ticket ids separated by commas")
 
   # The slice.
   if (!("Slice" in hval)) { finish() }

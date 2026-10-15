@@ -68,7 +68,7 @@ A deferral is a file in the reviewed ticket's folder whose `## Origin` section c
 
 ## Intent-slug
 
-Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. The PRD, the spec, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.spec.md` beside it.
+Every artifact of one intent carries the same `intent-slug` — the kebab-slug of the product title — or, with no PRD, of the spec's goal — in lowercase ASCII with accents stripped. The PRD, the spec, the epic, every ticket and every report carry it in their header block. Later steps **read it from the artifact instead of re-deriving it**, so a PRD written as `user-auth.prd.md` never acquires an `authentication.spec.md` beside it.
 
 ## Ticket id form
 

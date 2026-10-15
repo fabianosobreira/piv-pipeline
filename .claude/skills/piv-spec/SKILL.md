@@ -10,7 +10,7 @@ allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *)
 
 This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes `docs/.plans/[intent-slug].spec.md`: the one plan `piv-slice` cuts into tickets. A PRD from `piv-write-prd` is optional context; this skill is the only one that reads it.
 
-- Output skeleton: [TEMPLATE.md](TEMPLATE.md)
+- Output skeleton: [templates/spec.md](templates/spec.md)
 - Validator: `${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh` (execute it, do not read it). It needs only POSIX `sh` and `awk`.
 
 Done when the lint prints `RESULT: OK`, the user confirmed the full playback, and the file says `Status: ready`.
@@ -41,7 +41,7 @@ Commands produce observable facts (current coverage, last commits, tool versions
 
 ## Question format
 
-At most 3 questions per message. Number questions globally and continuously (`Q1`, `Q2`, ...). Give 1 to 3 options per question (1 option = confirmation question).
+At most 3 questions per message. Number questions globally and continuously (`Q1`, `Q2`, ...). Give 1 to 3 options per question (1 option = confirmation question). Every message of questions ends on a **GATE**.
 
 ```markdown
 🔍 **Q7 - Coverage threshold**: Which minimum line coverage must the change meet?
@@ -99,9 +99,9 @@ After closing a phase, write it to the output file and add one row per question 
 
 1. Read before asking: the PRD when `$ARGUMENTS` carries one (end to end), `README`, `CLAUDE.md`/`AGENTS.md`, manifests (`package.json`, `pyproject.toml`, `go.mod`), directory tree, existing tests, CI config, `docs/`, and any analysis document the user points to. Run the commands that give facts needed later (see Running commands).
 2. Present a short inventory: sources read, commands run, relevant sources missing.
-3. Ask, in one message: additional sources, and the intent slug when it is not settled. The slug is the PRD's `Intent-slug` when a PRD is given, and `$ARGUMENTS` when it carries one; otherwise propose a kebab-case slug in lowercase ASCII from the goal.
+3. Ask, in one message: additional sources, and the intent slug when it is not settled. The slug is the PRD's `Intent-slug` when a PRD is given, and `$ARGUMENTS` when it carries one; otherwise propose one as `docs/issue-tracker.md` defines the `intent-slug`. **GATE.**
 
-As soon as the slug is settled, create `docs/.plans/[intent-slug].spec.md` from [TEMPLATE.md](TEMPLATE.md): set `Intent-slug` and `Language`, and list every source read, the PRD included, under `Context sources`.
+As soon as the slug is settled, create `docs/.plans/[intent-slug].spec.md` from [templates/spec.md](templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read, the PRD included, under `Context sources`.
 
 With a PRD, use its sections as sources of questions, never of content: its MVP and success metrics suggest behaviors, its non-goals suggest section 2, its constraints suggest section 6, and its open questions, `Architecture: [decision]` ones included, suggest the questions of phases 3 and 4 and the open questions of section 10.
 

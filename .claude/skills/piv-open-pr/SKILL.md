@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Open PR: Open the Pull Request, Hand Off for Review
 
-This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: the implementation is committed on a feature branch, and the PR hands it to a human reviewer.
+This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: the implementation is committed on a feature branch, and the PR hands it to a human reviewer. Write the PR body in the intent's language — the ticket's `Language`, or with no such field the language its body is written in; template labels stay as written.
 
 "PR" below means the review request of the tool the repo already uses — a pull request on GitHub, a merge request on GitLab, a branch marked ready for review elsewhere. Drive it through that tool's CLI or API.
 
@@ -64,8 +64,6 @@ Check which branch is checked out, whether the working tree is clean, which comm
 **Validation results.** Take them from the fix report's *Checks run*; with no fix report, from the implementation report's *Validation results*; with neither, run the project's checks now and use what they report.
 
 **Write the body.** When the repo ships a PR template, fill it, and append the header block, *Notes for the reviewer*, *Open problems* and *Linked* from `templates/pr-body.md` for each one it has no matching section for. Otherwise fill `templates/pr-body.md` section by section, keeping its structure exactly; each placeholder says what goes there.
-
-Write the PR body in the intent's language — the ticket's `Language`, or with no such field the language its body is written in; template labels stay as written.
 
 **Done when** every section of the body is filled, or says which report was unavailable.
 

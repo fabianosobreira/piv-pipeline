@@ -10,7 +10,7 @@
     ],
     "expected_behavior": [
       "Reads the repo files and presents an inventory of sources read before asking the first question",
-      "Creates docs/.plans/[intent-slug].spec.md from TEMPLATE.md and shows the Interview Progress checklist",
+      "Creates docs/.plans/[intent-slug].spec.md from templates/spec.md and shows the Interview Progress checklist",
       "Sends at most 3 questions per message, numbered continuously (Q1, Q2, ...) in the 🔍 format with 1 to 3 options",
       "Every recommendation (💡) cites an observable fact with a path:line or command output, for example the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7",
       "Writes spec content in the language of the user's request and keeps headings, IDs and keywords in English",

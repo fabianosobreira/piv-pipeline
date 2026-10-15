@@ -44,4 +44,4 @@ A hand-off marks the next step's session with one of three phrases: "in a sessio
 
 ## The hand-off
 
-Every skill closes the same way: confirm where the artifact landed and name it by path or id, then offer the next moves as a short list for the user to pick from and run. Hand on whatever the next step takes as its input — the epic id when there is one, the ticket id, the report's path.
+Every skill closes the same way: confirm where the artifact landed and name it by path or id, then offer the next moves as a short list for the user to pick from and run. Hand on whatever the next step takes as its input — the ticket id, the report's path.

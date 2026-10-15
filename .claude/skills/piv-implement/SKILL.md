@@ -44,13 +44,13 @@ No task under `## 8. Task plan` — on a deferral, an empty or missing `Acceptan
 
 Assigned to someone else → **STOP**, naming the assignee.
 
+**Mark the ticket in flight**, the way `docs/issue-tracker.md` says. A STOP after this mark puts the ticket back to the status it had; a GATE leaves it, since the user is still there.
+
 When the ticket's type is `bug`, this run is a **repair**: the instructions marked **Repair:** apply on top of the normal ones, and the run is done only when every one of them holds.
 
 **Fetch the base branch** `docs/git-conventions.md` defines. From here on, *the base* is the tip that file defines — the remote tip after this fetch, such as `origin/main`.
 
 **Check the blockers.** Every ticket the ticket's **Blocked by** names must be merged into the base — its branch or PR merged into the base's remote tip. One isn't → **STOP**, saying which ticket has to land first. A deferral has no **Blocked by**.
-
-**Mark the ticket in flight**, the way `docs/issue-tracker.md` says. A STOP after this mark puts the ticket back to the status it had; a GATE leaves it, since the user is still there.
 
 **Done when** the ticket is read and governs the run, the base is fetched, every ticket in its **Blocked by** is merged into the base, and it is marked in flight.
 

@@ -8,4 +8,4 @@ Read `docs/skill-writing.md` before writing or editing a skill, a template or a 
 
 Read `docs/best-practices.md` before writing or editing a skill and use it as an argumentative basis and best practices guide to plan, review, or modify SKILLS."
 
-Threat the rules files as a pipe: `docs/rulings.md` -> `docs/best-practices.md` -> `docs/skill-writing.md`.
+Apply the rules in this order of precedence: `docs/rulings.md` -> `docs/best-practices.md` -> `docs/skill-writing.md`. When rules conflict, the later file takes precedence over the earlier one.

@@ -83,7 +83,7 @@ Then check the draft against *What the skills need from git-conventions.md*. A r
 
 Post one message, then **GATE**. It holds what the user rules on:
 
-- **Tracker** — the suggested one, or the question of which. For `jira`, ask for the project key that replaces `[KEY]`. That is the only setup placeholder: every other `<...>` in a tracker doc is a form the loop fills at run time, and stays.
+- **Tracker** — the suggested one, or the question of which. For `jira`, ask for the project key that replaces `[KEY]`. That is the only setup placeholder: every other `[...]` in a tracker doc is a form the loop fills at run time, and stays.
 - **`docs/issue-tracker.md`** — when one exists and differs from the chosen tracker's asset: which tracker it describes, and whether to **keep** it or **replace** it with the chosen one. When it equals that asset, report it as skipped.
 - **`docs/git-conventions.md`** — the draft, as a diff against the existing file when there is one; each conflict with its sources and how the draft resolved it; each required item the harness contradicts; each recurring GATE a recommended item will cause; and each conflict with `~/.claude/CLAUDE.md`. When the draft equals the existing file, say it stays untouched.
 - **Centralize** — only when agent instructions hold git rules: offer to move them into `docs/git-conventions.md`, leaving a pointer behind. Name each file that would be edited, deleted or created.

@@ -85,12 +85,12 @@ Say which tracker you are writing to and whether the breakdown gets an epic — 
 
 ### Step 6 — Draft and validate every ticket, then create them
 
-Before creating anything, confirm you can reach the tracker `docs/issue-tracker.md` names, with the tool it names or whatever fits when it names none. If nothing reaches it → **STOP** and say so: a run that fails midway leaves a partial backlog.
+Write the epic's free text in the spec's `Language`; template labels stay as written. Before creating anything, confirm you can reach the tracker `docs/issue-tracker.md` names, with the tool it names or whatever fits when it names none. If nothing reaches it → **STOP** and say so: a run that fails midway leaves a partial backlog.
 
 Plan → validate → execute:
 
 1. **Draft every ticket body** in a file outside the repository's tracked paths, using `templates/ticket.md` exactly: the header block, then the 11 sections of the spec. Fill each section by the rules below. Ids that do not exist yet are written `#0`, one for each blocker in `Blocked by` and for `Part of`.
-2. **Validate each draft** with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket file] [spec path]`. Fix the draft, never the spec, until it prints `RESULT: OK`. **No ticket is created while any draft has findings.**
+2. **Validate each draft** with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket file] [spec path]` — run it, do not read it; it needs a POSIX `sh`, `awk`, `tr`, `cmp` and `git`. Fix the draft, never the spec, until it prints `RESULT: OK`. **No ticket is created while any draft has findings.**
 3. **Create, in creation order.** With an epic, create it first, from `templates/epic.md`, used exactly, where `docs/issue-tracker.md` says. Then create each ticket by the *Creating a ticket* rules, blockers first. Before creating a ticket, replace each `#0` in its `Part of` and `Blocked by` with the real id, and validate the body again. Capture each ticket's id and URL as soon as it exists, in the id form `docs/issue-tracker.md` defines, and, with an epic, add its line to the epic's *Tickets* list. That id is what every later step is handed.
 4. **With an epic, then write the dependency graph and the execution order** in the epic's *Dependency graph and execution order* section, and the open questions no ticket carries in its *Not ticketed* section.
 

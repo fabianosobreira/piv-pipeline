@@ -438,7 +438,7 @@ sed -i 's/^- \*\*Slice\*\*: T-01/- **Slice**: T-09/' ticket.md
 reject "header: a slice that is not a task of the spec" "is not a task of the spec"
 
 new_case blocked-bad t01
-sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: 12/' ticket.md
+sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: #1 2/' ticket.md
 reject "header: a malformed Blocked by" "Blocked by must be"
 
 new_case blocked-none-with-dependency t02
@@ -446,7 +446,7 @@ sed -i 's/^- \*\*Blocked by\*\*: #12/- **Blocked by**: none/' ticket.md
 reject "header: Blocked by none for a task that depends on another ticket" "Blocked by cannot be none"
 
 new_case part-of-bad t01
-sed -i 's/^- \*\*Part of\*\*: #10/- **Part of**: epic/' ticket.md
+sed -i 's/^- \*\*Part of\*\*: #10/- **Part of**: #1 0/' ticket.md
 reject "header: a malformed Part of" "Part of must be"
 
 new_case title-line t01
