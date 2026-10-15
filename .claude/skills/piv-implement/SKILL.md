@@ -9,16 +9,6 @@ disable-model-invocation: true
 
 This is the **implement** step of the PIV loop `docs/piv-loop.md` describes. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written.
 
-Copy this checklist into your todo list. Tick an item only when its step's **Done when** holds.
-
-- [ ] 1. Resolve the ticket
-- [ ] 2. Work on a branch
-- [ ] 3. Read the ticket end to end
-- [ ] 4. Execute tasks in order
-- [ ] 5. Close the testing strategy
-- [ ] 6. Run the checks
-- [ ] 7. Final verification
-
 ## Success criteria
 
 - ✅ Every task on the list from Step 3 is implemented.
@@ -31,6 +21,18 @@ Copy this checklist into your todo list. Tick an item only when its step's **Don
 - ✅ **Repair:** the defect the ticket's `AC-xx` describe — on a deferral, its *Evidence* — no longer reproduces, and the tests around the touched code still pass.
 
 ## Process
+
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
+
+```
+- [ ] Step 1 — Resolve the ticket
+- [ ] Step 2 — Work on a branch
+- [ ] Step 3 — Read the ticket end to end
+- [ ] Step 4 — Execute tasks in order
+- [ ] Step 5 — Close the testing strategy
+- [ ] Step 6 — Run the checks
+- [ ] Step 7 — Final verification
+```
 
 ### Step 1 — Resolve the ticket
 

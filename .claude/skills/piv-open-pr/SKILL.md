@@ -11,14 +11,6 @@ This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: th
 
 "PR" below means the review request of the tool the repo already uses — a pull request on GitHub, a merge request on GitLab, a branch marked ready for review elsewhere. Drive it through that tool's CLI or API.
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-- [ ] 1. Resolve the base branch
-- [ ] 2. Check the branch is in a shippable state
-- [ ] 3. Gather the material and write the body
-- [ ] 4. Publish the branch
-- [ ] 5. Open the PR
-
 ## Success criteria
 
 - ✅ The PR title follows the form `docs/git-conventions.md` defines.
@@ -29,6 +21,16 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 - ✅ The mark `docs/issue-tracker.md` assigns to this step is on the ticket.
 
 ## Process
+
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
+
+```
+- [ ] Step 1 — Resolve the base branch
+- [ ] Step 2 — Check the branch is in a shippable state
+- [ ] Step 3 — Gather the material and write the body
+- [ ] Step 4 — Publish the branch
+- [ ] Step 5 — Open the PR
+```
 
 ### Step 1 — Resolve the base branch
 

@@ -46,6 +46,16 @@ The PRD:
 
 ## Process
 
+Copy this checklist into your task list. Tick an item only when its phase's **Done when** holds.
+
+```
+- [ ] Phase 1 — Initiate
+- [ ] Phase 2 — Foundation (the thesis)
+- [ ] Phase 3 — Deep dive (users)
+- [ ] Phase 4 — Hypothesis (the falsifiable bet)
+- [ ] Phase 5 — MVP & doors
+```
+
 ### Interaction mode: clustered gating
 
 **Ask in clusters, one phase at a time.** The questions ask for what only the user knows — who has the pain, what they have observed, how they cope today.
@@ -59,8 +69,14 @@ The PRD:
 
 **Format each cluster like so** — numbered, titled, each ending on the question itself. The numbers run on across the whole interview, never restarting at a new phase, so an answer that cites one names exactly one question:
 
+```markdown
+🔎 **Q3** — **How they cope today**: When this happens now, what do they do about it? Describe the last time you saw it: what they did, and what it cost them.
 ```
-🔎 **Q1** — **[question title]**: [question body, may be multiple paragraphs]
+
+A thin answer gets its follow-up as its own Q, still open:
+
+```markdown
+🔎 **Q7** — **Value over the spreadsheet**: You said they track it in a spreadsheet and it "mostly works". What does the spreadsheet fail at, often enough that they would switch?
 ```
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.

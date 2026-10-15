@@ -20,14 +20,6 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
    - **Same *Round*, with a *Fixed* entry `not fixed — pending`, a *Deferred* entry `not created`, or a *Needs a human look* entry open** → an earlier run stopped after the user ruled. The ruling stands: skip Step 1 and its GATE. Ask the user for a verdict on each open *Needs a human look* entry — for one moved to *Defer*, propose its title and type as Step 1 does — and record each verdict in the fix report as a pending entry of its new bucket. Then resume at Step 2: create only the deferrals not yet created, fix only the findings still pending, then Step 4. When the user rules on no open entry and nothing else is pending, **STOP**: the hand-off stays blocked until they do.
    - **Same *Round*, nothing pending and nothing open** → this review was fully triaged. **STOP** and point the user at the fix report and at running `piv-review` again; triaging again would duplicate every deferral ticket.
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-- [ ] 1. Triage
-- [ ] 2. Open a ticket for each deferral
-- [ ] 3. Fix the *Fix now* set, one at a time
-- [ ] 4. Validate
-- [ ] 5. Finish the fix report and hand off
-
 ## Success criteria
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
@@ -41,6 +33,16 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 - ✅ The run ended by handing the branch back to `piv-review` or, with a *Needs a human look* entry open, by asking the user to rule on it.
 
 ## Process
+
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
+
+```
+- [ ] Step 1 — Triage
+- [ ] Step 2 — Open a ticket for each deferral
+- [ ] Step 3 — Fix the *Fix now* set, one at a time
+- [ ] Step 4 — Validate
+- [ ] Step 5 — Finish the fix report and hand off
+```
 
 ### Step 1 — Triage
 

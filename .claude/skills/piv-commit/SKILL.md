@@ -24,6 +24,15 @@ The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Path
 
 ## Process
 
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
+
+```
+- [ ] Step 1 — Check where you are
+- [ ] Step 2 — Inspect
+- [ ] Step 3 — Group it
+- [ ] Step 4 — Commit each group
+```
+
 ### Step 1 — Check where you are
 
 1. **Branch.** `docs/git-conventions.md` defines which branch is the base branch. Work belongs on its own branch: on the base branch, ask the user whether to commit on it anyway. **GATE.** No → end the run; moving the work to its branch is the user's call.

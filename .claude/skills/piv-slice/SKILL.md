@@ -22,16 +22,6 @@ Read the spec end to end. Its header decides whether the run goes on:
 
 **The epic is this skill's output, never its input, and it exists only when the breakdown has more than one ticket.** Neither the spec nor a PRD is published to the tracker: each ticket carries what it needs.
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-- [ ] 1. Read the spec
-- [ ] 2. Orient on the existing surface
-- [ ] 3. Cut the slices
-- [ ] 4. Map the blockers
-- [ ] 5. GATE: confirm the breakdown
-- [ ] 6. Draft and validate every ticket, then create them
-- [ ] 7. Report
-
 ## Success criteria
 
 - ✅ **The spec was `Status: ready`**; with `draft`, nothing was created.
@@ -42,6 +32,18 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 - ✅ **With an epic, it lists the tickets, the dependency graph and the execution order, and what was not ticketed.**
 
 ## Process
+
+Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
+
+```
+- [ ] Step 1 — Read the spec
+- [ ] Step 2 — Orient on the existing surface
+- [ ] Step 3 — Cut the slices
+- [ ] Step 4 — Map the blockers
+- [ ] Step 5 — GATE: confirm the breakdown
+- [ ] Step 6 — Draft and validate every ticket, then create them
+- [ ] Step 7 — Report
+```
 
 ### Step 1 — Read the spec
 
