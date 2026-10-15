@@ -12,10 +12,10 @@
       "Reads the repo files and presents an inventory of sources read before asking the first question",
       "Creates docs/.plans/[intent-slug].spec.md from templates/spec.md and shows the Interview Progress checklist",
       "Sends at most 3 questions per message, numbered continuously (Q1, Q2, ...) in the 🔍 format with 1 to 3 options",
-      "Every recommendation (💡) cites an observable fact with a path:line or command output, for example the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7",
+      "Every recommendation (💡) carries an Empirical: basis with a source, such as the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7, a Pragmatic: basis naming the concrete problem it solves, or both",
       "Writes spec content in the language of the user's request and keeps headings, IDs and keywords in English",
       "Numbers section 4, 6 and 7 items as NFR-xx, C-xx and D-xx, and cites each of them in the head of at least one task",
-      "Runs scripts/lint_spec.sh before finishing and sets Status: ready only after RESULT: OK and explicit user confirmation"
+      "Runs scripts/lint_spec.sh before finishing and sets Status: ready once it prints RESULT: OK, with no playback and no extra confirmation gate"
     ]
   },
   {
@@ -43,8 +43,8 @@
     ],
     "expected_behavior": [
       "Declines to decide the non-functional requirements on its own and does not write invented numbers into the spec",
-      "Re-asks the non-functional questions as options and recommends one only when an observable fact supports it, such as the 80% coverage threshold in .github/workflows/ci.yml:13",
-      "Uses the text 'No recommendation: no observable fact in the context decides between the options' for any option set without supporting facts",
+      "Re-asks the non-functional questions as options and recommends one only when an empirical or pragmatic basis supports it, such as the 80% coverage threshold in .github/workflows/ci.yml:13",
+      "Uses the text 'No recommendation: no empirical or pragmatic basis decides between the options' for any option set without a basis",
       "Requires explicit confirmation of an option before writing it to section 4 as an NFR-xx item",
       "Accepts 'defer' for an item and records it in section 10 as [DEFERRED] with a Source"
     ]
@@ -73,7 +73,23 @@
       "Does not write 'fast' or 'robust' into the spec and asks for measurable values, for example p95 latency and request rate, plus the command that verifies them",
       "Registers the Redis counters item in section 10 under Open questions as [DEFERRED] with a Source: Q<n>",
       "Adds one decision log row for each question asked",
-      "Offers numeric options as proposals and recommends one only with a cited fact"
+      "Offers numeric options as proposals and recommends one only with an empirical or pragmatic basis"
+    ]
+  },
+  {
+    "skills": ["piv-spec"],
+    "query": "Spec for rate limiting on the public API. The API runs on several instances behind a load balancer, so limits must hold across all of them.",
+    "files": [
+      "evals/fixtures/sample-repo/package.json",
+      "evals/fixtures/sample-repo/src/server.js"
+    ],
+    "expected_behavior": [
+      "Proposes options beyond the repo's current code, such as a shared store or an external rate-limiting library absent from package.json, with the in-repo pattern listed first when one exists",
+      "Recommends an option with a Pragmatic: basis that names the concrete problem (the cross-instance limit, by FR-xx or Q<n>) and states how the option solves it",
+      "Settles a claim about an external library before recommending, by fetching its official docs or running a probe in a temporary directory outside the repo, and cites the URL or the probe's code and output",
+      "Asks before a check that needs an install, other network access, or a long run, and marks the claim (unverified — check: ...) only if the user declines",
+      "Does not recommend on popularity or authority alone, such as 'the industry standard' or 'everyone uses it'",
+      "Writes no store or library into section 6 or 7 before the user picks the option"
     ]
   },
   {
