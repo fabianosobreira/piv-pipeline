@@ -6,7 +6,7 @@
 # report's path is the first argument; the repository root is the current
 # directory, where the cited paths are relative to.
 #
-# Usage: check-report.sh <report>
+# Usage: check-report.sh [report]
 # Needs: a POSIX shell, awk, grep, sed, tr, wc, tail, sort and mktemp.
 # Exit: 0 = every check passed, 1 = at least one check failed (one line per problem on
 # stderr), 2 = usage or setup error.
@@ -14,7 +14,7 @@
 set -eu
 
 if [ "$#" -ne 1 ]; then
-  echo "check-report: missing <report>. Usage: check-report.sh <report>" >&2
+  echo "check-report: missing [report]. Usage: check-report.sh [report]" >&2
   exit 2
 fi
 
@@ -34,12 +34,12 @@ fail() {
 }
 
 # Header fields: each must carry a value after the colon, and not the template's
-# <placeholder>.
+# [placeholder].
 for field in Intent-slug Ticket Branch Round Base Diff Verdict; do
   if ! grep -Eq "^- \*\*$field\*\*: [^[:space:]]" "$report"; then
     fail "header field '$field' is missing or empty"
-  elif grep -Eq "^- \*\*$field\*\*: <" "$report"; then
-    fail "header field '$field' still holds the template's <placeholder>; replace it with the value"
+  elif grep -Eq "^- \*\*$field\*\*: [[]" "$report"; then
+    fail "header field '$field' still holds the template's [placeholder]; replace it with the value"
   fi
 done
 

@@ -1,38 +1,47 @@
-- **Intent-slug**: <intent-slug>
-- **Language**: <the epic's `Language`, copied verbatim; with no epic, the PRD's, or the architecture doc's when there is no PRD>
-- **Intent**: <the epic's `Intent`, copied verbatim, or "none"; with no epic, the URL of the PRD comment posted on this ticket, or "none">
-- **Architecture**: <the epic's `Architecture`, copied verbatim, or "none"; with no epic, the URL of the architecture comment posted on this ticket, or "none">
+- **Part of**: [the epic's id, such as #10; leave the line out when the breakdown has no epic]
+- **Spec**: [the spec path] @ [the output of `git hash-object --no-filters [the spec path]`]
+- **Slice**: [the id of the task this ticket carries, such as T-01; several ids separated by commas when the user grouped tasks]
+- **Blocked by**: [one ticket id, such as #12, for each task in another ticket that a task of this slice lists in `Depends on`, separated by commas, or "none"]
+- **Size**: [S, M or L]
+- **Intent-slug**: [the spec's `Intent-slug`, copied verbatim]
+- **Language**: [the spec's `Language`, copied verbatim]
 
-## Description
-<what and why>
+## 1. Goal and context
+[every line of section 1 of the spec, copied verbatim]
 
-## Root cause
-<type bug only: the root cause, with path:line evidence>
+## 2. Non-goals
+[every line of section 2 of the spec, copied verbatim]
 
-## Reproduction
-<type bug only: the input, the observed outcome and the expected one — concrete enough to become a failing test>
+## 3. Functional requirements
+[the line of each FR that a task of the slice cites, copied verbatim, or "None in this ticket."]
 
-## Scope
-<one provable concern: the surfaces it touches · rough size · the docs the change makes stale, or "none">
+## 4. Non-functional requirements
+[the line of each NFR that a task of the slice cites, copied verbatim, or "None in this ticket."]
 
-## Out of scope
-<surfaces in the same role this ticket leaves alone, each with the ticket that owns it or why none does — or "none">
+## 5. Acceptance criteria
+[the line of each AC whose head cites at least one FR of the slice, copied verbatim and whole, or "None in this ticket."]
 
-## Entry context
-- **Decisions**: <the architecture IDs, or the intent or architecture sections, this ticket implements — cited, never copied — plus any unsettled fact it depends on, and, with no epic and the breakdown GATE skipped, "**(decided-by-default)** — <the type and sizing calls made without the user>">
-- **Starting code**: <`path:line` inside this repository, and what that code does today>
-- **External references**: <references that live outside this repository, and every step another system or person owns, or "none">
-- **Neighbors**: <what adjacent tickets own in the same files, or "none">
+## 6. Technical constraints
+[the line of each C that a task of the slice cites, copied verbatim, or "None in this ticket."]
 
-## Depends on
-<the ids of the tickets this one waits on, or "none">
+## 7. Design
+[the line of each D that a task of the slice cites, copied verbatim, or "None in this ticket."]
 
-## Testing strategy
-<the test or check that proves each acceptance criterion, named per criterion — "project defaults" covers how the checks run, never which ones>
+## 8. Task plan
+[the line of each task of the slice, copied verbatim]
 
-## Acceptance criteria
-- [ ] <criterion a reviewer can verify>
-- [ ] <criterion a reviewer can verify>
+## 9. Verification
+[the table header and separator of section 9, then the row of each AC copied to section 5, copied verbatim, or "None in this ticket." alone]
 
-## Not ticketed
-<optional, only on a ticket with no epic: one line per item the plans left without a ticket — the plan section it comes from and why it got no ticket, without restating it>
+## 10. Boundaries and open questions
+### Always
+[every line of this level of the spec, copied verbatim, or "None in this ticket."]
+### Ask first
+[every line of this level of the spec, copied verbatim, or "None in this ticket."]
+### Never
+[every line of this level of the spec, copied verbatim, or "None in this ticket."]
+### Open questions
+[the line of each open question that cites an ID of the slice, copied verbatim and whole, or "None in this ticket."]
+
+## Appendix: Decision log
+[the table header and separator of the decision log, then the row of each Q cited anywhere in this ticket, copied verbatim]

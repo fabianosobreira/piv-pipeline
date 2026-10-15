@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Write PRD: Intent, Not Instructions
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. Write the PRD in the language the user runs this interview in; template labels stay as written.
+This is a standalone skill beside the PIV loop `docs/piv-loop.md` describes: its PRD is optional context that only `piv-spec` reads. Write the PRD in the language the user runs this interview in; template labels stay as written.
 
 **Input**: $ARGUMENTS
 
@@ -25,7 +25,7 @@ A product manager who thinks in **hypotheses, not solutions**.
    - *Solution-prescriptive:* "Add a reply button to every message."
    - *Intent-framed:* "Past ~100 msgs/day, conversations collide and active users disengage — give them a way to group related replies so they stay."
    - **Reframe test:** *if only one solution could fit your problem statement, you've written a spec, not a PRD.* A good problem leaves room for more than one answer.
-2. **A PRD decides no engineering** *(these are architecture decisions → `piv-architect`)*: any named library, framework or version (e.g. React, Vite) · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — record each one under *Open questions* as `Architecture: <decision>`.
+2. **A PRD decides no engineering** *(these are engineering decisions → `piv-spec`)*: any named library, framework or version (e.g. React, Vite) · data-model relationships · security boundaries ("never commit secrets") · testing architecture · error handling & retries · project structure. *Who may see or do what* is a product constraint and stays here; *how it is enforced* — authentication, authorization, scoping — is architecture. Skipped engineering decisions don't vanish — record each one under *Open questions* as `Architecture: [decision]`.
 
 ## Success criteria
 
@@ -39,8 +39,8 @@ The PRD:
 - ✅ Evidence-or-TBD held: every requirement traces to an allowed source; every unanswered item reads **"TBD — needs validation"** and has an *Open questions* entry.
 - ✅ *Problem statement* and *Thesis* restate the user's answers and add no reasoning of your own; the reason this beats today's cope is the user's reason, or TBD.
 - ✅ The hypothesis carries a separate RIGHT and WRONG condition, and the WRONG one is not the inverse of the RIGHT one.
-- ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `<timeframe>`.
-- ✅ No engineering decision from Guard 2 appears in the PRD — each one is under *Open questions* as `Architecture: <decision>`.
+- ✅ The MVP can observe the RIGHT and WRONG signals within its sample and the hypothesis's `[timeframe]`.
+- ✅ No engineering decision from Guard 2 appears in the PRD — each one is under *Open questions* as `Architecture: [decision]`.
 - ✅ Every problem statement admits more than one solution (the reframe test).
 - ✅ The doc's header block carries the `Intent-slug` and the `Language`.
 
@@ -60,7 +60,7 @@ The PRD:
 **Format each cluster like so** — numbered, titled, each ending on the question itself. The numbers run on across the whole interview, never restarting at a new phase, so an answer that cites one names exactly one question:
 
 ```
-🔎 **Q1** — **<question title>**: <question body, may be multiple paragraphs>
+🔎 **Q1** — **[question title]**: [question body, may be multiple paragraphs]
 ```
 
 **GATE** — post the cluster, then **stop. End the turn and wait** for the answers. Never roll into the next phase on your own.
@@ -88,7 +88,7 @@ Input given → restate it and ask the user to confirm. Blank → *"What do you 
 
 ### Phase 3 — Deep dive (users)
 - **Primary user** — the role Phase 2 item 1 named; ask its context and trigger.
-- **JTBD** — "When <situation>, I want to <motivation>, so I can <outcome>". Fill the slots from earlier answers and show the sentence; ask only for the empty slots.
+- **JTBD** — "When [situation], I want to [motivation], so I can [outcome]". Fill the slots from earlier answers and show the sentence; ask only for the empty slots.
 - **Non-users and constraints** — who it's explicitly not for, and what any solution must respect. "None" is an answer; record it as "none".
 
 The vision is not a question: the template's *Thesis* states it in one sentence from the Phase 2 answers.
@@ -102,7 +102,7 @@ The vision is not a question: the template's *Thesis* states it in one sentence 
 ### Phase 4 — Hypothesis (the falsifiable bet)
 The paragraph — show it in the interview's language, frame, RIGHT and WRONG included:
 
-We believe <change> will cause <these users> to <do Y>, resulting in <outcome>. We'll know we're RIGHT if <leading signal> within <timeframe>. We'll know we're WRONG if <counter-signal / a guardrail moves>.
+We believe [change] will cause [these users] to [do Y], resulting in [outcome]. We'll know we're RIGHT if [leading signal] within [timeframe]. We'll know we're WRONG if [counter-signal / a guardrail moves].
 
 **Success metrics** turn the RIGHT and WRONG signals into metrics the team can watch: metric · target · how measured. Outcome-shaped, never "engagement".
 
@@ -116,16 +116,16 @@ We believe <change> will cause <these users> to <do Y>, resulting in <outcome>. 
 ### Phase 5 — MVP & doors
 1. **Ask** — **GATE** — one open Q each:
    - **MVP** — the thinnest line you can build to prove, end to end, that the hypothesis is right or wrong. Not "build the product."
-   - **Door** — whether it is costly to undo. Two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first. *(Informs the spike-vs-build call `piv-architect` makes.)*
-   - **Non-goals** — what this explicitly will not do, the MVP's cut included. `piv-slice` never slices a ticket across a non-goal, so each one must read as a clear boundary.
-2. **Check the MVP can prove it:** the RIGHT and WRONG signals — and whatever measures each, such as a later run of another skill on the PRD — must be observable within the MVP's users and sample before the `<timeframe>` runs out. When one isn't, **GATE**: put the mismatch to the user; they change the target or the MVP, never you. Check their answer again.
+   - **Door** — whether it is costly to undo. Two-way door (reversible) → just build it; one-way door (expensive to undo) → spike first. *(Informs the spike-vs-build call `piv-spec` records.)*
+   - **Non-goals** — what this explicitly will not do, the MVP's cut included. `piv-spec` carries each non-goal into the spec, and no ticket crosses one, so each one must read as a clear boundary.
+2. **Check the MVP can prove it:** the RIGHT and WRONG signals — and whatever measures each, such as a later run of another skill on the PRD — must be observable within the MVP's users and sample before the `[timeframe]` runs out. When one isn't, **GATE**: put the mismatch to the user; they change the target or the MVP, never you. Check their answer again.
 
 **Done when** the MVP, the door and the non-goals are answered and the check in step 2 holds → *Output*.
 
 ## Output — a product PRD
 
 1. **Path.** Read `docs/issue-tracker.md` for where plans live and how it defines the `intent-slug`. If a file already exists at the path, **GATE**: ask whether to revise it or pick a different slug.
-2. **Fill** the template at `templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` as `docs/issue-tracker.md` defines it, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-architect` or `piv-slice` reads it next as structured input.
+2. **Fill** the template at `templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` as `docs/issue-tracker.md` defines it, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-spec` reads it next as structured input.
 3. **Write** the file.
 
 ## Hand off
@@ -134,5 +134,4 @@ Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypo
 
 Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Decide *how* to build it** — run `piv-architect <the PRD's path>` to make the engineering decisions this PRD deliberately left open — here or in a fresh session. Then `piv-slice` turns the two into a backlog.
-- **Go straight to tickets** — when the MVP door is two-way and no constraint or open question names a technical unknown, running `piv-slice <the PRD's path>`, here or in a fresh session, is fine; say that it's a shortcut, not the default.
+- **Write the spec** — run `piv-spec [intent-slug] [the PRD's path]` to turn this PRD, with the engineering decisions it deliberately left open, into a spec — here or in a fresh session. `piv-slice` takes it from there.

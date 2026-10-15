@@ -1,0 +1,40 @@
+[
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12. The ticket body is in evals/fixtures/ticket-sliced.md; treat it as the ticket read from the tracker. The branch adds src/middleware/rate-limit.js, which counts requests but lets request 101 through with status 200.",
+    "files": [
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Reads the criteria from the AC-xx lines of the ticket's section 5 and the commands from section 9",
+      "Registers a finding of class logic, severity high, because AC-01 (request 101 must get status 429) is not met",
+      "Cites a file and a line of the middleware as evidence, taken with locate.sh",
+      "Sets the verdict to CHANGES REQUESTED",
+      "Reads no plan outside the ticket and asks for none"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12. The branch adds src/middleware/rate-limit.js, which answers 429 from request 101 on and sets Retry-After greater than 0, with tests/rate-limit.test.js passing.",
+    "files": [
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Checks AC-01 and AC-02 against the code and finds both met",
+      "Raises no logic finding for an acceptance criterion",
+      "Sets the verdict to PASS unless an independent blocking, critical or high finding survives"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12. The branch adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 9 command runs, does not exist.",
+    "files": [
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Registers a blocking finding of kind missing for the test file the section 9 command names",
+      "Sets the verdict to CHANGES REQUESTED",
+      "Does not treat the implementation report's account as proof that the criteria are met"
+    ]
+  }
+]

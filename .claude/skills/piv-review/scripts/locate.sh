@@ -1,16 +1,16 @@
 #!/usr/bin/env sh
-# Prints the line number of every line in <file> that contains <text>, as `path:line: content`,
+# Prints the line number of every line in [file] that contains [text], as `path:line: content`,
 # so a finding cites the number the file really has instead of one counted by hand.
-# <text> is matched as a fixed string on a single line, not as a pattern.
+# [text] is matched as a fixed string on a single line, not as a pattern.
 #
-# Usage: locate.sh <file> <text>
+# Usage: locate.sh [file] [text]
 # Needs: a POSIX shell, grep, tr and awk.
 # Exit: 0 = at least one line matches, 1 = no line matches, 2 = usage or setup error.
 
 set -eu
 
 if [ "$#" -ne 2 ]; then
-  echo "locate: expected <file> <text>. Usage: locate.sh <file> <text>" >&2
+  echo "locate: expected [file] [text]. Usage: locate.sh [file] [text]" >&2
   exit 2
 fi
 
@@ -23,7 +23,7 @@ if [ ! -f "$file" ]; then
 fi
 
 if [ -z "$text" ]; then
-  echo "locate: <text> is empty. Pass a piece of the line you want to cite." >&2
+  echo "locate: [text] is empty. Pass a piece of the line you want to cite." >&2
   exit 2
 fi
 

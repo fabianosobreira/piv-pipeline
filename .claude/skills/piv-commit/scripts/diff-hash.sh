@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
-# Prints one hash for the change under review: the full diff from <base> to the
-# working tree, untracked files included, every <exclude-glob> left out.
+# Prints one hash for the change under review: the full diff from [base] to the
+# working tree, untracked files included, every [exclude-glob] left out.
 # piv-review records it as the review report's Diff; piv-commit
 # recomputes it to tell whether the tree still matches. Both copies of this
 # script must stay identical, or the two hashes never match.
 #
-# Usage: diff-hash.sh <base> [<exclude-glob>...]
+# Usage: diff-hash.sh [base] [[exclude-glob]...]
 # Needs: git and a POSIX shell. Changes nothing in the repository.
 
 set -eu
@@ -14,7 +14,7 @@ set -eu
 # exit comes from git itself and carries git's own message.
 
 if [ "$#" -lt 1 ]; then
-  echo "diff-hash: missing <base>. Usage: diff-hash.sh <base> [<exclude-glob>...]" >&2
+  echo "diff-hash: missing [base]. Usage: diff-hash.sh [base] [[exclude-glob]...]" >&2
   exit 2
 fi
 

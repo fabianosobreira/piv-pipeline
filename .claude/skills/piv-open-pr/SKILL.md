@@ -25,24 +25,24 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 - ✅ The PR is a draft or ready for review as Step 5's rule decides.
 - ✅ The body carries the implementation report's *Deviations from the ticket* and *Problems encountered*, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which of the implementation and review reports was unavailable. A missing fix report goes unmentioned.
 - ✅ The reports themselves stay local: the body is their distillation, and nothing is attached or embedded.
-- ✅ The body's header block carries the ticket's `Intent-slug`, `Intent` and `Architecture`, copied verbatim from the ticket as read on the tracker.
+- ✅ The body's header block carries the ticket's `Intent-slug`, copied verbatim from the ticket as read on the tracker.
 - ✅ The mark `docs/issue-tracker.md` assigns to this step is on the ticket.
 
 ## Process
 
 ### Step 1 — Resolve the base branch
 
-`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, using the id form `docs/issue-tracker.md` defines. No base branch handed to you → resolve it the way `docs/git-conventions.md` defines. Call the result `<base>`, and fetch it: the commits "ahead of `<base>`" below are counted from its remote tip, as `docs/git-conventions.md` defines it. A fetch that fails → **STOP** and say so. A ticket id handed to you overrides any the branch name or the commit subjects carry.
+`$ARGUMENTS` may carry a base branch, a ticket id, or both — tell them apart by shape, using the id form `docs/issue-tracker.md` defines. No base branch handed to you → resolve it the way `docs/git-conventions.md` defines. Call the result `[base]`, and fetch it: the commits "ahead of `[base]`" below are counted from its remote tip, as `docs/git-conventions.md` defines it. A fetch that fails → **STOP** and say so. A ticket id handed to you overrides any the branch name or the commit subjects carry.
 
-**Done when** `<base>` is resolved, and any ticket id handed to you is told apart from it.
+**Done when** `[base]` is resolved, and any ticket id handed to you is told apart from it.
 
 ### Step 2 — Check the branch is in a shippable state
 
-Check which branch is checked out, whether the working tree is clean, which commits sit ahead of `<base>`, whether the PR tool's CLI is installed and authenticated, and whether a PR is already open for this branch. Act on the first condition below that holds.
+Check which branch is checked out, whether the working tree is clean, which commits sit ahead of `[base]`, whether the PR tool's CLI is installed and authenticated, and whether a PR is already open for this branch. Act on the first condition below that holds.
 
-- **Checked out on `<base>`** → **STOP**: "The base branch doesn't become a PR — put the ticket on its own branch, or review your own diff when this project commits on the base branch by design."
+- **Checked out on `[base]`** → **STOP**: "The base branch doesn't become a PR — put the ticket on its own branch, or review your own diff when this project commits on the base branch by design."
 - **Uncommitted changes — staged, unstaged or untracked** → **STOP**: "Commit (or stash) before opening the PR." The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Paths* — don't count.
-- **No commits ahead of `<base>`** → **STOP**: "Nothing to PR."
+- **No commits ahead of `[base]`** → **STOP**: "Nothing to PR."
 - **The PR tool's CLI missing or not authenticated** → **STOP**: say which, and the command that installs or authenticates it.
 - **A PR already open for this branch** → **STOP** and print its URL.
 - **None of the above** → proceed.
@@ -51,9 +51,9 @@ Check which branch is checked out, whether the working tree is clean, which comm
 
 ### Step 3 — Gather the material and write the body
 
-**Ticket id.** When Step 1 handed you none, take it from the branch name, in the form `docs/git-conventions.md` defines; with none there, from the subjects of the commits ahead of `<base>`, where `docs/git-conventions.md` places it. Commit bodies are not a source. Ids that disagree — the branch name against a subject, or one subject against another → ask the user which one this PR closes. **GATE.** No id in any of them → ask the user for it. **GATE.**
+**Ticket id.** When Step 1 handed you none, take it from the branch name, in the form `docs/git-conventions.md` defines; with none there, from the subjects of the commits ahead of `[base]`, where `docs/git-conventions.md` places it. Commit bodies are not a source. Ids that disagree — the branch name against a subject, or one subject against another → ask the user which one this PR closes. **GATE.** No id in any of them → ask the user for it. **GATE.**
 
-**Ticket.** Read it where `docs/issue-tracker.md` says tickets live. Missing, or the tracker unreachable → **STOP** and say which. Take its `Intent-slug`, `Intent`, `Architecture` and `Language`. The ticket is the source for these fields even when a report carries them: a report's header is only a copy, and the ticket holds the published value.
+**Ticket.** Read it where `docs/issue-tracker.md` says tickets live. Missing, or the tracker unreachable → **STOP** and say which. Take its `Intent-slug` and `Language`. The ticket is the source for these fields even when a report carries them: a report's header is only a copy.
 
 **Implementation report**, at the path `docs/issue-tracker.md` defines, named from the ticket id. Take its status, *Summary*, *Validation results*, *Deviations from the ticket* and *Problems encountered*.
 
@@ -73,11 +73,11 @@ Write the PR body in the intent's language — the ticket's `Language`, or with 
 
 Push it to the remote, tracking it. A rejected push → **STOP** and report git's message; never force-push, because the remote branch may hold commits this branch lacks.
 
-**Done when** the remote branch tracks the local one and holds every commit ahead of `<base>`.
+**Done when** the remote branch tracks the local one and holds every commit ahead of `[base]`.
 
 ### Step 5 — Open the PR
 
-Open it against `<base>`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the title takes the largest effect among them, as `docs/git-conventions.md` rules for a commit.
+Open it against `[base]`, titled in the form `docs/git-conventions.md` gives PR titles. When the commits carry different tags, the title takes the largest effect among them, as `docs/git-conventions.md` rules for a commit.
 
 Open it as a draft or ready for review by the first condition below that holds:
 
@@ -87,7 +87,7 @@ Open it as a draft or ready for review by the first condition below that holds:
 
 **Then close the ticket's loop**: do what the **Ticket status** section of `docs/issue-tracker.md` assigns to this step, and nothing beyond it.
 
-**Done when** the PR is open against `<base>` in the state above and the ticket carries the mark.
+**Done when** the PR is open against `[base]` in the state above and the ticket carries the mark.
 
 ## Output — report the PR
 

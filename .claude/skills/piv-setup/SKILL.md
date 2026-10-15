@@ -83,7 +83,7 @@ Then check the draft against *What the skills need from git-conventions.md*. A r
 
 Post one message, then **GATE**. It holds what the user rules on:
 
-- **Tracker** — the suggested one, or the question of which. For `jira`, ask for the project key that replaces `<KEY>`. That is the only setup placeholder: every other `<...>` in a tracker doc is a form the loop fills at run time, and stays.
+- **Tracker** — the suggested one, or the question of which. For `jira`, ask for the project key that replaces `[KEY]`. That is the only setup placeholder: every other `<...>` in a tracker doc is a form the loop fills at run time, and stays.
 - **`docs/issue-tracker.md`** — when one exists and differs from the chosen tracker's asset: which tracker it describes, and whether to **keep** it or **replace** it with the chosen one. When it equals that asset, report it as skipped.
 - **`docs/git-conventions.md`** — the draft, as a diff against the existing file when there is one; each conflict with its sources and how the draft resolved it; each required item the harness contradicts; each recurring GATE a recommended item will cause; and each conflict with `~/.claude/CLAUDE.md`. When the draft equals the existing file, say it stays untouched.
 - **Centralize** — only when agent instructions hold git rules: offer to move them into `docs/git-conventions.md`, leaving a pointer behind. Name each file that would be edited, deleted or created.
@@ -103,7 +103,7 @@ When the user picks another tracker than the one asked about and it has setup pl
 Act on the rulings, and touch nothing else:
 
 - Copy `${CLAUDE_SKILL_DIR}/assets/piv-loop.md` to `docs/piv-loop.md` unless it is identical.
-- Copy `${CLAUDE_SKILL_DIR}/assets/issue-tracker-<tracker>.md` to `docs/issue-tracker.md`, unless the user kept the existing one or it equals the asset, and fill its setup placeholders.
+- Copy `${CLAUDE_SKILL_DIR}/assets/issue-tracker-[tracker].md` to `docs/issue-tracker.md`, unless the user kept the existing one or it equals the asset, and fill its setup placeholders.
 - Copy `${CLAUDE_SKILL_DIR}/assets/.gitignore` to `docs/.gitignore` when there is none; otherwise append only the missing lines, leaving the rest of the file as it is.
 - Write `docs/git-conventions.md` from the draft as ruled, unless it stays untouched.
 - **Centralizing** — in each agent instructions file that held git rules, replace the rules with this line: "Git conventions — base branch, branch names, commit subjects, PR titles and tags — live in `docs/git-conventions.md`; read it before creating a branch, committing or opening a PR." An agent instructions file other than `CLAUDE.md` and `AGENTS.md` left with nothing else is deleted, and the line goes into the repo-root `CLAUDE.md` instead — created when absent — or into `AGENTS.md` when that is the file the repo's `CLAUDE.md` defers to. Tooling stays as it is.

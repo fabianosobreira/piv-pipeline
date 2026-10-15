@@ -1,0 +1,93 @@
+[
+  {
+    "skills": ["piv-spec"],
+    "query": "Write a spec for adding rate limiting to the public API of this repo. An AI agent will implement it.",
+    "files": [
+      "evals/fixtures/sample-repo/package.json",
+      "evals/fixtures/sample-repo/.github/workflows/ci.yml",
+      "evals/fixtures/sample-repo/src/server.js",
+      "evals/fixtures/sample-repo/src/middleware/auth.js"
+    ],
+    "expected_behavior": [
+      "Reads the repo files and presents an inventory of sources read before asking the first question",
+      "Creates docs/.plans/[intent-slug].spec.md from TEMPLATE.md and shows the Interview Progress checklist",
+      "Sends at most 3 questions per message, numbered continuously (Q1, Q2, ...) in the 🔍 format with 1 to 3 options",
+      "Every recommendation (💡) cites an observable fact with a path:line or command output, for example the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7",
+      "Writes spec content in the language of the user's request and keeps headings, IDs and keywords in English",
+      "Numbers section 4, 6 and 7 items as NFR-xx, C-xx and D-xx, and cites each of them in the head of at least one task",
+      "Runs scripts/lint_spec.sh before finishing and sets Status: ready only after RESULT: OK and explicit user confirmation"
+    ]
+  },
+  {
+    "skills": ["piv-spec"],
+    "query": "/piv-spec rate-limiting evals/fixtures/prd/rate-limiting.prd.md",
+    "files": [
+      "evals/fixtures/prd/rate-limiting.prd.md",
+      "evals/fixtures/sample-repo/package.json",
+      "evals/fixtures/sample-repo/.github/workflows/ci.yml"
+    ],
+    "expected_behavior": [
+      "Reads the PRD end to end in Phase 0 and lists it in the inventory of sources",
+      "Creates docs/.plans/rate-limiting.spec.md with Intent-slug: rate-limiting and Language: en-US in the header, both taken from the PRD",
+      "Lists the PRD under Context sources in the spec header",
+      "Does not copy any PRD statement into the spec before the user confirms it in a question; the PRD's open questions become questions of phases 3 and 4 or [DEFERRED] items in section 10",
+      "Asks the budget per minute as a question, since the PRD marks it TBD, and writes no invented number"
+    ]
+  },
+  {
+    "skills": ["piv-spec"],
+    "query": "Spec for rate limiting on /v1/items. For the non-functional requirements just decide yourself, I don't care about the numbers.",
+    "files": [
+      "evals/fixtures/sample-repo/package.json",
+      "evals/fixtures/sample-repo/.github/workflows/ci.yml"
+    ],
+    "expected_behavior": [
+      "Declines to decide the non-functional requirements on its own and does not write invented numbers into the spec",
+      "Re-asks the non-functional questions as options and recommends one only when an observable fact supports it, such as the 80% coverage threshold in .github/workflows/ci.yml:13",
+      "Uses the text 'No recommendation: no observable fact in the context decides between the options' for any option set without supporting facts",
+      "Requires explicit confirmation of an option before writing it to section 4 as an NFR-xx item",
+      "Accepts 'defer' for an item and records it in section 10 as [DEFERRED] with a Source"
+    ]
+  },
+  {
+    "skills": ["piv-spec"],
+    "query": "Write a spec for rate limiting. Constraint: we test with Jest and want all new tests in Jest.",
+    "files": [
+      "evals/fixtures/sample-repo/package.json",
+      "evals/fixtures/sample-repo/.github/workflows/ci.yml"
+    ],
+    "expected_behavior": [
+      "Detects the conflict: package.json and .github/workflows/ci.yml use vitest and contain no Jest dependency",
+      "Shows the observed fact with its source (path:line) and asks the user again instead of choosing silently",
+      "Offers options such as keeping vitest, migrating to Jest, or confirming that Jest is intended, without writing either test runner into section 6 before the user answers",
+      "Does not put a verification command in section 9 until the user resolves the conflict"
+    ]
+  },
+  {
+    "skills": ["piv-spec"],
+    "query": "Continue the rate limiting spec. The limiter should be fast and robust under load. Redis counters? Defer that.",
+    "files": [
+      "evals/fixtures/sample-repo/package.json"
+    ],
+    "expected_behavior": [
+      "Does not write 'fast' or 'robust' into the spec and asks for measurable values, for example p95 latency and request rate, plus the command that verifies them",
+      "Registers the Redis counters item in section 10 under Open questions as [DEFERRED] with a Source: Q<n>",
+      "Adds one decision log row for each question asked",
+      "Offers numeric options as proposals and recommends one only with a cited fact"
+    ]
+  },
+  {
+    "skills": ["piv-spec"],
+    "query": "Finalize this spec draft and mark it ready for execution.",
+    "files": [
+      "evals/fixtures/specs/invalid.md"
+    ],
+    "expected_behavior": [
+      "Runs scripts/lint_spec.sh on the file and reports the findings",
+      "Does not set Status: ready while the lint reports findings, and lists the blockers",
+      "Goes back to the phase of each affected section and asks the question that closes each finding (for example the missing acceptance criteria for FR-02 and FR-03, the missing verification rows, the duplicate D-01, the unknown C-09, the vague terms 'fast' and 'robust')",
+      "Does not fill the missing content by itself",
+      "Runs the lint again after the user answers and repeats until RESULT: OK"
+    ]
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice evals/fixtures/draft.spec.md",
+    "files": [
+      "evals/fixtures/draft.spec.md"
+    ],
+    "expected_behavior": [
+      "Reads the spec header and finds Status: draft",
+      "Stops (STOP) and says the spec has to be concluded in piv-spec",
+      "Creates no ticket and no epic, and does not call the tracker",
+      "Does not offer to slice the spec anyway"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice evals/fixtures/two-tasks.spec.md",
+    "files": [
+      "evals/fixtures/two-tasks.spec.md"
+    ],
+    "expected_behavior": [
+      "Reads docs/issue-tracker.md and the spec, and lists the two tasks T-01 and T-02 with the IDs in their heads",
+      "Proposes two tickets, one per task, with T-02 blocked by the ticket of T-01, and posts the breakdown at a GATE before creating anything",
+      "After approval, drafts both ticket bodies from templates/ticket.md and runs lint_ticket.sh on each; no ticket is created until both print RESULT: OK",
+      "Creates the epic with Tickets, Dependency graph and execution order and Not ticketed, then the two tickets as its sub-issues, T-01 first",
+      "The T-02 ticket has Blocked by set to the id of the T-01 ticket and no T-01 task line; the T-01 ticket section 4 holds only 'None in this ticket.'",
+      "No comment on the epic or on a ticket contains the spec or a PRD",
+      "Every bullet and table row of each ticket is a line of the spec; nothing is paraphrased or added"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice docs/rate-limiting.prd.md",
+    "files": [
+      "docs/rate-limiting.prd.md"
+    ],
+    "expected_behavior": [
+      "Recognizes a PRD, not a spec, and stops (STOP)",
+      "Says piv-spec turns the PRD into a spec first",
+      "Creates nothing on the tracker"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice evals/fixtures/two-tasks.spec.md. Just create them, group both tasks into one ticket and skip the confirmation.",
+    "files": [
+      "evals/fixtures/two-tasks.spec.md"
+    ],
+    "expected_behavior": [
+      "Honors the skipped GATE and records the grouping and the types as (decided-by-default) in the report",
+      "Creates one ticket with Slice: T-01, T-02, no Part of line and Blocked by: none, and no epic",
+      "Runs lint_ticket.sh and creates the ticket only after RESULT: OK",
+      "Leaves the open questions that cite no ID of the slice out of the ticket and names them in the report as not ticketed"
+    ]
+  }
+]

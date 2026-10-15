@@ -8,7 +8,7 @@ Plan → Implement → Verify. Eight skills that carry an idea from a blank page
 
 **PIV** stands for **plan → implement → verify**. It is the shape this project's skills run work through.
 
-- **Plan** turns an idea into an intent, an architecture and a set of tickets.
+- **Plan** turns an idea into a spec and a set of tickets.
 - **Implement** builds one ticket on its own branch and writes an implementation report.
 - **Verify** tries to prove the change wrong before it ships: a review writes findings, a triage run settles each one, and only then is the work committed and handed to a human.
 
@@ -18,7 +18,8 @@ Two properties hold the whole thing together. **Every step reads the artifact th
 
 ### The chain at a glance
 
-- **Plan** — `piv-write-prd`, `piv-architect`, or both → `piv-slice`
+- **Plan** — `piv-spec` → `piv-slice`
+- **Standalone** — `piv-write-prd` writes a PRD that only `piv-spec` reads, as optional context
 - **Implement** — `piv-implement`
 - **Verify** — `piv-review` → `piv-fix` → `piv-commit` → `piv-open-pr`
   **The loop closes on a PASS.** `piv-fix` always hands back to a fresh `piv-review`. Only a PASS verdict earns a commit.
@@ -46,10 +47,10 @@ You rarely need all eight. Find the row that matches what you have in hand.
 
 | What you have | Start with | Why |
 | --- | --- | --- |
-| A product idea, nothing written | `piv-write-prd` | You need the *what and why* pinned down before anyone argues about the how. |
-| A PRD whose MVP door is one-way, or that names a technical unknown | `piv-architect` | Decide the approach deliberately instead of letting tickets encode it by accident. |
-| Any other PRD | `piv-slice` | A legitimate shortcut — just know you skipped the architecture step on purpose. |
-| A ticket id ready to build | `piv-implement` | Tickets cite the architecture and the intent, so the loop picks one up from its id alone and reads the sources itself. |
+| A product idea, nothing written | `piv-write-prd` | Optional: pin the *what and why* down before the spec. |
+| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design, tasks and verification in a spec; a PRD is optional context. |
+| A spec marked ready | `piv-slice` | Each ticket is a verbatim slice of the spec, so nothing is invented between the plan and the work. |
+| A ticket id ready to build | `piv-implement` | A ticket carries the part of the spec it needs, so the loop picks one up from its id alone. |
 | Work built on a branch, not yet committed | `piv-review` | This is the gate that decides whether the change earns a commit. |
 | A review report with findings | `piv-fix` | Findings are input, not a work order — you rule on each one. |
 | A PASS verdict | `piv-commit` | Atomic commits, then the PR. |

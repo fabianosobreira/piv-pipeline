@@ -33,7 +33,7 @@ The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Path
    2. Hash the change by running the bundled script — run it, don't read it. Pass the report's **Base** commit, then each exclude glob `docs/issue-tracker.md` lists under *Paths*, every argument single-quoted so the shell hands the globs over unexpanded:
 
       ```bash
-      sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh '<Base>' '<glob>' '<glob>'
+      sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh '[Base]' '[glob]' '[glob]'
       ```
 
       It needs `git` and a POSIX shell, and prints one hash. A non-zero exit prints no hash: exit 2 names the cause and its fix (a **Base** missing here is fixed by fetching it) — apply the fix and rerun; when you can't, the check fails with the script's message as the reason.
@@ -49,7 +49,7 @@ List every uncommitted path, tracked and untracked, and read what changed in eac
 
 ### Step 3 — Group it
 
-Group the way `docs/git-conventions.md` says; the groups cover everything uncommitted, a change the ticket doesn't mention included. A path belongs to no group only when it earns no tag — scratch files, local leftovers — and it stays off this branch. List those paths and ask the user, per path, whether to stash it, move it to another branch, or drop it, before you commit anything. **GATE.** Carry out a stash (`git stash push -u -- <path>`) or a drop yourself; a move is the user's to make — wait until it's done.
+Group the way `docs/git-conventions.md` says; the groups cover everything uncommitted, a change the ticket doesn't mention included. A path belongs to no group only when it earns no tag — scratch files, local leftovers — and it stays off this branch. List those paths and ask the user, per path, whether to stash it, move it to another branch, or drop it, before you commit anything. **GATE.** Carry out a stash (`git stash push -u -- [path]`) or a drop yourself; a move is the user's to make — wait until it's done.
 
 **Done when** every path from Step 2 sits in exactly one group, or the user decided where it goes.
 

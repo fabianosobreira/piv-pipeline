@@ -1,0 +1,40 @@
+[
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The ticket body is in evals/fixtures/ticket-sliced.md; treat it as the ticket read from the tracker. The repository is the sample API.",
+    "files": [
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Reads the ticket and takes the task list from the Task plan section (T-01), the criteria from section 5 and the commands from section 9",
+      "Does not ask for, search for or read any plan outside the ticket: no spec, no PRD, no architecture doc",
+      "Does not stop for a missing Acceptance criteria checklist: the ticket has none, and the Task plan is what governs",
+      "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 9 command names",
+      "Writes the implementation report with Intent-slug in the header block and no Intent or Architecture field"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #14. The ticket body is in evals/fixtures/ticket-blocked.md; its Blocked by names #13, which has not been merged into the base.",
+    "files": [
+      "evals/fixtures/ticket-blocked.md"
+    ],
+    "expected_behavior": [
+      "Reads Blocked by and checks that #13 is merged into the base",
+      "Stops (STOP) and names #13 as the ticket that has to land first",
+      "Writes no code and creates no branch"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #15. The ticket body is in evals/fixtures/ticket-no-tasks.md: a sliced ticket whose Task plan section reads 'None in this ticket.'.",
+    "files": [
+      "evals/fixtures/ticket-no-tasks.md"
+    ],
+    "expected_behavior": [
+      "Finds no task under the Task plan section",
+      "Stops (STOP), saying the ticket needs reworking before it can be built",
+      "Does not derive tasks from the requirements or the criteria on its own"
+    ]
+  }
+]

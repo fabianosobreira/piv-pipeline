@@ -9,8 +9,8 @@ Rules for writing any document an agent consumes — a skill, a template, a trac
 
 ## Frontmatter and invocation
 
-- `name`: `piv-<verb>-<object>`, or `piv-<verb>` when the verb alone names the skill; lowercase letters, digits and hyphens, at most 64 characters.
-- `description`: third person, what the skill does and when to use it, key use case first, at most 1,024 characters. No XML tags or `<...>` placeholders.
+- `name`: `piv-[verb]-[object]`, or `piv-[verb]` when the verb alone names the skill; lowercase letters, digits and hyphens, at most 64 characters.
+- `description`: third person, what the skill does and when to use it, key use case first, at most 1,024 characters. No XML tags and no placeholders.
 - A PIV step skill is **user-invoked**: set `disable-model-invocation: true` and write the `description` as a one-line human-facing summary. **The human starts every step.**
 - A user-invoked skill's `description` carries no "Use when…" clause: it is never in the model's listing, and neighbouring skills named in it go stale.
 - Make a skill model-invoked only when the agent or another skill must reach it on its own. Its `description` carries the trigger branches.
@@ -109,7 +109,7 @@ A **leading word** is a compact concept already in the model's pretraining that 
 
 - Templates stay inside their own skill's `templates/` directory.
 - An artifact opens with a header block, not YAML front matter.
-- Template placeholders are `<...>` — not `{...}`, not `[...]` — in every block a skill hands the run to fill. Literal illustrative values (`` `path/to/file.py:42` ``) are not placeholders.
+- Placeholders are `[...]` — not `<...>`, not `{...}` — in every template, script message, doc and `SKILL.md` that indicates a value to fill. Literal illustrative values (`` `path/to/file.py:42` ``), shell syntax (`<`, `<<`), HTML and the `Q<n>` of a decision log are not placeholders.
 - Template headings are sentence case — `Problem statement`, `Target user & JTBD`.
 - Say how strict the template is: "use exactly" or "adapt sections".
 - When output depends on style, show 2–3 input/output pairs, inline or in `examples.md`.
