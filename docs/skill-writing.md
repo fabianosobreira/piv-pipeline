@@ -1,6 +1,6 @@
 # Skill-writing rules
 
-Rules for writing any document an agent consumes — a skill, a template, a tracker doc, `CLAUDE.md` — that the guides in `docs/best-practices/` do not cover. Read those first. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
+Rules for writing any document an agent consumes — a skill, a template, a tracker doc, `CLAUDE.md` — that the guides in `docs/best-practices/` do not cover. Read those first; where a guide conflicts with this document, this document wins. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
 
 ## Language and wrapping
 
@@ -80,8 +80,8 @@ A **leading word** is a compact concept already in the model's pretraining that 
   - the agent must extend the rule to cases it does not name;
   - the rule overrides another rule or a plausible default.
   A reason that serves only the maintainer goes in `pages/`.
-- Bound behaviour with observables, not intensity. No "relentless", `CRITICAL`, `MUST` or capitals.
-- A rule that must hold every time is a hook or a `disallowed-tools` entry, not louder prose.
+- Bound behaviour with observables, not intensity. Reserve emphasis (`ALWAYS`, `NEVER`, `MUST`) for the few rules where a deviation breaks a downstream consumer — an exact template structure, a fixed output format. State it once, at the rule, and pair it with the observable it protects.
+- A rule that must hold every time and that a tool call can enforce is a hook or a `disallowed-tools` entry, not louder prose.
 
 ## Pruning
 
