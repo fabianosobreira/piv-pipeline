@@ -21,7 +21,7 @@ Two properties hold the whole thing together. **Every step reads the artifact th
 - **Plan** — `piv-spec` → `piv-review-spec` → `piv-slice`
 - **Per task** — `piv-implement` → `piv-review` → `piv-fix` (when the review asks for changes) → `piv-commit`
 - **Ship** — `piv-open-pr` → `piv-review-pr`
-- **Standalone** — `piv-write-prd` writes a PRD that only `piv-spec` reads, as optional context
+- **Standalone** — `piv-write-prd` writes the intent as a PRD, an ordinary input of `piv-spec` (`piv-spec .piv/[intent-slug]/prd.md`)
 
 **Each task closes on a PASS.** `piv-fix` always hands back to a fresh `piv-review`, and only a PASS verdict earns a commit. Tasks run one at a time, in the order the epic gives.
 
@@ -61,8 +61,8 @@ You rarely need all ten. Find the row that matches what you have in hand.
 
 | What you have | Start with | Why |
 | --- | --- | --- |
-| A product idea, nothing written | `piv-write-prd` | Optional: pin the *what and why* down before the spec. |
-| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design, tasks and verification in a spec; a PRD is optional context. |
+| A product idea, nothing written | `piv-write-prd` | Pin the *what and why* down before the spec; it hands the PRD's path to `piv-spec`. |
+| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design, tasks and verification in a spec; pass the PRD's path as the input. |
 | A spec marked ready | `piv-review-spec` | It checks the spec against your code and your GitHub issues and PRs before anything is published. |
 | A spec marked reviewed | `piv-slice` | One ticket per task, each a verbatim slice of the spec, and one issue that publishes it. |
 | An issue number | `piv-implement` | It picks the next task from the epic and builds it on the intent's branch. |
