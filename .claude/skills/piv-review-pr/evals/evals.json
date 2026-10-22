@@ -1,0 +1,43 @@
+[
+  {
+    "skills": ["piv-review-pr"],
+    "query": "/piv-review-pr #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the spec in evals/fixtures/spec.md at .piv/rate-limiting/spec.md. PR #40 from feat/12-rate-limiting adds src/middleware/rate-limit.js, which answers 429 from request 101 on with Retry-After set, and tests/rate-limit.test.js. Its body's Spec line cites the epic's hash.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/spec.md"],
+    "expected_behavior": [
+      "Runs gh auth status, then reads PR #40 with gh pr view and its diff with gh pr diff",
+      "Writes one Coverage row for each of FR-01, FR-02, NFR-01, C-01, D-01, AC-01 and AC-02, marking NFR-01 not verifiable from the code and citing path:line for each met item",
+      "Records the cited and current spec hashes as matching",
+      "Sets the verdict to CONFORMS, writes .piv/rate-limiting/pr-review.md, and posts no comment on the PR"
+    ]
+  },
+  {
+    "skills": ["piv-review-pr"],
+    "query": "/piv-review-pr #12. The epic and the spec sit under .piv/rate-limiting/ as in evals/fixtures. PR #40 adds src/middleware/rate-limit.js, which answers 429 from request 101 on but sets no Retry-After header.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/spec.md"],
+    "expected_behavior": [
+      "Marks FR-02 and AC-02 as diverges, citing the line where the 429 response is built",
+      "Copies the FR-02 line verbatim from the spec under Divergences, with severity high",
+      "Sets the verdict to DIVERGES and hands off with the options of fixing by hand or planning new work, not piv-fix"
+    ]
+  },
+  {
+    "skills": ["piv-review-pr"],
+    "query": "/piv-review-pr #12. The epic and the spec sit under .piv/rate-limiting/ as in evals/fixtures. PR #40 meets every criterion, and also adds per-user quotas in src/middleware/quota.js.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/spec.md"],
+    "expected_behavior": [
+      "Finds src/middleware/quota.js asked for by no task of section 8",
+      "Marks the non-goal 'Per-user quotas are out of scope' as violated in Boundaries, citing the file",
+      "Records an Out of scope divergence and sets the verdict to DIVERGES"
+    ]
+  },
+  {
+    "skills": ["piv-review-pr"],
+    "query": "/piv-review-pr #12. The epic and the spec sit under .piv/rate-limiting/ as in evals/fixtures, but the spec was edited after PR #40 was opened. PR #40 meets every criterion of the spec as it was.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/spec.md"],
+    "expected_behavior": [
+      "Hashes the spec with git hash-object --no-filters and finds it differs from the hash the PR body's Spec line cites",
+      "Records Match: no under Spec revision, saying the PR was built from another revision",
+      "Holds the PR to the spec as it is now, and does not edit the spec or the PR"
+    ]
+  }
+]
