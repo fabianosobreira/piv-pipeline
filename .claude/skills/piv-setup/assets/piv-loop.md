@@ -20,7 +20,7 @@ Then, once every task is committed:
 8. **`piv-open-pr`** — the hand-off out of the loop, to a human who reviews, approves and merges.
 9. **`piv-review-pr`** — the audit of the PR against the spec.
 
-`piv-write-prd` stands apart from the loop: a standalone skill that writes the intent — what to build and why, never how. Only `piv-spec` reads its PRD, as optional context. Steps 5 and 6 repeat until a fresh review returns PASS; steps 4 to 7 repeat until every task of the epic is committed. Tasks never run in parallel.
+`piv-write-prd` stands apart from the loop: a standalone skill that writes the intent — what to build and why, never how. Its PRD (`.piv/[intent-slug]/prd.md`) is an ordinary input of `piv-spec`: the user passes its path. Steps 5 and 6 repeat until a fresh review returns PASS; steps 4 to 7 repeat until every task of the epic is committed. Tasks never run in parallel.
 
 ## GATE and STOP
 
@@ -64,7 +64,7 @@ Every skill closes the same way: confirm where the artifact landed and name it b
 One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
-- **spec** — the plan: requirements, design, tasks and verification in one file written by `piv-spec`, with a PRD as optional context.
+- **spec** — the plan: requirements, design, tasks and verification in one file written by `piv-spec`, from an idea or from a PRD.
 - **spec review** — what `piv-review-spec` leaves behind: what it checked, what it settled with the user, and the spec revision it marked reviewed.
 - **epic** — the local to-do list of an intent's tasks, with the state of each: born in `piv-slice`, read by every step that picks a task.
 - **ticket** — one task of the spec, as a local file: a verbatim slice of the spec, exactly one task per ticket.
@@ -83,7 +83,7 @@ Everything but the issue and the PR stays local, under `.piv/` at the repository
 
 ```
 .piv/[intent-slug]/
-  prd.md                 piv-write-prd (optional)
+  prd.md                 piv-write-prd (when the intent starts from a PRD)
   spec.md                piv-spec
   spec.review.md         piv-review-spec
   epic.md                piv-slice
