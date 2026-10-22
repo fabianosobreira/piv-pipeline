@@ -171,7 +171,7 @@
           <tr>
             <td>Um PRD, ou uma ideia clara da mudança</td>
             <td><code class="skill">piv-spec</code></td>
-            <td>Uma entrevista fixa requisitos, design, tasks e verificação em um spec; o PRD é contexto opcional.</td>
+            <td>Uma entrevista fixa requisitos, design, tasks e verificação em um spec; o PRD é uma entrada como outra qualquer.</td>
           </tr>
           <tr>
             <td>Um spec marcado como ready</td>
@@ -276,7 +276,7 @@
 
     <section id="plan">
       <h2>Plan</h2>
-      <p>A etapa de plan produz o <strong>spec</strong>, que fixa requisitos, design, tasks e verificação em um só arquivo; a <strong>review</strong> dele, que o confere contra o que já existe; e os <strong>tickets</strong>, cada um uma fatia literal do spec para uma task, acompanhados por um <strong>epic</strong> local e publicados como uma única <strong>issue</strong> do GitHub. São skills separadas porque respondem a perguntas diferentes. O <code class="skill">piv-write-prd</code> fica à parte: um PRD opcional que só o <code class="skill">piv-spec</code> lê.</p>
+      <p>A etapa de plan produz o <strong>spec</strong>, que fixa requisitos, design, tasks e verificação em um só arquivo; a <strong>review</strong> dele, que o confere contra o que já existe; e os <strong>tickets</strong>, cada um uma fatia literal do spec para uma task, acompanhados por um <strong>epic</strong> local e publicados como uma única <strong>issue</strong> do GitHub. São skills separadas porque respondem a perguntas diferentes. O <code class="skill">piv-write-prd</code> fica à parte: o PRD dela é uma entrada comum do <code class="skill">piv-spec</code>, passada pelo caminho.</p>
 
       <article class="skill" id="piv-spec">
         <span class="step">Plan · passo 1</span>
@@ -285,7 +285,7 @@
 
         <dl class="facts">
           <dt>Entrada</dt>
-          <dd><code>[intent-slug]</code> e o conceito — um parágrafo, um arquivo ou um documento completo com links. As URLs que você passar são lidas sem perguntar; links que ela encontrar sozinha são perguntados antes. O PRD do intent, quando existe, é encontrado pelo slug. Em branco, começa com perguntas.</dd>
+          <dd><code>[intent-slug]</code> e o conceito — um parágrafo, um arquivo ou um documento completo com links. As URLs que você passar são lidas sem perguntar; links que ela encontrar sozinha são perguntados antes. Um PRD é um desses documentos: passe o caminho dele, <code>.piv/[intent-slug]/prd.md</code>, e a pasta é reaproveitada. Em branco, começa com perguntas.</dd>
 
           <dt>Saída</dt>
           <dd><code>.piv/[intent-slug]/spec.md</code> — objetivo, non-goals, requisitos funcionais (<code>FR</code>), não funcionais (<code>NFR</code>), acceptance criteria (<code>AC</code>), restrições (<code>C</code>), design (<code>D</code>), plano de tasks (<code>T</code>), comandos de verificação, limites e um decision log. <code>Intent-slug</code> e <code>Language</code> ficam no cabeçalho.</dd>
@@ -358,7 +358,7 @@
       <article class="skill" id="piv-write-prd">
         <span class="step">Avulsa</span>
         <h3>piv-write-prd</h3>
-        <p class="what">Entrevista você para fixar o problema, o porquê de construí-lo e uma hipótese falseável — e então escreve um PRD em nível de produto. Só intent: <em>o quê</em> e <em>por quê</em>, nunca decisões de engenharia. Não é um passo do loop: só o <code>piv-spec</code> lê o PRD, como contexto opcional.</p>
+        <p class="what">Entrevista você para fixar o problema, o porquê de construí-lo e uma hipótese falseável — e então escreve um PRD em nível de produto. Só intent: <em>o quê</em> e <em>por quê</em>, nunca decisões de engenharia. Não é um passo do loop: o PRD dela é uma entrada comum do <code>piv-spec</code>, passada pelo caminho.</p>
 
         <dl class="facts">
           <dt>Input</dt>
@@ -379,7 +379,7 @@
           </dd>
 
           <dt>Próximo passo</dt>
-          <dd><code>piv-spec [intent-slug]</code>, nesta sessão ou em uma nova.</dd>
+          <dd><code>piv-spec .piv/[intent-slug]/prd.md</code>, nesta sessão ou em uma nova.</dd>
         </dl>
 
         <div class="usewhen">
@@ -412,7 +412,7 @@
           <dd><code>tasks/T-xx/T-xx.report.md</code> — resumo, tasks concluídas, testes adicionados, resultados de validação, <strong>desvios em relação ao ticket</strong>, problemas encontrados. O status é <code>COMPLETE</code> ou <code>PARTIAL</code> — <code>PARTIAL</code> também quando um arquivo alterado é ignorado pelo git, porque ele nunca viaja com a branch. A task vira <code>[~]</code> no epic.</dd>
 
           <dt>Como roda</dt>
-          <dd>Resolver a task e conferir as dependências → trabalhar na branch do intent, criada pela primeira task como <code>[tag]/[N]-[short-slug]</code> → ler o ticket de ponta a ponta e checar o drift → executar as tasks em ordem → fechar a estratégia de testes → rodar as checks → verificação final.</dd>
+          <dd>Resolver a task e conferir as dependências → trabalhar na branch do intent, criada pela primeira task como <code>[tag]/[N]-[intent-slug]</code> → ler o ticket de ponta a ponta e checar o drift → executar as tasks em ordem → fechar a estratégia de testes → rodar as checks → verificação final.</dd>
 
           <dt>Próximo passo</dt>
           <dd><code>piv-review [#N] [T-xx]</code>, em uma sessão própria.</dd>
@@ -449,7 +449,7 @@
           <dd>Resolver a mudança contra o <code>HEAD</code>, o último commit antes da task → resolver as deferrals anteriores → ler os padrões que a mudança precisa cumprir → examinar cada arquivo alterado no seu contexto → montar o caso → aplicar três filtros que eliminam findings não comprovadas. A mudança é cobrada pelos critérios de aceite do ticket, além da testing strategy: um critério que o código não cumpre vira uma finding <code>high</code>.</dd>
 
           <dt>Próximo passo</dt>
-          <dd><strong>PASS</strong> → <code>piv-commit [#N] [T-xx]</code>, em uma sessão própria. <strong>CHANGES REQUESTED</strong> → <code>piv-fix</code>, em uma sessão própria, recebendo o caminho deste report.</dd>
+          <dd><strong>PASS</strong> sem findings → <code>piv-commit [#N] [T-xx]</code>, nesta sessão ou em uma nova. <strong>PASS</strong> com findings medium ou low → <code>piv-commit [#N] [T-xx]</code>, em uma sessão própria. <strong>CHANGES REQUESTED</strong> → <code>piv-fix</code>, em uma sessão própria, recebendo o caminho deste report.</dd>
         </dl>
 
         <div class="usewhen">
@@ -473,7 +473,7 @@
           <dd>Triar cada finding em um dos quatro grupos — uma finding blocking só em <em>fix now</em> ou <em>noise</em>, nunca adiada → corrigir o conjunto <em>fix now</em> uma de cada vez, cada uma com um teste que a comprove → validar a branch inteira.</dd>
 
           <dt>Próximo passo</dt>
-          <dd><code>piv-review [#N] [T-xx]</code> de novo, em uma sessão própria.</dd>
+          <dd><code>piv-review [#N] [T-xx]</code> de novo, em uma sessão própria. Com uma entrada <em>Needs a human look</em> ainda aberta, o hand-off espera: inspecione-a e rode o <code>piv-fix</code> de novo.</dd>
         </dl>
 
         <div class="usewhen">
@@ -582,7 +582,7 @@
 
       <div class="callout">
         <span class="tag">Por que uma issue, uma branch, um PR</span>
-        <p>O número da issue é a identidade do intent no git: a branch é <code>[tag]/[N]-[short-slug]</code>, todo commit termina em <code>(#N)</code>, e o PR fecha a <code>#N</code>. Uma task é um commit nessa branch, então o histórico se lê task por task, e um humano revisa o intent inteiro uma vez, em vez de uma pilha de PRs pequenos.</p>
+        <p>O número da issue é a identidade do intent no git: a branch é <code>[tag]/[N]-[intent-slug]</code>, todo commit termina em <code>(#N)</code>, e o PR fecha a <code>#N</code>. Uma task é um commit nessa branch, então o histórico se lê task por task, e um humano revisa o intent inteiro uma vez, em vez de uma pilha de PRs pequenos.</p>
       </div>
 
       <div class="callout">
@@ -618,7 +618,7 @@
         <div class="session-group">
           <ol class="steps" start="1">
             <li><code>piv-write-prd</code> — a entrevista e, ao final, um PRD em <code>.piv/team-inbox/prd.md</code>.</li>
-            <li><code>piv-spec team-inbox</code> — ela encontra o PRD; a entrevista e, ao final, um spec em <code>.piv/team-inbox/spec.md</code>.</li>
+            <li><code>piv-spec .piv/team-inbox/prd.md</code> — ela recebe o PRD como entrada; a entrevista e, ao final, um spec em <code>.piv/team-inbox/spec.md</code>.</li>
           </ol>
           <p class="session-note"><strong>Uma sessão para os dois.</strong> Eles colaboram em vez de auditar um ao outro, e a nuance da entrevista segue junto. Se a janela passar da metade, quebre na fronteira de um doc — os docs já guardam tudo.</p>
         </div>
@@ -697,7 +697,7 @@
       <p>Registre em <strong>Deviations from the ticket</strong> no implementation report. Essa seção é o sinal de intenção para o reviewer. A exceção é um teste que você alterou: desabilitado, afrouxado, reescrito ou removido, ele continua bloqueando o review.</p>
 
       <h3>Posso pular o PRD?</h3>
-      <p>Pode. O PRD é contexto opcional do <code>piv-spec</code>, e o spec é o que o resto do loop lê.</p>
+      <p>Pode. O PRD é uma entrada entre outras do <code>piv-spec</code>, e o spec é o que o resto do loop lê.</p>
 
       <h3>Posso rodar várias tasks ao mesmo tempo?</h3>
       <p>Não. As tasks dividem uma branch e são commitadas na ordem do epic, então cada review vê exatamente a mudança de uma task contra o último commit.</p>
