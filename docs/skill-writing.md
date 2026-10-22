@@ -1,6 +1,6 @@
 # Skill-writing rules
 
-Rules for writing any document an agent consumes — a skill, a template, a tracker doc, `CLAUDE.md` — that the guides in `docs/best-practices/` do not cover. Read those first; where a guide conflicts with this document, this document wins. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
+Rules for writing any document an agent consumes — a skill, a template, a doc under `docs/` the skills read, `CLAUDE.md` — that the guides in `docs/best-practices/` do not cover. Read those first; where a guide conflicts with this document, this document wins. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
 
 ## Language and wrapping
 
@@ -74,7 +74,7 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - Repeat the token, never the sentence.
 - Reach for an existing word before coining one.
 - Collapse restatements into one word. "fast, deterministic, low-overhead" → _tight_; "a loop you believe in" → _red_.
-- A skill says "ticket", never "issue", and assumes no labels. It names a ticket's classification its _type_; "issue" and a tracker's "label" survive only in `docs/issue-tracker*.md`. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
+- A skill says "ticket" for the local file of one task (`T-xx.md`) and "issue" only for the GitHub issue `piv-slice` publishes. It names a classification its _type_, and says "label" only for the GitHub label that carries the type on the issue and the PR. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
 - State the target behaviour. Keep a prohibition only as a hard guardrail, paired with the positive target.
 - Give the reason in one clause only when the rule needs it:
   - the agent must extend the rule to cases it does not name;
@@ -91,7 +91,7 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - A skill carries its own reasons. `rulings.md` never ships with the skills.
 - Leave lookups to the environment. Cache only what looking cannot find: the unwritten convention, the reason behind a choice, the gotcha.
 - Inject load-time state with `` !`command` `` instead of a step that runs it.
-- Reach the tracker in prose ("post each finding as a comment on the ticket") — the tracker varies by project. Name the tool; leave its flags to the environment.
+- Reach GitHub through `gh`: name the command, and leave its flags to the environment.
 - Spell a command out only when it is fixed: a bundled script or a fragile sequence. Reference bundled files through `${CLAUDE_SKILL_DIR}`.
 - Delete no-ops — a sentence whose removal changes nothing in an eval. Delete the whole sentence.
 

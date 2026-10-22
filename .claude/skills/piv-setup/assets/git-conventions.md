@@ -10,21 +10,21 @@ The base branch is whichever branch the remote treats as its default. Ask the re
 
 ## Branch names
 
-Work gets built on its own branch, named `[tag]/[ticket-id]-[short-slug]`:
+Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[short-slug]`:
 
-- **`[tag]`** — the same conventional tag the commits will carry, as *Commit tags* below defines it.
-- **`[ticket-id]`** — the ticket id in the form `docs/issue-tracker.md` defines, case kept, with only the leading `#` dropped: `#123` → `123`, `PROJ-123` stays as it is. Keeping the case is what lets the id match the tracker's own form and the report file names built from it.
-- **`[short-slug]`** — two to four words of the title.
+- **`[tag]`** — the conventional tag of the issue's type: `feature` → `feat`, `bug` → `fix`, `task` → `chore`. The commits on the branch carry the tag each one earns, which may differ.
+- **`[N]`** — the number of the intent's GitHub issue, without the `#`: `#123` → `123`.
+- **`[short-slug]`** — two to four words of the issue title.
 
-`piv-review`, `piv-fix`, `piv-commit` and `piv-open-pr` read the ticket id back out of this name, so the id has to survive it. Reading it back, put the `#` back when the tracker's form carries one: `123` → `#123`.
+`piv-implement`, `piv-review`, `piv-fix`, `piv-commit`, `piv-open-pr` and `piv-review-pr` read the issue number back out of this name, so it has to survive it. Reading it back, put the `#` back: `123` → `#123`.
 
 ## Commit subjects
 
-`[tag]: [atomic description] ([ticket id])` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `[tag]` is the conventional tag the work earns, as *Commit tags* below defines it. The `([ticket id])` suffix closes the subject whenever there is an id: the one handed to you, or the one the branch name carries. Write the id in the form `docs/issue-tracker.md` defines for the tracker in use; with no file to consult, write it exactly as it reached you. The id counts toward the length: shorten the description to fit, never the id.
+`[tag]: [atomic description] ([#N])` — around 72 characters, imperative mood, lowercase, ending on the last word (no trailing period). `[tag]` is the conventional tag the work earns, as *Commit tags* below defines it. The `([#N])` suffix closes the subject whenever there is an issue number: the one handed to you, or the one the branch name carries, written as GitHub writes it — `(#123)`. The number counts toward the length: shorten the description to fit, never the number.
 
 ## PR titles
 
-The same shape as a commit subject: `[tag]: [concise description] ([ticket id])`.
+The same shape as a commit subject: `[tag]: [concise description] ([#N])`.
 
 ## Commit tags
 
@@ -40,4 +40,4 @@ Pick the tag by what the change does to the project's behavior, never by the fil
 - **`ci`** — the CI configuration.
 - **`chore`** — anything else that touches no shipped behavior.
 
-The work of one ticket is one commit, tagged with its largest effect. Split off only a part that stands on its own — one that could be reverted without breaking the rest or leaving it pointless, like an unrelated fix found along the way. A PR whose commits carry different tags takes the largest effect among them.
+The work of one ticket — one task — is one commit, tagged with its largest effect. Split off only a part that stands on its own — one that could be reverted without breaking the rest or leaving it pointless, like an unrelated fix found along the way. A PR whose commits carry different tags takes the largest effect among them.

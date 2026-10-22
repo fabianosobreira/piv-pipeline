@@ -1,11 +1,12 @@
-# Review report — [ticket title]
+# Review report — [T-xx] — [the task's title]
 
 - **Intent-slug**: [intent-slug]
-- **Ticket**: [id]
+- **Issue**: [#N]
+- **Task**: [T-xx]
 - **Branch**: [branch]
 - **Round**: [n]
-- **Base**: [hash of the base commit the diff was taken against: the merge-base of the branch and the base branch]
-- **Diff**: [the hash `scripts/diff-hash.sh` prints for that commit: the full diff against it, untracked files included, the loop's own artifacts left out]
+- **Base**: [hash of the commit the diff was taken against: `HEAD` when the task started, the last commit before its work]
+- **Diff**: [the hash `scripts/diff-hash.sh` prints for that commit: the full diff against it, untracked files included, ignored files left out]
 - **Verdict**: PASS | CHANGES REQUESTED
 
 ## Scope
@@ -36,7 +37,7 @@
 [findings in the Critical form, or "No findings."]
 
 ## Dropped by prior ruling
-[one per line: the candidate (`path/to/file.py:42` and its claim) — the filter that dropped it (prior decision, or mitigation by a *Noise / won't-fix* reason) — the deferral ticket or the *Noise / won't-fix* reason; or "None."]
+[one per line: the candidate (`path/to/file.py:42` and its claim) — the filter that dropped it (prior decision, or mitigation by a *Noise / won't-fix* reason) — the deferral (`D-xx`) or the *Noise / won't-fix* reason; or "None."]
 
 ## Checks run
 [the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned, flaky tests named as such; with no test suite, "no test suite" and the behaviors left untested; with no type-checker or linter configured, say so]
