@@ -46,13 +46,15 @@ Then check the task against the epic, and **STOP** on the first that holds, nami
 
 Read the ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`. It can't be read → **STOP**, saying so. From here on, **the ticket governs the run**, and it is the only plan: it carries what it needs, so no plan outside it is read or asked for. No task under `## 8. Task plan` → **STOP**: the ticket needs reworking in `piv-slice` before it can be built.
 
+**The spec must be the one the ticket was cut from.** Read the spec at the path the ticket's `Spec` field gives and compute `git hash-object --no-filters [the spec path]`. The spec can't be read, or its hash differs from the one in the field → **STOP**: the spec changed after `piv-slice` cut the ticket; it goes through `piv-review-spec` again and `piv-slice` re-cuts the tickets before this task runs.
+
 When the ticket's `Type` is `bug`, this run is a **repair**: the instructions marked **Repair:** apply on top of the normal ones, and the run is done only when every one of them holds.
 
 **Fetch the base branch** `docs/git-conventions.md` defines. From here on, *the base* is the tip that file defines — the remote tip after this fetch, such as `origin/main`.
 
 **Mark the task in progress**: turn its line in the epic from `[ ]` to `[~]`. A STOP after this mark turns it back to `[ ]`; a GATE leaves it, since the user is still there.
 
-**Done when** the ticket is read and governs the run, the base is fetched, every task it depends on is `[x]`, and the task is `[~]` in the epic.
+**Done when** the ticket is read and governs the run, its spec hash matches, the base is fetched, every task it depends on is `[x]`, and the task is `[~]` in the epic.
 
 ### Step 2 — Work on the intent's branch
 

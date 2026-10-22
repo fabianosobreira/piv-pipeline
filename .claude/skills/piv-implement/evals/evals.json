@@ -6,7 +6,7 @@
     "expected_behavior": [
       "Resolves #12 to the rate-limiting epic and picks T-01 as the next task, since no task is [~] and T-01 depends on nothing",
       "Turns T-01 from [ ] to [~] in the epic",
-      "Creates the branch feat/12-[short-slug] from the base, since the epic's Type is feature, and writes it into the epic's Branch",
+      "Creates the branch feat/12-rate-limiting from the base, since the epic's Type is feature, and writes it into the epic's Branch",
       "Takes the task list from the Task plan section (T-01), the criteria from section 5 and the commands from section 9, and reads no plan outside the ticket",
       "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 9 command names",
       "Writes .piv/rate-limiting/tasks/T-01/T-01.report.md with Issue: #12 and Task: T-01 in the header block, and commits nothing",
@@ -31,6 +31,26 @@
       "Finds no task under the Task plan section",
       "Stops (STOP), saying the ticket needs reworking before it can be built",
       "Does not derive tasks from the requirements or the criteria on its own"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic-done.md sits at .piv/rate-limiting/epic.md: its only task, T-01, is already [x].",
+    "files": ["evals/fixtures/epic-done.md"],
+    "expected_behavior": [
+      "Finds no task of the epic that is [~] or [ ] with every dependency [x]",
+      "Stops (STOP), saying every task is committed and the next step is piv-open-pr",
+      "Writes no code, edits no epic line and switches no branch"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. The spec at .piv/rate-limiting/spec.md was edited after the slice: its git hash-object is now 0000000000000000000000000000000000000000, not the 77c3c9cd... the ticket's Spec field carries.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-sliced.md"],
+    "expected_behavior": [
+      "Compares the spec's current hash with the one in the ticket's Spec field and finds them different",
+      "Stops (STOP), saying the spec changed after the slice and must go through piv-review-spec and piv-slice again",
+      "Leaves T-01 at [ ], writes no code, creates no branch and leaves the epic's Branch at pending"
     ]
   }
 ]
