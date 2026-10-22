@@ -12,7 +12,7 @@
     ],
     "expected_behavior": [
       "Reads the repo files and presents an inventory of sources read before asking the first question",
-      "Creates .piv/[intent-slug]/spec.md from templates/spec.md and shows the Interview Progress checklist",
+      "Proposes an intent-slug derived from the concept at the Phase 0 GATE, then creates .piv/[intent-slug]/spec.md from templates/spec.md and shows the Interview Progress checklist",
       "Sends at most 3 questions per message, numbered continuously (Q1, Q2, ...) in the 🔍 format with 1 to 3 options",
       "Every recommendation (💡) carries an Empirical: basis with a source, such as the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7, a Pragmatic: basis naming the concrete problem it solves, or both",
       "Writes spec content in the language of the user's request and keeps headings, IDs and keywords in English",
@@ -25,18 +25,18 @@
     "skills": [
       "piv-spec"
     ],
-    "query": "/piv-spec rate-limiting. The PRD in evals/fixtures/prd/rate-limiting.prd.md sits at .piv/rate-limiting/prd.md.",
+    "query": "/piv-spec evals/fixtures/prd/rate-limiting.prd.md. Treat it as sitting at .piv/rate-limiting/prd.md.",
     "files": [
       "evals/fixtures/prd/rate-limiting.prd.md",
       "evals/fixtures/sample-repo/package.json",
       "evals/fixtures/sample-repo/.github/workflows/ci.yml"
     ],
     "expected_behavior": [
-      "Finds .piv/rate-limiting/prd.md on its own, reads it end to end in Phase 0 and lists it in the inventory of sources",
-      "Creates .piv/rate-limiting/spec.md with Intent-slug: rate-limiting and Language: en-US in the header, both taken from the PRD",
-      "Lists the PRD under Context sources in the spec header",
-      "Does not copy any PRD statement into the spec before the user confirms it in a question; the PRD's open questions become questions of phases 3 and 4 or [DEFERRED] items in section 10",
-      "Asks the budget per minute as a question, since the PRD marks it TBD, and writes no invented number"
+      "Reads the given document end to end in Phase 0, as it would any other input, and lists it in the inventory of sources",
+      "Proposes the slug rate-limiting, the folder of the input prd.md, reuses that folder, and creates .piv/rate-limiting/spec.md with Intent-slug: rate-limiting and the language of the first interview in Language",
+      "Lists the document under Context sources in the spec header",
+      "Does not copy any statement of the document into the spec before the user confirms it in a question",
+      "Asks the budget per minute as a question, since the document marks it TBD, and writes no invented number"
     ]
   },
   {

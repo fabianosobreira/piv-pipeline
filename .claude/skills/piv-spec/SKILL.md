@@ -1,6 +1,6 @@
 ---
 name: piv-spec
-description: Interviews the user in fixed phases, then writes one 10-section spec for piv-review-spec to audit. Takes a concept — text, a file or URLs — and reads the intent's PRD when there is one.
+description: Interviews the user in fixed phases, then writes one 10-section spec for piv-review-spec to audit. Takes a concept: free text, or documents with their links.
 argument-hint: "[intent-slug] · [concept: text, file path or URLs] (blank = starts by asking for them)"
 disable-model-invocation: true
 allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *), WebFetch
@@ -8,7 +8,7 @@ allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *), WebFetch
 
 # Spec: the interview that fixes the plan
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes `.piv/[intent-slug]/spec.md`: the one plan `piv-review-spec` audits and `piv-slice` cuts into tickets. A PRD from `piv-write-prd`, at `.piv/[intent-slug]/prd.md`, is optional context; this skill is the only one that reads it.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes `.piv/[intent-slug]/spec.md`: the one plan `piv-review-spec` audits and `piv-slice` cuts into tickets. The input is a concept in free text or reference documents, a PRD among them like any other.
 
 - Output skeleton: [templates/spec.md](templates/spec.md)
 - Validator: `${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh` (execute it, do not read it). It needs only POSIX `sh` and `awk`.
@@ -30,12 +30,12 @@ This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. 
 
 ## Language
 
-- Talk to the user, and write spec content, in the intent's language: the PRD's `Language` when there is a PRD, otherwise the language the user runs this interview in. Record it in the spec's `Language` field as a BCP 47 tag, such as `pt-BR`.
+- Talk to the user, and write spec content, in the intent's language: the one the user runs the first interview in. Record it in the spec's `Language` field as a BCP 47 tag, such as `pt-BR`.
 - Keep these in English because the validator depends on them: section headings, header labels, IDs (`FR-01`, `NFR-01`, `C-01`, `D-01`, `AC-01`, `T-01`, `Q1`), keywords (`WHEN`, `THE SYSTEM SHALL`, `Given`/`When`/`Then`, `Source:`, `Depends on:`, `DoD:`), `Status:` values, and markers (`[PENDING]`, `[DEFERRED]`).
 
 ## Rules
 
-1. **The agent never fills a gap.** Every spec statement comes from an explicit user answer or an option the user chose. A fact read from context, a PRD included, enters the spec only after the user confirms it in a question.
+1. **The agent never fills a gap.** Every spec statement comes from an explicit user answer or an option the user chose. A fact read from a source enters the spec only after the user confirms it in a question.
 2. **Options are proposals, not content.** An option becomes content only when the user picks it.
 3. **A recommendation requires an empirical or a pragmatic basis, or both.** Empirical: a claim that can be checked, with its source (`path:line`, document section, command output, or a doc URL). Before recommending, run the check that settles the claim when Running commands lets it run without asking, and cite its output as the source. When the check needs asking first, ask before recommending; if the user declines, the claim carries `(unverified — check: [command, test or doc])`. Pragmatic: names the concrete problem in the spec or project (`FR-xx`, `C-xx`, `Q<n>`, `path:line`) and states how the option solves it. Preference, popularity, and authority not tied to a concrete problem are no basis. Numeric values follow the same rule.
 4. **Conflict between an answer and the context is never resolved silently.** Show the fact and its source, then ask again.
@@ -123,15 +123,13 @@ After closing a phase, write it to the output file and add one row per question 
 
 ### Phase 0 — Recon
 
-1. Read before asking: the concept `$ARGUMENTS` carries — a paragraph, a file, or a full document with links — with every URL the user passed in it; the PRD at `.piv/[intent-slug]/prd.md` when it exists (end to end); `README`, `CLAUDE.md`/`AGENTS.md`, manifests (`package.json`, `pyproject.toml`, `go.mod`), directory tree, existing tests, CI config, `docs/`, and any analysis document the user points to. Run the commands that give facts needed later (see Running commands).
+1. Read before asking: the concept `$ARGUMENTS` carries — a paragraph, a file, or a full document with links — with every URL the user passed in it; `README`, `CLAUDE.md`/`AGENTS.md`, manifests (`package.json`, `pyproject.toml`, `go.mod`), directory tree, existing tests, CI config, `docs/`, and any analysis document the user points to. Run the commands that give facts needed later (see Running commands).
 2. Present a short inventory: sources read, commands run, relevant sources missing.
-3. Ask, in one message: additional sources, and the intent slug when it is not settled. The slug is the one `$ARGUMENTS` carries; with none, offer each `.piv/[slug]/prd.md` that has no `spec.md` beside it, or propose one as `docs/piv-loop.md` defines the `intent-slug`. A PRD the settled slug has, and step 1 did not read, is read now. **GATE.**
+3. Ask, in one message: additional sources, and the intent slug when it is not settled. Propose the slug, derived from the concept as `docs/piv-loop.md` defines the `intent-slug`; when the input is a `.piv/[slug]/prd.md`, the slug is its folder's and the folder is reused. **GATE.**
 
-As soon as the slug is settled, create `.piv/[intent-slug]/spec.md` from [templates/spec.md](templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read, the PRD included, under `Context sources`.
+As soon as the slug is settled, create `.piv/[intent-slug]/spec.md` from [templates/spec.md](templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read under `Context sources`. Create the folder if it does not exist.
 
 **Done when** the inventory was posted, the user answered the GATE, and the spec file exists with `Intent-slug`, `Language` and `Context sources` set.
-
-With a PRD, use its sections as sources of questions, never of content: its MVP and success metrics suggest behaviors, its non-goals suggest section 2, its constraints suggest section 6, and its open questions, `Architecture: [decision]` ones included, suggest the questions of phases 3 and 4 and the open questions of section 10.
 
 ### Phase 1 — Goal and scope (sections 1, 2)
 
