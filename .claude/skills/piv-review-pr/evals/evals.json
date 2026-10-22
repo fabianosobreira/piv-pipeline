@@ -39,5 +39,15 @@
       "Records Match: no under Spec revision, saying the PR was built from another revision",
       "Holds the PR to the spec as it is now, and does not edit the spec or the PR"
     ]
+  },
+  {
+    "skills": ["piv-review-pr"],
+    "query": "/piv-review-pr #12. The epic and the spec sit under .piv/rate-limiting/ as in evals/fixtures, but gh auth status fails: the user is not logged in.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/spec.md"],
+    "expected_behavior": [
+      "Posts the gh auth status message with gh auth login as the fix, and asks whether to fix it and rerun or go on without the remote, as a GATE and not a STOP",
+      "Writes no pr-review.md before the user answers",
+      "On going on, reads the diff from git against the base and records Remote check: skipped by the user"
+    ]
   }
 ]
