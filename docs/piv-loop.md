@@ -43,11 +43,12 @@ That is what keeps a bad plan from becoming a merged PR while nobody was watchin
 
 Hand-offs travel through artifacts, never through the conversation, so a fresh session loses nothing. Sessions are split by independence, not one per step:
 
-- **`piv-write-prd` → `piv-spec`** — may share a session: they collaborate rather than audit each other. Past half the window, break at an artifact boundary.
-- **`piv-review-spec`** — a session of its own: it audits what `piv-spec` wrote. **`piv-slice`** may follow it in the same session, since it only runs on a spec the review marked reviewed.
+Only `piv-commit` and `piv-open-pr` share a session, plus one case of `piv-commit` with a review. Every other step runs in a session of its own:
+
+- **`piv-write-prd`, `piv-spec`, `piv-review-spec`, `piv-slice`** — each in a session of its own: `piv-review-spec` audits what `piv-spec` wrote, and `piv-slice` only runs on a spec the review marked reviewed.
 - **`piv-implement`** — a session of its own, one per task.
 - **`piv-review`** and **`piv-fix`** — each in a session of its own, every round.
-- **`piv-commit`** — a session of its own, one per task. After the last task, **`piv-open-pr`** follows it in the same session: both are light, and the PR body comes from the artifacts, not from the implementation's story.
+- **`piv-commit`** — a session of its own, one per task, except when the `piv-review` just before it ended with zero findings: then it may share that review's session. After the last task, **`piv-open-pr`** follows it in the same session: both are light, and the PR body comes from the artifacts, not from the implementation's story.
 - **`piv-review-pr`** — a session of its own: it audits what the loop shipped.
 
 A hand-off marks the next step's session with one of three phrases: "in a session of its own" (must be fresh), "here or in a fresh session" (may share), "in this same session" (shares).
@@ -171,3 +172,5 @@ GitHub is the only remote the loop talks to, through the `gh` CLI. It **receives
 - **`piv-open-pr`** — opens the PR: `Closes #N` in its body, the issue's label, assigned to the user. The merge closes the issue; no step closes it by hand.
 
 Every other step may read from GitHub — `piv-review-spec` and `piv-review-pr` do — and writes nothing there: no comment, no label, no status. The issue is a snapshot of the spec as it was published, never synced.
+
+Before any call, the steps that reach GitHub run `gh auth status`. On failure, `piv-slice` and `piv-open-pr` **STOP**, naming `gh auth login`; `piv-review-spec` and `piv-review-pr` post the message with the same fix and ask whether to rerun or go on without the remote. **GATE.** Going on is recorded in the review as `Remote check: skipped by the user`.
