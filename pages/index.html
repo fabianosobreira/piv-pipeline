@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PIV Loop — Skills Manual</title>
-<meta name="description" content="Plan → Implement → Verify: a friendly manual for the eight skills that carry an idea from a blank page to a pull request a human can approve.">
+<meta name="description" content="Plan → Implement → Verify: a friendly manual for the ten skills that carry an idea from a blank page to a pull request a human can approve.">
 
 <!-- Open Graph — the link preview Slack, WhatsApp, Discord and LinkedIn render. -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PIV Pipeline">
 <meta property="og:title" content="PIV Loop — Skills Manual">
-<meta property="og:description" content="Plan → Implement → Verify: a friendly manual for the eight skills that carry an idea from a blank page to a pull request a human can approve.">
+<meta property="og:description" content="Plan → Implement → Verify: a friendly manual for the ten skills that carry an idea from a blank page to a pull request a human can approve.">
 <meta property="og:url" content="https://fabianosobreira.github.io/piv-pipeline/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="pt_BR">
@@ -18,7 +18,7 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The PIV Loop chain: Plan, Implement and Verify, with the eight skills as labelled steps">
+<meta property="og:image:alt" content="The PIV Loop chain: Plan, Implement and Verify, with the skills as labelled steps">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="canonical" href="https://fabianosobreira.github.io/piv-pipeline/">
@@ -61,6 +61,7 @@
 
       <li class="group">Plan</li>
       <li class="sub"><a href="#piv-spec">piv-spec</a></li>
+      <li class="sub"><a href="#piv-review-spec">piv-review-spec</a></li>
       <li class="sub"><a href="#piv-slice">piv-slice</a></li>
       <li class="sub"><a href="#piv-write-prd">piv-write-prd</a></li>
 
@@ -72,6 +73,7 @@
       <li class="sub"><a href="#piv-fix">piv-fix</a></li>
       <li class="sub"><a href="#piv-commit">piv-commit</a></li>
       <li class="sub"><a href="#piv-open-pr">piv-open-pr</a></li>
+      <li class="sub"><a href="#piv-review-pr">piv-review-pr</a></li>
 
       <li class="group">Reference</li>
       <li class="sub"><a href="#artifacts">Artifacts &amp; where they live</a></li>
@@ -88,16 +90,16 @@
     <header class="masthead">
       <p class="eyebrow">Skills Manual</p>
       <h1>The PIV Loop</h1>
-      <p class="tagline">Plan → Implement → Verify. Eight skills that carry an idea from a blank page to a pull request a human can approve — one deliberate step at a time.</p>
+      <p class="tagline">Plan → Implement → Verify. Ten skills that carry an idea from a blank page to a pull request a human can approve — one deliberate step at a time, on your machine, with GitHub as the only remote.</p>
     </header>
 
     <section id="overview">
       <h2>What the PIV loop is</h2>
       <p><strong>PIV</strong> stands for <strong>plan → implement → verify</strong>. It is the shape this project's skills run work through.</p>
       <ul>
-        <li><strong>Plan</strong> turns an idea into a spec and a set of tickets.</li>
-        <li><strong>Implement</strong> builds one ticket on its own branch and writes an implementation report.</li>
-        <li><strong>Verify</strong> tries to prove the change wrong before it ships: a review writes findings, a triage run settles each one, and only then is the work committed and handed to a human.</li>
+        <li><strong>Plan</strong> turns an idea into a spec, audits it against your code and your GitHub issues and PRs, cuts it into one ticket per task, and publishes it as one GitHub issue.</li>
+        <li><strong>Implement</strong> builds one task at a time on the intent's branch and writes an implementation report.</li>
+        <li><strong>Verify</strong> tries to prove each task wrong before it is committed: a review writes findings, a triage run settles each one, and only then is the task committed. Once every task is in, the PR opens and is audited against the spec before a human merges it.</li>
       </ul>
       <p>Two properties hold the whole thing together. <strong>Every step reads the artifact the step before it wrote</strong> — the reports are not paperwork, they are the input. And <strong>every step is started by you</strong>, never by the step before it.</p>
 
@@ -118,6 +120,8 @@
             <div class="chain">
               <a class="node" href="#piv-spec">piv-spec</a>
               <span class="arrow" aria-hidden="true">→</span>
+              <a class="node" href="#piv-review-spec">piv-review-spec</a>
+              <span class="arrow" aria-hidden="true">→</span>
               <a class="node" href="#piv-slice">piv-slice</a>
             </div>
           </div>
@@ -129,6 +133,7 @@
             <div class="chain">
               <a class="node" href="#piv-implement">piv-implement</a>
             </div>
+            <p class="loopback"><strong>One task at a time.</strong> Implement, review, fix and commit repeat for each task of the epic, in its order.</p>
           </div>
         </div>
 
@@ -143,19 +148,21 @@
               <a class="node" href="#piv-commit">piv-commit</a>
               <span class="arrow" aria-hidden="true">→</span>
               <a class="node" href="#piv-open-pr">piv-open-pr</a>
+              <span class="arrow" aria-hidden="true">→</span>
+              <a class="node" href="#piv-review-pr">piv-review-pr</a>
             </div>
-            <p class="loopback"><strong>The loop closes on a PASS.</strong> <code>piv-fix</code> always hands back to a fresh <code>piv-review</code>. Only a PASS verdict earns a commit.</p>
+            <p class="loopback"><strong>Each task closes on a PASS.</strong> <code>piv-fix</code> always hands back to a fresh <code>piv-review</code>. Only a PASS verdict earns a commit; the PR opens once every task is committed.</p>
           </div>
         </div>
 
       </div>
 
-      <p>Read the arrows as <em>"this is the next move offered"</em>, not as automation. The three verify skills before the PR are the gate; the PR itself is the handoff out of the loop, to a human who reviews, approves and merges.</p>
+      <p>Read the arrows as <em>"this is the next move offered"</em>, not as automation. The review, the triage and the commit are the gate for each task; the PR is the handoff out of the loop, to a human who reviews, approves and merges.</p>
     </section>
 
     <section id="picking">
       <h2>Where do I start?</h2>
-      <p>You rarely need all eight. Find the row that matches what you have in hand.</p>
+      <p>You rarely need all ten. Find the row that matches what you have in hand.</p>
 
       <table>
         <thead>
@@ -165,7 +172,7 @@
           <tr>
             <td>The skills installed with the <a href="#setup">install command</a>, no <code>docs/</code> for them yet</td>
             <td><code class="skill">piv-setup</code></td>
-            <td>Every step reads the tracker and the git conventions from <code>docs/</code>; without them the first run has nothing to go on.</td>
+            <td>Every step reads the loop and the git conventions from <code>docs/</code>, and keeps its files under an ignored <code>.piv/</code>; without them the first run has nothing to go on.</td>
           </tr>
           <tr>
             <td>A product idea, nothing written</td>
@@ -179,18 +186,23 @@
           </tr>
           <tr>
             <td>A spec marked ready</td>
+            <td><code class="skill">piv-review-spec</code></td>
+            <td>It checks the spec against your code and your GitHub issues and PRs before anything is published.</td>
+          </tr>
+          <tr>
+            <td>A spec marked reviewed</td>
             <td><code class="skill">piv-slice</code></td>
-            <td>Each ticket is a verbatim slice of the spec, so nothing is invented between the plan and the work.</td>
+            <td>One ticket per task, each a verbatim slice of the spec, and one issue that publishes it.</td>
           </tr>
           <tr>
-            <td>A ticket id ready to build</td>
+            <td>An issue number</td>
             <td><code class="skill">piv-implement</code></td>
-            <td>A ticket carries the part of the spec it needs, so the loop picks one up from its id alone.</td>
+            <td>It picks the next task from the epic and builds it on the intent's branch.</td>
           </tr>
           <tr>
-            <td>Work built on a branch, not yet committed</td>
+            <td>A task built, not yet committed</td>
             <td><code class="skill">piv-review</code></td>
-            <td>This is the gate that decides whether the change earns a commit.</td>
+            <td>This is the gate that decides whether the task earns a commit.</td>
           </tr>
           <tr>
             <td>A review report with findings</td>
@@ -200,7 +212,17 @@
           <tr>
             <td>A PASS verdict</td>
             <td><code class="skill">piv-commit</code></td>
-            <td>Atomic commits, then the PR.</td>
+            <td>Atomic commits for the task, then the next task — or the PR.</td>
+          </tr>
+          <tr>
+            <td>Every task committed</td>
+            <td><code class="skill">piv-open-pr</code></td>
+            <td>One PR for the whole intent, closing its issue on merge.</td>
+          </tr>
+          <tr>
+            <td>An open PR</td>
+            <td><code class="skill">piv-review-pr</code></td>
+            <td>It holds the PR to every item of the spec.</td>
           </tr>
         </tbody>
       </table>
@@ -224,24 +246,25 @@
       <article class="skill" id="piv-setup">
         <span class="step">Setup · once per project</span>
         <h3>piv-setup</h3>
-        <p class="what">Installs the docs every step reads into the project's <code>docs/</code>, and folds the git rules the project already has into <code>docs/git-conventions.md</code> — your rules win over the shipped defaults.</p>
+        <p class="what">Checks that the project is on GitHub with <code>gh</code> logged in, installs the docs every step reads into the project's <code>docs/</code>, folds the git rules the project already has into <code>docs/git-conventions.md</code> — your rules win over the shipped defaults — and has git ignore <code>.piv/</code>.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[github | gitlab | jira | md]</code> — blank suggests one from the git remote.</dd>
+          <dd>None.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/piv-loop.md</code>; <code>docs/issue-tracker.md</code> for the tracker you pick, with its project details filled; <code>docs/git-conventions.md</code>; and a <code>docs/.gitignore</code> that keeps the plans and reports out of git. Then one commit, if you approve it.</dd>
+          <dd><code>docs/piv-loop.md</code>; <code>docs/git-conventions.md</code>; and the line <code>.piv/</code> in the root <code>.gitignore</code>, created when absent. Then one commit, if you approve it.</dd>
 
           <dt>How it runs</dt>
-          <dd>Investigate the existing docs, the remote and the harness → draft <code>docs/git-conventions.md</code> → post the whole plan at one gate → install → show the commit message and wait for you.</dd>
+          <dd>Check the remote and <code>gh</code>, investigate the existing docs and the harness → draft <code>docs/git-conventions.md</code> → post the whole plan at one gate → install → show the commit message and wait for you.</dd>
 
           <dt>Guards</dt>
           <dd>
             <ul>
+              <li><strong>GitHub or nothing</strong> — an <code>origin</code> off <code>github.com</code>, or <code>gh</code> not logged in, stops the run with the command that fixes it.</li>
               <li><strong>The harness wins</strong> — git rules from <code>CLAUDE.md</code>, <code>AGENTS.md</code>, rules files and commit tooling override the shipped <code>git-conventions.md</code>; each one keeps a note of where it came from.</li>
-              <li><strong>The skills' needs are checked</strong> — a base branch, a commit subject form, a PR title form and the commit tags are required; a rule that breaks one comes back to you. A branch name or subject without the ticket id is allowed, at the cost of the skills asking you for the id every run.</li>
-              <li><strong>Nothing overwritten silently</strong> — an existing <code>docs/issue-tracker.md</code> is kept or replaced at your word, and an existing <code>docs/.gitignore</code> only gains the lines it lacks.</li>
+              <li><strong>The skills' needs are checked</strong> — a base branch, a commit subject form, a PR title form and the commit tags are required; a rule that breaks one comes back to you. A branch name or subject without the issue number is allowed, at the cost of the skills asking you for the issue every run.</li>
+              <li><strong>Nothing overwritten silently</strong> — an existing <code>.gitignore</code> only gains the <code>.piv/</code> line.</li>
             </ul>
           </dd>
 
@@ -264,25 +287,25 @@
 
     <section id="plan">
       <h2>Plan</h2>
-      <p>The plan step produces two kinds of document: the <strong>spec</strong>, which fixes requirements, design, tasks and verification in one file, and the <strong>units of work</strong> (the tickets), each a verbatim slice of that spec. They are separate skills because they answer different questions. <code class="skill">piv-write-prd</code> stands apart: an optional PRD that only <code class="skill">piv-spec</code> reads.</p>
+      <p>The plan step produces the <strong>spec</strong>, which fixes requirements, design, tasks and verification in one file; its <strong>review</strong>, which checks it against what already exists; and the <strong>tickets</strong>, each a verbatim slice of the spec for one task, tracked by a local <strong>epic</strong> and published as one GitHub <strong>issue</strong>. They are separate skills because they answer different questions. <code class="skill">piv-write-prd</code> stands apart: an optional PRD that only <code class="skill">piv-spec</code> reads.</p>
 
       <article class="skill" id="piv-spec">
         <span class="step">Plan · step 1</span>
         <h3>piv-spec</h3>
-        <p class="what">Interviews you in fixed phases until both sides confirm a shared understanding, then writes one 10-section spec that <code>piv-slice</code> cuts into tickets. Every statement comes from an answer you gave; the agent never fills a gap.</p>
+        <p class="what">Interviews you in fixed phases, then writes one 10-section spec. Every statement comes from an answer you gave; the agent never fills a gap.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[intent-slug]</code> and, optionally, the path of a PRD written by <code>piv-write-prd</code>. Blank starts with questions.</dd>
+          <dd><code>[intent-slug]</code> and the concept — a paragraph, a file, or a full document with links. URLs you pass are read without asking; links it finds on its own are asked first. The intent's PRD, when there is one, is found by its slug. Blank starts with questions.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.plans/[intent-slug].spec.md</code> — goal, non-goals, functional requirements (<code>FR</code>), non-functional requirements (<code>NFR</code>), acceptance criteria (<code>AC</code>), constraints (<code>C</code>), design (<code>D</code>), task plan (<code>T</code>), verification commands, boundaries and a decision log. <code>Intent-slug</code> and <code>Language</code> sit in its header.</dd>
+          <dd><code>.piv/[intent-slug]/spec.md</code> — goal, non-goals, functional requirements (<code>FR</code>), non-functional requirements (<code>NFR</code>), acceptance criteria (<code>AC</code>), constraints (<code>C</code>), design (<code>D</code>), task plan (<code>T</code>), verification commands, boundaries and a decision log. <code>Intent-slug</code> and <code>Language</code> sit in its header.</dd>
 
           <dt>How it runs</dt>
           <dd>Eight phases of numbered questions; every statement traces to an answer you gave. A bundled validator checks structure and traceability: every <code>NFR</code>, <code>C</code> and <code>D</code> must be cited by a task, and every reference must resolve. <code>Status: ready</code> once the lint is clean.</dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-slice [spec path]</code>, here or in a fresh session.</dd>
+          <dd><code>piv-review-spec [intent-slug]</code>, in a session of its own.</dd>
         </dl>
 
         <div class="usewhen">
@@ -291,31 +314,55 @@
             <li>You have a change in mind, with or without a PRD, and want it pinned down before anyone builds.</li>
             <li>An AI agent will implement it and needs requirements it can verify.</li>
           </ul>
-          <strong>Skip it when</strong> the change is a one-line fix you can describe in a ticket yourself.
+          <strong>Skip it when</strong> the change is a one-line fix you can make by hand.
+        </div>
+      </article>
+
+      <article class="skill" id="piv-review-spec">
+        <span class="step">Plan · step 2</span>
+        <h3>piv-review-spec</h3>
+        <p class="what">Audits a ready spec before it is published: what the codebase already holds, what the repo's issues and PRs already say, and every item the interview left deferred. It settles each one with you, and marks the spec's revision reviewed.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[intent-slug]</code>, for a spec with <code>Status: ready</code>. A <code>draft</code> stops the run.</dd>
+
+          <dt>Output</dt>
+          <dd>The spec, edited only with your answers, at <code>Status: reviewed</code>; and <code>.piv/[intent-slug]/spec.review.md</code> — what exists in the code, the conflicting issues and PRs, what you settled, what changed, and the <code>Reviewed-hash</code> of the spec. A problem that needs a new interview reopens the spec as <code>draft</code> instead.</dd>
+
+          <dt>How it runs</dt>
+          <dd>Read the spec → search the codebase → search the repo's issues and PRs with <code>gh</code>, read-only → ask, in the same numbered format as <code>piv-spec</code> → apply the answers and lint → mark the outcome. Without <code>gh</code> logged in it stops, unless you rule to go on without the remote check.</dd>
+
+          <dt>Next move</dt>
+          <dd><code>piv-slice [intent-slug]</code>, here or in a fresh session.</dd>
+        </dl>
+
+        <div class="usewhen">
+          <strong>Why a separate run.</strong> The interview that wrote the spec is the worst judge of it. A fresh session finds the code that already does half the job, and the closed issue that already rejected the idea, before the spec becomes a public issue.
         </div>
       </article>
 
       <article class="skill" id="piv-slice">
-        <span class="step">Plan · step 2</span>
+        <span class="step">Plan · step 3</span>
         <h3>piv-slice</h3>
-        <p class="what">Cuts a ready spec into tickets and creates them on the project's tracker. Each ticket copies, line for line, the part of the spec its task needs — nothing is created or reworded. This is also where the <strong>epic</strong> is born, when the breakdown has more than one ticket.</p>
+        <p class="what">Cuts a reviewed spec into one ticket per task and an epic that tracks them, then publishes the spec as the intent's one GitHub issue. Each ticket copies, line for line, the part of the spec its task needs — nothing is created or reworded.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd>The path of a spec written by <code>piv-spec</code>, with <code>Status: ready</code>. A spec still in <code>draft</code> stops the run.</dd>
+          <dd><code>[intent-slug]</code>, for a spec at <code>Status: reviewed</code> whose hash matches its review. A <code>draft</code>, a <code>ready</code>, or a spec edited after its review stops the run.</dd>
 
           <dt>Output</dt>
-          <dd>One ticket per task, each with a header block (<code>Spec</code> with the revision hash, <code>Slice</code>, <code>Blocked by</code>, <code>Size</code>, <code>Intent-slug</code>, <code>Language</code>) and the spec's sections. With more than one ticket, an epic lists the tickets, the dependency graph and what was not ticketed. The spec and the PRD are never published.</dd>
+          <dd><code>tasks/T-xx/T-xx.md</code>, one ticket per task, each with a header block (<code>Spec</code> with the revision hash, <code>Slice</code>, <code>Type</code>, <code>Blocked by</code>, <code>Size</code>, <code>Intent-slug</code>, <code>Language</code>) and the spec's sections; <code>epic.md</code>, the to-do list of tasks; and one GitHub issue, with the whole spec as its body, one type label — <code>bug</code>, <code>feature</code> or <code>task</code> — and you as assignee.</dd>
 
           <dt>How it runs</dt>
-          <dd>Non-interactive through slicing and dependency mapping, then <strong>one gate</strong> where you confirm the breakdown. A bundled validator, <code>lint_ticket.sh</code>, rejects any ticket line that is not a verbatim line of the spec, and no ticket is created until every draft passes.</dd>
+          <dd>Non-interactive through slicing, linting and the <code>gh</code> preflight, then <strong>one gate</strong> where you approve the issue: its title, its label, and the warning that the spec is published in full. A bundled validator, <code>lint_ticket.sh</code>, rejects any ticket line that is not a verbatim line of the spec, and any ticket with more than one task; nothing reaches GitHub until every ticket passes.</dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-implement [ticket-id]</code>, in a session of its own, one per ticket — or start a wave of independent tickets in parallel, each in a session of its own.</dd>
+          <dd><code>piv-implement [#N]</code>, in a session of its own.</dd>
         </dl>
 
         <div class="usewhen">
-          <strong>Use it when</strong> a spec is ready and you need it sliced into units an agent can finish and prove. Each ticket carries what it needs, so the spec stays on your machine.
+          <strong>Use it when</strong> a spec is reviewed and you need it sliced into units an agent can finish and prove, one at a time.
         </div>
       </article>
 
@@ -329,7 +376,7 @@
           <dd><code>[product idea]</code> plus optional paths to research docs — user interviews, support-ticket themes, analytics, competitor teardowns. Blank starts with questions.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.plans/[intent-slug].prd.md</code> — problem statement, evidence, thesis, hypothesis, target user &amp; JTBD, constraints, MVP, success metrics, non-goals, open questions.</dd>
+          <dd><code>.piv/[intent-slug]/prd.md</code> — problem statement, evidence, thesis, hypothesis, target user &amp; JTBD, constraints, MVP, success metrics, non-goals, open questions.</dd>
 
           <dt>How it runs</dt>
           <dd>A clustered interview in five phases, each ending at a gate where it waits for you. Questions are numbered across the whole run, and the hypothesis comes back to you assembled from your own words before it is final.</dd>
@@ -343,7 +390,7 @@
           </dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-spec [intent-slug] [PRD path]</code>, here or in a fresh session.</dd>
+          <dd><code>piv-spec [intent-slug]</code>, here or in a fresh session.</dd>
         </dl>
 
         <div class="usewhen">
@@ -363,22 +410,22 @@
       <h2>Implement</h2>
 
       <article class="skill implement" id="piv-implement">
-        <span class="step">Implement</span>
+        <span class="step">Implement · per task</span>
         <h3>piv-implement</h3>
-        <p class="what">Builds one ticket task by task on its own branch, validating at every step, and writes an implementation report.</p>
+        <p class="what">Builds one task from its ticket on the intent's branch, validating at every step, and writes an implementation report. The work stays uncommitted for the review.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[ticket id]</code>. Blank and it asks which ticket.</dd>
+          <dd><code>[#N | intent-slug] [T-xx]</code>. Blank takes the issue from the branch name and the next task from the epic: the one in progress, else the first whose dependencies are all committed.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/[ticket-id]-report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, problems encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code> — <code>PARTIAL</code> also when a changed file is one git ignores, since it never travels with the branch.</dd>
+          <dd><code>tasks/T-xx/T-xx.report.md</code> — summary, tasks completed, tests added, validation results, <strong>deviations from the ticket</strong>, problems encountered. Status is <code>COMPLETE</code> or <code>PARTIAL</code> — <code>PARTIAL</code> also when a changed file is one git ignores, since it never travels with the branch. The task turns <code>[~]</code> in the epic.</dd>
 
           <dt>How it runs</dt>
-          <dd>Resolve the ticket → work on a branch → read the ticket end to end and check for drift → execute tasks in order → close the testing strategy → run the checks → final verification.</dd>
+          <dd>Resolve the task and check its dependencies → work on the intent's branch, created by the first task as <code>[tag]/[N]-[short-slug]</code> → read the ticket end to end and check for drift → execute tasks in order → close the testing strategy → run the checks → final verification.</dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-review</code>, in a session of its own, handed the ticket id.</dd>
+          <dd><code>piv-review [#N] [T-xx]</code>, in a session of its own.</dd>
         </dl>
 
         <div class="usewhen">
@@ -391,105 +438,125 @@
 
     <section id="verify">
       <h2>Verify</h2>
-      <p>Verify is four skills and one rule: <strong>review and fixes are separate runs</strong>. The reviewer writes findings and touches no code. The triage run decides what happens to each finding, with you ruling on the split.</p>
+      <p>Verify is five skills and one rule: <strong>review and fixes are separate runs</strong>. The reviewer writes findings and touches no code. The triage run decides what happens to each finding, with you ruling on the split. Review, triage and commit run per task; the PR and its audit run once, for the whole intent.</p>
 
       <article class="skill verify" id="piv-review">
-        <span class="step">Verify · the gate</span>
+        <span class="step">Verify · the gate, per task</span>
         <h3>piv-review</h3>
-        <p class="what">Reviews the finished change for bugs, security defects and standards violations, and writes a review report. It is a report, never an edit.</p>
+        <p class="what">Reviews one task's uncommitted change for bugs, security defects and standards violations, and writes a review report. It is a report, never an edit.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[ticket id]</code> — blank and it's taken from the branch name.</dd>
+          <dd><code>[#N | intent-slug] [T-xx]</code> — blank and it takes the issue from the branch name and the task in progress from the epic.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/[ticket-id]-review.md</code> — scope (every file read), findings grouped <code>blocking</code> / <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, and the checks run, the full test suite among them. A <code>blocking</code> finding is a red, missing or weakened test, or a behavior with no test — a fact, outside the severity scale. Each finding carries evidence, impact and a concrete fix.</dd>
+          <dd><code>tasks/T-xx/T-xx.review.md</code> — scope (every file read), findings grouped <code>blocking</code> / <code>critical</code> / <code>high</code> / <code>medium</code> / <code>low</code>, and the checks run, the full test suite among them. A <code>blocking</code> finding is a red, missing or weakened test, or a behavior with no test — a fact, outside the severity scale. Each finding carries evidence, impact and a concrete fix.</dd>
 
           <dt>Verdict</dt>
           <dd><strong>CHANGES REQUESTED</strong> when any blocking, critical or high finding survives. <strong>PASS</strong> otherwise — a PASS with medium and low findings is normal.</dd>
 
           <dt>How it runs</dt>
-          <dd>Resolve the change → resolve prior deferrals → read the standards the change must meet → examine every changed file in its context → build the case → run three filters that kill unproven findings. The change is held to the ticket's acceptance criteria as well as its testing strategy: a criterion the code doesn't meet is a <code>high</code> finding.</dd>
+          <dd>Resolve the change against <code>HEAD</code>, the last commit before the task → resolve prior deferrals → read the standards the change must meet → examine every changed file in its context → build the case → run three filters that kill unproven findings. The change is held to the ticket's acceptance criteria as well as its testing strategy: a criterion the code doesn't meet is a <code>high</code> finding.</dd>
 
           <dt>Next move</dt>
-          <dd><strong>PASS</strong> → <code>piv-commit</code>, in a session of its own. <strong>CHANGES REQUESTED</strong> → <code>piv-fix</code>, in a session of its own, handed this report's path.</dd>
+          <dd><strong>PASS</strong> → <code>piv-commit [#N] [T-xx]</code>, in a session of its own. <strong>CHANGES REQUESTED</strong> → <code>piv-fix</code>, in a session of its own, handed this report's path.</dd>
         </dl>
 
         <div class="usewhen">
-          <strong>Use it</strong> before committing anything, and again after every fix run. On a re-review it overwrites the previous report: it is the current state of the branch, and the rulings on old findings live in the tracker, not here.
+          <strong>Use it</strong> before committing a task, and again after every fix run. On a re-review it overwrites the previous report: it is the current state of the task, and the rulings on old findings live in the deferrals, not here.
         </div>
       </article>
 
       <article class="skill verify" id="piv-fix">
         <span class="step">Verify · triage</span>
         <h3>piv-fix</h3>
-        <p class="what">Triages the review's findings, fixes the ones you choose one at a time with tests, defers and logs the rest onto the tracker, validates, and writes a fix report.</p>
+        <p class="what">Triages the review's findings, fixes the ones you choose one at a time with tests, defers the rest as local deferrals, validates, and writes a fix report.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[review report path]</code> — blank and it uses the review written for this branch.</dd>
+          <dd><code>[review report path]</code> — blank and it uses the review of the task in progress.</dd>
 
           <dt>Output</dt>
-          <dd><code>docs/.reports/[ticket-id]-fixes.md</code> — <strong>Fixed</strong>, <strong>Deferred</strong> (with issue refs), <strong>Needs a human look</strong>, <strong>Noise / won't-fix</strong>, and the checks run.</dd>
+          <dd><code>tasks/T-xx/T-xx.fixes.md</code> — <strong>Fixed</strong>, <strong>Deferred</strong> (with their <code>D-xx</code>), <strong>Needs a human look</strong>, <strong>Noise / won't-fix</strong>, and the checks run. Each deferral lands in <code>deferrals/D-xx.md</code> and in the epic's list; no issue is created.</dd>
 
           <dt>How it runs</dt>
           <dd>Triage every finding into one of the four buckets — a blocking finding only into <em>fix now</em> or <em>noise</em>, never deferred → fix the <em>fix now</em> set one at a time, each with a test that proves it → validate the whole branch.</dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-review</code> again, in a session of its own, handed the ticket id.</dd>
+          <dd><code>piv-review [#N] [T-xx]</code> again, in a session of its own.</dd>
         </dl>
 
         <div class="usewhen">
-          <strong>Why the report exists.</strong> Triage is a human decision, and a decision that lives only in the conversation is gone by the next run. The fix report and the deferral issues are what tell the re-review that a finding was already settled — so settled findings stay settled.
+          <strong>Why the report exists.</strong> Triage is a human decision, and a decision that lives only in the conversation is gone by the next run. The fix report and the deferral files are what tell the re-review that a finding was already settled — so settled findings stay settled.
         </div>
       </article>
 
       <article class="skill verify" id="piv-commit">
-        <span class="step">Verify · commit</span>
+        <span class="step">Verify · commit, per task</span>
         <h3>piv-commit</h3>
-        <p class="what">Commits the finished work as atomic, conventionally-tagged commits — each one a coherent piece of work its subject line can name.</p>
+        <p class="what">Commits one reviewed task as atomic, conventionally-tagged commits — each one a coherent piece of work its subject line can name — and marks the task done in the epic.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[ticket id]</code> — blank and it's taken from the branch name.</dd>
+          <dd><code>[#N | intent-slug] [T-xx]</code> — blank and it takes the issue from the branch name and the task in progress from the epic.</dd>
 
           <dt>Output</dt>
-          <dd>Commits on the branch, plus a "What Changed" summary for someone skimming the git log. The run ends with a clean tree.</dd>
+          <dd>Commits on the intent's branch, each subject closing on <code>(#N)</code>, plus a "What Changed" summary. The task turns <code>[x]</code> in the epic, with its commits' short hashes. The run ends with a clean tree.</dd>
 
           <dt>How it runs</dt>
-          <dd>Check where you are → inspect the tree → group the changes → commit each group → add a body when the subject isn't enough.</dd>
+          <dd>Check where you are and that the tree still matches the PASS → inspect the tree → group the changes → commit each group → mark the task done.</dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-open-pr</code>, in this same session. The ticket id travels on the branch name, and that's where the next skill reads it from.</dd>
+          <dd>A task still open → <code>piv-implement [#N]</code>, in a session of its own. Every task done → <code>piv-open-pr [#N]</code>, in this same session.</dd>
         </dl>
 
         <div class="usewhen">
-          <strong>Use it</strong> once the review verdict is PASS. Usually this is a single commit; when the tree holds unrelated work it splits, and anything that fits no group stops the run and asks you.
+          <strong>Use it</strong> once the task's review verdict is PASS. Usually this is a single commit; when the tree holds unrelated work it splits, and anything that fits no group stops the run and asks you.
         </div>
       </article>
 
       <article class="skill verify" id="piv-open-pr">
         <span class="step">Verify · handoff</span>
         <h3>piv-open-pr</h3>
-        <p class="what">Opens the pull request for the finished branch and hands the URL to a human reviewer.</p>
+        <p class="what">Opens the GitHub pull request for an intent whose tasks are all committed, closing its issue on merge, and hands the URL to a human reviewer.</p>
 
         <dl class="facts">
           <dt>Input</dt>
-          <dd><code>[base branch] · [ticket id]</code> — blank and it uses the project's base branch, with the ticket id read off the branch name.</dd>
+          <dd><code>[#N | intent-slug] · [base branch]</code> — blank and it takes the issue from the branch name and uses the project's base branch.</dd>
 
           <dt>Output</dt>
-          <dd>A published branch and an open review request: summary, what changed, validation, notes for the reviewer, open issues, linked ticket. It reports the PR number, the URL and the base ← head branches.</dd>
+          <dd>A published branch and an open PR, with the issue's label and you as assignee. Its body carries <code>Closes #N</code>, the spec's revision, and per task the summary, validation, deviations, surviving findings and open problems — plus every deferral in full. It reports the PR number, the URL and the base ← head branches.</dd>
 
           <dt>How it runs</dt>
-          <dd>Resolve the base branch → check the branch is shippable → gather the body from the reports → publish → open the review request.</dd>
+          <dd>Resolve the intent and the base branch → check every task is done and every commit is on the branch → gather the body from the reports and the deferrals → publish → open the PR with <code>gh</code>.</dd>
 
           <dt>Next move</dt>
-          <dd>A human reviews, approves and merges. <strong>The agent's loop ends at the merge.</strong></dd>
+          <dd><code>piv-review-pr [#N]</code>, in a session of its own — then a human reviews, approves and merges.</dd>
         </dl>
 
         <div class="usewhen">
-          <strong>Portable by design.</strong> A pull request on GitHub, a merge request on GitLab, or marking a branch ready for review elsewhere — it uses whatever tooling the repo already uses.
+          <strong>The issue closes itself.</strong> <code>Closes #N</code> in the body closes the issue when the PR merges; no step closes it by hand.
         </div>
+      </article>
+
+      <article class="skill verify" id="piv-review-pr">
+        <span class="step">Verify · audit</span>
+        <h3>piv-review-pr</h3>
+        <p class="what">Audits the open PR against the spec, item by item, and writes a PR review with a <strong>CONFORMS</strong> or <strong>DIVERGES</strong> verdict. It judges conformance, not code quality — <code>piv-review</code> already did that, task by task.</p>
+
+        <dl class="facts">
+          <dt>Input</dt>
+          <dd><code>[#N | intent-slug]</code> — blank and it takes the issue from the branch name.</dd>
+
+          <dt>Output</dt>
+          <dd><code>.piv/[intent-slug]/pr-review.md</code> — every <code>FR</code>, <code>NFR</code>, <code>C</code>, <code>D</code> and <code>AC</code> marked <em>met</em>, <em>diverges</em> or <em>not verifiable</em> with its evidence; the divergences, out-of-scope changes included, with a severity; the non-goals and <em>Never</em> lines, respected or violated; and whether the spec changed after the PR opened.</dd>
+
+          <dt>How it runs</dt>
+          <dd>Read the PR with <code>gh</code>, read-only → index the spec → read the whole diff → hold every item to it → compare the spec's revisions → write the review. It never comments on the PR.</dd>
+
+          <dt>Next move</dt>
+          <dd><strong>CONFORMS</strong> → a human merges. <strong>DIVERGES</strong> → you decide: fix it by hand, plan it as a new intent, or accept it. <strong>The agent's loop ends at the merge.</strong></dd>
+        </dl>
       </article>
     </section>
 
@@ -497,29 +564,40 @@
 
     <section id="artifacts">
       <h2>Artifacts &amp; where they live</h2>
-      <p>Every step reads the artifact before it, so the paths matter. They are defined in <code>docs/issue-tracker.md</code>.</p>
-
-      <p><code>docs/issue-tracker.md</code> is <strong>yours to customize</strong> — it is where a project declares which tracker it uses and what the artifact paths are, and the skills read that one filename and no other. <a href="#piv-setup"><code class="skill">piv-setup</code></a> writes it for the tracker you pick — GitHub, GitLab, Jira, or local markdown files — alongside <code>docs/piv-loop.md</code>, a <code>docs/git-conventions.md</code> merged with the git rules your <code>CLAUDE.md</code>, <code>AGENTS.md</code> or commit tooling already set, and a <code>docs/.gitignore</code> that keeps the plans and reports out of git. Run it once before the first step, and again to pick up a newer version.</p>
+      <p>Every step reads the artifact before it, so the paths matter. They are defined in <code>docs/piv-loop.md</code>, which <a href="#piv-setup"><code class="skill">piv-setup</code></a> installs alongside a <code>docs/git-conventions.md</code> merged with the git rules your <code>CLAUDE.md</code>, <code>AGENTS.md</code> or commit tooling already set. Everything below lives under <code>.piv/[intent-slug]/</code> at the repo root, which git ignores.</p>
 
       <table>
         <thead>
           <tr><th>Artifact</th><th>Path</th><th>Written by</th><th>Read by</th></tr>
         </thead>
         <tbody>
-          <tr><td>PRD</td><td><code>docs/.plans/[intent-slug].prd.md</code></td><td><code class="skill">piv-write-prd</code></td><td>spec</td></tr>
-          <tr><td>Spec</td><td><code>docs/.plans/[intent-slug].spec.md</code></td><td><code class="skill">piv-spec</code></td><td>tickets</td></tr>
-          <tr><td>Epic</td><td>the project's tracker</td><td><code class="skill">piv-slice</code></td><td>none — never an input</td></tr>
-          <tr><td>Tickets</td><td>the project's tracker</td><td><code class="skill">piv-slice</code></td><td>implement, review, fix, PR</td></tr>
-          <tr><td>Implementation report</td><td><code>docs/.reports/[ticket-id]-report.md</code></td><td><code class="skill">piv-implement</code></td><td>review, PR</td></tr>
-          <tr><td>Review report</td><td><code>docs/.reports/[ticket-id]-review.md</code></td><td><code class="skill">piv-review</code></td><td>fix, re-review, commit, PR</td></tr>
-          <tr><td>Fix report</td><td><code>docs/.reports/[ticket-id]-fixes.md</code></td><td><code class="skill">piv-fix</code></td><td>re-review, PR</td></tr>
+          <tr><td>PRD</td><td><code>prd.md</code></td><td><code class="skill">piv-write-prd</code></td><td>spec</td></tr>
+          <tr><td>Spec</td><td><code>spec.md</code></td><td><code class="skill">piv-spec</code></td><td>spec review, slice, PR review</td></tr>
+          <tr><td>Spec review</td><td><code>spec.review.md</code></td><td><code class="skill">piv-review-spec</code></td><td>slice</td></tr>
+          <tr><td>Epic</td><td><code>epic.md</code></td><td><code class="skill">piv-slice</code>, then each step that marks a task</td><td>every step from implement on</td></tr>
+          <tr><td>Tickets</td><td><code>tasks/T-xx/T-xx.md</code></td><td><code class="skill">piv-slice</code></td><td>implement, review, fix</td></tr>
+          <tr><td>Implementation report</td><td><code>tasks/T-xx/T-xx.report.md</code></td><td><code class="skill">piv-implement</code></td><td>review, PR</td></tr>
+          <tr><td>Review report</td><td><code>tasks/T-xx/T-xx.review.md</code></td><td><code class="skill">piv-review</code></td><td>fix, re-review, commit, PR</td></tr>
+          <tr><td>Fix report</td><td><code>tasks/T-xx/T-xx.fixes.md</code></td><td><code class="skill">piv-fix</code></td><td>re-review, PR</td></tr>
+          <tr><td>Deferrals</td><td><code>deferrals/D-xx.md</code></td><td><code class="skill">piv-fix</code></td><td>re-review, PR</td></tr>
+          <tr><td>PR review</td><td><code>pr-review.md</code></td><td><code class="skill">piv-review-pr</code></td><td>you</td></tr>
         </tbody>
-        <caption>Ticket ids are normalized for filenames first — <code>#123</code> becomes <code>123</code> — so a ticket's reports sit side by side. The PRD and the spec are written locally and stay there: <code class="skill">piv-slice</code> publishes neither, and copies into each ticket the part of the spec its task needs.</caption>
+        <caption>GitHub holds only two things: the issue, created by <code class="skill">piv-slice</code> with the spec as its body, and the PR, opened by <code class="skill">piv-open-pr</code>. Every other artifact stays on your machine.</caption>
       </table>
 
       <div class="callout">
+        <span class="tag">Why local first</span>
+        <p>A plan is cheap to change while it is a file and expensive once it is a tracker full of tickets, comments and links. Keeping the spec, the tickets and every report local lets the loop rewrite them freely, and leaves GitHub with what people actually read: one issue that states the intent, and one PR that delivers it.</p>
+      </div>
+
+      <div class="callout">
+        <span class="tag">Why one issue, one branch, one PR</span>
+        <p>The issue's number is the intent's identity in git: the branch is <code>[tag]/[N]-[short-slug]</code>, every commit ends on <code>(#N)</code>, and the PR closes <code>#N</code>. One task is one commit on that branch, so the history reads task by task, and a human reviews the whole intent once instead of a stack of small PRs.</p>
+      </div>
+
+      <div class="callout">
         <span class="tag">The intent-slug</span>
-        <p>Every artifact of one intent carries the same <code>intent-slug</code>: the kebab-slug of the epic or product title, in lowercase ASCII with accents stripped. Every artifact opens with a <strong>header block</strong> — a short markdown list, one bold field per line — and the slug is its first field. Later steps <strong>read it from the artifact instead of re-deriving it</strong> — so a PRD written as <code>user-auth.prd.md</code> never grows an <code>authentication.spec.md</code> beside it.</p>
+        <p>Every artifact of one intent carries the same <code>intent-slug</code>: the kebab-slug of the product title, or of the spec's goal, in lowercase ASCII with accents stripped. It names the intent's folder under <code>.piv/</code>, and every artifact opens with a <strong>header block</strong> — a short markdown list, one bold field per line — that carries it. Later steps <strong>read it from the artifact instead of re-deriving it</strong> — so a PRD written under <code>user-auth/</code> never grows an <code>authentication/</code> spec beside it.</p>
       </div>
     </section>
 
@@ -528,9 +606,11 @@
       <ol class="steps">
         <li><strong>Nothing chains itself.</strong> Each skill ends by offering the next move; you run it.</li>
         <li><strong>Each step reads the artifact before it.</strong> Reports are the input the next run works from, not paperwork.</li>
-        <li><strong>Skills stop rather than guess.</strong> No tracker chosen, an ambiguous ticket id, a dirty tree with work that fits no group, a review report that doesn't exist — the run stops and asks.</li>
+        <li><strong>Skills stop rather than guess.</strong> A spec not reviewed, a task whose dependency isn't committed, a dirty tree with work that fits no group, <code>gh</code> not logged in — the run stops and asks.</li>
+        <li><strong>GitHub is written twice.</strong> <code>piv-slice</code> creates the issue and <code>piv-open-pr</code> opens the PR; every other step reads, or stays local.</li>
         <li><strong>Review and fixes are separate runs.</strong> The reviewer writes findings and touches no code; the triage run decides what happens to each one, with you ruling on the split.</li>
-        <li><strong>The loop closes on a PASS.</strong> A fix run always hands back to a fresh review, which reads the deferral issues so settled findings stay settled.</li>
+        <li><strong>Each task closes on a PASS.</strong> A fix run always hands back to a fresh review, which reads the deferrals so settled findings stay settled.</li>
+        <li><strong>One task at a time.</strong> Tasks run in the epic's order, never in parallel, each committed before the next starts.</li>
         <li><strong>One language per intent.</strong> The PRD — or, with no PRD, the spec — is written in the language you interview in, and every later artifact follows it. Template headings and labels stay as the templates write them.</li>
       </ol>
 
@@ -542,60 +622,78 @@
 
     <section id="walkthrough">
       <h2>A full walkthrough</h2>
-      <p>One epic, start to merge. Each line is something you type, and the steps are grouped by the session they run in; the note beside each group says why, and <a href="#sessions">which runs share a session</a> explains the reasoning.</p>
+      <p>One intent with two tasks, start to merge. Each line is something you type, and the steps are grouped by the session they run in; the note beside each group says why, and <a href="#sessions">which runs share a session</a> explains the reasoning.</p>
 
       <div class="session-groups">
         <div class="session-group">
           <ol class="steps" start="1">
-            <li><code>piv-write-prd</code> — interview, then a PRD lands at <code>docs/.plans/team-inbox.prd.md</code>.</li>
-            <li><code>piv-spec team-inbox docs/.plans/team-inbox.prd.md</code> — the interview, then a spec lands at <code>docs/.plans/team-inbox.spec.md</code>.</li>
-            <li><code>piv-slice docs/.plans/team-inbox.spec.md</code> — confirm the breakdown at the gate; tickets land on the tracker.</li>
+            <li><code>piv-write-prd</code> — interview, then a PRD lands at <code>.piv/team-inbox/prd.md</code>.</li>
+            <li><code>piv-spec team-inbox</code> — it finds the PRD; the interview, then a spec lands at <code>.piv/team-inbox/spec.md</code>.</li>
           </ol>
-          <p class="session-note"><strong>One session for all three.</strong> They collaborate rather than audit each other, and the interview's nuance carries over. Past half the window, break at a doc boundary — the docs already hold everything.</p>
+          <p class="session-note"><strong>One session for both.</strong> They collaborate rather than audit each other, and the interview's nuance carries over. Past half the window, break at a doc boundary — the docs already hold everything.</p>
         </div>
         <div class="session-group">
-          <ol class="steps" start="4">
-            <li><code>piv-implement 123</code> — a branch, the tasks, the tests, and <code>docs/.reports/123-report.md</code>.</li>
+          <ol class="steps" start="3">
+            <li><code>piv-review-spec team-inbox</code> — it finds an open PR that overlaps one requirement; you settle it, and the spec is reviewed.</li>
+            <li><code>piv-slice team-inbox</code> — two tickets and the epic; you approve the issue at the gate, and issue <code>#123</code> opens with the spec as its body.</li>
           </ol>
-          <p class="session-note"><strong>Fresh session, one per ticket.</strong> The heaviest step needs the whole window; in the planning session it would miss the ticket's gaps and bring back alternatives the interviews rejected.</p>
+          <p class="session-note"><strong>Fresh session for the review; the slice may share it.</strong> The review must not share the interview's context, and the slice only runs on what the review approved.</p>
         </div>
         <div class="session-group">
           <ol class="steps" start="5">
-            <li><code>piv-review 123</code> — verdict <strong>CHANGES REQUESTED</strong>, 1 high and 3 medium in <code>docs/.reports/123-review.md</code>.</li>
+            <li><code>piv-implement #123</code> — branch <code>feat/123-team-inbox</code>, task <code>T-01</code>, its tests, and <code>tasks/T-01/T-01.report.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session, one per task.</strong> The heaviest step needs the whole window; in the planning session it would miss the ticket's gaps and bring back alternatives the interviews rejected.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="6">
+            <li><code>piv-review #123</code> — verdict <strong>CHANGES REQUESTED</strong>, 1 high and 3 medium in <code>tasks/T-01/T-01.review.md</code>.</li>
           </ol>
           <p class="session-note"><strong>Fresh session, always.</strong> In the implementation's session the review re-reads its own decisions and tends to confirm them.</p>
         </div>
         <div class="session-group">
-          <ol class="steps" start="6">
-            <li><code>piv-fix docs/.reports/123-review.md</code> — you fix the high and one medium, defer two onto the tracker; <code>docs/.reports/123-fixes.md</code> records every ruling.</li>
+          <ol class="steps" start="7">
+            <li><code>piv-fix .piv/team-inbox/tasks/T-01/T-01.review.md</code> — you fix the high and one medium, defer two as <code>D-01</code> and <code>D-02</code>; <code>T-01.fixes.md</code> records every ruling.</li>
           </ol>
           <p class="session-note"><strong>Fresh session.</strong> The run that raised the findings tends to defend them; the triage has to be free to rule against the review.</p>
         </div>
         <div class="session-group">
-          <ol class="steps" start="7">
-            <li><code>piv-review 123</code> — it reads the deferral issues, and the verdict is <strong>PASS</strong>.</li>
+          <ol class="steps" start="8">
+            <li><code>piv-review #123</code> — it reads the deferrals, and the verdict is <strong>PASS</strong>.</li>
           </ol>
           <p class="session-note"><strong>Fresh session, always.</strong> In the fix's session the review would approve its own fix; only an independent PASS closes the loop.</p>
         </div>
         <div class="session-group">
-          <ol class="steps" start="8">
-            <li><code>piv-commit 123</code> — atomic commits, clean tree.</li>
-            <li><code>piv-open-pr</code> — the PR opens and the URL goes to a human.</li>
+          <ol class="steps" start="9">
+            <li><code>piv-commit #123</code> — one commit ending on <code>(#123)</code>; <code>T-01</code> turns <code>[x]</code> in the epic.</li>
           </ol>
-          <p class="session-note"><strong>One fresh session for both.</strong> Carrying a review-sized context costs more than starting over, and the commit body comes from the diff, not the reports. The PR describes what the commit recorded, so nothing between them needs to stay independent.</p>
+          <p class="session-note"><strong>Fresh session.</strong> The commit body comes from the diff, not the reports. Then steps 5–9 run again for <code>T-02</code>.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="10">
+            <li><code>piv-commit #123</code> — the last task is committed.</li>
+            <li><code>piv-open-pr #123</code> — the PR opens with <code>Closes #123</code> and both deferrals in its body.</li>
+          </ol>
+          <p class="session-note"><strong>One session for both.</strong> Carrying a review-sized context costs more than starting over; the PR describes what the commits recorded, so nothing between them needs to stay independent.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="12">
+            <li><code>piv-review-pr #123</code> — every item of the spec is <em>met</em>: <strong>CONFORMS</strong>, and a human merges.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session.</strong> The audit must not share the context of the run that shipped what it audits.</p>
         </div>
       </div>
-      <p>Steps 5–7 repeat as many times as the branch needs, each pass in fresh sessions. That cycle <em>is</em> the loop.</p>
+      <p>Steps 6–8 repeat as many times as a task needs, each pass in fresh sessions. That cycle <em>is</em> the loop.</p>
     </section>
 
     <section id="sessions">
       <h2>Which runs share a session</h2>
-      <p>Every hand-off travels through an artifact — the spec, the tickets, the reports, the commits, the branch name — never through the conversation. A fresh session never loses anything the next step needs, so the choice weighs two things: whether the next run has to be independent, and what the session costs in tokens.</p>
-      <p>A shared session saves re-reading files, but every turn resends the whole session, and that cost grows with every tool call. A fresh session pays the re-read once and keeps later turns light. Sharing only pays when the next step would re-read almost everything the last one read <strong>and</strong> independence doesn't matter — which is why only the planning steps, and the commit with the PR, share one.</p>
+      <p>Every hand-off travels through an artifact — the spec, the epic, the tickets, the reports, the commits, the branch name — never through the conversation. A fresh session never loses anything the next step needs, so the choice weighs two things: whether the next run has to be independent, and what the session costs in tokens.</p>
+      <p>A shared session saves re-reading files, but every turn resends the whole session, and that cost grows with every tool call. A fresh session pays the re-read once and keeps later turns light. Sharing only pays when the next step would re-read almost everything the last one read <strong>and</strong> independence doesn't matter — which is why only the spec with the PRD, the slice with the spec review, and the last commit with the PR share one.</p>
 
       <div class="callout warn">
         <span class="tag">Combinations to avoid</span>
-        <p><strong>implement + review</strong>: self-approval. <strong>review + fix</strong>: the triage can't rule against the findings. <strong>fix + re-review</strong>: the loop closes without an independent PASS. <strong>fix or re-review + commit</strong>: a bloated session, and a commit body that retells the reports. <strong>planning + implement</strong>: the ticket's gaps go unseen and rejected alternatives come back.</p>
+        <p><strong>spec + spec review</strong>: the interview judges itself. <strong>implement + review</strong>: self-approval. <strong>review + fix</strong>: the triage can't rule against the findings. <strong>fix + re-review</strong>: the loop closes without an independent PASS. <strong>fix or re-review + commit</strong>: a bloated session, and a commit body that retells the reports. <strong>planning + implement</strong>: the ticket's gaps go unseen and rejected alternatives come back. <strong>open PR + PR review</strong>: the audit inherits the story of what shipped.</p>
       </div>
     </section>
 
@@ -603,7 +701,7 @@
       <h2>Troubleshooting</h2>
 
       <h3>The review keeps re-raising something I already decided to defer.</h3>
-      <p>The deferral has to exist as a tracker issue, not just a line in the conversation. <code>piv-fix</code> opens those issues; <code>piv-review</code> reads them in its step 2. If the issue isn't there, the finding legitimately comes back. A blocking finding comes back even when deferred: it closes only by fixing it, or by showing the problem isn't there.</p>
+      <p>The deferral has to exist as a file under <code>deferrals/</code> whose <em>Origin</em> names the task, not just a line in the conversation. <code>piv-fix</code> writes those files; <code>piv-review</code> reads them in its step 2. If the file isn't there, the finding legitimately comes back. A blocking finding comes back even when deferred: it closes only by fixing it, or by showing the problem isn't there.</p>
 
       <h3>The reviewer flagged something I changed on purpose.</h3>
       <p>Record it under <strong>Deviations from the ticket</strong> in the implementation report. That section is the reviewer's signal of intent. A test you changed is the exception: skipped, loosened, rewritten or deleted, it still blocks the review.</p>
@@ -611,15 +709,21 @@
       <h3>Can I skip the PRD?</h3>
       <p>Yes. The PRD is optional context for <code>piv-spec</code>, and the spec is what the rest of the loop reads.</p>
 
-      <h3>Can I run several tickets at once?</h3>
-      <p>Yes. <code>piv-slice</code> maps dependencies in step 4 precisely so you can see which tickets form an independent wave.</p>
+      <h3>Can I run several tasks at once?</h3>
+      <p>No. Tasks share one branch and are committed in the epic's order, so each review sees exactly one task's change against the last commit.</p>
+
+      <h3>I edited the spec and now piv-slice stops.</h3>
+      <p>Expected. The review approved one revision of the spec, by its hash; any edit after it needs <code>piv-review-spec</code> again.</p>
+
+      <h3>The PR review says DIVERGES. Does piv-fix handle it?</h3>
+      <p>No. <code>piv-fix</code> triages a task's review. A divergence in the PR is fixed by hand on the branch, planned as a new intent, or accepted at merge — your call.</p>
 
       <h3>Nothing moved after a skill finished.</h3>
       <p>Expected. Skills don't chain — read the next move it offered and run it yourself.</p>
     </section>
 
     <footer class="page">
-      <p>Source of truth: <code>docs/piv-loop.md</code>, <code>docs/issue-tracker.md</code>, <code>docs/git-conventions.md</code>, and the skill definitions under <code>.claude/skills/</code>. When this page and a skill disagree, the skill wins.</p>
+      <p>Source of truth: <code>docs/piv-loop.md</code>, <code>docs/git-conventions.md</code>, and the skill definitions under <code>.claude/skills/</code>. When this page and a skill disagree, the skill wins.</p>
     </footer>
 
   </main>
