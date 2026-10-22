@@ -334,7 +334,7 @@
           <dd>Read the spec → search the codebase → search the repo's issues and PRs with <code>gh</code>, read-only → ask, in the same numbered format as <code>piv-spec</code> → apply the answers and lint → mark the outcome. Without <code>gh</code> logged in it stops, unless you rule to go on without the remote check.</dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-slice [intent-slug]</code>, here or in a fresh session.</dd>
+          <dd><code>piv-slice [intent-slug]</code>, in a session of its own.</dd>
         </dl>
 
         <div class="usewhen">
@@ -390,7 +390,7 @@
           </dd>
 
           <dt>Next move</dt>
-          <dd><code>piv-spec .piv/[intent-slug]/prd.md</code>, here or in a fresh session.</dd>
+          <dd><code>piv-spec .piv/[intent-slug]/prd.md</code>, in a session of its own.</dd>
         </dl>
 
         <div class="usewhen">
@@ -628,16 +628,26 @@
         <div class="session-group">
           <ol class="steps" start="1">
             <li><code>piv-write-prd</code> — interview, then a PRD lands at <code>.piv/team-inbox/prd.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Its own session.</strong> The PRD is written to a file, and the next step reads it from there; nothing needs to stay in the conversation.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="2">
             <li><code>piv-spec .piv/team-inbox/prd.md</code> — it takes the PRD as input; the interview, then a spec lands at <code>.piv/team-inbox/spec.md</code>.</li>
           </ol>
-          <p class="session-note"><strong>One session for both.</strong> They collaborate rather than audit each other, and the interview's nuance carries over. Past half the window, break at a doc boundary — the docs already hold everything.</p>
+          <p class="session-note"><strong>Fresh session.</strong> The PRD already holds the intent; the spec interview starts from the file, not from the PRD interview's context.</p>
         </div>
         <div class="session-group">
           <ol class="steps" start="3">
             <li><code>piv-review-spec team-inbox</code> — it finds an open PR that overlaps one requirement; you settle it, and the spec is reviewed.</li>
+          </ol>
+          <p class="session-note"><strong>Fresh session.</strong> The review must not share the interview's context.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="4">
             <li><code>piv-slice team-inbox</code> — two tickets and the epic; you approve the issue at the gate, and issue <code>#123</code> opens with the spec as its body.</li>
           </ol>
-          <p class="session-note"><strong>Fresh session for the review; the slice may share it.</strong> The review must not share the interview's context, and the slice only runs on what the review approved.</p>
+          <p class="session-note"><strong>Fresh session.</strong> The slice only runs on what the review approved, and the spec and its review already hold everything it needs.</p>
         </div>
         <div class="session-group">
           <ol class="steps" start="5">
@@ -689,7 +699,7 @@
     <section id="sessions">
       <h2>Which runs share a session</h2>
       <p>Every hand-off travels through an artifact — the spec, the epic, the tickets, the reports, the commits, the branch name — never through the conversation. A fresh session never loses anything the next step needs, so the choice weighs two things: whether the next run has to be independent, and what the session costs in tokens.</p>
-      <p>A shared session saves re-reading files, but every turn resends the whole session, and that cost grows with every tool call. A fresh session pays the re-read once and keeps later turns light. Sharing only pays when the next step would re-read almost everything the last one read <strong>and</strong> independence doesn't matter — which is why only the spec with the PRD, the slice with the spec review, and the last commit with the PR share one.</p>
+      <p>A shared session saves re-reading files, but every turn resends the whole session, and that cost grows with every tool call. A fresh session pays the re-read once and keeps later turns light. Sharing only pays when the next step would re-read almost everything the last one read <strong>and</strong> independence doesn't matter — which is why only the last commit and the PR share one (and a commit with a review that ended clean).</p>
 
       <div class="callout warn">
         <span class="tag">Combinations to avoid</span>

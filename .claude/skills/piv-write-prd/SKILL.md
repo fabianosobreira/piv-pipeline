@@ -150,4 +150,4 @@ Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypo
 
 Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Write the spec** — run `piv-spec .piv/[intent-slug]/prd.md` (the path written) to turn this PRD, with the engineering decisions it deliberately left open, into a spec — here or in a fresh session.
+- **Write the spec** — run `piv-spec .piv/[intent-slug]/prd.md` (the path written) to turn this PRD, with the engineering decisions it deliberately left open, into a spec — in a session of its own.

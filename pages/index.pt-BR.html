@@ -323,7 +323,7 @@
           <dd>Ler o spec → buscar no código → buscar nas issues e PRs do repo com o <code>gh</code>, só leitura → perguntar, no mesmo formato numerado do <code>piv-spec</code> → aplicar as respostas e rodar o lint → marcar o resultado. Sem o <code>gh</code> autenticado ela para, a menos que você decida seguir sem a checagem remota.</dd>
 
           <dt>Próximo passo</dt>
-          <dd><code>piv-slice [intent-slug]</code>, nesta sessão ou em uma nova.</dd>
+          <dd><code>piv-slice [intent-slug]</code>, em uma sessão própria.</dd>
         </dl>
 
         <div class="usewhen">
@@ -379,7 +379,7 @@
           </dd>
 
           <dt>Próximo passo</dt>
-          <dd><code>piv-spec .piv/[intent-slug]/prd.md</code>, nesta sessão ou em uma nova.</dd>
+          <dd><code>piv-spec .piv/[intent-slug]/prd.md</code>, em uma sessão própria.</dd>
         </dl>
 
         <div class="usewhen">
@@ -618,16 +618,26 @@
         <div class="session-group">
           <ol class="steps" start="1">
             <li><code>piv-write-prd</code> — a entrevista e, ao final, um PRD em <code>.piv/team-inbox/prd.md</code>.</li>
+          </ol>
+          <p class="session-note"><strong>Sessão própria.</strong> O PRD é escrito em arquivo, e o próximo passo o lê de lá; nada precisa ficar na conversa.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="2">
             <li><code>piv-spec .piv/team-inbox/prd.md</code> — ela recebe o PRD como entrada; a entrevista e, ao final, um spec em <code>.piv/team-inbox/spec.md</code>.</li>
           </ol>
-          <p class="session-note"><strong>Uma sessão para os dois.</strong> Eles colaboram em vez de auditar um ao outro, e a nuance da entrevista segue junto. Se a janela passar da metade, quebre na fronteira de um doc — os docs já guardam tudo.</p>
+          <p class="session-note"><strong>Sessão nova.</strong> O PRD já guarda a intenção; a entrevista do spec parte do arquivo, não do contexto da entrevista do PRD.</p>
         </div>
         <div class="session-group">
           <ol class="steps" start="3">
             <li><code>piv-review-spec team-inbox</code> — ela encontra um PR aberto que se sobrepõe a um requisito; você resolve, e o spec fica reviewed.</li>
+          </ol>
+          <p class="session-note"><strong>Sessão nova.</strong> A review não pode dividir o contexto da entrevista.</p>
+        </div>
+        <div class="session-group">
+          <ol class="steps" start="4">
             <li><code>piv-slice team-inbox</code> — dois tickets e o epic; você aprova a issue no gate, e a issue <code>#123</code> abre com o spec no body.</li>
           </ol>
-          <p class="session-note"><strong>Sessão nova para a review; o slice pode compartilhá-la.</strong> A review não pode dividir o contexto da entrevista, e o slice só roda sobre o que a review aprovou.</p>
+          <p class="session-note"><strong>Sessão nova.</strong> O slice só roda sobre o que a review aprovou, e o spec e a review já guardam tudo o que ele precisa.</p>
         </div>
         <div class="session-group">
           <ol class="steps" start="5">
@@ -679,7 +689,7 @@
     <section id="sessions">
       <h2>Quais rodadas compartilham sessão</h2>
       <p>Todo hand-off passa por um artifact — o spec, o epic, os tickets, os reports, os commits, o nome da branch — e nunca pela conversa. Uma sessão nova nunca perde o que o próximo passo precisa, então a escolha pesa duas coisas: se a próxima rodada precisa ser independente, e quanto a sessão custa em tokens.</p>
-      <p>Uma sessão compartilhada economiza a releitura de arquivos, mas cada turno reenvia a sessão inteira, e esse custo cresce a cada tool call. Uma sessão nova paga a releitura uma vez e deixa os turnos seguintes leves. Compartilhar só compensa quando o próximo passo vai reler quase tudo o que o anterior leu <strong>e</strong> a independência não importa — por isso só o spec com o PRD, o slice com a review do spec, e o último commit com o PR compartilham uma.</p>
+      <p>Uma sessão compartilhada economiza a releitura de arquivos, mas cada turno reenvia a sessão inteira, e esse custo cresce a cada tool call. Uma sessão nova paga a releitura uma vez e deixa os turnos seguintes leves. Compartilhar só compensa quando o próximo passo vai reler quase tudo o que o anterior leu <strong>e</strong> a independência não importa — por isso só o último commit e o PR compartilham uma (e um commit com a review que terminou limpa).</p>
 
       <div class="callout warn">
         <span class="tag">Combinações a evitar</span>
