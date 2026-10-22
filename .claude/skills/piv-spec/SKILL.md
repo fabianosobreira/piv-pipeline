@@ -1,14 +1,14 @@
 ---
 name: piv-spec
-description: Interviews the user in fixed phases, then writes one 10-section spec that piv-slice cuts into tickets. Takes an optional PRD as context.
-argument-hint: "[intent-slug] · [optional: PRD path] (blank = starts by asking for them)"
+description: Interviews the user in fixed phases, then writes one 10-section spec for piv-review-spec to audit. Takes a concept — text, a file or URLs — and reads the intent's PRD when there is one.
+argument-hint: "[intent-slug] · [concept: text, file path or URLs] (blank = starts by asking for them)"
 disable-model-invocation: true
-allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *)
+allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *), WebFetch
 ---
 
 # Spec: the interview that fixes the plan
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes `docs/.plans/[intent-slug].spec.md`: the one plan `piv-slice` cuts into tickets. A PRD from `piv-write-prd` is optional context; this skill is the only one that reads it.
+This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes `.piv/[intent-slug]/spec.md`: the one plan `piv-review-spec` audits and `piv-slice` cuts into tickets. A PRD from `piv-write-prd`, at `.piv/[intent-slug]/prd.md`, is optional context; this skill is the only one that reads it.
 
 - Output skeleton: [templates/spec.md](templates/spec.md)
 - Validator: `${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh` (execute it, do not read it). It needs only POSIX `sh` and `awk`.
@@ -30,7 +30,7 @@ This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. 
 
 ## Language
 
-- Talk to the user, and write spec content, in the intent's language: the PRD's `Language` when a PRD is given, otherwise the language the user runs this interview in. Record it in the spec's `Language` field as a BCP 47 tag, such as `pt-BR`.
+- Talk to the user, and write spec content, in the intent's language: the PRD's `Language` when there is a PRD, otherwise the language the user runs this interview in. Record it in the spec's `Language` field as a BCP 47 tag, such as `pt-BR`.
 - Keep these in English because the validator depends on them: section headings, header labels, IDs (`FR-01`, `NFR-01`, `C-01`, `D-01`, `AC-01`, `T-01`, `Q1`), keywords (`WHEN`, `THE SYSTEM SHALL`, `Given`/`When`/`Then`, `Source:`, `Depends on:`, `DoD:`), `Status:` values, and markers (`[PENDING]`, `[DEFERRED]`).
 
 ## Rules
@@ -50,8 +50,9 @@ Commands, doc lookups and probe programs produce observable facts (current cover
 - Run without asking:
   - read-only commands that change no tracked file and install nothing (`git log`, `git status`, `git ls-files`, `--version`) and the test, coverage, lint, and typecheck commands the repo already defines;
   - fetching a library's or tool's official documentation from the web;
+  - reading, with `WebFetch`, every URL the user passed in the concept — cite each one as a source;
   - a probe: a small throwaway program that tests a claim, written to a temporary directory outside the repo, using only dependencies already installed, and deleted after it runs.
-- Ask first: installs, other network access, or commands expected to run long.
+- Ask first: installs, other network access — a link you found inside a source included — or commands expected to run long.
 - Cite as source the command and the relevant output: `pytest --cov → 71%`. For a doc, cite its URL; for a probe, show its code and output.
 - Report a failing command as a fact. Do not work around it silently.
 
@@ -118,15 +119,15 @@ Run phases in order. A phase closes only when its **Done when** and all of these
 - **Example test** (phases 2 and 4): concrete cases were validated.
 - **No loose ends**: every doubt is answered or marked `[DEFERRED]`.
 
-After closing a phase, write it to the output file and add one row per question to the decision log. If the output file already exists with `[PENDING]` sections, resume at the first phase that still has them.
+After closing a phase, write it to the output file and add one row per question to the decision log. If the output file already exists with `[PENDING]` sections, resume at the first phase that still has them. A spec `piv-review-spec` reopened reads `Status: draft`, and its `spec.review.md` names the items to settle: resume at the phase of each one.
 
 ### Phase 0 — Recon
 
-1. Read before asking: the PRD when `$ARGUMENTS` carries one (end to end), `README`, `CLAUDE.md`/`AGENTS.md`, manifests (`package.json`, `pyproject.toml`, `go.mod`), directory tree, existing tests, CI config, `docs/`, and any analysis document the user points to. Run the commands that give facts needed later (see Running commands).
+1. Read before asking: the concept `$ARGUMENTS` carries — a paragraph, a file, or a full document with links — with every URL the user passed in it; the PRD at `.piv/[intent-slug]/prd.md` when it exists (end to end); `README`, `CLAUDE.md`/`AGENTS.md`, manifests (`package.json`, `pyproject.toml`, `go.mod`), directory tree, existing tests, CI config, `docs/`, and any analysis document the user points to. Run the commands that give facts needed later (see Running commands).
 2. Present a short inventory: sources read, commands run, relevant sources missing.
-3. Ask, in one message: additional sources, and the intent slug when it is not settled. The slug is the PRD's `Intent-slug` when a PRD is given, and `$ARGUMENTS` when it carries one; otherwise propose one as `docs/issue-tracker.md` defines the `intent-slug`. **GATE.**
+3. Ask, in one message: additional sources, and the intent slug when it is not settled. The slug is the one `$ARGUMENTS` carries; with none, offer each `.piv/[slug]/prd.md` that has no `spec.md` beside it, or propose one as `docs/piv-loop.md` defines the `intent-slug`. A PRD the settled slug has, and step 1 did not read, is read now. **GATE.**
 
-As soon as the slug is settled, create `docs/.plans/[intent-slug].spec.md` from [templates/spec.md](templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read, the PRD included, under `Context sources`.
+As soon as the slug is settled, create `.piv/[intent-slug]/spec.md` from [templates/spec.md](templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read, the PRD included, under `Context sources`.
 
 **Done when** the inventory was posted, the user answered the GATE, and the spec file exists with `Intent-slug`, `Language` and `Context sources` set.
 
@@ -169,7 +170,7 @@ Ask for the three levels: **Always** (the agent acts without asking), **Ask firs
 
 ### Phase 6 — Execution and verification (sections 8, 9)
 
-1. Section 8: propose task granularity (options A/B with task counts). Each task cites its `FR-xx` and every `NFR-xx`, `C-xx` and `D-xx` that shapes it, lists dependencies, and states a definition of done (`DoD:`). Every `NFR`, `C` and `D` is cited by at least one task, because `piv-slice` copies into a ticket only the items its tasks cite. Target size: one PR per task. The user confirms order and scope.
+1. Section 8: propose task granularity (options A/B with task counts). Each task cites its `FR-xx` and every `NFR-xx`, `C-xx` and `D-xx` that shapes it, lists dependencies, and states a definition of done (`DoD:`). Every `NFR`, `C` and `D` is cited by at least one task, because `piv-slice` copies into a ticket only the items its tasks cite. Target size: one commit per task — each task is implemented, reviewed and committed on its own, so each one must be provable alone by its `DoD`. The user confirms order and scope.
 2. Section 9: one row per acceptance criterion with the exact verification command, a pass criterion (for example, exit code 0), and the origin of the command (`Q<n>` or `path:line`), following rule 6.
 
 **Done when** the user confirmed the task order and scope, every task carries its `FR`, `Depends on` and `DoD:`, every `NFR`, `C` and `D` is cited by a task, and every `AC-xx` has a section 9 row.
@@ -196,13 +197,13 @@ The lint checks structure and traceability. It does not check meaning: example t
 - Task: `- T-01 (FR-01, NFR-01, C-02, D-01, Source: Q9): ... | Depends on: - | DoD: ...`
 - Section 9 rows: `| AC-01 | `command` | pass criterion | Q12 |`. A `|` character is not allowed inside a cell; put pipelines in a script file and reference the script.
 - Every `Q<n>` cited must have a row in the decision log.
-- `Status:` is `draft` or `ready`.
+- `Status:` is `draft` or `ready`. Only `piv-review-spec` sets `reviewed`.
 
 ## Hand off
 
 Confirm where the spec landed, by path, then offer the next move and let the user run it:
 
-- **Slice it** — run `piv-slice [spec path]`, here or in a fresh session.
+- **Review it** — run `piv-review-spec [intent-slug]`, in a session of its own.
 
 ## Effort limits
 

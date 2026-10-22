@@ -1,35 +1,45 @@
 ---
 name: piv-slice
-description: Cuts a ready spec into tickets, each a verbatim slice of the spec, then creates them on the project's tracker, under an epic when there is more than one.
-argument-hint: "[spec path] (blank = starts by asking for it)"
+description: Cuts a reviewed spec into one ticket per task and an epic that tracks them, then publishes the spec as the intent's one GitHub issue.
+argument-hint: "[intent-slug] (blank = starts by asking for it)"
 disable-model-invocation: true
-allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh *), Bash(git hash-object *)
+allowed-tools:
+  - Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh *)
+  - Bash(git hash-object *)
+  - Bash(gh auth status)
+  - Bash(gh label list *)
+  - Bash(gh label create *)
+  - Bash(gh issue create *)
 ---
 
 # Slice: Spec → Provable Units of Work
 
-This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. A ticket is a copy of the part of the spec its tasks need, never new text: the spec fixed every decision, and a ticket that adds or rewords one lets the implementation drift from what the user confirmed. Write the epic's free text in the spec's `Language`; the tickets inherit it by copying.
+This closes the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes, under `.piv/[intent-slug]/`, one ticket per task of the spec at `tasks/T-xx/T-xx.md` and the `epic.md` that tracks them, then creates the intent's one GitHub issue, whose body is the whole spec. A ticket is a copy of the part of the spec its task needs, never new text: the spec fixed every decision, and a ticket that adds or rewords one lets the implementation drift from what the user confirmed. Write the epic's free text in the spec's `Language`; the tickets inherit it by copying.
 
-## Input — a spec with `Status: ready`
+## Input — a reviewed spec
 
-`$ARGUMENTS` carries the path of a spec written by `piv-spec`, a local file where `docs/issue-tracker.md` says plans live. Read `docs/issue-tracker.md` first: Step 6 follows its *Creating a ticket* rules. Nothing passed → ask for the spec. **GATE.** Handed anything else — a PRD, an idea, a brief → **STOP**: it is not sliceable, and `piv-spec` turns it into a spec first.
+`$ARGUMENTS` carries the intent-slug. Nothing passed → list each `.piv/[slug]/spec.md` that says `Status: reviewed` and ask which. **GATE.** No spec at `.piv/[intent-slug]/spec.md` → **STOP**: `piv-spec` writes it first.
 
-Read the spec end to end. Its header decides whether the run goes on:
+The spec's header, and `.piv/[intent-slug]/spec.review.md`, decide whether the run goes on:
 
-- `Status: draft` → **STOP** and say that the spec has to be concluded in `piv-spec`. Nothing is created.
-- No `Intent-slug` or `Language` field → **STOP** and say that the spec predates the format and has to be rewritten in `piv-spec`.
-- `Status: ready` → go on.
+- `Status: draft` → **STOP**: the spec has to be concluded in `piv-spec`.
+- `Status: ready` → **STOP**: the spec has to be reviewed in `piv-review-spec` first.
+- `Status: reviewed`, but `git hash-object --no-filters [spec path]` differs from the `Reviewed-hash` of `spec.review.md`, or there is none → **STOP**: the spec changed after its review; run `piv-review-spec` again.
+- `Status: reviewed` and the hashes match → go on.
 
-**The epic is this skill's output, never its input, and it exists only when the breakdown has more than one ticket.** Neither the spec nor a PRD is published to the tracker: each ticket carries what it needs.
+An `epic.md` already there decides it too:
+
+- Its `Issue` holds a number → **STOP**: the intent is already published as that issue.
+- Its `Issue` reads `pending` → an earlier run stopped before the issue. Start over, and ask before overwriting each ticket already under `tasks/`. **GATE.**
 
 ## Success criteria
 
-- ✅ **The spec was `Status: ready`**; with `draft`, nothing was created.
-- ✅ **Every task of section 8 is in exactly one ticket**, and no ticket holds a line the spec does not.
-- ✅ **Every ticket passed `lint_ticket.sh` before any ticket was created.**
-- ✅ **The user confirmed the breakdown** before anything was created — or skipped the GATE, and the calls made for them are recorded as **(decided-by-default)**.
-- ✅ **Every ticket was created by the *Creating a ticket* rules of `docs/issue-tracker.md`**, with exactly one type, a `Blocked by` that names the ticket of each task it depends on, and, with an epic, a `Part of`.
-- ✅ **With an epic, it lists the tickets, the dependency graph and the execution order, and what was not ticketed.**
+- ✅ **The spec was reviewed at its current revision**; otherwise nothing was written.
+- ✅ **Every task of section 8 is in exactly one ticket, and every ticket carries exactly one task**, with no line the spec does not hold.
+- ✅ **Every ticket passed `lint_ticket.sh` before anything reached GitHub.**
+- ✅ **The epic lists every task with its type, size and dependencies, all `[ ]`, and every open question no ticket carries.**
+- ✅ **The user approved the issue at the GATE** before it was created.
+- ✅ **The issue exists with the whole spec as its body, exactly one type label, and the user as assignee**, and its number, URL and label are in the epic.
 
 ## Process
 
@@ -38,11 +48,13 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 ```
 - [ ] Step 1 — Read the spec
 - [ ] Step 2 — Orient on the existing surface
-- [ ] Step 3 — Cut the slices
+- [ ] Step 3 — Cut one ticket per task
 - [ ] Step 4 — Map the blockers
-- [ ] Step 5 — GATE: confirm the breakdown
-- [ ] Step 6 — Draft and validate every ticket, then create them
-- [ ] Step 7 — Report
+- [ ] Step 5 — Write and lint the tickets and the epic
+- [ ] Step 6 — Preflight GitHub
+- [ ] Step 7 — GATE: confirm the issue
+- [ ] Step 8 — Create the issue
+- [ ] Step 9 — Report
 ```
 
 ### Step 1 — Read the spec
@@ -53,80 +65,86 @@ List every task of section 8 with the IDs in its head (`FR`, `NFR`, `C`, `D`) an
 
 ### Step 2 — Orient on the existing surface
 
-Size needs a look at what exists. Explore it yourself: read the files and directories the tasks name, and where they land. Greenfield with nothing built yet: skip this step, and say so.
+Size needs a look at what exists. Read the files and directories the tasks name, and where they land. Greenfield with nothing built yet: skip this step, and say so.
 
 **Done when** each task has the surface it touches, enough to give it a rough size.
 
-### Step 3 — Cut the slices
+### Step 3 — Cut one ticket per task
 
-A slice is one task. Take one ticket per task by default; group tasks into one ticket only when the user asks at the Step 5 GATE or a task cannot be proved without its neighbor. A task is never split, because its line is the smallest thing a ticket copies.
+One task is one ticket — never two tasks in one, whoever asks, and never a task split. Each task is implemented, reviewed and committed on its own, so it has to be provable on its own by its `DoD`. A task that cannot be — its `DoD` needs another task's code, or names no check — is a defect of the spec → **STOP**, naming the task and why, and point at `piv-review-spec`, or at `piv-spec` when the task plan needs reshaping.
 
-For each slice draft what the header block and the tracker need — the content comes from the spec:
+For each task take, from the spec:
 
 - **Title** — the task's description: the text between the head's colon and ` | Depends on`.
-- **Type** — exactly one of `bug`, `feature` and `task`, as `docs/issue-tracker.md` defines them: from the task's text, `bug` when it repairs behavior the spec says diverges, `feature` when it adds a capability, `task` for refactor, docs, chore and infra.
-- **Size** — `S`, `M` or `L`, judged from the surface listed in Step 2 and the number of lines of change one focused loop can finish.
+- **Type** — exactly one of `bug`, `feature` and `task`, as `docs/piv-loop.md` defines them, from the task's text.
+- **Size** — `S`, `M` or `L`, judged from the surface listed in Step 2 and the lines of change one focused loop can finish.
 
-**Done when** every task is in a slice, each slice has its title, type and size.
+**Done when** every task has its title, type and size, and every task is provable on its own.
 
 ### Step 4 — Map the blockers
 
-A slice is blocked by the ticket of each task its tasks list in `Depends on`, when that task sits in another slice. Slices with no such task are independent and can run in parallel. A grouping that makes two slices wait on each other is regrouped.
+A ticket's `Blocked by` is exactly the tasks its task lists in `Depends on`, as `T-xx` ids, or `none`.
 
-**Done when** every slice is independent or lists the slices that block it, and the creation order puts every blocker before the ticket it blocks.
+**Done when** every ticket has its `Blocked by`, and every task's dependencies come before it in the spec's order.
 
-### Step 5 — GATE: confirm the breakdown
+### Step 5 — Write and lint the tickets and the epic
 
-Say which tracker you are writing to and whether the breakdown gets an epic — it does when it has more than one ticket — then **GATE** — post the ticket titles, their types, the task each carries, their sizes, the dependency graph, and, under **Not ticketed**, every open question that no ticket carries. Then **stop. End the turn and hand the decision to the user.** Their approval is the only thing that moves this forward — never roll into creating the tickets on your own, and never treat your own judgment as their approval.
-
-**If they skip the GATE** ("just create them"): honor it, but name the calls you made on their behalf — the types, the sizes, the grouping and the dependency graph — and record them as **(decided-by-default)** in the epic's *Dependency graph and execution order* (with no epic, in the Step 7 report), never as though the user had ruled on them.
-
-**Done when** the user approved the breakdown — or skipped the GATE, and the calls made for them are named.
-
-## Output — create the tickets
-
-### Step 6 — Draft and validate every ticket, then create them
-
-Write the epic's free text in the spec's `Language`; template labels stay as written. Before creating anything, confirm you can reach the tracker `docs/issue-tracker.md` names, with the tool it names or whatever fits when it names none. If nothing reaches it → **STOP** and say so: a run that fails midway leaves a partial backlog.
-
-Plan → validate → execute:
-
-1. **Draft every ticket body** in a file outside the repository's tracked paths, using `templates/ticket.md` exactly: the header block, then the 11 sections of the spec. Fill each section by the rules below. Ids that do not exist yet are written `#0`, one for each blocker in `Blocked by` and for `Part of`.
-2. **Validate each draft** with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket file] [spec path]` — run it, do not read it; it needs a POSIX `sh`, `awk`, `tr`, `cmp` and `git`. Fix the draft, never the spec, until it prints `RESULT: OK`. **No ticket is created while any draft has findings.**
-3. **Create, in creation order.** With an epic, create it first, from `templates/epic.md`, used exactly, where `docs/issue-tracker.md` says. Then create each ticket by the *Creating a ticket* rules, blockers first. Before creating a ticket, replace each `#0` in its `Part of` and `Blocked by` with the real id, and validate the body again. Capture each ticket's id and URL as soon as it exists, in the id form `docs/issue-tracker.md` defines, and, with an epic, add its line to the epic's *Tickets* list. That id is what every later step is handed.
-4. **With an epic, then write the dependency graph and the execution order** in the epic's *Dependency graph and execution order* section, and the open questions no ticket carries in its *Not ticketed* section.
-
-What goes in a ticket, line by line — every bullet and every table row is a line of the spec, copied character for character with its IDs, and a section with nothing for the slice holds only `None in this ticket.`:
+Write each ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, from `templates/ticket.md` used exactly: the header block, then the 11 sections of the spec. What goes in, line by line — every bullet and table row is a line of the spec, copied character for character with its IDs, and a section with nothing for the task holds only `None in this ticket.`:
 
 - **Sections 1 and 2** — every line, whole.
-- **Section 3** — the `FR` lines the slice's tasks cite. **Section 4** — the `NFR` lines they cite. **Section 6** — the `C` lines. **Section 7** — the `D` lines.
-- **Section 5** — every `AC` whose head cites at least one `FR` of the slice, with its whole line, even when the head also cites an `FR` outside the slice.
-- **Section 8** — the slice's own task lines. A task that depends on a task in another ticket keeps its `Depends on` as written, and that ticket's id goes in `Blocked by`; the line of the other ticket's task is not copied.
+- **Section 3** — the `FR` lines the task cites. **Section 4** — the `NFR` lines. **Section 6** — the `C` lines. **Section 7** — the `D` lines.
+- **Section 5** — every `AC` whose head cites at least one `FR` the task cites, with its whole line.
+- **Section 8** — the task's own line, its `Depends on` as written.
 - **Section 9** — the table header and the rows of the `AC` copied to section 5.
-- **Section 10** — the *Always*, *Ask first* and *Never* levels, whole; under *Open questions*, only the lines that cite an ID of the slice, even when a line also cites an ID outside it.
+- **Section 10** — the *Always*, *Ask first* and *Never* levels, whole; under *Open questions*, only the lines that cite an ID the ticket carries.
 - **Appendix** — the table header and the decision-log row of every `Q` cited anywhere in the ticket, whole.
 
-The header block follows `templates/ticket.md`: `Part of` only with an epic, `Spec` as `[spec path] @ [hash]` with the hash from `git hash-object --no-filters [spec path]`, then `Slice`, `Blocked by`, `Size`, `Intent-slug` and `Language` copied from the spec.
+The header block: `Spec` as `[spec path] @ [hash]`, with the hash from `git hash-object --no-filters [spec path]`; `Slice`, the task's id; `Type`, `Blocked by` and `Size` from Steps 3 and 4; `Intent-slug` and `Language` copied from the spec.
 
-Every ticket, in either branch:
+Validate each ticket with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket path] [spec path]` — run it, do not read it; it needs a POSIX `sh`, `awk`, `tr`, `cmp` and `git`. Fix the ticket, never the spec, until it prints `RESULT: OK`.
 
-- Its section headings are the contract: an implementation loop reads the task list under section 8, the criteria under section 5 and the commands under section 9.
-- Its blockers are kept twice: in `Blocked by`, and in whatever blocking link the tracker offers.
-- The spec and the PRD are not posted anywhere: the epic carries no comment, and neither does a ticket.
+Then write `.piv/[intent-slug]/epic.md` from `templates/epic.md`, used exactly, in the grammar `docs/piv-loop.md` gives: every task `[ ]` with its title, type, size and `Depends on`; `Issue`, `Type` and `Branch` reading `pending`; and under *Not ticketed*, every open question of section 10 that no ticket carries.
 
-**Done when** every ticket is created with its id and URL captured; with an epic, its *Tickets* list is complete and the dependency graph is written.
+**Done when** every ticket printed `RESULT: OK` and the epic lists every task. Nothing reaches GitHub while any ticket has findings.
 
-### Step 7 — Report
+### Step 6 — Preflight GitHub
 
-Report a table of ticket title → type → created id and URL; the spec the backlog was generated from, by path and hash; the execution order — which tickets can start now, in parallel, and which are waiting; **what you deliberately did *not* ticket** — the open questions no ticket carries; and, with the GATE skipped, the **(decided-by-default)** calls.
+Check, in order, and **STOP** on the first that fails, with the command that fixes it:
 
-**Done when** every created ticket is in the table and every *Not ticketed* note is in the report.
+1. `gh auth status` passes — else `gh auth login`.
+2. The `origin` remote is on `github.com`.
+3. The issue's **type** — the largest effect among the tasks' types, `feature` over `bug` over `task` — exists as a label: `gh label list --search [type]`. Missing → create it with `gh label create [type]`; when that fails → **STOP**: an issue without its type is one the filters never find.
+
+**Done when** all three hold.
+
+### Step 7 — GATE: confirm the issue
+
+Post, then **GATE**:
+
+- the issue title — the spec's title, the text after `# Spec:`;
+- the proposed type label, with the type of each task behind it, and that the user may pick another of `bug`, `feature` and `task`;
+- **"The spec will be published in full as the issue body."**;
+- the local spec as a clickable relative link, such as `[spec.md](.piv/[intent-slug]/spec.md)`;
+- the epic's task list and *Not ticketed*.
+
+End the turn and wait. The user's approval is the only thing that creates the issue; a different label the user picks is preflighted as in Step 6 before it is used.
+
+**Done when** the user approved the issue, with its label.
+
+### Step 8 — Create the issue
+
+Create it with `gh issue create`: the title from Step 7, the body from the spec file itself, passed as a file — `.piv/[intent-slug]/spec.md` — never retyped, the approved label, and `@me` as assignee. Capture the number and URL it prints and write them into the epic's `Issue` as `#N` and the URL, and the label into its `Type`. A creation that fails → **STOP** with `gh`'s message; the epic keeps `Issue: pending`, so a rerun starts over.
+
+**Done when** the issue exists and the epic's `Issue` and `Type` name it.
+
+### Step 9 — Report
+
+Report a table of task → type → size → depends on; the issue number and URL; the spec path and the hash the tickets were cut from; and **what was not ticketed** — the open questions no ticket carries.
+
+**Done when** every task is in the table and every *Not ticketed* line is in the report.
 
 ## Hand off
 
-Confirm the epic's id, when there is one, and where the tickets landed, then offer the next move and let the user run it — this skill does not chain into the next one:
+Confirm where the epic and the tickets landed, by path, and the issue by number and URL, then offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Start the first ticket** — run `piv-implement [ticket id]`, in a session of its own, one per ticket.
-- **Run a wave in parallel** — the independent tickets from Step 4 can start at the same time, each in a session of its own.
-
-Plan just-in-time: a dependent ticket waits until its blocker is *implemented*.
+- **Start the first task** — run `piv-implement [#N]`, in a session of its own. It picks the next task from the epic.

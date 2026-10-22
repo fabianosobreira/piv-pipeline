@@ -1,6 +1,8 @@
 [
   {
-    "skills": ["piv-spec"],
+    "skills": [
+      "piv-spec"
+    ],
     "query": "Write a spec for adding rate limiting to the public API of this repo. An AI agent will implement it.",
     "files": [
       "evals/fixtures/sample-repo/package.json",
@@ -10,32 +12,37 @@
     ],
     "expected_behavior": [
       "Reads the repo files and presents an inventory of sources read before asking the first question",
-      "Creates docs/.plans/[intent-slug].spec.md from templates/spec.md and shows the Interview Progress checklist",
+      "Creates .piv/[intent-slug]/spec.md from templates/spec.md and shows the Interview Progress checklist",
       "Sends at most 3 questions per message, numbered continuously (Q1, Q2, ...) in the 🔍 format with 1 to 3 options",
       "Every recommendation (💡) carries an Empirical: basis with a source, such as the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7, a Pragmatic: basis naming the concrete problem it solves, or both",
       "Writes spec content in the language of the user's request and keeps headings, IDs and keywords in English",
       "Numbers section 4, 6 and 7 items as NFR-xx, C-xx and D-xx, and cites each of them in the head of at least one task",
-      "Runs scripts/lint_spec.sh before finishing and sets Status: ready once it prints RESULT: OK, with no playback and no extra confirmation gate"
+      "Runs scripts/lint_spec.sh before finishing and sets Status: ready once it prints RESULT: OK, with no playback and no extra confirmation gate",
+      "Hands off to piv-review-spec [intent-slug] in a session of its own, not to piv-slice"
     ]
   },
   {
-    "skills": ["piv-spec"],
-    "query": "/piv-spec rate-limiting evals/fixtures/prd/rate-limiting.prd.md",
+    "skills": [
+      "piv-spec"
+    ],
+    "query": "/piv-spec rate-limiting. The PRD in evals/fixtures/prd/rate-limiting.prd.md sits at .piv/rate-limiting/prd.md.",
     "files": [
       "evals/fixtures/prd/rate-limiting.prd.md",
       "evals/fixtures/sample-repo/package.json",
       "evals/fixtures/sample-repo/.github/workflows/ci.yml"
     ],
     "expected_behavior": [
-      "Reads the PRD end to end in Phase 0 and lists it in the inventory of sources",
-      "Creates docs/.plans/rate-limiting.spec.md with Intent-slug: rate-limiting and Language: en-US in the header, both taken from the PRD",
+      "Finds .piv/rate-limiting/prd.md on its own, reads it end to end in Phase 0 and lists it in the inventory of sources",
+      "Creates .piv/rate-limiting/spec.md with Intent-slug: rate-limiting and Language: en-US in the header, both taken from the PRD",
       "Lists the PRD under Context sources in the spec header",
       "Does not copy any PRD statement into the spec before the user confirms it in a question; the PRD's open questions become questions of phases 3 and 4 or [DEFERRED] items in section 10",
       "Asks the budget per minute as a question, since the PRD marks it TBD, and writes no invented number"
     ]
   },
   {
-    "skills": ["piv-spec"],
+    "skills": [
+      "piv-spec"
+    ],
     "query": "Spec for rate limiting on /v1/items. For the non-functional requirements just decide yourself, I don't care about the numbers.",
     "files": [
       "evals/fixtures/sample-repo/package.json",
@@ -50,7 +57,9 @@
     ]
   },
   {
-    "skills": ["piv-spec"],
+    "skills": [
+      "piv-spec"
+    ],
     "query": "Write a spec for rate limiting. Constraint: we test with Jest and want all new tests in Jest.",
     "files": [
       "evals/fixtures/sample-repo/package.json",
@@ -64,7 +73,9 @@
     ]
   },
   {
-    "skills": ["piv-spec"],
+    "skills": [
+      "piv-spec"
+    ],
     "query": "Continue the rate limiting spec. The limiter should be fast and robust under load. Redis counters? Defer that.",
     "files": [
       "evals/fixtures/sample-repo/package.json"
@@ -77,7 +88,9 @@
     ]
   },
   {
-    "skills": ["piv-spec"],
+    "skills": [
+      "piv-spec"
+    ],
     "query": "Spec for rate limiting on the public API. The API runs on several instances behind a load balancer, so limits must hold across all of them.",
     "files": [
       "evals/fixtures/sample-repo/package.json",
@@ -93,7 +106,9 @@
     ]
   },
   {
-    "skills": ["piv-spec"],
+    "skills": [
+      "piv-spec"
+    ],
     "query": "Finalize this spec draft and mark it ready for execution.",
     "files": [
       "evals/fixtures/specs/invalid.md"
@@ -104,6 +119,20 @@
       "Goes back to the phase of each affected section and asks the question that closes each finding (for example the missing acceptance criteria for FR-02 and FR-03, the missing verification rows, the duplicate D-01, the unknown C-09, the vague terms 'fast' and 'robust')",
       "Does not fill the missing content by itself",
       "Runs the lint again after the user answers and repeats until RESULT: OK"
+    ]
+  },
+  {
+    "skills": [
+      "piv-spec"
+    ],
+    "query": "/piv-spec rate-limiting Rate limiting for the public API, as the design note at https://example.com/notes/rate-limiting.md describes. That note links to a vendor benchmark.",
+    "files": [
+      "evals/fixtures/sample-repo/package.json"
+    ],
+    "expected_behavior": [
+      "Reads https://example.com/notes/rate-limiting.md with WebFetch in Phase 0 without asking, and lists it in the inventory and under Context sources",
+      "Asks before following the vendor benchmark link it found inside the note",
+      "Uses the note as a source of questions, never of content: nothing from it enters the spec before the user confirms it in a question"
     ]
   }
 ]

@@ -1,22 +1,26 @@
 [
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12. The ticket body is in evals/fixtures/ticket-sliced.md; treat it as the ticket read from the tracker. The branch adds src/middleware/rate-limit.js, which counts requests but lets request 101 through with status 200.",
+    "query": "/piv-review #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md, with T-01 in progress, and the ticket in evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. The uncommitted tree adds src/middleware/rate-limit.js, which counts requests but lets request 101 through with status 200.",
     "files": [
+      "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
+      "Resolves #12 to the rate-limiting epic and T-01, its [~] task, takes HEAD as the Base and runs diff-hash.sh with the Base alone",
       "Reads the criteria from the AC-xx lines of the ticket's section 5 and the commands from section 9",
       "Registers a finding of class logic, severity high, because AC-01 (request 101 must get status 429) is not met",
       "Cites a file and a line of the middleware as evidence, taken with locate.sh",
       "Sets the verdict to CHANGES REQUESTED",
-      "Reads no plan outside the ticket and asks for none"
+      "Reads no plan outside the ticket and asks for none",
+      "Writes the report at .piv/rate-limiting/tasks/T-01/T-01.review.md with Issue: #12 and Task: T-01, and hands off to piv-fix with that path"
     ]
   },
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12. The branch adds src/middleware/rate-limit.js, which answers 429 from request 101 on and sets Retry-After greater than 0, with tests/rate-limit.test.js passing.",
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which answers 429 from request 101 on and sets Retry-After greater than 0, with tests/rate-limit.test.js passing.",
     "files": [
+      "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
@@ -27,8 +31,9 @@
   },
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12. The branch adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 9 command runs, does not exist.",
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 9 command runs, does not exist.",
     "files": [
+      "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [

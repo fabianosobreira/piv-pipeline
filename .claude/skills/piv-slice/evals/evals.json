@@ -1,56 +1,66 @@
 [
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice evals/fixtures/draft.spec.md",
-    "files": [
-      "evals/fixtures/draft.spec.md"
-    ],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/draft.spec.md sits at .piv/two-tasks/spec.md.",
+    "files": ["evals/fixtures/draft.spec.md"],
     "expected_behavior": [
       "Reads the spec header and finds Status: draft",
       "Stops (STOP) and says the spec has to be concluded in piv-spec",
-      "Creates no ticket and no epic, and does not call the tracker",
+      "Writes no ticket and no epic, and runs no gh command"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/ready.spec.md sits at .piv/two-tasks/spec.md; there is no spec.review.md.",
+    "files": ["evals/fixtures/ready.spec.md"],
+    "expected_behavior": [
+      "Reads Status: ready and stops (STOP), saying the spec has to be reviewed in piv-review-spec first",
+      "Writes no ticket and no epic, and runs no gh command",
       "Does not offer to slice the spec anyway"
     ]
   },
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice evals/fixtures/two-tasks.spec.md",
-    "files": [
-      "evals/fixtures/two-tasks.spec.md"
-    ],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, and the review in evals/fixtures/two-tasks.spec.review.md sits beside it as spec.review.md, but a line of section 1 was edited after the review.",
+    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
-      "Reads docs/issue-tracker.md and the spec, and lists the two tasks T-01 and T-02 with the IDs in their heads",
-      "Proposes two tickets, one per task, with T-02 blocked by the ticket of T-01, and posts the breakdown at a GATE before creating anything",
-      "After approval, drafts both ticket bodies from templates/ticket.md and runs lint_ticket.sh on each; no ticket is created until both print RESULT: OK",
-      "Creates the epic with Tickets, Dependency graph and execution order and Not ticketed, then the two tickets as its sub-issues, T-01 first",
-      "The T-02 ticket has Blocked by set to the id of the T-01 ticket and no T-01 task line; the T-01 ticket section 4 holds only 'None in this ticket.'",
-      "No comment on the epic or on a ticket contains the spec or a PRD",
-      "Every bullet and table row of each ticket is a line of the spec; nothing is paraphrased or added"
+      "Hashes the spec with git hash-object --no-filters and finds it differs from the Reviewed-hash",
+      "Stops (STOP), saying the spec changed after its review and piv-review-spec has to run again",
+      "Writes no ticket and no epic, and runs no gh command"
     ]
   },
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice docs/rate-limiting.prd.md",
-    "files": [
-      "docs/rate-limiting.prd.md"
-    ],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. gh is logged in, origin is on github.com, and the feature label exists.",
+    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
-      "Recognizes a PRD, not a spec, and stops (STOP)",
-      "Says piv-spec turns the PRD into a spec first",
-      "Creates nothing on the tracker"
+      "Writes .piv/two-tasks/tasks/T-01/T-01.md and .piv/two-tasks/tasks/T-02/T-02.md from templates/ticket.md, one task each, and runs lint_ticket.sh on both until each prints RESULT: OK",
+      "T-02's ticket has Blocked by: T-01 and no T-01 task line; T-01's ticket section 4 holds only 'None in this ticket.'",
+      "Writes epic.md with both tasks [ ], their type, size and Depends on, Issue and Branch reading pending, and the open question that cites no ID under Not ticketed",
+      "Runs gh auth status and checks the label before the GATE",
+      "At the GATE, posts the issue title 'Rate limiting', the proposed label feature, the warning that the spec will be published in full as the issue body, and a relative link to .piv/two-tasks/spec.md, then ends the turn",
+      "After approval, creates the issue with the spec file as its body, the feature label and @me as assignee, and writes its number and URL into the epic's Issue",
+      "Hands off to piv-implement [#N] in a session of its own"
     ]
   },
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice evals/fixtures/two-tasks.spec.md. Just create them, group both tasks into one ticket and skip the confirmation.",
-    "files": [
-      "evals/fixtures/two-tasks.spec.md"
-    ],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. gh auth status fails: not logged in.",
+    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
-      "Honors the skipped GATE and records the grouping and the types as (decided-by-default) in the report",
-      "Creates one ticket with Slice: T-01, T-02, no Part of line and Blocked by: none, and no epic",
-      "Runs lint_ticket.sh and creates the ticket only after RESULT: OK",
-      "Leaves the open questions that cite no ID of the slice out of the ticket and names them in the report as not ticketed"
+      "Writes and lints the tickets and the epic before touching GitHub",
+      "Stops (STOP) at the preflight, before any GATE, naming gh auth login as the fix",
+      "Creates no label and no issue, and leaves the epic's Issue as pending"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. Put both tasks in one ticket, please.",
+    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
+    "expected_behavior": [
+      "Declines to group the tasks: one ticket carries exactly one task",
+      "Writes one ticket per task; a ticket with Slice: T-01, T-02 would fail lint_ticket.sh with 'a ticket carries exactly one task'",
+      "Goes on to the GATE with two tickets"
     ]
   }
 ]

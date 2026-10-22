@@ -1,26 +1,25 @@
 ---
 name: piv-commit
-description: Commits the finished work as atomic, conventionally-tagged commits.
-argument-hint: "[ticket id] (blank = taken from the branch name)"
+description: Commits one reviewed task as atomic, conventionally-tagged commits and marks it done in the epic.
+argument-hint: "[#N | intent-slug] [T-xx] (blank = the issue on the branch name, and the epic's task in progress)"
 disable-model-invocation: true
 allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh *)
 ---
 
 # Commit: One Coherent Piece of Work per Commit
 
-This is part of the **verify** step of the PIV loop `docs/piv-loop.md` describes: the change passed review, and this run turns it into a clean, atomic history before the PR opens.
+This is part of the **verify** step of the PIV loop `docs/piv-loop.md` describes: one task passed review, and this run turns it into a clean, atomic history on the intent's branch, then marks the task done in the epic.
 
-Commit the work as **atomic** commits — each one a coherent piece of work its subject can name. Group it the way `docs/git-conventions.md` says — usually a single commit. Either way the run ends with a clean tree: everything uncommitted lands in a commit, or the user decides where it goes.
-
-The loop's own artifacts — the paths `docs/issue-tracker.md` lists under *Paths* — are never committed and stay on disk. Every step below leaves them out: they are not inspected, grouped or staged, and the clean-tree check ignores them.
+Commit the work as **atomic** commits — each one a coherent piece of work its subject can name. Group it the way `docs/git-conventions.md` says — usually a single commit per task. Either way the run ends with a clean tree: everything uncommitted lands in a commit, or the user decides where it goes. The loop's own artifacts live under `.piv/`, which git ignores, so no step below ever sees them.
 
 ## Success criteria
 
-- ✅ The latest review report's verdict was PASS, with no fix report matching its **Round** and the tree matching its **Diff** — or the user ruled to commit anyway.
+- ✅ The task's review report verdict was PASS, with no fix report matching its **Round** and the tree matching its **Diff** — or the user ruled to commit anyway.
 - ✅ Every uncommitted change landed in a group, or the user decided where it goes.
 - ✅ Every group is one coherent piece of work its subject can name.
-- ✅ Every subject follows the form `docs/git-conventions.md` defines, with the tag the work earns.
+- ✅ Every subject follows the form `docs/git-conventions.md` defines, with the tag the work earns and the issue number.
 - ✅ The working tree is clean at the end of the run.
+- ✅ The task reads `[x]` in the epic, with the short hash of every commit this run made.
 
 ## Process
 
@@ -31,24 +30,25 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 - [ ] Step 2 — Inspect
 - [ ] Step 3 — Group it
 - [ ] Step 4 — Commit each group
+- [ ] Step 5 — Mark the task done
 ```
 
 ### Step 1 — Check where you are
 
-1. **Branch.** `docs/git-conventions.md` defines which branch is the base branch. Work belongs on its own branch: on the base branch, ask the user whether to commit on it anyway. **GATE.** No → end the run; moving the work to its branch is the user's call.
-2. **Ticket id.** Take the one `$ARGUMENTS` carries, else the one the branch name carries, in the form `docs/git-conventions.md` defines. Neither carries one, or the two carry different ids → ask the user which. **GATE.**
+1. **Intent and task.** Resolve them from `$ARGUMENTS` as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. The task is not `[~]` → **STOP**: only the task in progress is committed.
+2. **Branch.** The checked-out branch must be the one the epic names under `Branch`. It isn't → **STOP**, naming both.
 3. **Review.** Check the change earned its commit:
-   1. Find the review report at the path `docs/issue-tracker.md` defines, named from the ticket id. Read its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, when there is one.
-   2. Hash the change by running the bundled script — run it, don't read it. Pass the report's **Base** commit, then each exclude glob `docs/issue-tracker.md` lists under *Paths*, every argument single-quoted so the shell hands the globs over unexpanded:
+   1. Read the review report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`: its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, `T-xx.fixes.md`, when there is one.
+   2. Hash the change by running the bundled script — run it, don't read it — with the report's **Base** and nothing else:
 
       ```bash
-      sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh '[Base]' '[glob]' '[glob]'
+      sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh '[Base]'
       ```
 
-      It needs `git` and a POSIX shell, and prints one hash. A non-zero exit prints no hash: exit 2 names the cause and its fix (a **Base** missing here is fixed by fetching it) — apply the fix and rerun; when you can't, the check fails with the script's message as the reason.
-   3. Any of these fails the check: the verdict is not PASS; there is no review report; the fix report's **Round** matches the review's (fixes nobody re-reviewed); the hash differs from the report's **Diff**, or the report records none, or the script gave no hash. Say which failed, and ask the user whether to commit anyway. **GATE.** No → end the run.
+      It needs `git` and a POSIX shell, and prints one hash. A non-zero exit prints no hash: exit 2 names the cause and its fix — apply the fix and rerun; when you can't, the check fails with the script's message as the reason.
+   3. Any of these fails the check: the verdict is not PASS; there is no review report; the fix report's **Round** matches the review's (fixes nobody re-reviewed); the hash differs from the report's **Diff**, or the report records none, or the script gave no hash; the **Base** is not `HEAD`. Say which failed, and ask the user whether to commit anyway. **GATE.** No → end the run.
 
-**Done when** the run is off the base branch or the user ruled to commit on it, the ticket id is resolved, and the review check passed or the user ruled to commit anyway.
+**Done when** the task is `[~]`, the run sits on the intent's branch, and the review check passed or the user ruled to commit anyway.
 
 ### Step 2 — Inspect
 
@@ -64,13 +64,19 @@ Group the way `docs/git-conventions.md` says; the groups cover everything uncomm
 
 ### Step 4 — Commit each group
 
-Take one group at a time. Stage exactly its paths, by name — never `git add -A`, `git add .` or `git commit -a`, which sweep in the loop's artifacts — then commit it with a subject in the form `docs/git-conventions.md` defines, carrying the ticket id from Step 1.
+Take one group at a time. Stage exactly its paths, by name — never `git add -A`, `git add .` or `git commit -a` — then commit it with a subject in the form `docs/git-conventions.md` defines, carrying the issue number from the epic's `Issue`.
 
 Add a body after one blank line, hard-wrapped at 72 columns, when the group's diff does something the subject doesn't name: a second surface changed, a behavior removed, or a constraint the code alone doesn't reveal. Write the body from the group's staged diff; read neither the implementation report nor the fix report.
 
-After the last commit, check the working tree status: any path left besides the loop's artifacts → back to Step 3 with it.
+After the last commit, check the working tree status: any path left → back to Step 3 with it.
 
 **Done when** every group is a commit whose subject follows that form, with a body wherever the rule above calls for one, and the working tree is clean.
+
+### Step 5 — Mark the task done
+
+In the epic, turn the task's line from `[~]` to `[x]` and append ` — commits: [short hashes]`, every commit this run made, oldest first, comma-separated.
+
+**Done when** the task reads `[x]` with its commits.
 
 ## Output — the commit summary
 
@@ -78,8 +84,7 @@ After the last commit, check the working tree status: any path left besides the 
 
 ## Hand off
 
-Confirm each commit by its short hash and subject. Committed on the base branch → no PR follows; say so and end here.
+Confirm each commit by its short hash and subject, and the task as done in the epic. Then offer the next move and let the user run it — this skill does not chain into the next one:
 
-Otherwise offer the next move and let the user run it — this skill does not chain into the next one:
-
-- **Open the PR** — run `piv-open-pr`, in this same session, handed the ticket id.
+- **A task is still `[ ]` in the epic** → run `piv-implement [#N]`, in a session of its own. It picks the next task.
+- **Every task is `[x]`** → run `piv-open-pr [#N]`, in this same session.
