@@ -26,7 +26,8 @@
     "expected_behavior": [
       "Checks AC-01 and AC-02 against the code and finds both met",
       "Raises no logic finding for an acceptance criterion",
-      "Sets the verdict to PASS unless an independent blocking, critical or high finding survives"
+      "Sets the verdict to PASS unless an independent blocking, critical or high finding survives",
+      "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with medium or low findings, in a session of its own"
     ]
   },
   {
@@ -40,6 +41,20 @@
       "Registers a blocking finding of kind missing for the test file the section 9 command names",
       "Sets the verdict to CHANGES REQUESTED",
       "Does not treat the implementation report's account as proof that the criteria are met"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12. The epic at .piv/rate-limiting/epic.md now reads T-01 as [x] with commits: a1b2c3d and T-02 as [~]; the branch feat/12-rate-limiting also carries the T-01 commit, and main has moved on since the branch was created. The ticket of T-02 sits at .piv/rate-limiting/tasks/T-02/T-02.md and the uncommitted tree holds only T-02's work.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Resolves the blank task to T-02, the epic's [~] task",
+      "Takes HEAD, the T-01 commit, as the Base, not the fork point with main, and records its hash",
+      "Runs diff-hash.sh with the Base alone, so the diff holds only T-02's uncommitted work and none of T-01's",
+      "Writes the report at .piv/rate-limiting/tasks/T-02/T-02.review.md"
     ]
   }
 ]

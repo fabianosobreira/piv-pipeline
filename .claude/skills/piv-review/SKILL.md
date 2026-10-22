@@ -187,5 +187,6 @@ Then print the verdict, the count of blocking findings and the count per severit
 
 The review report is the artifact this run leaves behind, so give the user its path by name, with the issue number and the task id. Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **PASS** → run `piv-commit [#N] [T-xx]`, in a session of its own. The medium and low findings stay in the report; `piv-open-pr` carries them into the PR body.
+- **PASS with zero findings** — every severity heading reads "No findings." → run `piv-commit [#N] [T-xx]`, here or in a fresh session: nothing in the report is left for a fresh reader to judge.
+- **PASS with medium or low findings** → run `piv-commit [#N] [T-xx]`, in a session of its own. The findings stay in the report; `piv-open-pr` carries them into the PR body.
 - **CHANGES REQUESTED** → run `piv-fix [review report path]`, in a session of its own.
