@@ -10,7 +10,7 @@ The base branch is whichever branch the remote treats as its default. Ask the re
 
 ## Branch names
 
-Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[intent-slug]` — for example `feat/142-rate-limiting`. `piv-slice` creates it together with the issue and writes its name into `Branch` in `.piv/[intent-slug]/epic.md`.
+Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[intent-slug]` — for example `feat/142-rate-limiting`. `piv-implement` creates it on the intent's first task, from the issue number `piv-slice` wrote into `Issue`, and writes its name into `Branch` in `.piv/[intent-slug]/epic.md`. It stays local until `piv-open-pr` pushes it.
 
 - **`[tag]`** — the conventional tag of the issue's type: `feature` → `feat`, `bug` → `fix`, `task` → `chore`. The commits on the branch carry the tag each one earns, which may differ.
 - **`[N]`** — the number of the intent's GitHub issue, without the `#`: `#123` → `123`.
