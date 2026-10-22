@@ -10,13 +10,13 @@ The base branch is whichever branch the remote treats as its default. Ask the re
 
 ## Branch names
 
-Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[short-slug]`:
+Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[intent-slug]` — for example `feat/142-rate-limiting`. `piv-implement` creates it on the intent's first task, from the issue number `piv-slice` wrote into `Issue`, and writes its name into `Branch` in `.piv/[intent-slug]/epic.md`. It stays local until `piv-open-pr` pushes it.
 
 - **`[tag]`** — the conventional tag of the issue's type: `feature` → `feat`, `bug` → `fix`, `task` → `chore`. The commits on the branch carry the tag each one earns, which may differ.
 - **`[N]`** — the number of the intent's GitHub issue, without the `#`: `#123` → `123`.
-- **`[short-slug]`** — two to four words of the issue title.
+- **`[intent-slug]`** — the intent's slug, the name of its folder under `.piv/`.
 
-`piv-implement`, `piv-review`, `piv-fix`, `piv-commit`, `piv-open-pr` and `piv-review-pr` read the issue number back out of this name, so it has to survive it. Reading it back, put the `#` back: `123` → `#123`.
+`piv-implement`, `piv-review`, `piv-fix`, `piv-commit`, `piv-open-pr` and `piv-review-pr` read the issue number and the intent-slug back out of this name, so it has to survive it. Reading it back, put the `#` back: `123` → `#123`; the intent-slug locates `.piv/[intent-slug]/`.
 
 ## Commit subjects
 
@@ -40,4 +40,4 @@ Pick the tag by what the change does to the project's behavior, never by the fil
 - **`ci`** — the CI configuration.
 - **`chore`** — anything else that touches no shipped behavior.
 
-The work of one ticket — one task — is one commit, tagged with its largest effect. Split off only a part that stands on its own — one that could be reverted without breaking the rest or leaving it pointless, like an unrelated fix found along the way. A PR whose commits carry different tags takes the largest effect among them.
+The work of one task is one commit, tagged with its largest effect. Split off only a part that stands on its own — one that could be reverted without breaking the rest or leaving it pointless, like an unrelated fix found along the way. A PR whose commits carry different tags takes the largest effect among them.
