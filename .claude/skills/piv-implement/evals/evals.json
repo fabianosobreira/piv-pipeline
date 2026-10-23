@@ -1,40 +1,56 @@
 [
   {
     "skills": ["piv-implement"],
-    "query": "/piv-implement #12. The ticket body is in evals/fixtures/ticket-sliced.md; treat it as the ticket read from the tracker. The repository is the sample API.",
-    "files": [
-      "evals/fixtures/ticket-sliced.md"
-    ],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. The repository is the sample API, on a clean main.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-sliced.md"],
     "expected_behavior": [
-      "Reads the ticket and takes the task list from the Task plan section (T-01), the criteria from section 5 and the commands from section 9",
-      "Does not ask for, search for or read any plan outside the ticket: no spec, no PRD, no architecture doc",
-      "Does not stop for a missing Acceptance criteria checklist: the ticket has none, and the Task plan is what governs",
+      "Resolves #12 to the rate-limiting epic and picks T-01 as the next task, since no task is [~] and T-01 depends on nothing",
+      "Turns T-01 from [ ] to [~] in the epic",
+      "Creates the branch feat/12-rate-limiting from the base, since the epic's Type is feature, and writes it into the epic's Branch",
+      "Takes the task from the Task plan section (T-01), the criteria from section 5 and the commands from section 9, and reads no plan outside the ticket",
       "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 9 command names",
-      "Writes the implementation report with Intent-slug in the header block and no Intent or Architecture field"
+      "Writes .piv/rate-limiting/tasks/T-01/T-01.report.md with Issue: #12 and Task: T-01 in the header block, and commits nothing",
+      "Hands off to piv-review #12 T-01 in a session of its own"
     ]
   },
   {
     "skills": ["piv-implement"],
-    "query": "/piv-implement #14. The ticket body is in evals/fixtures/ticket-blocked.md; its Blocked by names #13, which has not been merged into the base.",
-    "files": [
-      "evals/fixtures/ticket-blocked.md"
-    ],
+    "query": "/piv-implement #12 T-02. The epic in evals/fixtures/epic-blocked.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-blocked.md at .piv/rate-limiting/tasks/T-02/T-02.md.",
+    "files": ["evals/fixtures/epic-blocked.md", "evals/fixtures/ticket-blocked.md"],
     "expected_behavior": [
-      "Reads Blocked by and checks that #13 is merged into the base",
-      "Stops (STOP) and names #13 as the ticket that has to land first",
-      "Writes no code and creates no branch"
+      "Reads T-02's Depends on: T-01 and finds T-01 still [ ] in the epic",
+      "Stops (STOP) and names T-01 as the task that has to be committed first",
+      "Leaves T-02 at [ ], writes no code and switches no branch"
     ]
   },
   {
     "skills": ["piv-implement"],
-    "query": "/piv-implement #15. The ticket body is in evals/fixtures/ticket-no-tasks.md: a sliced ticket whose Task plan section reads 'None in this ticket.'.",
-    "files": [
-      "evals/fixtures/ticket-no-tasks.md"
-    ],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-no-tasks.md at .piv/rate-limiting/tasks/T-01/T-01.md: its Task plan section reads 'None in this ticket.'.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-no-tasks.md"],
     "expected_behavior": [
       "Finds no task under the Task plan section",
       "Stops (STOP), saying the ticket needs reworking before it can be built",
       "Does not derive tasks from the requirements or the criteria on its own"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic-done.md sits at .piv/rate-limiting/epic.md: its only task, T-01, is already [x].",
+    "files": ["evals/fixtures/epic-done.md"],
+    "expected_behavior": [
+      "Finds no task of the epic that is [~] or [ ] with every dependency [x]",
+      "Stops (STOP), saying every task is committed and the next step is piv-open-pr",
+      "Writes no code, edits no epic line and switches no branch"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. The spec at .piv/rate-limiting/spec.md was edited after the slice: its git hash-object is now 0000000000000000000000000000000000000000, not the 77c3c9cd... the ticket's Spec field carries.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-sliced.md"],
+    "expected_behavior": [
+      "Compares the spec's current hash with the one in the ticket's Spec field and finds them different",
+      "Stops (STOP), saying the spec changed after the slice and must go through piv-review-spec and piv-slice again",
+      "Leaves T-01 at [ ], writes no code, creates no branch and leaves the epic's Branch at pending"
     ]
   }
 ]

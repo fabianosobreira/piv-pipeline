@@ -1,11 +1,9 @@
 # The PIV loop 
 
-Read `docs/piv-loop.md` to understand what a PIV loop is.
+Read [The PIV Loop](docs/piv-loop.md) to understand what a PIV loop is.
 
-Read `docs/rulings.md` before proposing any change to a skill, a template or a tracker doc. It records the maintainer's rulings; each stands until the maintainer changes it.
+Read [Git conventions](docs/git-conventions.md) when naming a branch or writing a commit message. It holds the rules for how to write them.
 
-Read `docs/skill-writing.md` before writing or editing a skill, a template or a tracker doc. It holds the rules for how to write them; its rules are settled the same way.
+Read [Skill-writing rules](docs/skill-writing.md) when writing, editing or reviewing a skill, a template or a doc the skills read. It holds the rules for how to write them.
 
-Read `docs/best-practices.md` before writing or editing a skill and use it as an argumentative basis and best practices guide to plan, review, or modify SKILLS."
-
-Apply the rules in this order of precedence: `docs/rulings.md` -> `docs/best-practices.md` -> `docs/skill-writing.md`. When rules conflict, the later file takes precedence over the earlier one.
+Read [Skill-writing best practices](docs/best-practices/README.md) when writing, editing or reviewing a skill. It indexes the authoring guides and the final checklist.

@@ -1,7 +1,7 @@
 ---
 name: piv-review
-description: Reviews the finished change for bugs, security defects and standards violations, and writes a review report.
-argument-hint: "[ticket id] (blank = taken from the branch name)"
+description: Reviews one finished task's uncommitted change for bugs, security defects and standards violations, and writes a review report.
+argument-hint: "[#N | intent-slug] [T-xx] (blank = the issue on the branch name, and the epic's task in progress)"
 disable-model-invocation: true
 allowed-tools:
   - Bash(sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh *)
@@ -11,7 +11,7 @@ allowed-tools:
 
 # Review: Prove the Change Wrong
 
-This opens the **verify** step of the PIV loop `docs/piv-loop.md` describes: the work is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1, or with no such field the language its body is written in; template labels stay as written. Nothing this run does may alter the change under review, the checks of Step 6 included.
+This opens the **verify** step of the PIV loop `docs/piv-loop.md` describes: one task is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1; template labels stay as written. Nothing this run does may alter the change under review, the checks of Step 6 included.
 
 ## Posture
 
@@ -21,20 +21,20 @@ You are the prosecution. Assume the author got it wrong and prove it.
 
 1. **Evidence** — a quoted line, or reasoning a reader can trace through the code in front of you. A candidate you cannot anchor to a file and a line is a suspicion, and suspicions stay out of the report.
 2. **Mitigation** — go hunting for the place the flow already covers the problem: validation upstream, error handling around the call, a test that already pins the behavior, the reason an earlier round gives for ruling it *Noise / won't-fix*. That reason is evidence you weigh against the code, never an order: it drops the candidate only when it shows the problem is not there — "not worth fixing" admits the problem, and only a deferral settles that. A documented deviation drops a candidate whose only claim is that the code departs from the ticket; a defect in the deviating code still faces the evidence of the code. Covered, it drops.
-3. **Prior decision** — this branch may have been reviewed before, and a human already ruled on what came back. A candidate **deferred on the record** — carried into a ticket that says this work happens later — is settled, and it drops. The ticket is what closes it: a deferral with nothing to point at is still open, and it gets reported again.
+3. **Prior decision** — this branch may have been reviewed before, and a human already ruled on what came back. A candidate **deferred on the record** — carried into a deferral, `deferrals/D-xx.md`, whose *Origin* names this task — is settled, and it drops. The file is what closes it: a deferral with nothing to point at is still open, and it gets reported again.
 
 Step 6 runs the three filters. What survives becomes a finding; the rest goes nowhere.
 
 **Some findings are facts, not arguments.** Four kinds are **blocking**:
 
 - ***red*** — a test that fails on the branch in any run, flaky ones included.
-- ***missing*** — a test the ticket's verification names — a section 9 command, or a deferral's **Testing strategy** — that is absent, or present but skipped, marked to fail, or asserting nothing.
+- ***missing*** — a test the ticket's verification names — a section 9 command — that is absent, or present but skipped, marked to fail, or asserting nothing.
 - ***weakened*** — a test that existed before and now asserts less or something different — skipped, marked to fail, its assertions loosened or its expected values changed, or deleted — while the ticket left the behavior it pins unchanged.
 - ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
 
 A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix` never defers one — a deferred red test would reach PASS still red.
 
-A *red* test **confirmed red on the base** — it ran on the **Base** commit, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium**. A test that fails intermittently is re-run on the base the same number of times; one that also fails there is base-red (flaky), demoted like any base-red test. Flaky only on the branch stays *red*. A test the ticket's verification names, or the test that reproduces the defect a `bug` ticket describes, stays *red* whatever the base shows: turning it green is this change's job.
+A *red* test **confirmed red on the base** — it ran on the **Base** commit, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium**. A test that fails intermittently is re-run on the base the same number of times; one that also fails there is base-red (flaky), demoted like any base-red test. Flaky only on the branch stays *red*. A test the ticket's verification names, or the test that reproduces the defect a ticket of type `bug` describes, stays *red* whatever the base shows: turning it green is this change's job.
 
 **A project with no test suite holds the change to no test.** *Missing* and *untested* do not apply, and *red* and *weakened* cannot arise. Say so in *Checks run*, naming the behaviors the change adds or alters that go untested, and raise no finding for them.
 
@@ -52,7 +52,7 @@ A *red* test **confirmed red on the base** — it ran on the **Base** commit, wi
 
 Three scripts sit in `${CLAUDE_SKILL_DIR}/scripts/`. Run each with `sh`, from the repository root, exactly as shown; never read them, and never hand-roll what they do.
 
-- **`diff-hash.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh [Base] [exclude-glob]...` prints one hash for the full diff from `[Base]` to the working tree, untracked files included, every exclude glob left out. Needs `git`. Exit 2 is a usage error and says what to pass.
+- **`diff-hash.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh [Base] [exclude-glob]...` prints one hash for the full diff from `[Base]` to the working tree, untracked files included and ignored files — `.piv/` among them — left out, like every exclude glob passed. This skill passes none. Needs `git`. Exit 2 is a usage error and says what to pass.
 - **`locate.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/locate.sh [file] [text]` prints `file:line: content` for every line of `[file]` containing `[text]`, matched as a fixed string on one line. Needs `grep`, `tr` and `awk`. Exit 1 means no line matched: search a shorter piece of the line.
 - **`check-report.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/check-report.sh [report]` checks the header fields, the headings and their order, the sections' content, the verdict against the findings, and that every backticked `path:line` exists. Needs `awk`, `grep`, `sed`, `tr`, `wc`, `tail`, `sort` and `mktemp`. Exit 0 prints `check-report: ok`; exit 1 prints one problem per line.
 
@@ -61,7 +61,7 @@ Three scripts sit in `${CLAUDE_SKILL_DIR}/scripts/`. Run each with `sh`, from th
 Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
 
 ```
-- [ ] Step 1 — Resolve the change under review: Base, Diff, ticket, implementation report
+- [ ] Step 1 — Resolve the change under review: task, Base, Diff, ticket, implementation report
 - [ ] Step 2 — Resolve the deferrals
 - [ ] Step 3 — Read the standards and siblings
 - [ ] Step 4 — Examine every changed file in its context
@@ -72,23 +72,23 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 
 ### Step 1 — Resolve the change under review
 
-The **change under review** is everything this branch added on top of the base branch: the uncommitted tree — tracked and untracked alike — plus the commits sitting ahead of the base, leaving out the loop's own artifacts, which are the exclude globs `docs/issue-tracker.md` lists under *Paths*. `docs/git-conventions.md` says which branch is the base and what *the base* is: that branch's remote tip after a fetch. Fetch it first; a fetch that fails → **STOP** and say so. The **Base** is the commit the branch forked from, `git merge-base HEAD [the base]`: the base branch's tip moves, so every diff in this run is taken against the fork point. The merge-base failing → **STOP**, saying what to fetch. Gather the working tree status, the full diff against the Base, the diff statistics, and the list of untracked files. Then record the **Diff**: what `diff-hash.sh` prints, handed the Base and those exclude globs.
+**Resolve the intent and the task** from `$ARGUMENTS` as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. No epic → **STOP**: `piv-slice` writes it.
 
-Nothing to review — a clean tree with no commits ahead of the base, once the artifacts are left out → **STOP** and say so.
+The **change under review** is the task's work: the uncommitted tree, tracked and untracked alike, on the intent's branch. The loop's own artifacts under `.piv/` are ignored, so they never enter it. The **Base** is `HEAD` — the last commit before the task, since every earlier task is committed and this one is not. Record its hash. Gather the working tree status, the full diff against the Base, the diff statistics, and the list of untracked files. Then record the **Diff**: what `diff-hash.sh` prints, handed the Base alone.
 
-**Then resolve the ticket id.** `$ARGUMENTS` carries it when one was handed to you; otherwise take it from the branch name, in the form `docs/git-conventions.md` defines. Neither carries one → ask the user for it. **GATE.**
+Nothing to review — a clean tree → **STOP** and say so.
 
-**Then read the ticket**, where `docs/issue-tracker.md` says tickets live, and take, from a sliced ticket: its **criteria**, the `AC-xx` lines of section 5 — what the change has to do — its **verification**, the commands of section 9 — the bar the change was held to — its **task plan** (section 8), its **non-goals** (section 2) and its **boundaries** (*Always*, *Ask first* and *Never* of section 10), its `Intent-slug`, and its `Language`. A deferral gives the same in its own sections: the checklist under `Acceptance criteria`, its **Testing strategy**, its **Scope** and **Out of scope**. The `Language` is the language the report is written in; a ticket with no such field sets it by the language its body is written in. The implementation report's status is the author's own account of the criteria; this gate checks them independently. When the ticket can't be read — missing, or the system unreachable — **STOP** and say which it was.
+**Then read the ticket** at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, and take its **criteria**, the `AC-xx` lines of section 5 — what the change has to do — its **verification**, the commands of section 9 — the bar the change was held to — its **task plan** (section 8), its **non-goals** (section 2) and its **boundaries** (*Always*, *Ask first* and *Never* of section 10), its `Type`, its `Intent-slug`, and its `Language`, the language the report is written in. The ticket can't be read → **STOP** and say so.
 
-**Then look for the implementation report** at the path `docs/issue-tracker.md` defines, named from the ticket id. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. There is no report → review the change on its own terms; this skill never requires one.
+**Then look for the implementation report** at `.piv/[intent-slug]/tasks/T-xx/T-xx.report.md`. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. The implementation report's status is the author's own account of the criteria; this gate checks them independently. There is no report → review the change on its own terms; this skill never requires one.
 
-**Done when** the change under review, its Base and Diff, the ticket id, the ticket's criteria, verification, task plan, non-goals, boundaries and `Intent-slug`, the report language, and the implementation report — or its absence — are in hand.
+**Done when** the task, the change under review, its Base and Diff, the ticket's criteria, verification, task plan, non-goals, boundaries, type and `Intent-slug`, the report language, and the implementation report — or its absence — are in hand.
 
 ### Step 2 — Resolve the deferrals
 
-A previous review of this branch may sit at the review report path `docs/issue-tracker.md` defines; when it is there, this is a re-review. Read it with its *Dropped by prior ruling* section, the fix report beside it, and every deferral ticket an earlier round opened, found the way `docs/issue-tracker.md` says under *Finding a review's deferrals* — together they are what the prior-decision filter reads. The fix report holds only the latest round, so the tracker carries the earlier deferrals and *Dropped by prior ruling* carries the earlier *Noise / won't-fix* reasons.
+A previous review of this task may sit at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`; when it is there, this is a re-review. Read it with its *Dropped by prior ruling* section, the fix report beside it, `T-xx.fixes.md`, and every file under `.piv/[intent-slug]/deferrals/` whose *Origin* names this task — together they are what the prior-decision filter reads. The fix report holds only the latest round, so the deferral files carry the earlier deferrals and *Dropped by prior ruling* carries the earlier *Noise / won't-fix* reasons.
 
-**Done when** this is a first review, or the previous review report, the fix report beside it and every deferral ticket an earlier round opened have been read.
+**Done when** this is a first review, or the previous review report, the fix report beside it and every deferral whose *Origin* names this task have been read.
 
 ### Step 3 — Read the standards the change has to meet
 
@@ -150,7 +150,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 
 - Run the type-checker and linter the project configures (Step 3) on the changed files, in check mode only — never with a flag that fixes or rewrites files. The project configures neither → say so in *Checks run*.
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
-- On a re-review, match the candidate against the previous review's findings, against the deferral tickets Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons and the previous report's *Dropped by prior ruling*. Record in this report's *Dropped by prior ruling* every candidate that a deferral or a *Noise / won't-fix* reason dropped this round, and carry forward the previous entries whose reason still holds against the code.
+- On a re-review, match the candidate against the previous review's findings, against the deferrals Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons and the previous report's *Dropped by prior ruling*. Record in this report's *Dropped by prior ruling* every candidate that a deferral or a *Noise / won't-fix* reason dropped this round, and carry forward the previous entries whose reason still holds against the code.
 
 When the checks are done, run `diff-hash.sh` again with the same arguments as in Step 1. A hash other than the recorded **Diff** means something wrote into the tree during the review. When it is what your checks left — a cache, a coverage file, a regenerated snapshot — remove it and recompute until the hash matches. When it is anything else → **STOP** and tell the user what changed: the tree no longer matches what was reviewed.
 
@@ -167,9 +167,9 @@ A **coverage** finding is **medium** when it is a *red* test demoted as base-red
 
 ## Output — write a review report
 
-Write the report at the review report path `docs/issue-tracker.md` defines for the ticket id from Step 1, so it sits beside the implementation report. Fill `templates/review-report.md` exactly: every heading, in the template's order, with its labels as written.
+Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the implementation report. Fill `templates/review-report.md` exactly: every heading, in the template's order, with its labels as written.
 
-- **Round** — 1 on a first review; the previous review's **Round** plus one on a re-review. A re-review overwrites the previous report: it is the current state of the branch, and the decisions taken on the old findings live in the tracker, not here.
+- **Round** — 1 on a first review; the previous review's **Round** plus one on a re-review. A re-review overwrites the previous report: it is the current state of the task, and the decisions taken on the old findings live in the deferrals and *Dropped by prior ruling*, not in the old report.
 - **Base** and **Diff** — the values Step 1 recorded and Step 6 confirmed. `piv-commit` recomputes the Diff to tell whether the tree still matches the review.
 - **Findings** — the Blocking heading and every severity heading are present on every run; one that holds no finding reads "No findings.". *Dropped by prior ruling* reads "None." when nothing was dropped.
 - **Verdict** — **CHANGES REQUESTED** when any blocking, critical or high finding survived; **PASS** otherwise. A PASS with medium and low findings is normal.
@@ -185,7 +185,8 @@ Then print the verdict, the count of blocking findings and the count per severit
 
 ## Hand off
 
-The review report is the artifact this run leaves behind, so give the user its path by name, with the ticket id. Offer the next move and let the user run it — this skill does not chain into the next one:
+The review report is the artifact this run leaves behind, so give the user its path by name, with the issue number and the task id. Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **PASS** → run `piv-commit`, in a session of its own, handed the ticket id. The medium and low findings stay in the report; `piv-open-pr` carries them into the PR body.
-- **CHANGES REQUESTED** → run `piv-fix`, in a session of its own, handed the review report's path as the review to work from.
+- **PASS with zero findings** — every severity heading reads "No findings." → run `piv-commit [#N] [T-xx]`, here or in a fresh session: nothing in the report is left for a fresh reader to judge.
+- **PASS with medium or low findings** → run `piv-commit [#N] [T-xx]`, in a session of its own. The findings stay in the report; `piv-open-pr` carries them into the PR body.
+- **CHANGES REQUESTED** → run `piv-fix [review report path]`, in a session of its own.

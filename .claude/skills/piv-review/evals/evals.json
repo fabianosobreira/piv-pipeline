@@ -1,40 +1,60 @@
 [
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12. The ticket body is in evals/fixtures/ticket-sliced.md; treat it as the ticket read from the tracker. The branch adds src/middleware/rate-limit.js, which counts requests but lets request 101 through with status 200.",
+    "query": "/piv-review #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md, with T-01 in progress, and the ticket in evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. The uncommitted tree adds src/middleware/rate-limit.js, which counts requests but lets request 101 through with status 200.",
     "files": [
+      "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
+      "Resolves #12 to the rate-limiting epic and T-01, its [~] task, takes HEAD as the Base and runs diff-hash.sh with the Base alone",
       "Reads the criteria from the AC-xx lines of the ticket's section 5 and the commands from section 9",
       "Registers a finding of class logic, severity high, because AC-01 (request 101 must get status 429) is not met",
       "Cites a file and a line of the middleware as evidence, taken with locate.sh",
       "Sets the verdict to CHANGES REQUESTED",
-      "Reads no plan outside the ticket and asks for none"
+      "Reads no plan outside the ticket and asks for none",
+      "Writes the report at .piv/rate-limiting/tasks/T-01/T-01.review.md with Issue: #12 and Task: T-01, and hands off to piv-fix with that path"
     ]
   },
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12. The branch adds src/middleware/rate-limit.js, which answers 429 from request 101 on and sets Retry-After greater than 0, with tests/rate-limit.test.js passing.",
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which answers 429 from request 101 on and sets Retry-After greater than 0, with tests/rate-limit.test.js passing.",
     "files": [
+      "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
       "Checks AC-01 and AC-02 against the code and finds both met",
       "Raises no logic finding for an acceptance criterion",
-      "Sets the verdict to PASS unless an independent blocking, critical or high finding survives"
+      "Sets the verdict to PASS unless an independent blocking, critical or high finding survives",
+      "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with medium or low findings, in a session of its own"
     ]
   },
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12. The branch adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 9 command runs, does not exist.",
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 9 command runs, does not exist.",
     "files": [
+      "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
       "Registers a blocking finding of kind missing for the test file the section 9 command names",
       "Sets the verdict to CHANGES REQUESTED",
       "Does not treat the implementation report's account as proof that the criteria are met"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12. The epic at .piv/rate-limiting/epic.md now reads T-01 as [x] with commits: a1b2c3d and T-02 as [~]; the branch feat/12-rate-limiting also carries the T-01 commit, and main has moved on since the branch was created. The ticket of T-02 sits at .piv/rate-limiting/tasks/T-02/T-02.md and the uncommitted tree holds only T-02's work.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Resolves the blank task to T-02, the epic's [~] task",
+      "Takes HEAD, the T-01 commit, as the Base, not the fork point with main, and records its hash",
+      "Runs diff-hash.sh with the Base alone, so the diff holds only T-02's uncommitted work and none of T-01's",
+      "Writes the report at .piv/rate-limiting/tasks/T-02/T-02.review.md"
     ]
   }
 ]

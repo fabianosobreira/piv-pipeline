@@ -35,7 +35,7 @@ fail() {
 
 # Header fields: each must carry a value after the colon, and not the template's
 # [placeholder].
-for field in Intent-slug Ticket Branch Round Base Diff Verdict; do
+for field in Intent-slug Issue Task Branch Round Base Diff Verdict; do
   if ! grep -Eq "^- \*\*$field\*\*: [^[:space:]]" "$report"; then
     fail "header field '$field' is missing or empty"
   elif grep -Eq "^- \*\*$field\*\*: [[]" "$report"; then

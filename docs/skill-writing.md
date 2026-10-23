@@ -1,6 +1,6 @@
 # Skill-writing rules
 
-Rules for writing any document an agent consumes — a skill, a template, a tracker doc, `CLAUDE.md`. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
+Rules for writing any document an agent consumes — a skill, a template, a doc under `docs/` the skills read, `CLAUDE.md` — that the guides in `docs/best-practices/` do not cover. Read those first; where a guide conflicts with this document, this document wins. The goal is a predictable run: the agent takes the same _process_ every time, not that it produces the same output.
 
 ## Language and wrapping
 
@@ -9,8 +9,8 @@ Rules for writing any document an agent consumes — a skill, a template, a trac
 
 ## Frontmatter and invocation
 
-- `name`: `piv-[verb]-[object]`, or `piv-[verb]` when the verb alone names the skill; lowercase letters, digits and hyphens, at most 64 characters.
-- `description`: third person, what the skill does and when to use it, key use case first, at most 1,024 characters. No XML tags and no placeholders.
+- `name`: `piv-[verb]-[object]`, or `piv-[verb]` when the verb alone names the skill.
+- `description`: key use case first. No placeholders.
 - A PIV step skill is **user-invoked**: set `disable-model-invocation: true` and write the `description` as a one-line human-facing summary. **The human starts every step.**
 - A user-invoked skill's `description` carries no "Use when…" clause: it is never in the model's listing, and neighbouring skills named in it go stale.
 - Make a skill model-invoked only when the agent or another skill must reach it on its own. Its `description` carries the trigger branches.
@@ -48,19 +48,15 @@ A document mixes **steps** (ordered actions) and **reference** (definitions, rul
 - Inline what every branch needs; disclose what only some branches reach.
 - Disclose reference that buries steps.
 - Co-locate. A concept's definition, rules and caveats sit under one heading.
-- Link every disclosed file directly from `SKILL.md`. A disclosed file never points to another.
-- Open a reference doc longer than 100 lines with a contents list.
-- Name files by content (`ticket-schema.md`, not `ref2.md`); write paths with forward slashes.
 - Put the goal, hard constraints and completion criterion at the top of `SKILL.md`.
-- Keep the body under 500 lines. Past about 150, disclose reference or split by sequence.
+- Past about 150 lines, disclose reference or split by sequence.
 - Write a reference doc as terse rules the run can apply — `piv-loop.md` is one. Add an example only where it fixes a format the rule cannot state.
 
 ## Steps and completion criteria
 
 - Every step ends on an observable completion criterion — not "understanding reached".
 - Make the criterion exhaustive where the set is enumerable ("every modified model accounted for"); bound it where the set is open ("up to 5 risks").
-- Close quality-critical output with a feedback loop: validate → fix → validate; proceed only on a pass. Name the validator.
-- For batch or hard-to-reverse actions, plan → validate → execute.
+- Name the validator that closes a feedback loop.
 - Write guidance that spans the run as a standing instruction ("after every edit, run the tests").
 - `## Output` may contain numbered process steps when the output _is_ those steps, as in `piv-slice`.
 - Against premature completion, sharpen the bound first. Split only when the bound is irreducibly fuzzy and the rush is observed, and only across a real context boundary: the hand-off to the human, or a `context: fork` subagent.
@@ -78,17 +74,14 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - Repeat the token, never the sentence.
 - Reach for an existing word before coining one.
 - Collapse restatements into one word. "fast, deterministic, low-overhead" → _tight_; "a loop you believe in" → _red_.
-- One term per concept. A skill says "ticket", never "issue", and assumes no labels. It names a ticket's classification its _type_; "issue" and a tracker's "label" survive only in `docs/issue-tracker*.md`. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
-- Match specificity to fragility. Judgement work gets goals and heuristics; a fragile sequence gets the exact order.
-- Give one default and one escape hatch, not a menu.
+- A skill says "ticket" for the local file of one task (`T-xx.md`) and "issue" only for the GitHub issue `piv-slice` publishes. It names a classification its _type_; the loop attaches no GitHub label. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
 - State the target behaviour. Keep a prohibition only as a hard guardrail, paired with the positive target.
 - Give the reason in one clause only when the rule needs it:
   - the agent must extend the rule to cases it does not name;
   - the rule overrides another rule or a plausible default.
   A reason that serves only the maintainer goes in `pages/`.
-- Bound behaviour with observables, not intensity. No "relentless", `CRITICAL`, `MUST` or capitals.
-- A rule that must hold every time is a hook or a `disallowed-tools` entry, not louder prose.
-- No dated statements. Superseded behaviour goes under "Old patterns".
+- Bound behaviour with observables, not intensity. Reserve emphasis (`ALWAYS`, `NEVER`, `MUST`) for the few rules where a deviation breaks a downstream consumer — an exact template structure, a fixed output format. State it once, at the rule, and pair it with the observable it protects.
+- A rule that must hold every time and that a tool call can enforce is a hook or a `disallowed-tools` entry, not louder prose.
 
 ## Pruning
 
@@ -98,11 +91,8 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - A skill carries its own reasons. `rulings.md` never ships with the skills.
 - Leave lookups to the environment. Cache only what looking cannot find: the unwritten convention, the reason behind a choice, the gotcha.
 - Inject load-time state with `` !`command` `` instead of a step that runs it.
-- Reach the tracker in prose ("post each finding as a comment on the ticket") — the tracker varies by project. Name the tool; leave its flags to the environment.
-- Spell a command out only when it is fixed: a bundled script or a fragile sequence. Reference bundled files through `${CLAUDE_SKILL_DIR}` and say whether to run or read them.
-- Name an MCP tool by its fully qualified name.
-- Explain only what the model cannot know.
-- Delete lines that never bear on the task or have gone stale.
+- Reach GitHub through `gh`: name the command, and leave its flags to the environment.
+- Spell a command out only when it is fixed: a bundled script or a fragile sequence. Reference bundled files through `${CLAUDE_SKILL_DIR}`.
 - Delete no-ops — a sentence whose removal changes nothing in an eval. Delete the whole sentence.
 
 ## Templates
@@ -111,21 +101,13 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - An artifact opens with a header block, not YAML front matter.
 - Placeholders are `[...]` — not `<...>`, not `{...}` — in every template, script message, doc and `SKILL.md` that indicates a value to fill. Literal illustrative values (`` `path/to/file.py:42` ``), shell syntax (`<`, `<<`), HTML and the `Q<n>` of a decision log are not placeholders.
 - Template headings are sentence case — `Problem statement`, `Target user & JTBD`.
-- Say how strict the template is: "use exactly" or "adapt sections".
-- When output depends on style, show 2–3 input/output pairs, inline or in `examples.md`.
 
 ## Bundled scripts
 
-- Prefer a bundled script for deterministic work.
-- The script handles its own errors and prints messages the agent can act on.
-- Justify every constant in a comment.
-- Declare dependencies in `SKILL.md`.
 - Pre-approve exactly the script in `allowed-tools`.
 
 ## Evaluation
 
-- Write at least three realistic scenarios before the text.
-- Run each with and without the skill, in a fresh session.
+- Run each scenario in a fresh session.
 - For a model-invoked skill, measure triggering apart from output.
-- Test with every model the repo supports.
-- A disclosed file never read is unneeded or badly signalled; a reference file read every run belongs inline; a template stays in `templates/`.
+- A reference file read every run belongs inline; a template stays in `templates/`.

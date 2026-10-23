@@ -1,6 +1,6 @@
 # Spec: Rate limiting
 
-Status: ready
+Status: reviewed
 Intent-slug: two-tasks
 Language: en-US
 Last updated: 2026-10-14

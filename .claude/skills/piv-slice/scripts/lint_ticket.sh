@@ -6,8 +6,9 @@
 # "RESULT: N issue(s) found".
 #
 # The ticket is a header block (a markdown list, one bold label per line)
-# followed by the 11 sections of the spec. The slice is the task or tasks named
-# by the "Slice" field. A line of the ticket passes only if it is a line of the
+# followed by the 11 sections of the spec. The slice is the one task named by
+# the "Task" field. "Type" is bug, feature or none. "Blocked by" is "none" or
+# exactly the tasks the slice's "Depends on" names, as T-xx ids. A line of the ticket passes only if it is a line of the
 # same section of the spec; a line the slice does not pull in, or a line the
 # slice pulls in and the ticket drops, is a finding. A section with no content
 # holds the single line "None in this ticket.".
@@ -149,7 +150,7 @@ nf == 1 {
     next
   }
   lab = substr($0, 5, RLENGTH - 8); val = trim(substr($0, RLENGTH + 1))
-  if (lab !~ /^(Part of|Spec|Slice|Blocked by|Size|Intent-slug|Language)$/) { err("unknown header label \"" lab "\""); next }
+  if (lab !~ /^(Spec|Task|Type|Blocked by|Size|Intent-slug|Language)$/) { err("unknown header label \"" lab "\""); next }
   if (lab in hval) { err("duplicate header label \"" lab "\""); next }
   hval[lab] = val; hline[lab] = FNR
   if (val == "") err("header label \"" lab "\" has no value")
@@ -204,11 +205,10 @@ END {
   if (nf < 2) { fail("the ticket has no lines"); finish() }
 
   # Header block.
-  nreq = split("Spec|Slice|Blocked by|Size|Intent-slug|Language", req, "|")
+  nreq = split("Spec|Task|Type|Blocked by|Size|Intent-slug|Language", req, "|")
   for (i = 1; i <= nreq; i++) if (!(req[i] in hval)) fail("header is missing \"" req[i] "\"")
-  # Ids take the form of the tracker in use, so only the separators are checked.
-  if ("Part of" in hval && hval["Part of"] !~ /^[^ ,]+$/)
-    errl(hline["Part of"] ": Part of must be one id, with no space or comma")
+  if ("Type" in hval && hval["Type"] !~ /^(bug|feature|none)$/)
+    errl(hline["Type"] ": Type must be bug, feature or none")
   if ("Size" in hval && hval["Size"] !~ /^(S|M|L)$/)
     errl(hline["Size"] ": Size must be S, M or L")
   if ("Spec" in hval) {
@@ -226,23 +226,24 @@ END {
     errl(hline["Intent-slug"] ": Intent-slug is not the spec Intent-slug (" sp_slug ")")
   if ("Language" in hval && hval["Language"] != sp_lang)
     errl(hline["Language"] ": Language is not the spec Language (" sp_lang ")")
-  if ("Blocked by" in hval && hval["Blocked by"] != "none" && hval["Blocked by"] !~ /^[^ ,]+(, *[^ ,]+)*$/)
-    errl(hline["Blocked by"] ": Blocked by must be \"none\" or ticket ids separated by commas")
+  if ("Blocked by" in hval && hval["Blocked by"] != "none" && hval["Blocked by"] !~ /^T-[0-9]+(, *T-[0-9]+)*$/)
+    errl(hline["Blocked by"] ": Blocked by must be \"none\" or task ids (T-xx) separated by commas")
 
   # The slice.
-  if (!("Slice" in hval)) { finish() }
-  ns = split(hval["Slice"], sl, /[ ,]+/)
+  if (!("Task" in hval)) { finish() }
+  ns = split(hval["Task"], sl, /[ ,]+/)
   nsl = 0
   for (i = 1; i <= ns; i++) {
     if (sl[i] == "") continue
     if (sl[i] !~ /^T-[0-9]+$/ || !(sl[i] in thead)) {
-      errl(hline["Slice"] ": " sl[i] " is not a task of the spec")
+      errl(hline["Task"] ": " sl[i] " is not a task of the spec")
       continue
     }
-    if (sl[i] in inslice) { errl(hline["Slice"] ": " sl[i] " is named twice"); continue }
+    if (sl[i] in inslice) { errl(hline["Task"] ": " sl[i] " is named twice"); continue }
     inslice[sl[i]] = 1; nsl++
   }
   if (nsl == 0) { fail("the slice names no task of the spec"); finish() }
+  if (nsl > 1) errl(hline["Task"] ": Task names " nsl " tasks; a ticket carries exactly one task")
 
   # IDs the slice pulls in: those cited in the head of its tasks.
   external = 0
@@ -256,16 +257,23 @@ END {
       }
     }
     nn = collect(tdep[t], "T-[0-9]+", refs)
-    for (i = 1; i <= nn; i++) if (!(refs[i] in inslice)) { external = 1; if (!(refs[i] in extseen)) { extseen[refs[i]] = 1; next_n++ } }
+    for (i = 1; i <= nn; i++) if (!(refs[i] in inslice)) { external = 1; extseen[refs[i]] = 1 }
     want_id[t] = 1
   }
   if (external && ("Blocked by" in hval) && hval["Blocked by"] == "none")
     errl(hline["Blocked by"] ": a task of the slice depends on a task outside it, so Blocked by cannot be none")
   if (!external && ("Blocked by" in hval) && hval["Blocked by"] != "none")
     errl(hline["Blocked by"] ": no task of the slice depends on a task outside it, so Blocked by must be none")
-  nblk = ("Blocked by" in hval && hval["Blocked by"] != "none") ? split(hval["Blocked by"], bl, /, */) : 0
-  if (nblk > next_n)
-    errl(hline["Blocked by"] ": Blocked by names " nblk " tickets, but the slice depends on only " next_n " tasks outside it")
+  # Blocked by names exactly the tasks outside the slice that Depends on lists.
+  if (external && ("Blocked by" in hval) && hval["Blocked by"] != "none") {
+    nblk = split(hval["Blocked by"], bl, /, */)
+    for (i = 1; i <= nblk; i++) {
+      if (bl[i] in blseen) { errl(hline["Blocked by"] ": " bl[i] " is named twice in Blocked by"); continue }
+      blseen[bl[i]] = 1
+      if (!(bl[i] in extseen)) errl(hline["Blocked by"] ": " bl[i] " is in Blocked by, but no task of the slice depends on it")
+    }
+    for (t in extseen) if (!(t in blseen)) errl(hline["Blocked by"] ": the slice depends on " t ", which Blocked by does not name")
+  }
   for (i = 1; i <= nac; i++) {
     a = aclist[i]; keep = 0
     nn = split(acfr[a], fr, " ")

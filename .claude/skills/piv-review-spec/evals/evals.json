@@ -1,0 +1,56 @@
+[
+  {
+    "skills": ["piv-review-spec"],
+    "query": "/piv-review-spec rate-limiting. The spec in evals/fixtures/ready.spec.md sits at .piv/rate-limiting/spec.md. On GitHub, open PR #31 'Add express-rate-limit to the public API' builds the same limiter, and closed issue #22 rejected per-IP limits.",
+    "files": ["evals/fixtures/ready.spec.md"],
+    "expected_behavior": [
+      "Runs gh auth status before searching, then searches issues and PRs with --state all and terms from the spec",
+      "Keeps PR #31 and issue #22 as conflicts and asks one question about each, in the 🔍 format, numbered from Q13 on",
+      "Asks about the [DEFERRED] Redis open question too, in the same batch of at most 3 questions, and ends the message on a GATE",
+      "Edits the spec only after the answers, each changed line carrying Source: Q<n> with a decision log row whose Phase is review",
+      "Writes .piv/rate-limiting/spec.review.md listing #31 and #22 with their URLs under Conflicts on the remote",
+      "Sets Status: reviewed, runs lint_spec.sh to RESULT: OK, and records the hash of the spec taken after that edit as Reviewed-hash"
+    ]
+  },
+  {
+    "skills": ["piv-review-spec"],
+    "query": "/piv-review-spec rate-limiting. The spec in evals/fixtures/clean.spec.md sits at .piv/rate-limiting/spec.md. The repo already has src/middleware/rate-limit.js answering 429 after 100 requests per minute, with no Retry-After header.",
+    "files": ["evals/fixtures/clean.spec.md"],
+    "expected_behavior": [
+      "Finds src/middleware/rate-limit.js during the codebase recon and cites it with path:line under Already in the codebase",
+      "Asks what happens to FR-01, D-01 and T-01 given the existing middleware, with options and a 💡 that cites the file",
+      "Writes no change into the spec before the user answers",
+      "Hands off to piv-slice rate-limiting, in a session of its own, once the spec is reviewed"
+    ]
+  },
+  {
+    "skills": ["piv-review-spec"],
+    "query": "/piv-review-spec rate-limiting. The spec in evals/fixtures/clean.spec.md sits at .piv/rate-limiting/spec.md. Nothing in the codebase or on GitHub overlaps it.",
+    "files": ["evals/fixtures/clean.spec.md"],
+    "expected_behavior": [
+      "Searches the codebase and GitHub and reports nothing found",
+      "Asks no question, since no item is open",
+      "Sets Status: reviewed, runs lint_spec.sh, and writes spec.review.md with Outcome: reviewed, Remote check: done and the Reviewed-hash of the edited spec",
+      "Does not write the hash into the spec"
+    ]
+  },
+  {
+    "skills": ["piv-review-spec"],
+    "query": "/piv-review-spec rate-limiting. The spec in evals/fixtures/draft.spec.md sits at .piv/rate-limiting/spec.md.",
+    "files": ["evals/fixtures/draft.spec.md"],
+    "expected_behavior": [
+      "Reads Status: draft and stops (STOP), saying the spec has to be concluded in piv-spec",
+      "Edits nothing, writes no spec.review.md and runs no gh command"
+    ]
+  },
+  {
+    "skills": ["piv-review-spec"],
+    "query": "/piv-review-spec rate-limiting. The spec in evals/fixtures/ready.spec.md sits at .piv/rate-limiting/spec.md. gh auth status fails: not logged in.",
+    "files": ["evals/fixtures/ready.spec.md"],
+    "expected_behavior": [
+      "Posts the auth failure with gh auth login as the fix, and asks whether to fix it or go on without the remote check, ending on a GATE",
+      "When the user rules to skip, goes on with the codebase recon and the open items, and runs no other gh command",
+      "Writes Remote check: skipped by the user in spec.review.md, and 'Not checked — skipped by the user.' under Conflicts on the remote"
+    ]
+  }
+]

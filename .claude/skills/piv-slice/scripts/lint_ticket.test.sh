@@ -102,9 +102,9 @@ EOF
 # cites FR-03 is out; the one that cites no ID is out.
 write_ticket_t01() {
   cat > "$1" <<'EOF'
-- **Part of**: #10
-- **Spec**: docs/.plans/demo.spec.md @ @HASH@
-- **Slice**: T-01
+- **Spec**: .piv/demo/spec.md @ @HASH@
+- **Task**: T-01
+- **Type**: feature
 - **Blocked by**: none
 - **Size**: S
 - **Intent-slug**: demo
@@ -167,13 +167,14 @@ None in this ticket.
 EOF
 }
 
-# The ticket for the slice T-02, blocked by the ticket #12 that holds T-01. AC-03 only, and
+# The ticket for the slice T-02, blocked by T-01. AC-03 only, and
 # AC-02 too, because its head cites FR-05. The line of T-01 is not copied.
 write_ticket_t02() {
   cat > "$1" <<'EOF'
-- **Spec**: docs/.plans/demo.spec.md @ @HASH@
-- **Slice**: T-02
-- **Blocked by**: #12
+- **Spec**: .piv/demo/spec.md @ @HASH@
+- **Task**: T-02
+- **Type**: feature
+- **Blocked by**: T-01
 - **Size**: S
 - **Intent-slug**: demo
 - **Language**: en-US
@@ -236,15 +237,15 @@ None in this ticket.
 EOF
 }
 
-# new_case [name] [t01|t02]: a directory holding the spec at docs/.plans/demo.spec.md and
+# new_case [name] [t01|t02]: a directory holding the spec at .piv/demo/spec.md and
 # a ticket.md cut from it, with the real revision hash filled in; entered.
 new_case() {
-  mkdir -p "$root/$1/docs/.plans"
+  mkdir -p "$root/$1/.piv/demo"
   cd "$root/$1"
   git init -q -b main
-  write_spec docs/.plans/demo.spec.md
+  write_spec .piv/demo/spec.md
   "write_ticket_$2" ticket.md
-  hash=$(git hash-object --no-filters docs/.plans/demo.spec.md)
+  hash=$(git hash-object --no-filters .piv/demo/spec.md)
   sed -i "s/@HASH@/$hash/" ticket.md
 }
 
@@ -252,7 +253,7 @@ new_case() {
 # committed without the executable bit, so it runs through sh, never as a program.
 run() {
   code=0
-  out=$(sh "$script" ticket.md docs/.plans/demo.spec.md 2>&1) || code=$?
+  out=$(sh "$script" ticket.md .piv/demo/spec.md 2>&1) || code=$?
 }
 
 # pass [case]: the ticket is accepted.
@@ -299,9 +300,9 @@ line_of() {
 # and the language, and every bullet of sections 1 to 10 is a line of the spec.
 new_case t01-valid t01
 pass "AC-05: a ticket cut verbatim from the spec"
-check "AC-05: the header carries the spec path and hash" grep -qE '^- \*\*Spec\*\*: docs/.plans/demo.spec.md @ [0-9a-f]{40}$' ticket.md
-check "AC-05: the header carries the slice, blockers, size, slug and language" \
-  sh -c 'grep -q "^- \*\*Slice\*\*: T-01$" ticket.md && grep -q "^- \*\*Blocked by\*\*: none$" ticket.md && grep -q "^- \*\*Size\*\*: S$" ticket.md && grep -q "^- \*\*Intent-slug\*\*: demo$" ticket.md && grep -q "^- \*\*Language\*\*: en-US$" ticket.md'
+check "AC-05: the header carries the spec path and hash" grep -qE '^- \*\*Spec\*\*: \.piv/demo/spec\.md @ [0-9a-f]{40}$' ticket.md
+check "AC-05: the header carries the slice, type, blockers, size, slug and language" \
+  sh -c 'grep -q "^- \*\*Task\*\*: T-01$" ticket.md && grep -q "^- \*\*Type\*\*: feature$" ticket.md && grep -q "^- \*\*Blocked by\*\*: none$" ticket.md && grep -q "^- \*\*Size\*\*: S$" ticket.md && grep -q "^- \*\*Intent-slug\*\*: demo$" ticket.md && grep -q "^- \*\*Language\*\*: en-US$" ticket.md'
 
 # AC-06: the slice T-01 cites FR-01 and FR-02; the AC whose head cites FR-01 and FR-05 comes whole.
 check "AC-06: section 3 holds FR-01 and FR-02" sh -c 'grep -q "^- FR-01 " ticket.md && grep -q "^- FR-02 " ticket.md'
@@ -314,8 +315,8 @@ check "AC-07: section 4 holds only the marker" \
 
 new_case t02-valid t02
 pass "AC-05: the ticket of a task that depends on another ticket"
-check "D-05: the blocker is #12 and the task keeps Depends on: T-01" \
-  sh -c 'grep -q "^- \*\*Blocked by\*\*: #12$" ticket.md && grep -q "Depends on: T-01 |" ticket.md && ! grep -q "^- T-01 " ticket.md'
+check "D-05: the blocker is T-01 and the task keeps Depends on: T-01" \
+  sh -c 'grep -q "^- \*\*Blocked by\*\*: T-01$" ticket.md && grep -q "Depends on: T-01 |" ticket.md && ! grep -q "^- T-01 " ticket.md'
 
 # AC-08: a line changed against the spec is named by its number, with exit 1.
 new_case changed-line t01
@@ -410,7 +411,7 @@ sed -i 's/ @ [0-9a-f]*$/ @ 0000000000000000000000000000000000000000/' ticket.md
 reject "header: a hash that is not the spec revision" "is not the spec revision"
 
 new_case hash-after-edit t01
-echo "- Added later. (Source: Q1)" >> docs/.plans/demo.spec.md
+echo "- Added later. (Source: Q1)" >> .piv/demo/spec.md
 reject "header: the spec changed after the ticket was cut" "is not the spec revision"
 
 new_case spec-no-hash t01
@@ -434,20 +435,40 @@ sed -i 's/^- \*\*Language\*\*: en-US/- **Language**: pt-BR/' ticket.md
 reject "header: a language that is not the spec's" "Language is not the spec Language"
 
 new_case slice-unknown t01
-sed -i 's/^- \*\*Slice\*\*: T-01/- **Slice**: T-09/' ticket.md
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-09/' ticket.md
 reject "header: a slice that is not a task of the spec" "is not a task of the spec"
 
 new_case blocked-bad t01
-sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: #1 2/' ticket.md
+sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: T-01 T-02/' ticket.md
 reject "header: a malformed Blocked by" "Blocked by must be"
 
 new_case blocked-none-with-dependency t02
-sed -i 's/^- \*\*Blocked by\*\*: #12/- **Blocked by**: none/' ticket.md
+sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: none/' ticket.md
 reject "header: Blocked by none for a task that depends on another ticket" "Blocked by cannot be none"
 
-new_case part-of-bad t01
-sed -i 's/^- \*\*Part of\*\*: #10/- **Part of**: #1 0/' ticket.md
-reject "header: a malformed Part of" "Part of must be"
+new_case part-of t01
+sed -i '1i - **Part of**: #10' ticket.md
+reject "header: a Part of line, which a ticket no longer carries" 'unknown header label "Part of"'
+
+new_case type-missing t01
+sed -i '/^- \*\*Type\*\*/d' ticket.md
+reject "header: a missing Type" 'header is missing "Type"'
+
+new_case type-bad t01
+sed -i 's/^- \*\*Type\*\*: feature/- **Type**: epic/' ticket.md
+reject "header: a Type outside bug, feature and none" "Type must be bug, feature or none"
+
+new_case type-task t01
+sed -i 's/^- \*\*Type\*\*: feature/- **Type**: task/' ticket.md
+reject "header: the retired Type task" "Type must be bug, feature or none"
+
+new_case type-none t01
+sed -i 's/^- \*\*Type\*\*: feature/- **Type**: none/' ticket.md
+pass "header: Type none"
+
+new_case slice-two-tasks t01
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-02/' ticket.md
+reject "header: a slice of two tasks" "a ticket carries exactly one task"
 
 new_case title-line t01
 sed -i '1i # A title' ticket.md
@@ -458,11 +479,11 @@ sed -i 's/^- \*\*Size\*\*: S/- **Size**: banana/' ticket.md
 reject "header: a size outside S, M and L" "Size must be S, M or L"
 
 new_case spec-path-wrong t01
-sed -i 's| docs/.plans/demo.spec.md @ | /nonexistent/other.md @ |' ticket.md
+sed -i 's| .piv/demo/spec.md @ | /nonexistent/other.md @ |' ticket.md
 reject "header: a Spec path that is not the spec" "is not the spec"
 
 new_case slice-twice t01
-sed -i 's/^- \*\*Slice\*\*: T-01/- **Slice**: T-01, T-01/' ticket.md
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-01/' ticket.md
 reject "header: a task named twice in the slice" "is named twice"
 
 new_case crlf-ticket t01
@@ -470,16 +491,24 @@ awk '{printf "%s%c\n", $0, 13}' ticket.md > ticket.crlf && mv ticket.crlf ticket
 reject "mutant: a ticket whose lines end in CR" "FAIL line"
 
 new_case blocked-invented t01
-sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: #5, #6/' ticket.md
+sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: T-05, T-06/' ticket.md
 reject "header: Blocked by on a slice that depends on no outside task" "so Blocked by must be none"
 
-new_case blocked-too-many t02
-sed -i 's/^- \*\*Blocked by\*\*: #12/- **Blocked by**: #12, #13/' ticket.md
-reject "header: more blockers than outside tasks" "but the slice depends on only 1 tasks outside it"
+new_case blocked-extra t02
+sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: T-01, T-03/' ticket.md
+reject "header: a blocker no task of the slice depends on" "T-03 is in Blocked by, but no task of the slice depends on it"
+
+new_case blocked-wrong t02
+sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: T-03/' ticket.md
+reject "header: a dependency Blocked by leaves out" "the slice depends on T-01, which Blocked by does not name"
+
+new_case blocked-ticket-id t02
+sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: #12/' ticket.md
+reject "header: a ticket id instead of a task id in Blocked by" "Blocked by must be"
 
 # Usage and I/O errors exit 2.
 new_case usage t01
-for args in "" "ticket.md" "ticket.md docs/.plans/demo.spec.md extra" "missing.md docs/.plans/demo.spec.md" "ticket.md missing.md"; do
+for args in "" "ticket.md" "ticket.md .piv/demo/spec.md extra" "missing.md .piv/demo/spec.md" "ticket.md missing.md"; do
   count=$((count + 1))
   code=0
   # shellcheck disable=SC2086

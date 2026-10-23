@@ -2,15 +2,15 @@
 
 📖 **Full manual:** https://fabianosobreira.github.io/piv-pipeline/
 
-Plan → Implement → Verify. Eight skills that carry an idea from a blank page to a pull request a human can approve — one deliberate step at a time.
+Plan → Implement → Verify. Ten skills that carry an idea from a blank page to a pull request a human can approve — one deliberate step at a time, on your machine, with GitHub as the only remote.
 
 ### What the PIV loop is
 
 **PIV** stands for **plan → implement → verify**. It is the shape this project's skills run work through.
 
-- **Plan** turns an idea into a spec and a set of tickets.
-- **Implement** builds one ticket on its own branch and writes an implementation report.
-- **Verify** tries to prove the change wrong before it ships: a review writes findings, a triage run settles each one, and only then is the work committed and handed to a human.
+- **Plan** turns an idea into a spec, audits it against your code and your GitHub issues and PRs, cuts it into one ticket per task, and publishes it as one GitHub issue.
+- **Implement** builds one task at a time on the intent's branch and writes an implementation report.
+- **Verify** tries to prove each task wrong before it is committed: a review writes findings, a triage run settles each one, and only then is the task committed. Once every task is in, the PR opens and is audited against the spec before a human merges it.
 
 Two properties hold the whole thing together. **Every step reads the artifact the step before it wrote** — the reports are not paperwork, they are the input. And **every step is started by you**, never by the step before it.
 
@@ -18,13 +18,27 @@ Two properties hold the whole thing together. **Every step reads the artifact th
 
 ### The chain at a glance
 
-- **Plan** — `piv-spec` → `piv-slice`
-- **Standalone** — `piv-write-prd` writes a PRD that only `piv-spec` reads, as optional context
-- **Implement** — `piv-implement`
-- **Verify** — `piv-review` → `piv-fix` → `piv-commit` → `piv-open-pr`
-  **The loop closes on a PASS.** `piv-fix` always hands back to a fresh `piv-review`. Only a PASS verdict earns a commit.
+- **Plan** — `piv-spec` → `piv-review-spec` → `piv-slice`
+- **Per task** — `piv-implement` → `piv-review` → `piv-fix` (when the review asks for changes) → `piv-commit`
+- **Ship** — `piv-open-pr` → `piv-review-pr`
+- **Standalone** — `piv-write-prd` writes the intent as a PRD, an ordinary input of `piv-spec` (`piv-spec .piv/[intent-slug]/prd.md`)
 
-Read the arrows as *"this is the next move offered"*, not as automation. The three verify skills before the PR are the gate; the PR itself is the handoff out of the loop, to a human who reviews, approves and merges.
+**Each task closes on a PASS.** `piv-fix` always hands back to a fresh `piv-review`, and only a PASS verdict earns a commit. Tasks run one at a time, in the order the epic gives.
+
+Read the arrows as *"this is the next move offered"*, not as automation. The PR is the handoff out of the loop, to a human who reviews, approves and merges.
+
+### Local first, one issue, one PR
+
+Everything the loop writes lives under `.piv/` at the root of your repo, ignored by git:
+
+```
+.piv/[intent-slug]/
+  prd.md  spec.md  spec.review.md  epic.md  pr-review.md
+  deferrals/D-01.md
+  tasks/T-01/T-01.md  T-01.report.md  T-01.review.md  T-01.fixes.md
+```
+
+GitHub receives writes at two points only, through the `gh` CLI: `piv-slice` creates the issue, with the spec as its body, and `piv-open-pr` opens the PR that closes it on merge. Every other step works locally.
 
 ### Set up the loop first
 
@@ -39,21 +53,24 @@ npx skills@1.7.2 add fabianosobreira/piv-pipeline#releases -s '*' -a claude-code
 - **A failed install is recovered by running the command again.**
 - **To update, run the same command again.** It pins no version: it installs the current state of the `releases` branch, and the lock file records only the hash installed. To pin a version by hand, replace `#releases` with `#vX.Y.Z`.
 
-Then run `/piv-setup`. It installs the docs the skills read: `docs/piv-loop.md`; `docs/issue-tracker.md` for your tracker — GitHub, GitLab, Jira, or local markdown files; `docs/git-conventions.md`, merged with the git rules your `CLAUDE.md`, `AGENTS.md` or commit tooling already set; and a `docs/.gitignore` that keeps the plans and the reports on your machine. It ends by showing the commit message and committing only when you say so.
+Then run `/piv-setup`. It checks that `origin` is on GitHub and that `gh` is logged in, then installs the docs the skills read — `docs/piv-loop.md`, and `docs/git-conventions.md`, merged with the git rules your `CLAUDE.md`, `AGENTS.md` or commit tooling already set — and adds `.piv/` to your root `.gitignore`. It ends by showing the commit message and committing only when you say so.
 
 ### Where do I start?
 
-You rarely need all eight. Find the row that matches what you have in hand.
+You rarely need all ten. Find the row that matches what you have in hand.
 
 | What you have | Start with | Why |
 | --- | --- | --- |
-| A product idea, nothing written | `piv-write-prd` | Optional: pin the *what and why* down before the spec. |
-| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design, tasks and verification in a spec; a PRD is optional context. |
-| A spec marked ready | `piv-slice` | Each ticket is a verbatim slice of the spec, so nothing is invented between the plan and the work. |
-| A ticket id ready to build | `piv-implement` | A ticket carries the part of the spec it needs, so the loop picks one up from its id alone. |
-| Work built on a branch, not yet committed | `piv-review` | This is the gate that decides whether the change earns a commit. |
+| A product idea, nothing written | `piv-write-prd` | Pin the *what and why* down before the spec; it hands the PRD's path to `piv-spec`. |
+| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design, tasks and verification in a spec; pass the PRD's path as the input. |
+| A spec marked ready | `piv-review-spec` | It checks the spec against your code and your GitHub issues and PRs before anything is published. |
+| A spec marked reviewed | `piv-slice` | One ticket per task, each a verbatim slice of the spec, and one issue that publishes it. |
+| An issue number | `piv-implement` | It picks the next task from the epic and builds it on the intent's branch. |
+| A task built, not yet committed | `piv-review` | This is the gate that decides whether the task earns a commit. |
 | A review report with findings | `piv-fix` | Findings are input, not a work order — you rule on each one. |
-| A PASS verdict | `piv-commit` | Atomic commits, then the PR. |
+| A PASS verdict | `piv-commit` | Atomic commits for the task, then the next task — or the PR. |
+| Every task committed | `piv-open-pr` | One PR for the whole intent, closing its issue on merge. |
+| An open PR | `piv-review-pr` | It holds the PR to every item of the spec. |
 
 ## License
 

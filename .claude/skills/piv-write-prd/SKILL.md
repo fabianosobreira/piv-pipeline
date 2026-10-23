@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Write PRD: Intent, Not Instructions
 
-This is a standalone skill beside the PIV loop `docs/piv-loop.md` describes: its PRD is optional context that only `piv-spec` reads. Write the PRD in the language the user runs this interview in; template labels stay as written.
+This is a standalone skill beside the PIV loop `docs/piv-loop.md` describes: its PRD is one input among others that `piv-spec` accepts. Write the PRD in the language the user runs this interview in; template labels stay as written.
 
 **Input**: $ARGUMENTS
 
@@ -140,8 +140,8 @@ We believe [change] will cause [these users] to [do Y], resulting in [outcome]. 
 
 ## Output — a product PRD
 
-1. **Path.** Read `docs/issue-tracker.md` for where plans live and how it defines the `intent-slug`. If a file already exists at the path, **GATE**: ask whether to revise it or pick a different slug.
-2. **Fill** the template at `templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` as `docs/issue-tracker.md` defines it, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-spec` reads it next as structured input.
+1. **Path.** Write to `.piv/[intent-slug]/prd.md`, proposing the `intent-slug` as `docs/piv-loop.md` defines it. If a file already exists at the path, **GATE**: ask whether to revise it or pick a different slug.
+2. **Fill** the template at `templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` with the slug of the path, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-spec` reads it next as structured input.
 3. **Write** the file.
 
 ## Hand off
@@ -150,4 +150,4 @@ Confirm where it landed; 3-5 line summary leading with the **thesis** and **hypo
 
 Offer the next move and let the user run it — this skill does not chain into the next one:
 
-- **Write the spec** — run `piv-spec [intent-slug] [the PRD's path]` to turn this PRD, with the engineering decisions it deliberately left open, into a spec — here or in a fresh session. `piv-slice` takes it from there.
+- **Write the spec** — run `piv-spec .piv/[intent-slug]/prd.md` (the path written) to turn this PRD, with the engineering decisions it deliberately left open, into a spec — in a session of its own.

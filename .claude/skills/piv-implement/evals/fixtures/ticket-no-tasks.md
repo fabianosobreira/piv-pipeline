@@ -1,5 +1,6 @@
-- **Spec**: docs/.plans/rate-limiting.spec.md @ 77c3c9cdf53be34e77c291fc806119caa44837be
-- **Slice**: T-01
+- **Spec**: .piv/rate-limiting/spec.md @ 77c3c9cdf53be34e77c291fc806119caa44837be
+- **Task**: T-01
+- **Type**: feature
 - **Blocked by**: none
 - **Size**: S
 - **Intent-slug**: rate-limiting

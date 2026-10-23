@@ -2,10 +2,14 @@
 # lint_spec.sh - check structure and traceability of a spec file.
 # Usage: sh scripts/lint_spec.sh [spec.md]
 # Exit codes: 0 = no findings, 1 = findings, 2 = usage or I/O error.
+# Two copies ship, in piv-spec/scripts and piv-review-spec/scripts; both
+# must stay identical, so both skills hold a spec to the same rules.
 # Fenced code blocks are ignored. The vague-term check is a heuristic:
 # a line in sections 3-5 that contains a listed term and no number is flagged.
 # IDs: FR (section 3), NFR (4), AC (5), C (6), D (7), T (8). Every task cites
 # its FR, NFR, C and D in the head; every NFR, C and D must be cited by a task.
+# Status is draft, ready (piv-spec) or reviewed (piv-review-spec). A file named
+# spec.md must carry the Intent-slug of the directory that holds it.
 
 if [ "$#" -ne 1 ]; then
   echo "usage: lint_spec.sh [spec.md]" >&2
@@ -57,7 +61,15 @@ BEGIN {
   sec = 0
   split("", refs); split("", qs)
   nv = split("fast quickly easy simple intuitive user-friendly adequate appropriate reasonable robust scalable efficient flexible seamless rápido rapidamente fácil simples intuitivo amigável adequado adequada apropriado razoável robusto escalável eficiente flexível", vague, " ")
+}
+
+# FILENAME is unset in BEGIN. The directory that holds the file names the slug:
+# .piv/[intent-slug]/spec.md.
+FNR == 1 {
   fname = FILENAME; sub(/.*[\/\\]/, "", fname)
+  dname = FILENAME; gsub(/\\/, "/", dname)
+  if (dname !~ /\//) dname = ""
+  else { sub(/\/[^\/]*$/, "", dname); sub(/.*\//, "", dname) }
 }
 
 /^```/ { fence = !fence; next }
@@ -69,7 +81,7 @@ fence { next }
 
 /^Status:/ {
   status_seen = 1
-  if ($0 !~ /^Status: (draft|ready)[ ]*$/) err("Status must be exactly \"Status: draft\" or \"Status: ready\"")
+  if ($0 !~ /^Status: (draft|ready|reviewed)[ ]*$/) err("Status must be exactly \"Status: draft\", \"Status: ready\" or \"Status: reviewed\"")
   next
 }
 
@@ -80,10 +92,8 @@ sec == 0 && /^Intent-slug:/ {
   slug_seen = 1
   if ($0 !~ /\[PENDING\]/) {
     if ($0 !~ /^Intent-slug: [a-z0-9]+(-[a-z0-9]+)*[ ]*$/) err("Intent-slug must be a kebab-case slug in lowercase ASCII")
-    else if (fname ~ /\.spec\.md$/) {
-      slug = $2; want = fname; sub(/\.spec\.md$/, "", want)
-      if (slug != want) err("Intent-slug \"" slug "\" does not match the file name \"" fname "\"")
-    }
+    else if (fname == "spec.md" && dname != "" && $2 != dname)
+      err("Intent-slug \"" $2 "\" does not match the directory \"" dname "\" that holds spec.md")
   }
 }
 sec == 0 && /^Language:/ {
