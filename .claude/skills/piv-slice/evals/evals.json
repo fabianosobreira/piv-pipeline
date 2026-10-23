@@ -59,7 +59,7 @@
     "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
       "Declines to group the tasks: one ticket carries exactly one task",
-      "Writes one ticket per task; a ticket with Slice: T-01, T-02 would fail lint_ticket.sh with 'a ticket carries exactly one task'",
+      "Writes one ticket per task; a ticket with Task: T-01, T-02 would fail lint_ticket.sh with 'a ticket carries exactly one task'",
       "Goes on to the GATE with two tickets"
     ]
   }

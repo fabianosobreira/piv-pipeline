@@ -103,7 +103,7 @@ EOF
 write_ticket_t01() {
   cat > "$1" <<'EOF'
 - **Spec**: .piv/demo/spec.md @ @HASH@
-- **Slice**: T-01
+- **Task**: T-01
 - **Type**: feature
 - **Blocked by**: none
 - **Size**: S
@@ -172,7 +172,7 @@ EOF
 write_ticket_t02() {
   cat > "$1" <<'EOF'
 - **Spec**: .piv/demo/spec.md @ @HASH@
-- **Slice**: T-02
+- **Task**: T-02
 - **Type**: feature
 - **Blocked by**: T-01
 - **Size**: S
@@ -302,7 +302,7 @@ new_case t01-valid t01
 pass "AC-05: a ticket cut verbatim from the spec"
 check "AC-05: the header carries the spec path and hash" grep -qE '^- \*\*Spec\*\*: \.piv/demo/spec\.md @ [0-9a-f]{40}$' ticket.md
 check "AC-05: the header carries the slice, type, blockers, size, slug and language" \
-  sh -c 'grep -q "^- \*\*Slice\*\*: T-01$" ticket.md && grep -q "^- \*\*Type\*\*: feature$" ticket.md && grep -q "^- \*\*Blocked by\*\*: none$" ticket.md && grep -q "^- \*\*Size\*\*: S$" ticket.md && grep -q "^- \*\*Intent-slug\*\*: demo$" ticket.md && grep -q "^- \*\*Language\*\*: en-US$" ticket.md'
+  sh -c 'grep -q "^- \*\*Task\*\*: T-01$" ticket.md && grep -q "^- \*\*Type\*\*: feature$" ticket.md && grep -q "^- \*\*Blocked by\*\*: none$" ticket.md && grep -q "^- \*\*Size\*\*: S$" ticket.md && grep -q "^- \*\*Intent-slug\*\*: demo$" ticket.md && grep -q "^- \*\*Language\*\*: en-US$" ticket.md'
 
 # AC-06: the slice T-01 cites FR-01 and FR-02; the AC whose head cites FR-01 and FR-05 comes whole.
 check "AC-06: section 3 holds FR-01 and FR-02" sh -c 'grep -q "^- FR-01 " ticket.md && grep -q "^- FR-02 " ticket.md'
@@ -435,7 +435,7 @@ sed -i 's/^- \*\*Language\*\*: en-US/- **Language**: pt-BR/' ticket.md
 reject "header: a language that is not the spec's" "Language is not the spec Language"
 
 new_case slice-unknown t01
-sed -i 's/^- \*\*Slice\*\*: T-01/- **Slice**: T-09/' ticket.md
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-09/' ticket.md
 reject "header: a slice that is not a task of the spec" "is not a task of the spec"
 
 new_case blocked-bad t01
@@ -459,7 +459,7 @@ sed -i 's/^- \*\*Type\*\*: feature/- **Type**: epic/' ticket.md
 reject "header: a Type outside bug, feature and task" "Type must be bug, feature or task"
 
 new_case slice-two-tasks t01
-sed -i 's/^- \*\*Slice\*\*: T-01/- **Slice**: T-01, T-02/' ticket.md
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-02/' ticket.md
 reject "header: a slice of two tasks" "a ticket carries exactly one task"
 
 new_case title-line t01
@@ -475,7 +475,7 @@ sed -i 's| .piv/demo/spec.md @ | /nonexistent/other.md @ |' ticket.md
 reject "header: a Spec path that is not the spec" "is not the spec"
 
 new_case slice-twice t01
-sed -i 's/^- \*\*Slice\*\*: T-01/- **Slice**: T-01, T-01/' ticket.md
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-01/' ticket.md
 reject "header: a task named twice in the slice" "is named twice"
 
 new_case crlf-ticket t01

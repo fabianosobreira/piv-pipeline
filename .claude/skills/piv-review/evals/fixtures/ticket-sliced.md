@@ -1,5 +1,5 @@
 - **Spec**: .piv/rate-limiting/spec.md @ 77c3c9cdf53be34e77c291fc806119caa44837be
-- **Slice**: T-01
+- **Task**: T-01
 - **Type**: feature
 - **Blocked by**: none
 - **Size**: S

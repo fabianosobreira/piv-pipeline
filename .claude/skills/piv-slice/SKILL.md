@@ -99,7 +99,7 @@ Write each ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, from `templates/ti
 - **Section 10** — the *Always*, *Ask first* and *Never* levels, whole; under *Open questions*, only the lines that cite an ID the ticket carries.
 - **Appendix** — the table header and the decision-log row of every `Q` cited anywhere in the ticket, whole.
 
-The header block: `Spec` as `[spec path] @ [hash]`, with the hash from `git hash-object --no-filters [spec path]`; `Slice`, the task's id; `Type`, `Blocked by` and `Size` from Steps 3 and 4; `Intent-slug` and `Language` copied from the spec.
+The header block: `Spec` as `[spec path] @ [hash]`, with the hash from `git hash-object --no-filters [spec path]`; `Task`, the task's id; `Type`, `Blocked by` and `Size` from Steps 3 and 4; `Intent-slug` and `Language` copied from the spec.
 
 Validate each ticket with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket path] [spec path]` — run it, do not read it; it needs a POSIX `sh`, `awk`, `tr`, `cmp` and `git`. Fix the ticket, never the spec, until it prints `RESULT: OK`.
 

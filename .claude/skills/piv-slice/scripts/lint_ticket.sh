@@ -7,7 +7,7 @@
 #
 # The ticket is a header block (a markdown list, one bold label per line)
 # followed by the 11 sections of the spec. The slice is the one task named by
-# the "Slice" field. "Type" is bug, feature or task. "Blocked by" is "none" or
+# the "Task" field. "Type" is bug, feature or task. "Blocked by" is "none" or
 # exactly the tasks the slice's "Depends on" names, as T-xx ids. A line of the ticket passes only if it is a line of the
 # same section of the spec; a line the slice does not pull in, or a line the
 # slice pulls in and the ticket drops, is a finding. A section with no content
@@ -150,7 +150,7 @@ nf == 1 {
     next
   }
   lab = substr($0, 5, RLENGTH - 8); val = trim(substr($0, RLENGTH + 1))
-  if (lab !~ /^(Spec|Slice|Type|Blocked by|Size|Intent-slug|Language)$/) { err("unknown header label \"" lab "\""); next }
+  if (lab !~ /^(Spec|Task|Type|Blocked by|Size|Intent-slug|Language)$/) { err("unknown header label \"" lab "\""); next }
   if (lab in hval) { err("duplicate header label \"" lab "\""); next }
   hval[lab] = val; hline[lab] = FNR
   if (val == "") err("header label \"" lab "\" has no value")
@@ -205,7 +205,7 @@ END {
   if (nf < 2) { fail("the ticket has no lines"); finish() }
 
   # Header block.
-  nreq = split("Spec|Slice|Type|Blocked by|Size|Intent-slug|Language", req, "|")
+  nreq = split("Spec|Task|Type|Blocked by|Size|Intent-slug|Language", req, "|")
   for (i = 1; i <= nreq; i++) if (!(req[i] in hval)) fail("header is missing \"" req[i] "\"")
   if ("Type" in hval && hval["Type"] !~ /^(bug|feature|task)$/)
     errl(hline["Type"] ": Type must be bug, feature or task")
@@ -230,20 +230,20 @@ END {
     errl(hline["Blocked by"] ": Blocked by must be \"none\" or task ids (T-xx) separated by commas")
 
   # The slice.
-  if (!("Slice" in hval)) { finish() }
-  ns = split(hval["Slice"], sl, /[ ,]+/)
+  if (!("Task" in hval)) { finish() }
+  ns = split(hval["Task"], sl, /[ ,]+/)
   nsl = 0
   for (i = 1; i <= ns; i++) {
     if (sl[i] == "") continue
     if (sl[i] !~ /^T-[0-9]+$/ || !(sl[i] in thead)) {
-      errl(hline["Slice"] ": " sl[i] " is not a task of the spec")
+      errl(hline["Task"] ": " sl[i] " is not a task of the spec")
       continue
     }
-    if (sl[i] in inslice) { errl(hline["Slice"] ": " sl[i] " is named twice"); continue }
+    if (sl[i] in inslice) { errl(hline["Task"] ": " sl[i] " is named twice"); continue }
     inslice[sl[i]] = 1; nsl++
   }
   if (nsl == 0) { fail("the slice names no task of the spec"); finish() }
-  if (nsl > 1) errl(hline["Slice"] ": Slice names " nsl " tasks; a ticket carries exactly one task")
+  if (nsl > 1) errl(hline["Task"] ": Task names " nsl " tasks; a ticket carries exactly one task")
 
   # IDs the slice pulls in: those cited in the head of its tasks.
   external = 0

@@ -1,5 +1,5 @@
 - **Spec**: [the spec path] @ [the output of `git hash-object --no-filters [the spec path]`]
-- **Slice**: [the id of the one task this ticket carries, such as T-01]
+- **Task**: [the id of the one task this ticket carries, such as T-01]
 - **Type**: [bug, feature or task]
 - **Blocked by**: [each task this task lists in `Depends on`, as T-xx ids separated by commas, or "none"]
 - **Size**: [S, M or L]
