@@ -456,7 +456,15 @@ reject "header: a missing Type" 'header is missing "Type"'
 
 new_case type-bad t01
 sed -i 's/^- \*\*Type\*\*: feature/- **Type**: epic/' ticket.md
-reject "header: a Type outside bug, feature and task" "Type must be bug, feature or task"
+reject "header: a Type outside bug, feature and none" "Type must be bug, feature or none"
+
+new_case type-task t01
+sed -i 's/^- \*\*Type\*\*: feature/- **Type**: task/' ticket.md
+reject "header: the retired Type task" "Type must be bug, feature or none"
+
+new_case type-none t01
+sed -i 's/^- \*\*Type\*\*: feature/- **Type**: none/' ticket.md
+pass "header: Type none"
 
 new_case slice-two-tasks t01
 sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-02/' ticket.md

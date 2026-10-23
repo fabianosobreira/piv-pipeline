@@ -31,15 +31,15 @@
   },
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. gh is logged in, origin is on github.com, and the feature label exists.",
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. gh is logged in, origin is on github.com.",
     "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
       "Writes .piv/two-tasks/tasks/T-01/T-01.md and .piv/two-tasks/tasks/T-02/T-02.md from templates/ticket.md, one task each, and runs lint_ticket.sh on both until each prints RESULT: OK",
       "T-02's ticket has Blocked by: T-01 and no T-01 task line; T-01's ticket section 4 holds only 'None in this ticket.'",
       "Writes epic.md with both tasks [ ], their type, size and Depends on, Issue and Branch reading pending, and the open question that cites no ID under Not ticketed",
-      "Runs gh auth status and checks the label before the GATE",
-      "At the GATE, posts the issue title 'Rate limiting', the proposed label feature, the warning that the spec will be published in full as the issue body, and a relative link to .piv/two-tasks/spec.md, then ends the turn",
-      "After approval, creates the issue with the spec file as its body, the feature label and @me as assignee, and writes its number and URL into the epic's Issue",
+      "Runs gh auth status before the GATE",
+      "At the GATE, posts the issue title 'Rate limiting', the proposed type feature, the warning that the spec will be published in full as the issue body, and a relative link to .piv/two-tasks/spec.md, then ends the turn",
+      "After approval, creates the issue with the spec file as its body, and @me as assignee, and writes its number and URL into the epic's Issue",
       "Hands off to piv-implement [#N] in a session of its own"
     ]
   },
@@ -50,7 +50,7 @@
     "expected_behavior": [
       "Writes and lints the tickets and the epic before touching GitHub",
       "Stops (STOP) at the preflight, before any GATE, naming gh auth login as the fix",
-      "Creates no label and no issue, and leaves the epic's Issue as pending"
+      "Creates no issue, and leaves the epic's Issue as pending"
     ]
   },
   {

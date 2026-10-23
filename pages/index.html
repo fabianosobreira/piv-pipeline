@@ -352,10 +352,10 @@
           <dd><code>[intent-slug]</code>, for a spec at <code>Status: reviewed</code> whose hash matches its review. A <code>draft</code>, a <code>ready</code>, or a spec edited after its review stops the run.</dd>
 
           <dt>Output</dt>
-          <dd><code>tasks/T-xx/T-xx.md</code>, one ticket per task, each with a header block (<code>Spec</code> with the revision hash, <code>Slice</code>, <code>Type</code>, <code>Blocked by</code>, <code>Size</code>, <code>Intent-slug</code>, <code>Language</code>) and the spec's sections; <code>epic.md</code>, the to-do list of tasks; and one GitHub issue, with the whole spec as its body, one type label — <code>bug</code>, <code>feature</code> or <code>task</code> — and you as assignee.</dd>
+          <dd><code>tasks/T-xx/T-xx.md</code>, one ticket per task, each with a header block (<code>Spec</code> with the revision hash, <code>Task</code>, <code>Type</code>, <code>Blocked by</code>, <code>Size</code>, <code>Intent-slug</code>, <code>Language</code>) and the spec's sections; <code>epic.md</code>, the to-do list of tasks; and one GitHub issue, with the whole spec as its body, one type label — <code>bug</code>, <code>feature</code> or <code>task</code> — and you as assignee.</dd>
 
           <dt>How it runs</dt>
-          <dd>Non-interactive through slicing, linting and the <code>gh</code> preflight, then <strong>one gate</strong> where you approve the issue: its title, its label, and the warning that the spec is published in full. A bundled validator, <code>lint_ticket.sh</code>, rejects any ticket line that is not a verbatim line of the spec, and any ticket with more than one task; nothing reaches GitHub until every ticket passes.</dd>
+          <dd>Non-interactive through slicing, linting and the <code>gh</code> preflight, then <strong>one gate</strong> where you approve the issue: its title, its type, and the warning that the spec is published in full. A bundled validator, <code>lint_ticket.sh</code>, rejects any ticket line that is not a verbatim line of the spec, and any ticket with more than one task; nothing reaches GitHub until every ticket passes.</dd>
 
           <dt>Next move</dt>
           <dd><code>piv-implement [#N]</code>, in a session of its own.</dd>
@@ -525,7 +525,7 @@
           <dd><code>[#N | intent-slug] · [base branch]</code> — blank and it takes the issue from the branch name and uses the project's base branch.</dd>
 
           <dt>Output</dt>
-          <dd>A published branch and an open PR, with the issue's label and you as assignee. Its body carries <code>Closes #N</code>, the spec's revision, and per task the summary, validation, deviations, surviving findings and open problems — plus every deferral in full. It reports the PR number, the URL and the base ← head branches.</dd>
+          <dd>A published branch and an open PR, with you as assignee. Its body carries <code>Closes #N</code>, the spec's revision, and per task the summary, validation, deviations, surviving findings and open problems — plus every deferral in full. It reports the PR number, the URL and the base ← head branches.</dd>
 
           <dt>How it runs</dt>
           <dd>Resolve the intent and the base branch → check every task is done and every commit is on the branch → gather the body from the reports and the deferrals → publish → open the PR with <code>gh</code>.</dd>

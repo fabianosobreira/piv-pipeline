@@ -74,7 +74,7 @@ A **leading word** is a compact concept already in the model's pretraining that 
 - Repeat the token, never the sentence.
 - Reach for an existing word before coining one.
 - Collapse restatements into one word. "fast, deterministic, low-overhead" → _tight_; "a loop you believe in" → _red_.
-- A skill says "ticket" for the local file of one task (`T-xx.md`) and "issue" only for the GitHub issue `piv-slice` publishes. It names a classification its _type_, and says "label" only for the GitHub label that carries the type on the issue and the PR. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
+- A skill says "ticket" for the local file of one task (`T-xx.md`) and "issue" only for the GitHub issue `piv-slice` publishes. It names a classification its _type_; the loop attaches no GitHub label. A problem is a _problem_ — the reports say *Problems encountered* and *Open problems*.
 - State the target behaviour. Keep a prohibition only as a hard guardrail, paired with the positive target.
 - Give the reason in one clause only when the rule needs it:
   - the agent must extend the rule to cases it does not name;

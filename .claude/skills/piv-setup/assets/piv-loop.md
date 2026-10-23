@@ -117,7 +117,7 @@ The kebab-slug of the product title — or, with no PRD, of the spec's goal — 
 
 ### Types
 
-Every task, issue, PR and deferral carries exactly one type: `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `task` is refactor, docs, chore or infra work. The issue takes the largest effect among its tasks — `feature` over `bug` over `task` — and the PR takes the issue's.
+Every task, issue, PR and deferral carries exactly one type: `bug` is behavior that diverges from what was specified or delivered; `feature` delivers a new capability; `none` is any other work — refactor, docs, chore or infra. The issue takes the largest effect among its tasks — `feature` over `bug` over `none` — and the PR takes the issue's.
 
 ### Resolving the intent and the task
 
@@ -137,14 +137,14 @@ A step of the per-task loop takes `[#N | intent-slug] [T-xx]`:
 - **Language**: [BCP 47 tag]
 - **Spec**: [spec path] @ [hash]
 - **Issue**: [#N and its URL]
-- **Type**: [the issue's label: bug, feature or task]
+- **Type**: [the issue's type: bug, feature or none]
 - **Branch**: [branch name]
 
 ## Context
 [one sentence from section 1 of the spec]
 
 ## Tasks
-- [ ] T-01 — [title] | [bug|feature|task] | [S|M|L] | Depends on: [-|T-xx, T-yy]
+- [ ] T-01 — [title] | [bug|feature|none] | [S|M|L] | Depends on: [-|T-xx, T-yy]
 - [~] T-02 — [title] | [type] | [size] | Depends on: T-01
 - [x] T-03 — [title] | [type] | [size] | Depends on: - — commits: a1b2c3d, e4f5a6b
 
@@ -168,9 +168,9 @@ A step of the per-task loop takes `[#N | intent-slug] [T-xx]`:
 
 GitHub is the only remote the loop talks to, through the `gh` CLI. It **receives writes at two points only**:
 
-- **`piv-slice`** — creates the issue: the spec as its body, one type label, assigned to the user. A missing type label is created first; when it can't be, **STOP**.
-- **`piv-open-pr`** — opens the PR: `Closes #N` in its body, the issue's label, assigned to the user. The merge closes the issue; no step closes it by hand.
+- **`piv-slice`** — creates the issue: the spec as its body, assigned to the user.
+- **`piv-open-pr`** — opens the PR: `Closes #N` in its body, assigned to the user. The merge closes the issue; no step closes it by hand.
 
-Every other step may read from GitHub — `piv-review-spec` and `piv-review-pr` do — and writes nothing there: no comment, no label, no status. The issue is a snapshot of the spec as it was published, never synced.
+Every other step may read from GitHub — `piv-review-spec` and `piv-review-pr` do — and writes nothing there: no comment, no status. The issue is a snapshot of the spec as it was published, never synced.
 
 Before any call, the steps that reach GitHub run `gh auth status`. On failure, `piv-slice` and `piv-open-pr` **STOP**, naming `gh auth login`; `piv-review-spec` and `piv-review-pr` post the message with the same fix and ask whether to rerun or go on without the remote. **GATE.** Going on is recorded in the review as `Remote check: skipped by the user`.

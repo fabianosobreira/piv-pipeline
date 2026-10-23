@@ -16,7 +16,7 @@ This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: ev
 - ✅ The body carries `Closes #N`, the epic's `Spec` line, and, per task, the implementation report's *Deviations from the ticket* and *Problems encountered*, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which report was unavailable. A missing fix report goes unmentioned.
 - ✅ The body carries every deferral of the intent in full.
 - ✅ The reports themselves stay local: the body is their distillation, and nothing is attached.
-- ✅ The PR carries the issue's label and the user as assignee, and is a draft or ready for review as Step 5's rule decides.
+- ✅ The PR carries the user as assignee, and is a draft or ready for review as Step 5's rule decides.
 
 ## Process
 
@@ -74,7 +74,7 @@ Push it to the remote, tracking it. A rejected push → **STOP** and report git'
 
 ### Step 5 — Open the PR
 
-Open it with `gh pr create` against `[base]`, with the body file from Step 3, the epic's `Type` as its label, and `@me` as assignee. Title it in the form `docs/git-conventions.md` gives PR titles, with the issue number; when the commits carry different tags, the title takes the largest effect among them.
+Open it with `gh pr create` against `[base]`, with the body file from Step 3, and `@me` as assignee. Title it in the form `docs/git-conventions.md` gives PR titles, with the issue number; when the commits carry different tags, the title takes the largest effect among them.
 
 Open it as a draft or ready for review by the first condition below that holds, over every task:
 
@@ -82,7 +82,7 @@ Open it as a draft or ready for review by the first condition below that holds, 
 - **Any other implementation report status `PARTIAL`** → draft. The body's closing line says it waits on the open problems it lists.
 - **Otherwise** → ready for review.
 
-**Done when** the PR is open against `[base]` in the state above, with its label and assignee.
+**Done when** the PR is open against `[base]` in the state above, with its assignee.
 
 ## Output — report the PR
 

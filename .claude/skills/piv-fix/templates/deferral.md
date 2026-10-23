@@ -2,7 +2,7 @@
 
 - **Intent-slug**: [the reviewed ticket's `Intent-slug`, copied verbatim]
 - **Language**: [the reviewed ticket's `Language`, copied verbatim]
-- **Type**: [bug or task]
+- **Type**: [bug or none]
 - **Origin**: [the reviewed task's id, such as T-02], review round [the review report's Round]
 
 ## Claim
@@ -21,5 +21,5 @@
 [the finding's fix, copied from the review report]
 
 ## Acceptance criteria
-- [ ] [bug: the defect at `path/to/file.py:42` no longer reproduces, and a test fails without the fix and passes with it | task: the finding's claim no longer holds at `path/to/file.py:42`, and the project's checks stay green]
+- [ ] [bug: the defect at `path/to/file.py:42` no longer reproduces, and a test fails without the fix and passes with it | none: the finding's claim no longer holds at `path/to/file.py:42`, and the project's checks stay green]
 - [ ] [any criterion the finding itself calls for]

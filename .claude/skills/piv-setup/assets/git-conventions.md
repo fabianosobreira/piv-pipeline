@@ -12,7 +12,7 @@ The base branch is whichever branch the remote treats as its default. Ask the re
 
 Each piece of work is built on one branch, shared by all its tasks, named `[tag]/[N]-[slug]` — for example `feat/142-rate-limiting`. It stays local until the PR is opened.
 
-- **`[tag]`** — the conventional tag of the issue's type: `feature` → `feat`, `bug` → `fix`, `task` → `chore`. The commits on the branch carry the tag each one earns, which may differ.
+- **`[tag]`** — the conventional tag of the issue's type: `feature` → `feat`, `bug` → `fix`, `none` → `chore`. The commits on the branch carry the tag each one earns, which may differ.
 - **`[N]`** — the number of the work's GitHub issue, without the `#`: `#123` → `123`.
 - **`[slug]`** — a short kebab-case name for the work.
 

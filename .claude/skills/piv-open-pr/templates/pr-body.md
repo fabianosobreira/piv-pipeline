@@ -32,7 +32,7 @@ Closes #[N]
 [every deferral of the intent, in full, one block per file under `deferrals/`, in D-xx order — or "None."]
 
 ### [D-xx] — [title]
-- **Type**: [bug or task]
+- **Type**: [bug or none]
 - **Origin**: [T-xx], review round [n]
 - **Claim**: [the deferral's *Claim*, as written]
 - **Impact**: [the deferral's *Impact*, as written]

@@ -7,8 +7,6 @@ allowed-tools:
   - Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh *)
   - Bash(git hash-object *)
   - Bash(gh auth status)
-  - Bash(gh label list *)
-  - Bash(gh label create *)
   - Bash(gh issue create *)
 ---
 
@@ -39,7 +37,7 @@ An `epic.md` already there decides it too:
 - ✅ **Every ticket passed `lint_ticket.sh` before anything reached GitHub.**
 - ✅ **The epic lists every task with its type, size and dependencies, all `[ ]`, and every open question no ticket carries.**
 - ✅ **The user approved the issue at the GATE** before it was created.
-- ✅ **The issue exists with the whole spec as its body, exactly one type label, and the user as assignee**, and its number, URL and label are in the epic.
+- ✅ **The issue exists with the whole spec as its body, and the user as assignee**, and its number, URL and type are in the epic.
 
 ## Process
 
@@ -76,7 +74,7 @@ One task is one ticket — never two tasks in one, whoever asks, and never a tas
 For each task take, from the spec:
 
 - **Title** — the task's description: the text between the head's colon and ` | Depends on`.
-- **Type** — exactly one of `bug`, `feature` and `task`, as `docs/piv-loop.md` defines them, from the task's text.
+- **Type** — exactly one of `bug`, `feature` and `none`, as `docs/piv-loop.md` defines them, from the task's text.
 - **Size** — `S`, `M` or `L`, judged from the surface listed in Step 2 and the lines of change one focused loop can finish.
 
 **Done when** every task has its title, type and size, and every task is provable on its own.
@@ -113,27 +111,26 @@ Check, in order, and **STOP** on the first that fails, with the command that fix
 
 1. `gh auth status` passes — else `gh auth login`.
 2. The `origin` remote is on `github.com`.
-3. The issue's **type** — the largest effect among the tasks' types, `feature` over `bug` over `task` — exists as a label: `gh label list --search [type]`. Missing → create it with `gh label create [type]`; when that fails → **STOP**: an issue without its type is one the filters never find.
 
-**Done when** all three hold.
+**Done when** both hold.
 
 ### Step 7 — GATE: confirm the issue
 
 Post, then **GATE**:
 
 - the issue title — the spec's title, the text after `# Spec:`;
-- the proposed type label, with the type of each task behind it, and that the user may pick another of `bug`, `feature` and `task`;
+- the proposed issue type — the largest effect among the tasks' types, `feature` over `bug` over `none` — with the type of each task behind it, and that the user may pick another of `bug`, `feature` and `none`;
 - **"The spec will be published in full as the issue body."**;
 - the local spec as a clickable relative link, such as `[spec.md](.piv/[intent-slug]/spec.md)`;
 - the epic's task list and *Not ticketed*.
 
-End the turn and wait. The user's approval is the only thing that creates the issue; a different label the user picks is preflighted as in Step 6 before it is used.
+End the turn and wait. The user's approval is the only thing that creates the issue.
 
-**Done when** the user approved the issue, with its label.
+**Done when** the user approved the issue, with its type.
 
 ### Step 8 — Create the issue
 
-Create it with `gh issue create`: the title from Step 7, the body from the spec file itself, passed as a file — `.piv/[intent-slug]/spec.md` — never retyped, the approved label, and `@me` as assignee. Capture the number and URL it prints and write them into the epic's `Issue` as `#N` and the URL, and the label into its `Type`. A creation that fails → **STOP** with `gh`'s message; the epic keeps `Issue: pending`, so a rerun starts over.
+Create it with `gh issue create`: the title from Step 7, the body from the spec file itself, passed as a file — `.piv/[intent-slug]/spec.md` — never retyped, and `@me` as assignee. Capture the number and URL it prints and write them into the epic's `Issue` as `#N` and the URL, and the approved type into its `Type`. A creation that fails → **STOP** with `gh`'s message; the epic keeps `Issue: pending`, so a rerun starts over.
 
 **Done when** the issue exists and the epic's `Issue` and `Type` name it.
 

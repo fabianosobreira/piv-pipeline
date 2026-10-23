@@ -7,7 +7,7 @@
 #
 # The ticket is a header block (a markdown list, one bold label per line)
 # followed by the 11 sections of the spec. The slice is the one task named by
-# the "Task" field. "Type" is bug, feature or task. "Blocked by" is "none" or
+# the "Task" field. "Type" is bug, feature or none. "Blocked by" is "none" or
 # exactly the tasks the slice's "Depends on" names, as T-xx ids. A line of the ticket passes only if it is a line of the
 # same section of the spec; a line the slice does not pull in, or a line the
 # slice pulls in and the ticket drops, is a finding. A section with no content
@@ -207,8 +207,8 @@ END {
   # Header block.
   nreq = split("Spec|Task|Type|Blocked by|Size|Intent-slug|Language", req, "|")
   for (i = 1; i <= nreq; i++) if (!(req[i] in hval)) fail("header is missing \"" req[i] "\"")
-  if ("Type" in hval && hval["Type"] !~ /^(bug|feature|task)$/)
-    errl(hline["Type"] ": Type must be bug, feature or task")
+  if ("Type" in hval && hval["Type"] !~ /^(bug|feature|none)$/)
+    errl(hline["Type"] ": Type must be bug, feature or none")
   if ("Size" in hval && hval["Size"] !~ /^(S|M|L)$/)
     errl(hline["Size"] ": Size must be S, M or L")
   if ("Spec" in hval) {

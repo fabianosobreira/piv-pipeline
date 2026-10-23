@@ -48,7 +48,7 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 
 **The change** is the diff against the review report's *Base*, uncommitted work included.
 
-**Type.** Every finding's type follows its class, never its claim, as `docs/piv-loop.md` defines types: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `task` for the rest. Never `feature`: a deferral delivers no new capability.
+**Type.** Every finding's type follows its class, never its claim, as `docs/piv-loop.md` defines types: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `none` for the rest. Never `feature`: a deferral delivers no new capability.
 
 **Blocking.** A finding is blocking when it is a red, missing or weakened test, or an untested behavior.
 

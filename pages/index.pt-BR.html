@@ -341,10 +341,10 @@
           <dd><code>[intent-slug]</code>, para um spec em <code>Status: reviewed</code> cujo hash bate com a review. Um <code>draft</code>, um <code>ready</code>, ou um spec editado depois da review encerra a execução.</dd>
 
           <dt>Saída</dt>
-          <dd><code>tasks/T-xx/T-xx.md</code>, um ticket por task, cada um com um header block (<code>Spec</code> com o hash da revisão, <code>Slice</code>, <code>Type</code>, <code>Blocked by</code>, <code>Size</code>, <code>Intent-slug</code>, <code>Language</code>) e as seções do spec; <code>epic.md</code>, a lista de tasks; e uma issue do GitHub, com o spec inteiro no body, um label de tipo — <code>bug</code>, <code>feature</code> ou <code>task</code> — e você como assignee.</dd>
+          <dd><code>tasks/T-xx/T-xx.md</code>, um ticket por task, cada um com um header block (<code>Spec</code> com o hash da revisão, <code>Task</code>, <code>Type</code>, <code>Blocked by</code>, <code>Size</code>, <code>Intent-slug</code>, <code>Language</code>) e as seções do spec; <code>epic.md</code>, a lista de tasks; e uma issue do GitHub, com o spec inteiro no body, um label de tipo — <code>bug</code>, <code>feature</code> ou <code>task</code> — e você como assignee.</dd>
 
           <dt>Como roda</dt>
-          <dd>Sem interação durante o corte, o lint e o preflight do <code>gh</code>, e então <strong>um gate</strong> em que você aprova a issue: o título, o label, e o aviso de que o spec será publicado por inteiro. Um validador incluso, o <code>lint_ticket.sh</code>, rejeita toda linha de ticket que não seja uma linha literal do spec, e todo ticket com mais de uma task; nada chega ao GitHub até todos os tickets passarem.</dd>
+          <dd>Sem interação durante o corte, o lint e o preflight do <code>gh</code>, e então <strong>um gate</strong> em que você aprova a issue: o título, o tipo, e o aviso de que o spec será publicado por inteiro. Um validador incluso, o <code>lint_ticket.sh</code>, rejeita toda linha de ticket que não seja uma linha literal do spec, e todo ticket com mais de uma task; nada chega ao GitHub até todos os tickets passarem.</dd>
 
           <dt>Próximo passo</dt>
           <dd><code>piv-implement [#N]</code>, em uma sessão própria.</dd>
@@ -515,7 +515,7 @@
           <dd><code>[#N | intent-slug] · [base branch]</code> — em branco, pega a issue do nome da branch e usa a base branch do projeto.</dd>
 
           <dt>Output</dt>
-          <dd>Uma branch publicada e um PR aberto, com o label da issue e você como assignee. O body leva <code>Closes #N</code>, a revisão do spec e, por task, o resumo, a validação, os desvios, as findings que sobraram e os problemas em aberto — além de cada deferral por inteiro. Ela reporta o número do PR, a URL e as branches base ← head.</dd>
+          <dd>Uma branch publicada e um PR aberto, com você como assignee. O body leva <code>Closes #N</code>, a revisão do spec e, por task, o resumo, a validação, os desvios, as findings que sobraram e os problemas em aberto — além de cada deferral por inteiro. Ela reporta o número do PR, a URL e as branches base ← head.</dd>
 
           <dt>Como roda</dt>
           <dd>Resolver o intent e a base branch → conferir que todas as tasks estão concluídas e todos os commits estão na branch → reunir o body a partir dos reports e das deferrals → publicar → abrir o PR com o <code>gh</code>.</dd>

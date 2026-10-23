@@ -1,6 +1,6 @@
 - **Spec**: [the spec path] @ [the output of `git hash-object --no-filters [the spec path]`]
 - **Task**: [the id of the one task this ticket carries, such as T-01]
-- **Type**: [bug, feature or task]
+- **Type**: [bug, feature or none]
 - **Blocked by**: [each task this task lists in `Depends on`, as T-xx ids separated by commas, or "none"]
 - **Size**: [S, M or L]
 - **Intent-slug**: [the spec's `Intent-slug`, copied verbatim]
