@@ -11,7 +11,7 @@ This is the **implement** step of the PIV loop `docs/piv-loop.md` describes: one
 
 ## Success criteria
 
-- ✅ Every task on the list from Step 3 is implemented.
+- ✅ The task from Step 3 is implemented.
 - ✅ Every file the change touched shows in the git status — none is one the repository ignores.
 - ✅ Every test the ticket's section 9 commands name exists, runs and passes, and every behavior the change adds or alters has a test — or the report's *Tests added* says why there is none (no test suite, no testable behavior, or the user waived them).
 - ✅ The full test suite and every other check run in Step 6 are green, apart from the baseline's red tests Step 6 leaves red.
@@ -28,7 +28,7 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 - [ ] Step 1 — Resolve the task
 - [ ] Step 2 — Work on the intent's branch
 - [ ] Step 3 — Read the ticket end to end
-- [ ] Step 4 — Execute tasks in order
+- [ ] Step 4 — Execute the task
 - [ ] Step 5 — Close the testing strategy
 - [ ] Step 6 — Run the checks
 - [ ] Step 7 — Final verification
@@ -84,7 +84,7 @@ Read the ticket's sections: the goal and non-goals (1, 2), the requirements and 
 A reference to a file outside this repository is context, not scope: the task plan and the acceptance criteria draw the boundary of the run, and sections 2 and 10 (*Never*, *Ask first*) bound what it may touch.
 
 #### b. Write the working notes
-Write into your working notes the task list from `## 8. Task plan` — each task with its `Depends on` and its `DoD` — the criteria of section 5, and every command of section 9.
+Write into your working notes the task from `## 8. Task plan` — its `Depends on` and its `DoD` — the criteria of section 5, and every command of section 9.
 
 **Repair:** also note the root cause — the defect section 1 and the `AC-xx` it fails describe — and whether the task still addresses it. It no longer does → that is an undercut assumption: handle it as Step 4c says.
 
@@ -96,7 +96,7 @@ Where the ticket quotes code or cites paths or line refs inside this repository,
 
 Drift is quoted code that no longer exists, has moved, or changed so the ticket's instruction for it can no longer be performed. Cosmetic differences — formatting, renamed locals, shifted line numbers over identical code — are not drift.
 
-- **Drift an earlier task of this intent caused** — `git log` on the drifted lines leads to a commit the epic lists under that task's `commits:` → **GATE**: post the drift and the task list adapted to the current code, for the user to approve.
+- **Drift an earlier task of this intent caused** — `git log` on the drifted lines leads to a commit the epic lists under that task's `commits:` → **GATE**: post the drift and the task adapted to the current code, for the user to approve.
 - **Any other drift** → **STOP**, naming what changed; the user edits the spec and the ticket before rerunning.
 
 **Repair:** confirm the defect still reproduces before changing anything, by the `AC-xx` that describe it. It doesn't → **STOP**, saying the ticket is stale or already fixed.
@@ -109,11 +109,11 @@ The ticket's section 10 *Open questions* may list facts as unsettled — a value
 
 List every settled fact in the report's *Deviations from the ticket*, with its value and its source — precedent or user.
 
-**Done when** the task list, the criteria and every check the ticket names are in your notes, every source the ticket cites that the run can reach is read, the drift check came back clean or its drift was approved, and every unsettled fact a task needs has a value.
+**Done when** the task, the criteria and every check the ticket names are in your notes, every source the ticket cites that the run can reach is read, the drift check came back clean or its drift was approved, and every unsettled fact a task needs has a value.
 
-### Step 4 — Execute tasks in order
+### Step 4 — Execute the task
 
-Work the task list from Step 3 in its dependency order, running a and b for each task. c applies whenever its situation comes up.
+Work the task from Step 3, running a and b. c applies whenever its situation comes up.
 
 #### a. Implement the task
 - Follow the ticket's specification for this task, and match the patterns already present in the files you're editing.
@@ -122,16 +122,16 @@ Work the task list from Step 3 in its dependency order, running a and b for each
 - **Stay in scope:** implement what the ticket specifies. Refactors, improvements and unrelated problems you find along the way stay out of this branch; list them in the report's *Problems encountered* as candidate tasks. When you must deviate from the ticket, note what changed and why for the report's *Deviations from the ticket*.
 
 #### b. Verify the task
-**Run the task's own check before starting the next task.** When the ticket names a check for the task, run that one. When it names none, run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter the project ships on the changed file, when it ships one. A task goes **green** when its check passes; a red task gets fixed before the next one starts.
+**Run the task's own check before moving on.** When the ticket names a check for the task, run that one. When it names none, run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter the project ships on the changed file, when it ships one. The task goes **green** when its check passes; a red task gets fixed before the run goes on.
 
-**The three-hypothesis limit** applies here and in Step 6: when three fix attempts, each on a different hypothesis about the cause, leave a check red, stop working it. Record the check, the failure and each hypothesis tried for the report's *Problems encountered*, and the run ends as PARTIAL. Here, also skip the tasks that depend on the red one, recording each as skipped, and continue with the rest.
+**The three-hypothesis limit** applies here and in Step 6: when three fix attempts, each on a different hypothesis about the cause, leave a check red, stop working it. Record the check, the failure and each hypothesis tried for the report's *Problems encountered*, and the run ends as PARTIAL.
 
 #### c. When a decision is missing or contradicted
 A detail the ticket leaves unspecified: beyond matching the surrounding file's patterns (Step 4a), prefer in order the precedent the ticket already cites, then the smallest change consistent with the ticket's design.
 
 Two things are not yours to settle: something you hit that undercuts an assumption a design item rests on — not just a missing detail — and a choice that would move an architectural boundary the ticket never drew. Name the assumption and the evidence against it, or the boundary and the options, along with the design item it affects and whether its rationale survives. The user resolves it before the run goes on. **GATE.**
 
-**Done when** every task on the list is green, or its failure or skip is recorded for *Problems encountered*.
+**Done when** the task is green, or its failure is recorded for *Problems encountered*.
 
 ### Step 5 — Close the testing strategy
 

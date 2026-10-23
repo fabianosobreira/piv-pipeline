@@ -7,7 +7,7 @@
       "Resolves #12 to the rate-limiting epic and picks T-01 as the next task, since no task is [~] and T-01 depends on nothing",
       "Turns T-01 from [ ] to [~] in the epic",
       "Creates the branch feat/12-rate-limiting from the base, since the epic's Type is feature, and writes it into the epic's Branch",
-      "Takes the task list from the Task plan section (T-01), the criteria from section 5 and the commands from section 9, and reads no plan outside the ticket",
+      "Takes the task from the Task plan section (T-01), the criteria from section 5 and the commands from section 9, and reads no plan outside the ticket",
       "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 9 command names",
       "Writes .piv/rate-limiting/tasks/T-01/T-01.report.md with Issue: #12 and Task: T-01 in the header block, and commits nothing",
       "Hands off to piv-review #12 T-01 in a session of its own"
