@@ -160,7 +160,7 @@ A step of the per-task loop takes `[#N | intent-slug] [T-xx]`:
 `Issue`, `Type` and `Branch` read `pending` until their owner fills them. Each mark has exactly one owner, and no other skill writes to the file:
 
 - **`piv-slice`** — creates the file, and fills `Issue` and `Type` once the issue exists.
-- **`piv-implement`** — fills `Branch` on the first task, and turns a task `[ ]` → `[~]`.
+- **`piv-implement`** — creates the branch on the first task, named as `docs/git-conventions.md` defines it with the intent-slug as its `[slug]`, fills `Branch` with its name, and turns a task `[ ]` → `[~]`. The branch stays local until `piv-open-pr` pushes it.
 - **`piv-commit`** — turns a task `[~]` → `[x]` and appends ` — commits: [short hashes]`.
 - **`piv-fix`** — appends a line under *Deferrals*.
 

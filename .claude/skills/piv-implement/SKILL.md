@@ -58,7 +58,7 @@ When the ticket's `Type` is `bug`, this run is a **repair**: the instructions ma
 
 ### Step 2 — Work on the intent's branch
 
-`docs/git-conventions.md` defines the branch name — read it before creating anything. Its tag comes from the epic's `Type`, its number from the epic's `Issue`. To test whether the base is an ancestor of a branch, run `git merge-base --is-ancestor [base] [branch]`: exit code 0 means it is.
+`docs/git-conventions.md` defines the branch name — read it before creating anything. Its tag comes from the epic's `Type`, its number from the epic's `Issue`, its slug from the intent-slug. To test whether the base is an ancestor of a branch, run `git merge-base --is-ancestor [base] [branch]`: exit code 0 means it is.
 
 - **The epic's `Branch` reads `pending`** — the first task:
   - **On the base branch, clean, and no branch for this issue exists locally or on the remote** → create the branch from the base and write its name into the epic's `Branch`.

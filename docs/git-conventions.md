@@ -1,6 +1,6 @@
 # Git conventions
 
-How this project names branches and writes commits. The skills read this file instead of deciding for themselves.
+How this project names branches and writes commits and PR titles.
 
 ## Base branch
 
@@ -10,13 +10,13 @@ The base branch is whichever branch the remote treats as its default. Ask the re
 
 ## Branch names
 
-Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[intent-slug]` — for example `feat/142-rate-limiting`. `piv-implement` creates it on the intent's first task, from the issue number `piv-slice` wrote into `Issue`, and writes its name into `Branch` in `.piv/[intent-slug]/epic.md`. It stays local until `piv-open-pr` pushes it.
+Each piece of work is built on one branch, shared by all its tasks, named `[tag]/[N]-[slug]` — for example `feat/142-rate-limiting`. It stays local until the PR is opened.
 
 - **`[tag]`** — the conventional tag of the issue's type: `feature` → `feat`, `bug` → `fix`, `task` → `chore`. The commits on the branch carry the tag each one earns, which may differ.
-- **`[N]`** — the number of the intent's GitHub issue, without the `#`: `#123` → `123`.
-- **`[intent-slug]`** — the intent's slug, the name of its folder under `.piv/`.
+- **`[N]`** — the number of the work's GitHub issue, without the `#`: `#123` → `123`.
+- **`[slug]`** — a short kebab-case name for the work.
 
-`piv-implement`, `piv-review`, `piv-fix`, `piv-commit`, `piv-open-pr` and `piv-review-pr` read the issue number and the intent-slug back out of this name, so it has to survive it. Reading it back, put the `#` back: `123` → `#123`; the intent-slug locates `.piv/[intent-slug]/`.
+The issue number and the slug can be read back out of the branch name, so it has to survive that. Reading it back, put the `#` back: `123` → `#123`.
 
 ## Commit subjects
 
@@ -24,7 +24,7 @@ Each intent is built on one branch, shared by all its tasks, named `[tag]/[N]-[i
 
 ## Language
 
-Commit subjects and commit bodies are written in en-US, whatever the intent's language. The intent's `Language` does not apply to them. The tag and the issue number stay as this file defines them.
+Commit subjects and commit bodies are written in en-US, whatever language the rest of the work is written in. The tag and the issue number stay as this file defines them.
 
 ## Commit tags
 
