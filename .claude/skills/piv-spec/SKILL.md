@@ -1,6 +1,6 @@
 ---
 name: piv-spec
-description: Interviews the user in fixed phases, then writes one 10-section spec for piv-review-spec to audit. Takes a concept: free text, or documents with their links.
+description: "Interviews the user in fixed phases, then writes one 10-section spec for piv-review-spec to audit. Takes a concept: free text, or documents with their links."
 argument-hint: "[intent-slug] · [concept: text, file path or URLs] (blank = starts by asking for them)"
 disable-model-invocation: true
 allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *), WebFetch
