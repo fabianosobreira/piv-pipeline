@@ -12,7 +12,7 @@ This is the **implement** step of the PIV loop `docs/piv-loop.md` describes: one
 ## Success criteria
 
 - ✅ The task from Step 3 is implemented.
-- ✅ Every file the change touched shows in the git status — none is one the repository ignores.
+- ✅ Every file the change touched, apart from the artifacts under `.piv/`, shows in the git status — none is one the repository ignores.
 - ✅ Every test the ticket's section 9 commands name exists, runs and passes, and every behavior the change adds or alters has a test — or the report's *Tests added* says why there is none (no test suite, no testable behavior, or the user waived them).
 - ✅ The full test suite and every other check run in Step 6 are green, apart from the baseline's red tests Step 6 leaves red.
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.
@@ -153,7 +153,7 @@ A failure the three-hypothesis limit (Step 4b) leaves red, or one whose cause si
 
 ### Step 7 — Final verification
 
-Before you write the report, walk the **Success criteria** at the top of this skill, line by line. For the git-status line, run `git check-ignore -v -- [every file the change touched]`: each path it prints is ignored, and a change to an ignored file never reaches the diff, the commit or the PR — it stays on this machine. Every line true → the status is COMPLETE. Any line that isn't true → the status is PARTIAL, and that line goes into the report's *Problems encountered*, named.
+Before you write the report, walk the **Success criteria** at the top of this skill, line by line. For the git-status line, run `git check-ignore -v -- [every file the change touched, apart from the artifacts under .piv/]`: each path it prints is ignored, and a change to an ignored file never reaches the diff, the commit or the PR — it stays on this machine. Every line true → the status is COMPLETE. Any line that isn't true → the status is PARTIAL, and that line goes into the report's *Problems encountered*, named.
 
 **Done when** every success criterion is marked true or named in *Problems encountered*, and the status is set.
 
