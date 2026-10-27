@@ -177,7 +177,7 @@ A **coverage** finding is **medium** when it is a *red* test demoted as base-red
 
 ## Output — write a review report
 
-Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the implementation report. Fill `templates/review-report.md` exactly: every heading, in the template's order, with its labels as written.
+Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the implementation report. Fill `${CLAUDE_SKILL_DIR}/templates/review-report.md` exactly: every heading, in the template's order, with its labels as written.
 
 - **Round** — 1 on a first review; the previous review's **Round** plus one on a re-review. A re-review overwrites the previous report: it is the current state of the task, and the decisions taken on the old findings live in the deferrals and *Dropped by prior ruling*, not in the old report.
 - **Base** and **Diff** — the values Step 1 recorded and Step 6 confirmed. `piv-commit` recomputes the Diff to tell whether the tree still matches the review.

@@ -66,13 +66,13 @@ The buckets:
 
 **GATE** — post the split, each deferral with its proposed title and type, and wait for the user's ruling. No code moves and no deferral is written until they rule. When the user rules a blocking, *introduced* or *aggravated* finding out of *Fix now*, ask for their reason; it goes in the fix report.
 
-**Once they rule, write the fix report** at `.piv/[intent-slug]/tasks/T-xx/T-xx.fixes.md`, filling `templates/fix-report.md` exactly. In this first write every *Fixed* entry is `not fixed — pending` and every *Deferred* entry is `not created — pending`. Flip each one as it lands: a `D-xx` as Step 2 writes it, a fix as Step 3 turns it green. A run that stops midway, for any reason, thus leaves the ruling on record, and the next run resumes from it.
+**Once they rule, write the fix report** at `.piv/[intent-slug]/tasks/T-xx/T-xx.fixes.md`, filling `${CLAUDE_SKILL_DIR}/templates/fix-report.md` exactly. In this first write every *Fixed* entry is `not fixed — pending` and every *Deferred* entry is `not created — pending`. Flip each one as it lands: a `D-xx` as Step 2 writes it, a fix as Step 3 turns it green. A run that stops midway, for any reason, thus leaves the ruling on record, and the next run resumes from it.
 
 **Done when** the user has ruled and the fix report holds every finding in its ruled bucket.
 
 ### Step 2 — Write a deferral for each finding deferred
 
-Write each deferral at `.piv/[intent-slug]/deferrals/D-xx.md`, numbered on from the highest `D-xx` already there — `D-01` when there is none — filling `templates/deferral.md` exactly. Take the claim, impact, evidence, location and fix from the finding in the review report, and copy evidence and location in full: the next review overwrites the review report, and `piv-open-pr` publishes each deferral in full in the PR body, so it must stand on its own.
+Write each deferral at `.piv/[intent-slug]/deferrals/D-xx.md`, numbered on from the highest `D-xx` already there — `D-01` when there is none — filling `${CLAUDE_SKILL_DIR}/templates/deferral.md` exactly. Take the claim, impact, evidence, location and fix from the finding in the review report, and copy evidence and location in full: the next review overwrites the review report, and `piv-open-pr` publishes each deferral in full in the PR body, so it must stand on its own.
 
 - **Type** — the type ruled at the GATE.
 - **Header block** — `Intent-slug` and `Language` copied verbatim from the reviewed ticket; `Origin` the task id and the review report's *Round*.

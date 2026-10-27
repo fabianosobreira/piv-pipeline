@@ -141,7 +141,7 @@ We believe [change] will cause [these users] to [do Y], resulting in [outcome]. 
 ## Output — a product PRD
 
 1. **Path.** Write to `.piv/[intent-slug]/prd.md`, proposing the `intent-slug` as `docs/piv-loop.md` defines it. If a file already exists at the path, **GATE**: ask whether to revise it or pick a different slug.
-2. **Fill** the template at `templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` with the slug of the path, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-spec` reads it next as structured input.
+2. **Fill** the template at `${CLAUDE_SKILL_DIR}/templates/prd.md` exactly. Its labels and headings stay as written; everything it leaves to you is written in the language this interview ran in. Fill `Intent-slug` with the slug of the path, and `Language` with the BCP 47 tag of that language. Product sections only, scannable: the user comes back to it for context, and `piv-spec` reads it next as structured input.
 3. **Write** the file.
 
 ## Hand off

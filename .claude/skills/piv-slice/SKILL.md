@@ -87,7 +87,7 @@ A ticket's `Blocked by` is exactly the tasks its task lists in `Depends on`, as 
 
 ### Step 5 — Write and lint the tickets and the epic
 
-Write each ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, from `templates/ticket.md` used exactly: the header block, then the 11 sections of the spec. What goes in, line by line — every bullet and table row is a line of the spec, copied character for character with its IDs, and a section with nothing for the task holds only `None in this ticket.`:
+Write each ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, from `${CLAUDE_SKILL_DIR}/templates/ticket.md` used exactly: the header block, then the 11 sections of the spec. What goes in, line by line — every bullet and table row is a line of the spec, copied character for character with its IDs, and a section with nothing for the task holds only `None in this ticket.`:
 
 - **Sections 1 and 2** — every line, whole.
 - **Section 3** — the `FR` lines the task cites. **Section 4** — the `NFR` lines. **Section 6** — the `C` lines. **Section 7** — the `D` lines.
@@ -101,7 +101,7 @@ The header block: `Spec` as `[spec path] @ [hash]`, with the hash from `git hash
 
 Validate each ticket with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket path] [spec path]` — run it, do not read it; it needs a POSIX `sh`, `awk`, `tr`, `cmp` and `git`. Fix the ticket, never the spec, until it prints `RESULT: OK`.
 
-Then write `.piv/[intent-slug]/epic.md` from `templates/epic.md`, used exactly, in the grammar `docs/piv-loop.md` gives: every task `[ ]` with its title, type, size and `Depends on`; `Issue`, `Type` and `Branch` reading `pending`; and under *Not ticketed*, every open question of section 10 that no ticket carries.
+Then write `.piv/[intent-slug]/epic.md` from `${CLAUDE_SKILL_DIR}/templates/epic.md`, used exactly, in the grammar `docs/piv-loop.md` gives: every task `[ ]` with its title, type, size and `Depends on`; `Issue`, `Type` and `Branch` reading `pending`; and under *Not ticketed*, every open question of section 10 that no ticket carries.
 
 **Done when** every ticket printed `RESULT: OK` and the epic lists every task. Nothing reaches GitHub while any ticket has findings.
 

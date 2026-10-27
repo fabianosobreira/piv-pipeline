@@ -62,7 +62,7 @@ Read, for each task of the epic in its order, under `.piv/[intent-slug]/tasks/T-
 
 Then read every file under `.piv/[intent-slug]/deferrals/`, whole.
 
-**Write the body** in a file under `.piv/[intent-slug]/`. When the repo ships a PR template, fill it, and append from `templates/pr-body.md` the header block, the `Closes #[N]` line, and each section it has no match for. Otherwise fill `templates/pr-body.md` section by section, keeping its structure exactly; each placeholder says what goes there. `Closes #[N]` is the epic's issue number: the merge closes the issue through it, and no step closes it by hand.
+**Write the body** in a file under `.piv/[intent-slug]/`. When the repo ships a PR template, fill it, and append from `${CLAUDE_SKILL_DIR}/templates/pr-body.md` the header block, the `Closes #[N]` line, and each section it has no match for. Otherwise fill `${CLAUDE_SKILL_DIR}/templates/pr-body.md` section by section, keeping its structure exactly; each placeholder says what goes there. `Closes #[N]` is the epic's issue number: the merge closes the issue through it, and no step closes it by hand.
 
 **Done when** every section of the body is filled, or says which report was unavailable, and every deferral is in it.
 

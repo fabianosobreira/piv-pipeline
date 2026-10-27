@@ -159,7 +159,7 @@ Before you write the report, walk the **Success criteria** at the top of this sk
 
 ## Output — write an implementation report
 
-Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.report.md`, filling the template at `templates/implementation-report.md` — use it exactly — then print its **Status** and **Summary** in the session. Copy the ticket's `Intent-slug` **verbatim** into its header block. This is what the `piv-review` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
+Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.report.md`, filling the template at `${CLAUDE_SKILL_DIR}/templates/implementation-report.md` — use it exactly — then print its **Status** and **Summary** in the session. Copy the ticket's `Intent-slug` **verbatim** into its header block. This is what the `piv-review` gate reads — especially the **deviations**, which it treats as intentional decisions rather than findings.
 
 Everything the template leaves to you — what was built, each deviation and its reason, and the checks — is written in the intent's language; only the template's labels and headings stay as written.
 

@@ -10,7 +10,7 @@ allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *), WebFetch
 
 This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. It writes `.piv/[intent-slug]/spec.md`: the one plan `piv-review-spec` audits and `piv-slice` cuts into tickets. The input is a concept in free text or reference documents, a PRD among them like any other.
 
-- Output skeleton: [templates/spec.md](templates/spec.md)
+- Output skeleton: [${CLAUDE_SKILL_DIR}/templates/spec.md](${CLAUDE_SKILL_DIR}/templates/spec.md)
 - Validator: `${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh` (execute it, do not read it). It needs only POSIX `sh` and `awk`.
 
 ## Success criteria
@@ -127,7 +127,7 @@ After closing a phase, write it to the output file and add one row per question 
 2. Present a short inventory: sources read, commands run, relevant sources missing.
 3. Ask, in one message: additional sources, and the intent slug when it is not settled. Propose the slug, derived from the concept as `docs/piv-loop.md` defines the `intent-slug`; when the input is a `.piv/[slug]/prd.md`, the slug is its folder's and the folder is reused. **GATE.**
 
-As soon as the slug is settled, create `.piv/[intent-slug]/spec.md` from [templates/spec.md](templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read under `Context sources`. Create the folder if it does not exist.
+As soon as the slug is settled, create `.piv/[intent-slug]/spec.md` from [${CLAUDE_SKILL_DIR}/templates/spec.md](${CLAUDE_SKILL_DIR}/templates/spec.md), used exactly: set `Intent-slug` and `Language`, and list every source read under `Context sources`. Create the folder if it does not exist.
 
 **Done when** the inventory was posted, the user answered the GATE, and the spec file exists with `Intent-slug`, `Language` and `Context sources` set.
 
