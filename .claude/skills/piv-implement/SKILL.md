@@ -13,8 +13,8 @@ This is the **implement** step of the PIV loop `docs/piv-loop.md` describes: one
 
 - ✅ The task from Step 3 is implemented.
 - ✅ Every file the change touched, apart from the artifacts under `.piv/`, shows in the git status — none is one the repository ignores.
-- ✅ Every test the ticket's section 9 commands name exists, runs and passes, and every behavior the change adds or alters has a test — or the report's *Tests added* says why there is none (no test suite, no testable behavior, or the user waived them).
-- ✅ The full test suite and every other check run in Step 6 are green, apart from the baseline's red tests Step 6 leaves red.
+- ✅ Every test the ticket's section 9 commands name exists, runs and passes, and every behavior the change adds or alters has a test — or the report's *Tests added* says why there is none (no test suite, no testable behavior, or the user waived them in this run).
+- ✅ The tests in scope and every other check run in Step 6 are green.
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.
 - ✅ The change matches the patterns of the files it touched (Step 4a).
 - ✅ Documentation the change made stale is updated.
@@ -34,7 +34,7 @@ Then check the task against the epic, and **STOP** on the first that holds, nami
 
 Read the ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`. It can't be read → **STOP**, saying so. From here on, **the ticket governs the run**, and it is the only plan: it carries what it needs, so no plan outside it is read or asked for. No `DoD` in its header → **STOP**: the ticket needs reworking in `piv-slice` before it can be built.
 
-**The spec must be the one the ticket was cut from.** Read the spec at the path the ticket's `Spec` field gives and compute `git hash-object --no-filters [the spec path]`. The spec can't be read, or its hash differs from the one in the field → **STOP**: the spec changed after `piv-slice` cut the ticket; it goes through `piv-review-spec` again and `piv-slice` re-cuts the tickets before this task runs.
+**The spec must be the one the ticket was cut from.** Compute `git hash-object --no-filters [the spec path]` on the path the ticket's `Spec` field gives, without opening the spec: the ticket already carries what the run needs from it. The command fails, or its hash differs from the one in the field → **STOP**: the spec changed after `piv-slice` cut the ticket; it goes through `piv-review-spec` again and `piv-slice` re-cuts the tickets before this task runs.
 
 When the ticket's `Type` is `bug`, this run is a **repair**: the instructions marked **Repair:** apply on top of the normal ones, and the run is done only when every one of them holds.
 
@@ -56,11 +56,9 @@ When the ticket's `Type` is `bug`, this run is a **repair**: the instructions ma
 - **On a branch carrying another issue's number or no number** → **STOP**: switch to the base or to this intent's branch first.
 - **Uncommitted changes** → **STOP**: commit or stash first — on the intent's branch, an earlier task still waits for `piv-commit`.
 
-**The baseline** is the project's full test suite run on the clean tree, at the branch's `HEAD`, before you change anything, with the setup this run will use. Write into your working notes every test that fails an assertion there and the assertion it fails, so Step 6 can tell the failures this change caused from the ones it found.
+**The project has no test suite** → say so and carry on without tests: setting up a suite is not this run's job. Every test instruction below then falls away, and the report's *Tests added* says why.
 
-**The project has no test suite** → say so, skip the baseline, and carry on without tests: setting up a suite is not this run's job. Every test instruction below then falls away, and the report's *Tests added* says why.
-
-**Done when** the run sits on the intent's branch, the epic names it, and the baseline names every test red at `HEAD` — or the project has no test suite and that is said.
+**Done when** the run sits on the intent's branch and the epic names it — and, with no test suite, that is said.
 
 ### Step 3 — Read the ticket end to end
 
@@ -71,15 +69,12 @@ Read the ticket's sections: the goal and non-goals (1, 2), the requirements and 
 
 A reference to a file outside this repository is context, not scope: the header and the acceptance criteria draw the boundary of the run, and sections 2 and 8 (*Never*, *Ask first*) bound what it may touch.
 
-#### b. Write the working notes
-Write into your working notes the task from the header — its `Title`, `Blocked by` and `DoD` — the criteria of section 4, and every command of section 9.
-
 **Repair:** also note the root cause — the defect section 1 and the `AC-xx` it fails describe — and whether the task still addresses it. It no longer does → that is an undercut assumption: handle it as Step 4c says.
 
-#### c. Check the verification
-Section 9 says which check proves each criterion, never whether. A criterion with no command → ask whether to write its test anyway or rework the ticket. **GATE.**
+#### b. Check the verification
+Section 9 says which check proves each criterion, never whether. A criterion with no command → ask whether to write its test anyway or rework the ticket. **GATE.** A criterion whose behavior the project's test setup cannot exercise → raise the waiver GATE of Step 5 now, before building.
 
-#### d. Check for drift
+#### c. Check for drift
 Where the ticket quotes code or cites paths or line refs inside this repository, open those files and compare. A reference to a file outside this repository is not drift-checked: an unreachable file is not evidence of drift.
 
 Drift is quoted code that no longer exists, has moved, or changed so the ticket's instruction for it can no longer be performed. Cosmetic differences — formatting, renamed locals, shifted line numbers over identical code — are not drift.
@@ -89,7 +84,7 @@ Drift is quoted code that no longer exists, has moved, or changed so the ticket'
 
 **Repair:** confirm the defect still reproduces before changing anything, by the `AC-xx` that describe it. It doesn't → **STOP**, saying the ticket is stale or already fixed.
 
-#### e. Settle the unsettled facts
+#### d. Settle the unsettled facts
 The ticket's section 8 *Open questions* may list facts as unsettled — a value, an error code, an edge case no source defines. A fact no task needs stays unsettled. For each one a task needs:
 
 - **The repository already answers the same question** (existing code or schema) → take that precedent.
@@ -97,7 +92,7 @@ The ticket's section 8 *Open questions* may list facts as unsettled — a value,
 
 List every settled fact in the report's *Deviations from the ticket*, with its value and its source — precedent or user.
 
-**Done when** the task, the criteria and every check the ticket names are in your notes, every source the ticket cites that the run can reach is read, the drift check came back clean or its drift was approved, and every unsettled fact a task needs has a value.
+**Done when** the ticket's header and sections 1 to 9 are read, every source the ticket cites that the run can reach is read, the drift check came back clean or its drift was approved, and every unsettled fact a task needs has a value.
 
 ### Step 4 — Execute the task
 
@@ -108,6 +103,7 @@ Work the task from Step 3, running a and b. c applies whenever its situation com
 - Update the code the change reaches — imports, callers, call sites — and any documentation the change makes stale.
 - Write the tests for the behavior this task adds or alters, together with the task.
 - **Stay in scope:** implement what the ticket specifies. Refactors, improvements and unrelated problems you find along the way stay out of this branch; list them in the report's *Problems encountered* as candidate tasks. When you must deviate from the ticket, note what changed and why for the report's *Deviations from the ticket*.
+- **A project instruction the ticket sets aside** — a `CLAUDE.md` or contributing rule its constraints override by name: follow the ticket, and name the rule in *Deviations from the ticket* so the review reads it as intent. A rule the ticket contradicts without naming it is a boundary it never drew: Step 4c.
 
 #### b. Verify the task
 **Run the task's own check before moving on.** When the ticket names a check for the task, run that one. When it names none, run the closest relevant check instead: the tests that exercise the behavior the task touched, plus the linter the project ships on the changed file, when it ships one. The task goes **green** when its check passes; a red task gets fixed before the run goes on.
@@ -124,20 +120,19 @@ Two things are not yours to settle: something you hit that undercuts an assumpti
 ### Step 5 — Close the testing strategy
 
 - Every test file and every test case the ticket's section 9 commands name now exists, runs, and asserts the behavior it is named for.
-- Every behavior the change adds or alters — an observable outcome an acceptance criterion or the unit's public interface names — has at least one test that exercises it. Only a change with no testable behavior, such as docs or config that changes no observable outcome, goes without one, and the report's *Tests added* says so.
+- Every behavior the change adds or alters — an observable outcome an acceptance criterion or the unit's public interface names — has at least one test that exercises it. Only a change with no testable behavior, such as docs or config that changes no observable outcome, goes without one, and the report's *Tests added* says so. A behavior the project's test setup cannot exercise is the user's to waive, never yours: post each one, why the setup cannot reach it and the manual check that would prove it, for the user to waive its test or name another route. **GATE.**
 - **Repair:** at minimum, a test that fails without the fix and passes with it, plus tests for the edge cases around the bug. Name the test so it traces back to the issue number and the task id.
 
 **Done when** every line above holds, or the project has no test suite and that is said.
 
 ### Step 6 — Run the checks
 
-Run every check the ticket names, in the order it gives them, then the project's own checks in full — the whole test suite, lint, type-check, and build commands the repo exposes; its CI config lists them when it has one. The change reaches callers the ticket never named, and only the full suite sees their tests break.
+Run every check the ticket names, in the order it gives them — bar a command that runs the whole test suite, even when section 8 *Always* asks for one — then the **tests in scope** — every test this run wrote or edited, and every existing test that exercises code the change touched, callers included — and the lint, type-check and build commands the repo exposes; its CI config lists them when it has one. A kind of check the repo exposes none of goes into *Validation results* as `not found`. The full suite is not this run's, whatever the ticket says: `piv-review` runs it on the branch and re-runs each red test on the base.
 
-When a check goes red: fix the cause, re-run, and continue once it is green. A test goes green by the code changing: its assertions, and whether it runs at all, change only when the ticket changes the behavior it pins — the review blocks any other change to a test, whatever *Deviations from the ticket* says. A test failing the same assertion the baseline recorded stays red, unless the ticket's verification names it or it reproduces the defect a **Repair** fixes: that one is this change's to turn green.
-
+When a check goes red: fix the cause, re-run, and continue once it is green. A test goes green by the code changing: its assertions, and whether it runs at all, change only when the ticket changes the behavior it pins — the review blocks any other change to a test, whatever *Deviations from the ticket* says.
 A failure the three-hypothesis limit (Step 4b) leaves red, or one whose cause sits outside what the ticket asks you to change, is not worked further: record it the way Step 4b says and carry the run to Step 7 as PARTIAL.
 
-**Done when** every check is green, apart from the baseline's red tests this step leaves red, or each one still red is recorded for *Problems encountered*.
+**Done when** every check is green, or each one still red is recorded for *Problems encountered*.
 
 ### Step 7 — Final verification
 

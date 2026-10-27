@@ -7,8 +7,11 @@
       "Resolves #12 to the rate-limiting epic and picks T-01 as the next task, since no task is [~] and T-01 depends on nothing",
       "Turns T-01 from [ ] to [~] in the epic",
       "Creates the branch feat/12-rate-limiting from the base, since the epic's Type is feature, and writes it into the epic's Branch",
-      "Takes the task from the header (Title, Blocked by, DoD), the criteria from section 4 and the commands from section 9, and reads no plan outside the ticket",
+      "Reads the ticket's header and sections 1 to 9, and reads no plan outside the ticket",
+      "Computes the spec's hash with git hash-object without opening the spec",
       "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 9 command names",
+      "Runs the section 9 command and the tests in scope, and runs the full test suite neither before nor after the change",
+      "Writes each kind of check the sample API exposes none of as not found in Validation results",
       "Writes .piv/rate-limiting/tasks/T-01/T-01.report.md with Issue: #12 and Task: T-01 in the header block, and commits nothing",
       "Hands off to piv-review #12 T-01 in a session of its own"
     ]
@@ -51,6 +54,36 @@
       "Compares the spec's current hash with the one in the ticket's Spec field and finds them different",
       "Stops (STOP), saying the spec changed after the slice and must go through piv-review-spec and piv-slice again",
       "Leaves T-01 at [ ], writes no code, creates no branch and leaves the epic's Branch at pending"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-untestable.md at .piv/rate-limiting/tasks/T-01/T-01.md. The repository is the sample API, on a clean main; its test setup has no fake for the Slack webhook.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-untestable.md"],
+    "expected_behavior": [
+      "Finds that the AC-02 behavior, the Slack message, cannot be exercised by the sample API's test setup",
+      "Posts that behavior, why the setup cannot reach it and the manual check that would prove it, and ends the turn (GATE) for the user to waive its test or name another route",
+      "Does not waive the test on its own and does not write a COMPLETE report on a self-made waiver"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-overrides-rule.md at .piv/rate-limiting/tasks/T-01/T-01.md. The repository is the sample API, on a clean main; its CLAUDE.md says \"No module-level mutable state\".",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-overrides-rule.md"],
+    "expected_behavior": [
+      "Follows the ticket and keeps the counters in a module-level Map, as C-02 sets",
+      "Names the CLAUDE.md rule \"No module-level mutable state\" in the report's Deviations from the ticket, as set aside by the ticket",
+      "Does not stop or ask the user, since the ticket overrides the rule by name"
+    ]
+  },
+  {
+    "skills": ["piv-implement"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. The repository is the sample API, on a clean main. The existing tests/auth.test.js exercises src/middleware/auth.js, which the task edits, and it already fails on the base for a reason unrelated to the task.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-sliced.md"],
+    "expected_behavior": [
+      "Runs tests/auth.test.js as a test in scope and sees it red",
+      "Does not alter the assertions of tests/auth.test.js nor stop it from running",
+      "Records the failure in Problems encountered and marks the run PARTIAL"
     ]
   }
 ]

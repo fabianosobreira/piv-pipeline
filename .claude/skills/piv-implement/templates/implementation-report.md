@@ -13,10 +13,10 @@
 - [task] → `path/to/file` (MODIFIED/ADDED/DELETED)
 
 ## Tests added
-[test files + cases + results, or "none — " and why: the project has no test suite, the change has no testable behavior, or the user waived them]
+[test files + cases + results, or "none — " and why: the project has no test suite, the change has no testable behavior, or the user waived them, with the manual check that replaces each waived test]
 
 ## Validation results
-[tests / type-check / lint / build — green/red with counts, naming each test that was already red on the baseline]
+[the tests in scope that were run / type-check / lint / build — green/red with counts, or `not found`]
 
 ## Deviations from the ticket
 [what changed vs the ticket and why, or "none" — the reviewer's signal of intent. Each unsettled fact settled, with its value and source (precedent or user). A test changed while the ticket left its behavior unchanged is listed here too, and the review still blocks it]
