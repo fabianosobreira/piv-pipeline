@@ -56,7 +56,7 @@ Run `gh auth status`; check which branch is checked out, whether the working tre
 Read, for each task of the epic in its order, under `.piv/[intent-slug]/tasks/T-xx/`:
 
 - **Implementation report**, `T-xx.report.md` — its status, *Summary*, *Validation results*, *Deviations from the ticket* and *Problems encountered*.
-- **Review report**, `T-xx.review.md` — its verdict and every finding it left standing. On a PASS those are its medium and low findings — normal on a PASS, and the body is the only place the human reviewer meets them. When the commit went ahead on a verdict that was not PASS, its blocking, critical and high findings stand too. Carry each finding as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix: a reviewer who reads the first reviewer's reasoning inherits that framing instead of reading the code.
+- **Review report**, `T-xx.review.md` — its verdict and every finding it left standing. On a PASS those are its *pre-existing* findings, of any severity — the body is the only place the human reviewer meets them. When the commit went ahead on a verdict that was not PASS, its blocking, *introduced* and *aggravated* findings stand too. Carry each finding as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix: a reviewer who reads the first reviewer's reasoning inherits that framing instead of reading the code.
 - **Fix report**, `T-xx.fixes.md`, when there is one — its *Checks run* and every *Needs a human look* item it still holds unresolved; the body lists those as flagged, never as checked. No fix report is the normal case when the first review passed.
 - **Validation results** — the fix report's *Checks run*; with no fix report, the implementation report's *Validation results*; with neither, run the project's checks now and use what they report.
 
@@ -78,7 +78,7 @@ Open it with `gh pr create` against `[base]`, with the body file from Step 3, an
 
 Open it as a draft or ready for review by the first condition below that holds, over every task:
 
-- **An implementation report status `PARTIAL`, with a fix report, and a PASS review report whose *Round* is above that fix report's** → ready for review. The PARTIAL went through a fix round and a fresh review, but a PASS proves only that no blocking, critical or high finding survived — the review runs no build, for one. Mark each of its problems under *Open problems* "reported by the implementation before the PASS review", never as resolved.
+- **An implementation report status `PARTIAL`, with a fix report, and a PASS review report whose *Round* is above that fix report's** → ready for review. The PARTIAL went through a fix round and a fresh review, but a PASS proves only that no blocking, *introduced* or *aggravated* finding survived — the review runs no build, for one. Mark each of its problems under *Open problems* "reported by the implementation before the PASS review", never as resolved.
 - **Any other implementation report status `PARTIAL`** → draft. The body's closing line says it waits on the open problems it lists.
 - **Otherwise** → ready for review.
 

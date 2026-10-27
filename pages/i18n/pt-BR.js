@@ -121,7 +121,7 @@ const MANUAL_PT_BR = {
             ['Uma spec marcada como reviewed', '`piv-slice`', 'Um ticket por task, cada um uma fatia literal da spec, e uma issue que a publica.'],
             ['Um número de issue', '`piv-implement`', 'Ela escolhe a próxima task do epic e a constrói na branch do intent.'],
             ['Uma task construída, ainda sem commit', '`piv-review`', 'Este é o portão que decide se a task merece um commit.'],
-            ['Um relatório de review com findings', '`piv-fix`', 'Findings são entrada, não ordem de serviço — você decide sobre cada um.'],
+            ['Um veredito CHANGES REQUESTED', '`piv-fix`', 'Findings são entrada, não ordem de serviço — você decide sobre cada um.'],
             ['Um veredito PASS', '`piv-commit`', 'Commits atômicos para a task, depois a próxima task — ou o PR.'],
             ['Todas as tasks commitadas', '`piv-open-pr`', 'Um PR para o intent inteiro, que fecha a issue no merge.'],
             ['Um PR aberto', '`piv-review-pr`', 'Ela confronta o PR com cada item da spec.'],
@@ -310,10 +310,10 @@ const MANUAL_PT_BR = {
           summary: 'Revisa a mudança sem commit de uma task em busca de bugs, defeitos de segurança e violações de padrões, e escreve um relatório de review. É um relatório, nunca uma edição.',
           fields: [
             { label: 'Entrada', text: '`[#N | intent-slug] [T-xx]` — em branco, pega a issue do nome da branch e a task em andamento do epic.' },
-            { label: 'Saída', text: '`tasks/T-xx/T-xx.review.md` — escopo (cada arquivo lido), findings agrupados em `blocking` / `critical` / `high` / `medium` / `low`, e as checagens executadas, entre elas a suíte de testes completa. Um finding `blocking` é um teste vermelho, ausente ou enfraquecido, ou um comportamento sem teste — um fato, fora da escala de severidade. Cada finding traz evidência, impacto e uma correção concreta.' },
-            { label: 'Veredito', text: '**CHANGES REQUESTED** quando sobrevive qualquer finding blocking, critical ou high. **PASS** caso contrário — um PASS com findings medium e low é normal.' },
+            { label: 'Saída', text: '`tasks/T-xx/T-xx.review.md` — escopo (cada arquivo lido), findings agrupados em `blocking` / `critical` / `high` / `medium` / `low`, e as checagens executadas, entre elas a suíte de testes completa. Um finding `blocking` é um teste vermelho, ausente ou enfraquecido, ou um comportamento sem teste — um fato, fora da escala de severidade. Todo outro finding traz uma origem: `introduced` pela mudança, `aggravated` — um defeito antigo que a mudança tornou alcançável — ou `pre-existing`, reproduzido na base e intocado pela mudança. Cada finding traz evidência, impacto e uma correção concreta.' },
+            { label: 'Veredito', text: '**CHANGES REQUESTED** quando sobrevive qualquer finding blocking, `introduced` ou `aggravated`, seja qual for a severidade. **PASS** caso contrário — um PASS deixa só findings `pre-existing`, que o corpo do PR carrega.' },
             { label: 'Como funciona', text: 'Resolve a mudança contra o `HEAD`, o último commit antes da task → resolve os deferrals anteriores → lê os padrões que a mudança precisa cumprir → examina cada arquivo alterado no seu contexto → monta o caso → roda três filtros que eliminam findings não comprovados. A mudança é confrontada com os critérios de aceitação do ticket além da estratégia de testes: um critério que o código não cumpre é um finding `high`.' },
-            { label: 'Próximo passo', text: '**PASS** sem findings → `piv-commit [#N] [T-xx]`, aqui ou numa sessão nova. **PASS** com findings medium ou low → `piv-commit [#N] [T-xx]`, numa sessão própria. **CHANGES REQUESTED** → `piv-fix`, numa sessão própria, recebendo o path deste relatório.' },
+            { label: 'Próximo passo', text: '**PASS** sem findings → `piv-commit [#N] [T-xx]`, aqui ou numa sessão nova. **PASS** com findings `pre-existing` → `piv-commit [#N] [T-xx]`, numa sessão própria. **CHANGES REQUESTED** → `piv-fix`, numa sessão própria, recebendo o path deste relatório.' },
           ],
           notes: [
             { type: 'p', text: '**Use** antes de commitar uma task, e de novo depois de cada execução de fix. Numa nova review ela sobrescreve o relatório anterior: ele é o estado atual da task, e as decisões sobre findings antigos ficam nos deferrals, não aqui.' },
@@ -327,7 +327,7 @@ const MANUAL_PT_BR = {
           fields: [
             { label: 'Entrada', text: '`[review report path]` — em branco, usa a review da task em andamento.' },
             { label: 'Saída', text: '`tasks/T-xx/T-xx.fixes.md` — **Fixed**, **Deferred** (com seus `D-xx`), **Needs a human look**, **Noise / won\'t-fix**, e as checagens executadas. Cada deferral vai para `deferrals/D-xx.md` e para a lista do epic; nenhuma issue é criada.' },
-            { label: 'Como funciona', text: 'Classifica cada finding num dos quatro grupos — um finding blocking só em *fix now* ou *noise*, nunca adiado → corrige o conjunto *fix now* um de cada vez, cada um com um teste que o prova → valida a branch inteira.' },
+            { label: 'Como funciona', text: 'Classifica cada finding num dos quatro grupos, pelo tipo blocking e pela origem que a review registrou — blocking, `introduced` e `aggravated` para *fix now*, `pre-existing` para *defer*; um finding blocking só em *fix now* ou *noise*, nunca adiado → corrige o conjunto *fix now* um de cada vez, cada um com um teste que o prova → valida a branch inteira.' },
             { label: 'Próximo passo', text: '`piv-review [#N] [T-xx]` de novo, numa sessão própria. Com uma entrada *Needs a human look* ainda aberta, a passagem espera: inspecione-a e rode `piv-fix` de novo.' },
           ],
           notes: [
@@ -478,7 +478,7 @@ const MANUAL_PT_BR = {
               note: '**Sessão nova, sempre.** Na sessão da implementação a review relê as próprias decisões e tende a confirmá-las.',
             },
             {
-              steps: [{ n: 7, cmd: 'piv-fix .piv/team-inbox/tasks/T-01/T-01.review.md', text: 'você corrige o high e um medium, adia dois como `D-01` e `D-02`; `T-01.fixes.md` registra cada decisão.' }],
+              steps: [{ n: 7, cmd: 'piv-fix .piv/team-inbox/tasks/T-01/T-01.review.md', text: 'você corrige o high e um medium, adia os dois preexistentes como `D-01` e `D-02`; `T-01.fixes.md` registra cada decisão.' }],
               note: '**Sessão nova.** A execução que levantou os findings tende a defendê-los; a triagem precisa estar livre para decidir contra a review.',
             },
             {

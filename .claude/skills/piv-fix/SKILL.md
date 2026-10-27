@@ -12,7 +12,7 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
 ## Before Step 1
 
 1. **Find the review report.** `$ARGUMENTS` carries its path. With no path, resolve the intent and its task in progress as `docs/piv-loop.md` says under *Resolving the intent and the task*, and look at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`. No report there → **STOP** and ask the user for the report to work from.
-2. **Read the review report end to end**, so you understand every finding before triaging. Take the issue number and the task id from its header.
+2. **Read the review report end to end**, so you understand every finding before triaging. Take the issue number and the task id from its header. A finding outside *Blocking* whose line ends on no origin → **STOP** and ask the user to run `piv-review` again: the origin is the review's ruling, never yours.
 3. **Read the reviewed ticket** at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`. It supplies the `Language` and the `Intent-slug` every deferral copies. Missing → **STOP** and say so.
 4. **Set the language.** The fix report and every deferral are written in the intent's language: the reviewed ticket's `Language`. Template labels and headings stay as written; everything you fill in — descriptions, proofs, reasons, *Checks run* — is in the intent's language.
 5. **Check for an earlier run** at `.piv/[intent-slug]/tasks/T-xx/T-xx.fixes.md`:
@@ -24,8 +24,8 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
 
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
 - ✅ No blocking finding was deferred.
-- ✅ Every finding the change introduced was proposed for *Fix now*; one the user ruled elsewhere carries the user's reason in the fix report.
-- ✅ Every finding you proposed to defer reproduces on the review report's *Base* without the change.
+- ✅ Every blocking, *introduced* or *aggravated* finding was proposed for *Fix now*, or for *Needs a human look* when the code contradicts its blocking kind or origin; one the user ruled elsewhere carries the user's reason in the fix report.
+- ✅ Every finding you proposed to defer is *pre-existing* in the review report.
 - ✅ Every *Fix now* finding has its Step 3 proof passing, is marked `not fixed` with the hypotheses tried, or was moved to *Needs a human look* as a refactor.
 - ✅ Every deferred finding has its file at `deferrals/D-xx.md`, its `D-xx` in the fix report, and its line under the epic's *Deferrals*.
 - ✅ The project's checks are green, or each one still red is recorded in the fix report's *Checks run*.
@@ -50,27 +50,21 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 
 **Type.** Every finding's type follows its class, never its claim, as `docs/piv-loop.md` defines types: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `none` for the rest. Never `feature`: a deferral delivers no new capability.
 
-**Blocking.** A finding is blocking when it is a red, missing or weakened test, or an untested behavior.
+**Blocking and origin** are the review's rulings, read from the report: a finding is blocking when it sits under the *Blocking* heading, and every other finding's line ends on its origin — *introduced*, *aggravated* or *pre-existing*. Take both as written. When the code contradicts the blocking kind or the origin — not the claim itself, which *Noise / won't-fix* settles — propose the finding for *Needs a human look*, naming the contradiction.
 
-Sort the findings into four buckets, each finding into exactly one. Propose the cut by whether the change introduced the finding, whatever its severity. Two rules override that cut:
+Sort the findings into four buckets, each finding into exactly one. Propose the cut by origin, whatever the severity: blocking, *introduced* and *aggravated* to *Fix now*, *pre-existing* to *Defer*. A contradiction of the blocking kind or the origin, above, overrides that cut, and so do two rules:
 
 - A blocking finding is never deferred: it goes to *Fix now*, or to *Noise / won't-fix* with a reason that shows the problem is not there.
-- A finding the change introduced is never deferred to keep the change small: its repair is part of the change.
+- An *introduced* or *aggravated* finding is never deferred to keep the change small: its repair is part of the change.
 
 The buckets:
 
-- **Fix now** — real, and introduced by the change: a defect in code it touched, a break it caused elsewhere (a test it turned red), or something it left out (an unmet acceptance criterion).
-- **Defer** — real, and it reproduces on the *Base* without the change. Confirm the reproduction in a throwaway worktree outside the repository, and remove it afterwards:
-  ```bash
-  git worktree add --detach [path outside the repository] [Base]
-  # reproduce the finding there
-  git worktree remove --force [path outside the repository]
-  ```
-  Propose the deferral's type and its title — imperative and specific, naming the defect and where it lives: `Reject an empty email in the signup handler`, not `Fix validation`.
+- **Fix now** — real, and the change answers for it: a defect in code it touched, a break it caused elsewhere (a test it turned red), something it left out (an unmet acceptance criterion), or an old defect it made reachable.
+- **Defer** — real, and *pre-existing*: the review reproduced it on the *Base* without the change. Propose the deferral's type and its title — imperative and specific, naming the defect and where it lives: `Reject an empty email in the signup handler`, not `Fix validation`.
 - **Needs a human look** — anything the user should inspect or test by hand before trusting it. Flag it; do not fix it.
 - **Noise / won't-fix** — not a real problem. The next review weighs your reason against the code, so give one the code bears out: "the handler already rejects it at `api/signup.py:31`" keeps the finding from coming back; "minor" or "not worth fixing" does not. A real finding closes only through a fix or a deferral.
 
-**GATE** — post the split, each deferral with its proposed title and type, and wait for the user's ruling. No code moves and no deferral is written until they rule. When the user rules a finding the change introduced out of *Fix now*, ask for their reason; it goes in the fix report.
+**GATE** — post the split, each deferral with its proposed title and type, and wait for the user's ruling. No code moves and no deferral is written until they rule. When the user rules a blocking, *introduced* or *aggravated* finding out of *Fix now*, ask for their reason; it goes in the fix report.
 
 **Once they rule, write the fix report** at `.piv/[intent-slug]/tasks/T-xx/T-xx.fixes.md`, filling `templates/fix-report.md` exactly. In this first write every *Fixed* entry is `not fixed — pending` and every *Deferred* entry is `not created — pending`. Flip each one as it lands: a `D-xx` as Step 2 writes it, a fix as Step 3 turns it green. A run that stops midway, for any reason, thus leaves the ruling on record, and the next run resumes from it.
 
@@ -99,7 +93,7 @@ Blocking findings first, then by severity. For each:
    - **Any other** — the check that shows the claim no longer holds: the lint or type-check rule it broke or, for a coverage finding, the test it asked for.
 4. Run the proof. When it passes, the finding is **green**: mark it fixed in the fix report, with what changed and the proof. When it fails, work it again before starting the next finding. After three attempts, each on a different hypothesis about the cause, mark it `not fixed — [the hypotheses tried]` and move on.
 
-Fix what the finding names and stop there. A finding the change introduced is repaired in full, however large the repair. For any other finding, a repair that grows into a refactor is out of scope: move the finding from *Fixed* to *Needs a human look* as a candidate task. Write no deferral beyond the ruled ones.
+Fix what the finding names and stop there. A blocking, *introduced* or *aggravated* finding is repaired in full, however large the repair. For any other finding, a repair that grows into a refactor is out of scope: move the finding from *Fixed* to *Needs a human look* as a candidate task. Write no deferral beyond the ruled ones.
 
 **Done when** every *Fix now* finding is marked fixed, marked `not fixed` with the hypotheses tried, or moved to *Needs a human look*.
 

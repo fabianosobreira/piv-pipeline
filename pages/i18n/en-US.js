@@ -121,7 +121,7 @@ const MANUAL_EN_US = {
             ['A spec marked reviewed', '`piv-slice`', 'One ticket per task, each a verbatim slice of the spec, and one issue that publishes it.'],
             ['An issue number', '`piv-implement`', 'It picks the next task from the epic and builds it on the intent\'s branch.'],
             ['A task built, not yet committed', '`piv-review`', 'This is the gate that decides whether the task earns a commit.'],
-            ['A review report with findings', '`piv-fix`', 'Findings are input, not a work order — you rule on each one.'],
+            ['A CHANGES REQUESTED verdict', '`piv-fix`', 'Findings are input, not a work order — you rule on each one.'],
             ['A PASS verdict', '`piv-commit`', 'Atomic commits for the task, then the next task — or the PR.'],
             ['Every task committed', '`piv-open-pr`', 'One PR for the whole intent, closing its issue on merge.'],
             ['An open PR', '`piv-review-pr`', 'It holds the PR to every item of the spec.'],
@@ -310,10 +310,10 @@ const MANUAL_EN_US = {
           summary: 'Reviews one task\'s uncommitted change for bugs, security defects and standards violations, and writes a review report. It is a report, never an edit.',
           fields: [
             { label: 'Input', text: '`[#N | intent-slug] [T-xx]` — blank and it takes the issue from the branch name and the task in progress from the epic.' },
-            { label: 'Output', text: '`tasks/T-xx/T-xx.review.md` — scope (every file read), findings grouped `blocking` / `critical` / `high` / `medium` / `low`, and the checks run, the full test suite among them. A `blocking` finding is a red, missing or weakened test, or a behavior with no test — a fact, outside the severity scale. Each finding carries evidence, impact and a concrete fix.' },
-            { label: 'Verdict', text: '**CHANGES REQUESTED** when any blocking, critical or high finding survives. **PASS** otherwise — a PASS with medium and low findings is normal.' },
+            { label: 'Output', text: '`tasks/T-xx/T-xx.review.md` — scope (every file read), findings grouped `blocking` / `critical` / `high` / `medium` / `low`, and the checks run, the full test suite among them. A `blocking` finding is a red, missing or weakened test, or a behavior with no test — a fact, outside the severity scale. Every other finding carries an origin: `introduced` by the change, `aggravated` — an old defect the change made reachable — or `pre-existing`, reproduced on the base and untouched by the change. Each finding carries evidence, impact and a concrete fix.' },
+            { label: 'Verdict', text: '**CHANGES REQUESTED** when any blocking, `introduced` or `aggravated` finding survives, whatever its severity. **PASS** otherwise — a PASS leaves only `pre-existing` findings, which the PR body carries.' },
             { label: 'How it runs', text: 'Resolve the change against `HEAD`, the last commit before the task → resolve prior deferrals → read the standards the change must meet → examine every changed file in its context → build the case → run three filters that kill unproven findings. The change is held to the ticket\'s acceptance criteria as well as its testing strategy: a criterion the code doesn\'t meet is a `high` finding.' },
-            { label: 'Next move', text: '**PASS** with no findings → `piv-commit [#N] [T-xx]`, here or in a fresh session. **PASS** with medium or low findings → `piv-commit [#N] [T-xx]`, in a session of its own. **CHANGES REQUESTED** → `piv-fix`, in a session of its own, handed this report\'s path.' },
+            { label: 'Next move', text: '**PASS** with no findings → `piv-commit [#N] [T-xx]`, here or in a fresh session. **PASS** with `pre-existing` findings → `piv-commit [#N] [T-xx]`, in a session of its own. **CHANGES REQUESTED** → `piv-fix`, in a session of its own, handed this report\'s path.' },
           ],
           notes: [
             { type: 'p', text: '**Use it** before committing a task, and again after every fix run. On a re-review it overwrites the previous report: it is the current state of the task, and the rulings on old findings live in the deferrals, not here.' },
@@ -327,7 +327,7 @@ const MANUAL_EN_US = {
           fields: [
             { label: 'Input', text: '`[review report path]` — blank and it uses the review of the task in progress.' },
             { label: 'Output', text: '`tasks/T-xx/T-xx.fixes.md` — **Fixed**, **Deferred** (with their `D-xx`), **Needs a human look**, **Noise / won\'t-fix**, and the checks run. Each deferral lands in `deferrals/D-xx.md` and in the epic\'s list; no issue is created.' },
-            { label: 'How it runs', text: 'Triage every finding into one of the four buckets — a blocking finding only into *fix now* or *noise*, never deferred → fix the *fix now* set one at a time, each with a test that proves it → validate the whole branch.' },
+            { label: 'How it runs', text: 'Triage every finding into one of the four buckets, by the blocking kind and the origin the review recorded — blocking, `introduced` and `aggravated` to *fix now*, `pre-existing` to *defer*; a blocking finding only into *fix now* or *noise*, never deferred → fix the *fix now* set one at a time, each with a test that proves it → validate the whole branch.' },
             { label: 'Next move', text: '`piv-review [#N] [T-xx]` again, in a session of its own. With a *Needs a human look* entry still open, the hand-off waits: inspect it, then rerun `piv-fix`.' },
           ],
           notes: [
@@ -478,7 +478,7 @@ const MANUAL_EN_US = {
               note: '**Fresh session, always.** In the implementation\'s session the review re-reads its own decisions and tends to confirm them.',
             },
             {
-              steps: [{ n: 7, cmd: 'piv-fix .piv/team-inbox/tasks/T-01/T-01.review.md', text: 'you fix the high and one medium, defer two as `D-01` and `D-02`; `T-01.fixes.md` records every ruling.' }],
+              steps: [{ n: 7, cmd: 'piv-fix .piv/team-inbox/tasks/T-01/T-01.review.md', text: 'you fix the high and one medium, defer the two pre-existing ones as `D-01` and `D-02`; `T-01.fixes.md` records every ruling.' }],
               note: '**Fresh session.** The run that raised the findings tends to defend them; the triage has to be free to rule against the review.',
             },
             {

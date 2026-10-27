@@ -26,7 +26,7 @@ Closes #[N]
 [per task, as **[T-xx]** — the fix report's *Needs a human look* items — raised by the triage, not confirmed as checked — or "none"]
 
 ### Surviving findings
-[every finding the review reports left standing — on a PASS, their medium and low ones — one per line, blocking first and then by severity, as **[T-xx]** **[blocking or severity]** — [one-line claim] — `[path]:[line]`, or "none"]
+[every finding the review reports left standing — on a PASS, their pre-existing ones — one per line, blocking first and then by severity, as **[T-xx]** **[blocking or severity]** — [one-line claim] — `[path]:[line]`, or "none"]
 
 ## Deferred findings
 [every deferral of the intent, in full, one block per file under `deferrals/`, in D-xx order — or "None."]

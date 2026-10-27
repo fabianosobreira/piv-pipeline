@@ -67,7 +67,7 @@ You rarely need all ten. Find the row that matches what you have in hand.
 | A spec marked reviewed | `piv-slice` | One ticket per task, each a verbatim slice of the spec, and one issue that publishes it. |
 | An issue number | `piv-implement` | It picks the next task from the epic and builds it on the intent's branch. |
 | A task built, not yet committed | `piv-review` | This is the gate that decides whether the task earns a commit. |
-| A review report with findings | `piv-fix` | Findings are input, not a work order — you rule on each one. |
+| A CHANGES REQUESTED verdict | `piv-fix` | Findings are input, not a work order — you rule on each one. |
 | A PASS verdict | `piv-commit` | Atomic commits for the task, then the next task — or the PR. |
 | Every task committed | `piv-open-pr` | One PR for the whole intent, closing its issue on merge. |
 | An open PR | `piv-review-pr` | It holds the PR to every item of the spec. |

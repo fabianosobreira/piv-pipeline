@@ -9,7 +9,7 @@
     "expected_behavior": [
       "Resolves #12 to the rate-limiting epic and T-01, its [~] task, takes HEAD as the Base and runs diff-hash.sh with the Base alone",
       "Reads the criteria from the AC-xx lines of the ticket's section 5 and the commands from section 9",
-      "Registers a finding of class logic, severity high, because AC-01 (request 101 must get status 429) is not met",
+      "Registers a finding of class logic, severity high, origin introduced, because AC-01 (request 101 must get status 429) is not met",
       "Cites a file and a line of the middleware as evidence, taken with locate.sh",
       "Sets the verdict to CHANGES REQUESTED",
       "Reads no plan outside the ticket and asks for none",
@@ -26,8 +26,48 @@
     "expected_behavior": [
       "Checks AC-01 and AC-02 against the code and finds both met",
       "Raises no logic finding for an acceptance criterion",
-      "Sets the verdict to PASS unless an independent blocking, critical or high finding survives",
-      "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with medium or low findings, in a session of its own"
+      "Sets the verdict to PASS unless an independent blocking finding, or an introduced or aggravated finding of any severity, survives",
+      "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with pre-existing findings, in a session of its own"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing, but names the map that holds each client's request count `cache`.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Registers a finding of class quality, severity low, origin introduced, for the name that lies about what the map holds",
+      "Sets the verdict to CHANGES REQUESTED although the only finding is low",
+      "Hands off to piv-fix with the report's path, not to piv-commit"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing. It keys each client by getClientIp() from src/util/client-ip.js, unchanged by the task, which already returns the X-Forwarded-For header unvalidated on the Base.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Reproduces the spoofable client IP on the Base in a worktree outside the repository",
+      "Tags the finding aggravated, with evidence that traces the path from the new middleware to getClientIp()",
+      "Sets the verdict to CHANGES REQUESTED"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing, and edits the export list of src/server.js. In the unchanged lines of src/server.js, the login handler already builds its SQL by concatenating the request's username on the Base, and the middleware never reaches that handler.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Reproduces the SQL injection on the Base in a worktree outside the repository",
+      "Registers a finding of class security, severity critical, origin pre-existing",
+      "Sets the verdict to PASS although a critical finding stands",
+      "Offers piv-commit in a session of its own, saying piv-open-pr carries the finding into the PR body"
     ]
   },
   {

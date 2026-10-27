@@ -34,7 +34,15 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 
 A blocking finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix` never defers one — a deferred red test would reach PASS still red.
 
-A *red* test **confirmed red on the base** — it ran on the **Base** commit, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium**. A test that fails intermittently is re-run on the base the same number of times; one that also fails there is base-red (flaky), demoted like any base-red test. Flaky only on the branch stays *red*. A test the ticket's verification names, or the test that reproduces the defect a ticket of type `bug` describes, stays *red* whatever the base shows: turning it green is this change's job.
+A *red* test **confirmed red on the base** — it ran on the **Base** commit, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium**, *pre-existing*. A test that fails intermittently is re-run on the base the same number of times; one that also fails there is base-red (flaky), demoted like any base-red test. Flaky only on the branch stays *red*. A test the ticket's verification names, or the test that reproduces the defect a ticket of type `bug` describes, stays *red* whatever the base shows: turning it green is this change's job.
+
+**Every other finding carries an origin**, and the origin, not the severity, sets the verdict — `piv-fix` repairs every finding the change is answerable for, whatever its severity, and triages from the origin this report records:
+
+- ***introduced*** — the change put the defect there. Every finding is *introduced* until the Base proves otherwise.
+- ***aggravated*** — the defect reproduces on the Base, and the change makes it reachable by a new path or widens its impact. The evidence traces that path from the changed code to the defect.
+- ***pre-existing*** — the defect reproduces on the Base, and the change neither reaches nor widens it.
+
+A finding **reproduces** on the Base when it fails there the way it fails on the branch; a finding with nothing to run — a smell, a standards violation, an unexercised branch — reproduces when the code it cites stands unchanged on the Base. An unmet `AC-xx` criterion, or anything else the change left out, is *introduced* whatever the Base shows: delivering it is this change's job. A blocking finding is the change's by its nature and carries no origin.
 
 **A project with no test suite holds the change to no test.** *Missing* and *untested* do not apply, and *red* and *weakened* cannot arise. Say so in *Checks run*, naming the behaviors the change adds or alters that go untested, and raise no finding for them.
 
@@ -43,6 +51,7 @@ A *red* test **confirmed red on the base** — it ran on the **Base** commit, wi
 - ✅ Every file in the change under review was examined with the context needed to judge it, and every class in Step 5 was hunted over each of them.
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
+- ✅ Every non-blocking finding carries its origin, and every *aggravated* or *pre-existing* one was reproduced on the Base.
 - ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — blocking, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
 - ✅ The change was held to every `AC-xx` criterion of the ticket, its verification, its task plan, and its non-goals and boundaries.
 - ✅ The tree the report's **Diff** records is the tree that was reviewed: the checks left nothing behind.
@@ -54,7 +63,7 @@ Three scripts sit in `${CLAUDE_SKILL_DIR}/scripts/`. Run each with `sh`, from th
 
 - **`diff-hash.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/diff-hash.sh [Base] [exclude-glob]...` prints one hash for the full diff from `[Base]` to the working tree, untracked files included and ignored files — `.piv/` among them — left out, like every exclude glob passed. This skill passes none. Needs `git`. Exit 2 is a usage error and says what to pass.
 - **`locate.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/locate.sh [file] [text]` prints `file:line: content` for every line of `[file]` containing `[text]`, matched as a fixed string on one line. Needs `grep`, `tr` and `awk`. Exit 1 means no line matched: search a shorter piece of the line.
-- **`check-report.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/check-report.sh [report]` checks the header fields, the headings and their order, the sections' content, the verdict against the findings, and that every backticked `path:line` exists. Needs `awk`, `grep`, `sed`, `tr`, `wc`, `tail`, `sort` and `mktemp`. Exit 0 prints `check-report: ok`; exit 1 prints one problem per line.
+- **`check-report.sh`** — `sh ${CLAUDE_SKILL_DIR}/scripts/check-report.sh [report]` checks the header fields, the headings and their order, the sections' content, each finding's origin, the verdict against the findings, and that every backticked `path:line` exists. Needs `awk`, `grep`, `sed`, `tr`, `wc`, `tail`, `sort` and `mktemp`. Exit 0 prints `check-report: ok`; exit 1 prints one problem per line.
 
 ## Process
 
@@ -140,11 +149,12 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 Take each candidate through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
 - Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. The project has no test suite → say so in *Checks run* the way **Posture** requires.
-- Run each *red* test on the Base too, in a worktree outside the repository, so the change under review stays untouched, and confirm it against the conditions **Posture** sets for a base-red test:
+- Run each *red* test on the Base too, in a worktree outside the repository, so the change under review stays untouched, and confirm it against the conditions **Posture** sets for a base-red test. In the same worktree, reproduce every candidate you would mark *aggravated* or *pre-existing*; one that does not reproduce there is *introduced*:
 
   ```
   git worktree add --detach [dir outside the repository] [Base]
-  # set it up as the branch run was set up, then run the red test there, as many times as on the branch
+  # set it up as the branch run was set up, then run the red test there, as many times as on the branch,
+  # and reproduce each aggravated or pre-existing candidate
   git worktree remove --force [dir outside the repository]
   ```
 
@@ -154,7 +164,7 @@ Take each candidate through all three filters from **Posture**, and run the chec
 
 When the checks are done, run `diff-hash.sh` again with the same arguments as in Step 1. A hash other than the recorded **Diff** means something wrote into the tree during the review. When it is what your checks left — a cache, a coverage file, a regenerated snapshot — remove it and recompute until the hash matches. When it is anything else → **STOP** and tell the user what changed: the tree no longer matches what was reviewed.
 
-A surviving blocking finding stays **blocking**, and its kind names it. A *red* test whose cause also leaves an acceptance criterion unmet raises that `logic` finding too. Give every other survivor the Step 5 class it was found under — `piv-fix` types a deferral from it — and a severity:
+A surviving blocking finding stays **blocking**, and its kind names it. A *red* test whose cause also leaves an acceptance criterion unmet raises that `logic` finding too. Give every other survivor the Step 5 class it was found under — `piv-fix` types a deferral from it — its origin (**Posture**), and a severity:
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
 - **high** — wrong behavior on a path users reach, and every acceptance criterion the code doesn't meet.
@@ -163,7 +173,7 @@ A surviving blocking finding stays **blocking**, and its kind names it. A *red* 
 
 A **coverage** finding is **medium** when it is a *red* test demoted as base-red (**Posture**), or an unexercised branch that can produce wrong behavior on a path users reach; it is **low** otherwise.
 
-**Done when** every candidate either survived all three filters with its class and severity — or its blocking kind — or was dropped by a named filter, and the recomputed hash matches the recorded **Diff**.
+**Done when** every candidate either survived all three filters with its class, origin and severity — or its blocking kind — or was dropped by a named filter, and the recomputed hash matches the recorded **Diff**.
 
 ## Output — write a review report
 
@@ -172,7 +182,7 @@ Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the i
 - **Round** — 1 on a first review; the previous review's **Round** plus one on a re-review. A re-review overwrites the previous report: it is the current state of the task, and the decisions taken on the old findings live in the deferrals and *Dropped by prior ruling*, not in the old report.
 - **Base** and **Diff** — the values Step 1 recorded and Step 6 confirmed. `piv-commit` recomputes the Diff to tell whether the tree still matches the review.
 - **Findings** — the Blocking heading and every severity heading are present on every run; one that holds no finding reads "No findings.". *Dropped by prior ruling* reads "None." when nothing was dropped.
-- **Verdict** — **CHANGES REQUESTED** when any blocking, critical or high finding survived; **PASS** otherwise. A PASS with medium and low findings is normal.
+- **Verdict** — **CHANGES REQUESTED** when any blocking finding, or any *introduced* or *aggravated* finding of any severity, survived; **PASS** otherwise. A PASS leaves only *pre-existing* findings standing, critical and high included.
 - **Language** — everything the template leaves to you — each finding's claim, evidence, impact and fix, the notes under *Scope*, and *Checks run* — is written in the report language Step 1 resolved; only the template's labels and headings stay as written.
 
 Check the report before handing it on, whatever the verdict:
@@ -188,5 +198,5 @@ Then print the verdict, the count of blocking findings and the count per severit
 The review report is the artifact this run leaves behind, so give the user its path by name, with the issue number and the task id. Offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **PASS with zero findings** — every severity heading reads "No findings." → run `piv-commit [#N] [T-xx]`, here or in a fresh session: nothing in the report is left for a fresh reader to judge.
-- **PASS with medium or low findings** → run `piv-commit [#N] [T-xx]`, in a session of its own. The findings stay in the report; `piv-open-pr` carries them into the PR body.
+- **PASS with *pre-existing* findings** → run `piv-commit [#N] [T-xx]`, in a session of its own. The findings stay in the report; `piv-open-pr` carries them into the PR body.
 - **CHANGES REQUESTED** → run `piv-fix [review report path]`, in a session of its own.

@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 # Checks a review report before it is handed on: the template's header fields are
 # filled, its headings are present and in order, no section is left empty, every
-# `path:line` it cites exists in the working tree, and the verdict agrees with the
-# findings. It reads the report and the files it cites; it changes nothing. The
-# report's path is the first argument; the repository root is the current
-# directory, where the cited paths are relative to.
+# `path:line` it cites exists in the working tree, every non-blocking finding carries
+# its origin, and the verdict agrees with the findings. It reads the report and the
+# files it cites; it changes nothing. The report's path is the first argument; the
+# repository root is the current directory, where the cited paths are relative to.
 #
 # Usage: check-report.sh [report]
 # Needs: a POSIX shell, awk, grep, sed, tr, wc, tail, sort and mktemp.
@@ -101,20 +101,31 @@ while IFS= read -r line; do
 done < "$problems.sections"
 rm -f "$problems.sections"
 
-# Verdict against findings: PASS holds only when Blocking, Critical and High are empty.
-# A severity section is empty when its only content is "No findings.".
-heavy=$(awk '
-  { sub(/\r$/, "") }
-  /^### (Blocking|Critical|High)$/ { sec = $2; next }
+# Origins and verdict: a finding is a top-level "- ", "* " or "+ " line of a findings section. Outside
+# Blocking, it ends on " · [class] · [origin]"; a Blocking finding carries no origin.
+# PASS holds only when Blocking is empty and every other finding is pre-existing.
+findings=$(awk '
+  { sub(/\r$/, ""); sub(/[[:space:]]+$/, "") }
+  /^### (Blocking|Critical|High|Medium|Low)$/ { sec = $2; next }
   /^##/ { sec = "" }
-  sec != "" && $0 != "" && $0 != "No findings." { heavy[sec] = 1 }
-  END { for (s in heavy) printf "%s ", s }
+  sec == "" || $0 !~ /^[-*+] / { next }
+  sec == "Blocking" && / · (introduced|aggravated|pre-existing)$/ { print "tagged " $0; print "holds Blocking"; next }
+  sec == "Blocking" { print "holds Blocking"; next }
+  $0 !~ / · (logic|security|performance|quality|standards|coverage) · (introduced|aggravated|pre-existing)$/ { print "origin " sec ": " $0; next }
+  $NF == "introduced" || $NF == "aggravated" { print "holds " sec }
 ' "$report")
-if [ "$verdict" = "PASS" ] && [ -n "$heavy" ]; then
-  fail "Verdict is PASS but $heavy section(s) hold findings"
+holding=$(printf '%s\n' "$findings" | sed -n 's/^holds //p' | sort -u | tr '\n' ' ' | sed 's/ $//')
+printf '%s\n' "$findings" | sed -n 's/^origin //p' | while IFS= read -r line; do
+  fail "finding in $line; end its line with ' · [class] · [origin]', the class one of logic, security, performance, quality, standards or coverage, the origin one of introduced, aggravated or pre-existing"
+done
+printf '%s\n' "$findings" | sed -n 's/^tagged //p' | while IFS= read -r line; do
+  fail "Blocking finding carries an origin: $line; drop it, a blocking finding has none"
+done
+if [ "$verdict" = "PASS" ] && [ -n "$holding" ]; then
+  fail "Verdict is PASS but findings in $holding are blocking, introduced or aggravated"
 fi
-if [ "$verdict" = "CHANGES REQUESTED" ] && [ -z "$heavy" ]; then
-  fail "Verdict is CHANGES REQUESTED but Blocking, Critical and High hold no findings"
+if [ "$verdict" = "CHANGES REQUESTED" ] && [ -z "$holding" ]; then
+  fail "Verdict is CHANGES REQUESTED but no finding is blocking, introduced or aggravated"
 fi
 
 # Citations: a backticked `path:line` or `path:start-end`. The path must exist and the
