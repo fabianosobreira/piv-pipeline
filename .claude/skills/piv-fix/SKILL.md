@@ -35,16 +35,6 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Triage
-- [ ] Step 2 — Write a deferral for each finding deferred
-- [ ] Step 3 — Fix the *Fix now* set, one at a time
-- [ ] Step 4 — Validate
-- [ ] Step 5 — Finish the fix report and hand off
-```
-
 ### Step 1 — Triage
 
 **The change** is the diff against the review report's *Base*, uncommitted work included.

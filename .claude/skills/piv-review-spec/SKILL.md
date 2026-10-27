@@ -53,17 +53,6 @@ The rules of `piv-spec` hold here, restated because this run edits the spec:
 
 ## Process
 
-Copy this checklist into the first message. Tick a step only when its **Done when** holds.
-
-```
-- [ ] Step 1 — Read the spec
-- [ ] Step 2 — Recon the codebase
-- [ ] Step 3 — Check the remote
-- [ ] Step 4 — Settle the open items with the user
-- [ ] Step 5 — Apply the answers and lint
-- [ ] Step 6 — Mark the outcome and write spec.review.md
-```
-
 ### Step 1 — Read the spec
 
 `$ARGUMENTS` carries the intent-slug. Nothing passed → list each `.piv/[slug]/spec.md` that says `Status: ready` and ask which. **GATE.** No spec at `.piv/[intent-slug]/spec.md` → **STOP**: `piv-spec` writes it first.

@@ -25,17 +25,6 @@ This is the last step of the PIV loop `docs/piv-loop.md` describes: the PR is op
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Resolve the intent and the PR
-- [ ] Step 2 — Index the spec
-- [ ] Step 3 — Read the PR end to end
-- [ ] Step 4 — Hold every item to the PR
-- [ ] Step 5 — Check the spec revision
-- [ ] Step 6 — Write the PR review
-```
-
 ### Step 1 — Resolve the intent and the PR
 
 Resolve the intent as `docs/piv-loop.md` says under *Resolving the intent and the task*, and read `.piv/[intent-slug]/epic.md`, the spec its `Spec` line names and the ticket of every task of the epic, at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`.

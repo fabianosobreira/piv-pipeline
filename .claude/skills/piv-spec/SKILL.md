@@ -100,19 +100,6 @@ No context to propose options: ask an open question, with no list and no 💡.
 
 ## Process
 
-Copy this checklist into the first message. Tick a phase only when it closes: its **Done when** and the criteria below hold.
-
-```
-- [ ] Phase 0 — Recon
-- [ ] Phase 1 — Goal and scope (sections 1, 2)
-- [ ] Phase 2 — Behavior (sections 3, 4)
-- [ ] Phase 3 — Quality and technical limits (sections 5, 6)
-- [ ] Phase 4 — Design (section 7)
-- [ ] Phase 5 — Boundaries (section 8)
-- [ ] Phase 6 — Verification (section 9)
-- [ ] Phase 7 — Synthesis
-```
-
 Run phases in order. A phase closes only when its **Done when** and all of these hold:
 
 - **No gaps**: every statement written in the phase has a `Source: Q<n>`. Header fields are not statements.

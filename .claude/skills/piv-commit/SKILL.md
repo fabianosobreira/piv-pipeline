@@ -23,16 +23,6 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Check where you are
-- [ ] Step 2 — Inspect
-- [ ] Step 3 — Group it
-- [ ] Step 4 — Commit each group
-- [ ] Step 5 — Mark the task done
-```
-
 ### Step 1 — Check where you are
 
 1. **Intent and task.** Resolve them from `$ARGUMENTS` as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. The task is not `[~]` → **STOP**: only the task in progress is committed.

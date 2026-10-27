@@ -22,18 +22,6 @@ This is the **implement** step of the PIV loop `docs/piv-loop.md` describes: one
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Resolve the task
-- [ ] Step 2 — Work on the intent's branch
-- [ ] Step 3 — Read the ticket end to end
-- [ ] Step 4 — Execute the task
-- [ ] Step 5 — Close the testing strategy
-- [ ] Step 6 — Run the checks
-- [ ] Step 7 — Final verification
-```
-
 ### Step 1 — Resolve the task
 
 `$ARGUMENTS` carries `[#N | intent-slug] [T-xx]`. Resolve the intent and the task as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. No epic → **STOP**: `piv-slice` writes it.

@@ -46,16 +46,6 @@ The PRD:
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its phase's **Done when** holds.
-
-```
-- [ ] Phase 1 — Initiate
-- [ ] Phase 2 — Foundation (the thesis)
-- [ ] Phase 3 — Deep dive (users)
-- [ ] Phase 4 — Hypothesis (the falsifiable bet)
-- [ ] Phase 5 — MVP & doors
-```
-
 ### Interaction mode: clustered gating
 
 **Ask in clusters, one phase at a time.** The questions ask for what only the user knows — who has the pain, what they have observed, how they cope today.

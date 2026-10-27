@@ -51,16 +51,6 @@ One file outside the project is read: `~/.claude/CLAUDE.md`, only to warn the us
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Investigate
-- [ ] Step 2 — Draft git-conventions.md
-- [ ] Step 3 — Ask for the rulings
-- [ ] Step 4 — Install
-- [ ] Step 5 — Offer the commit
-```
-
 ### Step 1 — Investigate
 
 Gather, without writing anything:

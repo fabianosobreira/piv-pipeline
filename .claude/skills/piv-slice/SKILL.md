@@ -43,20 +43,6 @@ An `epic.md` already there decides it too:
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Read the spec
-- [ ] Step 2 — Orient on the existing surface
-- [ ] Step 3 — Cut the tasks
-- [ ] Step 4 — Map the blockers
-- [ ] Step 5 — Write and lint the tickets and the epic
-- [ ] Step 6 — Preflight GitHub
-- [ ] Step 7 — GATE: confirm the issue
-- [ ] Step 8 — Create the issue
-- [ ] Step 9 — Report
-```
-
 ### Step 1 — Read the spec
 
 List every `FR`, `AC` (with the `FR` its head cites), `NFR`, `C` and `D`, every row of section 9, and every open question of section 8 with the IDs it cites.

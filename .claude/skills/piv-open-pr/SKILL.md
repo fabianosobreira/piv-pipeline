@@ -20,16 +20,6 @@ This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: ev
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Resolve the intent and the base branch
-- [ ] Step 2 — Check the branch is in a shippable state
-- [ ] Step 3 — Gather the material and write the body
-- [ ] Step 4 — Publish the branch
-- [ ] Step 5 — Open the PR
-```
-
 ### Step 1 — Resolve the intent and the base branch
 
 `$ARGUMENTS` may carry an issue number or intent-slug, a base branch, or both — tell them apart by shape. Resolve the intent as `docs/piv-loop.md` says under *Resolving the intent and the task*, and read `.piv/[intent-slug]/epic.md`. No base branch handed to you → resolve it the way `docs/git-conventions.md` defines. Call the result `[base]`, and fetch it: the commits "ahead of `[base]`" below are counted from its remote tip, as `docs/git-conventions.md` defines it. A fetch that fails → **STOP** and say so.

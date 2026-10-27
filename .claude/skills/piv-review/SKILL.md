@@ -67,18 +67,6 @@ Three scripts sit in `${CLAUDE_SKILL_DIR}/scripts/`. Run each with `sh`, from th
 
 ## Process
 
-Copy this checklist into your task list. Tick an item only when its step's **Done when** holds.
-
-```
-- [ ] Step 1 — Resolve the change under review: task, Base, Diff hash, ticket, implementation report
-- [ ] Step 2 — Resolve the deferrals
-- [ ] Step 3 — Read the standards and siblings
-- [ ] Step 4 — Examine every changed file in its context
-- [ ] Step 5 — Build the case
-- [ ] Step 6 — Filter and class every candidate; recompute the Diff hash
-- [ ] Step 7 — Write the review report: `check-report.sh` exits 0, every cited line reopened
-```
-
 ### Step 1 — Resolve the change under review
 
 **Resolve the intent and the task** from `$ARGUMENTS` as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. No epic → **STOP**: `piv-slice` writes it.
