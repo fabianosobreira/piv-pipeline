@@ -29,8 +29,8 @@ No findings.
   - **Evidence**: `if (now - entry.windowStart > WINDOW_MS)` at `src/middleware/rate-limit.js:27` leaves the counter alone when `now - entry.windowStart === WINDOW_MS`, so a client that sent 100 requests keeps getting 429 for one extra second.
   - **Impact**: a client is rejected after its window ended.
   - **Fix**: compare with `>=` and add a test for the boundary second.
-- **The error handler answers 500 with the stack trace in the body** — `src/middleware/error.js:12` · security · pre-existing
-  - **Evidence**: `res.status(500).send(err.stack)` at `src/middleware/error.js:12`; the Base has the same line.
+- **The error handler answers 500 with the stack trace in the body** — `src/middleware/error.js:12` · security · introduced
+  - **Evidence**: `res.status(500).send(err.stack)` at `src/middleware/error.js:12`, a line the change adds.
   - **Impact**: a client sees file paths and internals of the server.
   - **Fix**: answer a generic message and log the stack.
 

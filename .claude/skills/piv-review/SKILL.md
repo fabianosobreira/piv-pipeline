@@ -25,6 +25,10 @@ You are the prosecution. Assume the author got it wrong and prove it.
 
 Step 6 runs the three filters. What survives becomes a finding; the rest goes nowhere.
 
+**Never a candidate:** a style point the project's linter or formatter already enforces, a rule silenced on its line by a `lint-ignore`-style directive, and a preference no document or sibling backs.
+
+**Zero findings is a valid result.** Report what the filters leave, however little; a finding made up to fill a heading is a defect of the review.
+
 **Some findings are facts, not arguments.** Four kinds are **test-fact**:
 
 - ***red*** — a failing test of the branch run of the tests in scope (Step 4) that the change is answerable for (below).
@@ -40,7 +44,7 @@ A failing test is **the change's** when the change added or edited it, when the 
 
 - ***introduced*** — the change put the defect there. Every finding is *introduced* until the Base proves otherwise.
 - ***aggravated*** — the defect reproduces on the Base, and the change makes it reachable by a new path or widens its impact. The evidence traces that path from the changed code to the defect.
-- ***pre-existing*** — the defect reproduces on the Base, and the change neither reaches nor widens it.
+- ***pre-existing*** — the defect reproduces on the Base, and the change neither reaches nor widens it. It is no finding: the review answers for the change, so the candidate drops and the report does not carry it.
 
 A finding **reproduces** on the Base when it fails there the way it fails on the branch; a finding with nothing to run — a smell, a standards violation, an unexercised branch — reproduces when the code it cites stands unchanged on the Base. An unmet `AC-xx` criterion, or anything else the change left out, is *introduced* whatever the Base shows: delivering it is this change's job. A test-fact finding is the change's by its nature and carries no origin.
 
@@ -51,7 +55,7 @@ A finding **reproduces** on the Base when it fails there the way it fails on the
 - ✅ Every file in the change under review was examined with the context needed to judge it, and every class in Step 5 was hunted over each of them.
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
-- ✅ Every finding outside *Test facts* carries its origin, and every *aggravated* or *pre-existing* one was reproduced on the Base.
+- ✅ Every finding outside *Test facts* carries its origin, and every *aggravated* one was reproduced on the Base, and no *pre-existing* defect is reported.
 - ✅ The tests in scope, and no other, ran once on the branch — or the project has none, and *Checks run* says so — every failing test the change is answerable for is reported as *red*, and every other one is named in *Checks run*.
 - ✅ The change was held to every `AC-xx` criterion of the ticket, its verification, its task, and its non-goals and boundaries.
 - ✅ The tree the report's **Diff hash** records is the tree that was reviewed: the checks left nothing behind.
@@ -105,7 +109,7 @@ Read every file the change touches with the context needed to judge it — its c
 - this skill's **Posture** and Step 5, and the `locate.sh` command from **Bundled scripts** with `${CLAUDE_SKILL_DIR}` filled in;
 - the Base, the command that prints the diff against it, and the map of group to files, so it can read what every other group changed.
 
-Run Step 6 once over all the candidates that come back, and note the dispatch in the report's *Scope*.
+Run Step 6 once over all the candidates that come back, and note the dispatch in the report's *Scope*. A subagent that fails or returns nothing → read its group yourself, in context; when that is not possible → **STOP** and name the group left unreviewed, since a review with a group unread is no verdict.
 
 **Then start the tests in scope on the branch**, with the setup the project documents, so they run while Step 5 builds the case; Step 6 reads what they return. The **tests in scope** are every test the change added or edited, every test the ticket's verification names, and every existing test that loads code the change touched, directly or through the modules it imports; a changed config, fixture, dependency or build file puts every test that loads it in scope. Never the full suite for its own sake: a test that loads nothing the change touched stays out. They run once per review: no failing test is re-run, on the branch or on the Base. The project has no test suite → nothing starts, and *Checks run* says so the way **Posture** requires.
 
@@ -117,10 +121,10 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line.
 
-1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds — every `AC-xx` criterion of the ticket the code doesn't meet — an unmet criterion is a `logic` finding, `high` — and a change outside the ticket's task, or inside its non-goals or its *Never* boundary, that the implementation report doesn't list as a deviation.
+1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds, a **regression** (a changed line that undoes what the history of that line, `git log -L` or `git blame`, shows an earlier commit put there on purpose) — every `AC-xx` criterion of the ticket the code doesn't meet — an unmet criterion is a `logic` finding, `high` — and a change outside the ticket's task, or inside its non-goals or its *Never* boundary, that the implementation report doesn't list as a deviation.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
 3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
-4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them, and every code smell below matched against the diff. Each smell is a judgement call, never a hard violation, and anything the project's tooling already enforces is skipped here:
+4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them, a comment or docstring the change left describing the old behavior, and every code smell below matched against the diff. Each smell is a judgement call, never a hard violation, and anything the project's tooling already enforces is skipped here:
    - **Feature Envy** — a method that reads or writes another object's fields more than its own → move the method onto that data.
    - **Data Clumps** — the same group of fields or parameters keeps travelling together across the diff → bundle them into one type.
    - **Primitive Obsession** — a primitive or string stands in for a domain concept the diff treats specially → give the concept its own type.
@@ -136,14 +140,14 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 ### Step 6 — Run the three filters
 
-Take each candidate through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
+Merge candidates that name the same line or the same defect — across classes, passes and subagent groups — into one, keeping the strongest evidence and the highest severity. Then take each through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
 - Read what the tests in scope Step 4 started returned, and place every failing test inside or outside the change (**Posture**). They are still running → wait for them; never start a second run.
-- Reproduce on the Base every candidate you would mark *aggravated* or *pre-existing*, in a worktree outside the repository, so the change under review stays untouched; one that does not reproduce there is *introduced*:
+- Reproduce on the Base every candidate you would mark *aggravated*, and every one that sits on a line the change did not edit, in a worktree outside the repository, so the change under review stays untouched. One that does not reproduce there is *introduced*; one that reproduces with no path from the change to it is *pre-existing* and drops:
 
   ```
   git worktree add --detach [dir outside the repository] [Base]
-  # set it up as the branch was set up, then reproduce each aggravated or pre-existing candidate
+  # set it up as the branch was set up, then reproduce each aggravated candidate and each one outside the edited lines
   git worktree remove --force [dir outside the repository]
   ```
 
@@ -171,7 +175,7 @@ Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the i
 - **Round** — 1 on a first review; the previous review's **Round** plus one on a re-review. A re-review overwrites the previous report: it is the current state of the task, and the decisions taken on the old findings live in the deferrals and *Dropped by prior ruling*, not in the old report.
 - **Base** and **Diff hash** — the values Step 1 recorded and Step 6 confirmed. `piv-commit` recomputes the Diff hash to tell whether the tree still matches the review.
 - **Findings** — the Test facts heading and every severity heading are present on every run; one that holds no finding reads "No findings.". *Dropped by prior ruling* reads "None." when nothing was dropped.
-- **Verdict** — **CHANGES REQUESTED** when any test-fact finding, or any *introduced* or *aggravated* finding of severity critical, high or medium, survived; **PASS** otherwise: a *low* finding never forces CHANGES REQUESTED, whatever its origin. A PASS leaves standing only *pre-existing* findings, critical and high included, and *low* findings of any origin.
+- **Verdict** — **CHANGES REQUESTED** when any test-fact finding, or any *introduced* or *aggravated* finding of severity critical, high or medium, survived; **PASS** otherwise: a *low* finding never forces CHANGES REQUESTED, whatever its origin. A PASS leaves standing only *low* findings.
 - **Language** — everything the template leaves to you — each finding's claim, evidence, impact and fix, the notes under *Scope*, and *Checks run* — is written in the report language Step 1 resolved; only the template's labels and headings stay as written.
 - **Citations** — every backticked `path:line`, in any field, *Evidence* and *Checks run* included, gives its path from the repository root: `check-report.sh` resolves each one from there.
 
@@ -188,6 +192,5 @@ Then print the verdict, the count of test-fact findings and the count per severi
 The review report is the artifact this run leaves behind, so give the user its path by name, with the issue number and the task id. Offer the next move and let the user run it — this skill does not chain into the next one:
 
 - **PASS with zero findings** — every severity heading reads "No findings." → run `piv-commit [#N] [T-xx]`, here or in a fresh session: nothing in the report is left for a fresh reader to judge.
-- **PASS with *pre-existing* findings** → run `piv-commit [#N] [T-xx]`, in a session of its own. The findings stay in the report; `piv-open-pr` carries them into the PR body.
-- **PASS with *low* findings that are *introduced* or *aggravated*** → run `piv-commit [#N] [T-xx]`, in a session of its own. To fix them first, run `piv-fix [review report path]`: it points back to `piv-commit` while the tree still matches the report's **Diff hash**, and to `piv-review` otherwise. Left as they are, they stay in the report and `piv-open-pr` does not carry them.
+- **PASS with *low* findings** → run `piv-commit [#N] [T-xx]`, in a session of its own. To fix them first, run `piv-fix [review report path]`: it points back to `piv-commit` while the tree still matches the report's **Diff hash**, and to `piv-review` otherwise. Left as they are, they stay in the report and `piv-open-pr` does not carry them.
 - **CHANGES REQUESTED** → run `piv-fix [review report path]`, in a session of its own.

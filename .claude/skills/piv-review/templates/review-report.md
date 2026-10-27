@@ -22,7 +22,7 @@
 [or "No findings."; the same holds for every severity heading below]
 
 ### Critical
-- **[one-line claim]** — `path/to/file.py:42` · [the Step 5 class: logic, security, performance, quality, standards or coverage] · [the origin, last on the line: introduced, aggravated or pre-existing]
+- **[one-line claim]** — `path/to/file.py:42` · [the Step 5 class: logic, security, performance, quality, standards or coverage] · [the origin, last on the line: introduced or aggravated]
   - **Evidence**: [the quoted line or the traced path that proves it]
   - **Impact**: [what breaks, and for whom]
   - **Fix**: [the concrete change]

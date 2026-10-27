@@ -25,13 +25,13 @@ No findings.
 No findings.
 
 ### Medium
-- **The request logger writes the full `Authorization` header to the log** — `src/util/log.js:18` · security · pre-existing
-  - **Evidence**: `logger.info({ headers: req.headers })` at `src/util/log.js:18`; reproduced on the Base in a worktree outside the repository, where a request with `Authorization: Bearer abc` logs the token.
-  - **Impact**: anyone with log access can replay a user's token.
-  - **Fix**: drop `authorization` from the logged headers in `src/util/log.js`.
+No findings.
 
 ### Low
-No findings.
+- **The window length is the literal `60000` in two places** — `src/middleware/rate-limit.js:14` · quality · introduced
+  - **Evidence**: `src/middleware/rate-limit.js:14` and `:27` both hold `60000`.
+  - **Impact**: changing the window means editing two literals, and one can be missed.
+  - **Fix**: extract a `WINDOW_MS` constant in `src/middleware/rate-limit.js`.
 
 ## Dropped by prior ruling
 None.

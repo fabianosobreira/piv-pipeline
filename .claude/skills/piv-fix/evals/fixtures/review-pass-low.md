@@ -32,10 +32,10 @@ No findings.
   - **Evidence**: `const cache = new Map(); // clientIp -> { count, windowStart }`
   - **Impact**: a reader looking for the cache policy finds a counter table; the next maintainer may add eviction that resets the counts.
   - **Fix**: rename `cache` to `requestCounts` in `src/middleware/rate-limit.js`.
-- **The window length is the literal `60000` in two places** — `src/util/window.js:4` · quality · pre-existing
-  - **Evidence**: `src/util/window.js:4` and `:11` both hold `60000`; the Base has the same two lines.
+- **The window length is the literal `60000` in two places** — `src/middleware/rate-limit.js:14` · quality · introduced
+  - **Evidence**: `src/middleware/rate-limit.js:14` and `:27` both hold `60000`.
   - **Impact**: changing the window means editing two literals, and one can be missed.
-  - **Fix**: extract a `WINDOW_MS` constant in `src/util/window.js`.
+  - **Fix**: extract a `WINDOW_MS` constant in `src/middleware/rate-limit.js`.
 
 ## Dropped by prior ruling
 None.

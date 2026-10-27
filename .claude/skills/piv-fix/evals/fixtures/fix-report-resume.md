@@ -14,7 +14,7 @@
 None.
 
 ## Needs a human look
-- **The window length is the literal `60000` in two places** — `src/util/window.js:4` → check by hand whether another module reads the same window before extracting a constant
+- **The window length is the literal `60000` in two places** — `src/middleware/rate-limit.js:14` → check by hand whether another module reads the same window before extracting a constant
 
 ## Noise / won't-fix
 None.

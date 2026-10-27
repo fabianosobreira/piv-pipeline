@@ -106,20 +106,20 @@ rm -f "$problems.sections"
 
 # Origins and verdict: a finding is a top-level "- ", "* " or "+ " line of a findings section. Outside
 # Test facts, it ends on " · [class] · [origin]"; a Test facts finding carries no origin.
-# PASS holds only when Test facts is empty and every finding of severity Critical, High or Medium is pre-existing.
+# PASS holds only when Test facts is empty and no finding sits under Critical, High or Medium.
 findings=$(awk '
   { sub(/\r$/, ""); sub(/[[:space:]]+$/, "") }
   /^### (Test facts|Critical|High|Medium|Low)$/ { sec = ($2 == "Test") ? "Test-facts" : $2; next }
   /^##/ { sec = "" }
   sec == "" || $0 !~ /^[-*+] / { next }
-  sec == "Test-facts" && / · (introduced|aggravated|pre-existing)$/ { print "tagged " $0; print "holds Test-facts"; next }
+  sec == "Test-facts" && / · (introduced|aggravated)$/ { print "tagged " $0; print "holds Test-facts"; next }
   sec == "Test-facts" { print "holds Test-facts"; next }
-  $0 !~ / · (logic|security|performance|quality|standards|coverage) · (introduced|aggravated|pre-existing)$/ { print "origin " sec ": " $0; next }
+  $0 !~ / · (logic|security|performance|quality|standards|coverage) · (introduced|aggravated)$/ { print "origin " sec ": " $0; next }
   sec != "Low" && ($NF == "introduced" || $NF == "aggravated") { print "holds " sec }
 ' "$report")
 holding=$(printf '%s\n' "$findings" | sed -n 's/^holds //p' | sort -u | tr '\n' ' ' | sed 's/ $//')
 printf '%s\n' "$findings" | sed -n 's/^origin //p' | while IFS= read -r line; do
-  fail "finding in $line; end its line with ' · [class] · [origin]', the class one of logic, security, performance, quality, standards or coverage, the origin one of introduced, aggravated or pre-existing"
+  fail "finding in $line; end its line with ' · [class] · [origin]', the class one of logic, security, performance, quality, standards or coverage, the origin introduced or aggravated"
 done
 printf '%s\n' "$findings" | sed -n 's/^tagged //p' | while IFS= read -r line; do
   fail "Test facts finding carries an origin: $line; drop it, a test-fact finding has none"

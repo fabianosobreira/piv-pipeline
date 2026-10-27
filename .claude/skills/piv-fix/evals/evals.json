@@ -1,15 +1,15 @@
 [
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-low.md, the epic evals/fixtures/epic.md at .piv/rate-limiting/epic.md and the ticket evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. No fix report exists. The uncommitted tree holds src/middleware/rate-limit.js, where line 9 declares `const cache = new Map()`, and tests/rate-limit.test.js; the Base in the report is a commit of the repository and src/util/window.js carries the `60000` literals on the Base too. At the GATE the user rules the introduced low finding (the `cache` name) to Fix now and the pre-existing one to Defer. After the fix, `sh scripts/diff-hash.sh` with the Base prints a hash that differs from the report's Diff hash.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-low.md, the epic evals/fixtures/epic.md at .piv/rate-limiting/epic.md and the ticket evals/fixtures/ticket-sliced.md at .piv/rate-limiting/tasks/T-01/T-01.md. No fix report exists. The uncommitted tree holds src/middleware/rate-limit.js, where line 9 declares `const cache = new Map()`, and tests/rate-limit.test.js; the Base in the report is a commit of the repository. At the GATE the user rules the `cache` finding to Fix now and the `60000` finding to Defer. After the fix, `sh scripts/diff-hash.sh` with the Base prints a hash that differs from the report's Diff hash.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
       "evals/fixtures/review-pass-low.md"
     ],
     "expected_behavior": [
-      "Proposes the introduced low finding for Fix now and the pre-existing low finding for Defer, with a title and a type for the deferral, and waits for the user's ruling before moving any code",
-      "Asks the user for no reason at any point for the introduced low finding",
+      "Proposes both introduced low findings for Fix now, proposes a title and a type for the `60000` deferral once the user rules it to Defer, and waits for the user's ruling before moving any code",
+      "Asks the user for no reason at any point for either low finding",
       "Types the deferral none, since the finding is class quality and severity low",
       "Proves the `cache` fix with a check that shows the claim no longer holds, not with a test that fails without the fix: the finding is neither a test-fact nor typed bug",
       "Writes the fix report at .piv/rate-limiting/tasks/T-01/T-01.fixes.md with Round 1, and the deferral at .piv/rate-limiting/deferrals/D-01.md with Origin T-01, review round 1",
@@ -21,7 +21,7 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. At the GATE the user rules the introduced low finding (the `cache` name) to Defer, with no reason, and the pre-existing one to Defer too.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. At the GATE the user rules both low findings (the `cache` name and the `60000` literal) to Defer, with no reason.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
@@ -37,7 +37,7 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. At the GATE the user rules the introduced low finding (the `cache` name) unfixed, saying only 'leave it', and the pre-existing one to Defer.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. At the GATE the user rules the introduced low finding (the `cache` name) unfixed, saying only 'leave it', and the `60000` finding to Defer.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
@@ -46,16 +46,16 @@
     "expected_behavior": [
       "Does not ask the user for a reason to leave the introduced low finding unfixed",
       "Records the introduced low finding under Noise / won't-fix as `won't fix — low`, without a 'ruled out of Fix now' reason",
-      "Writes a deferral only for the pre-existing finding"
+      "Writes a deferral only for the `60000` finding"
     ]
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-preexisting.md, with the epic and the ticket as in the first scenario; the Base in the report is a commit of the repository. The user rules its only finding to Defer. The deferral changes no code, the project's checks pass and leave nothing behind, and the tree holds nothing the review did not see, so `sh scripts/diff-hash.sh` with the Base prints the report's Diff hash.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-single-low.md, with the epic and the ticket as in the first scenario; the Base in the report is a commit of the repository. The user rules its only finding to Defer. The deferral changes no code, the project's checks pass and leave nothing behind, and the tree holds nothing the review did not see, so `sh scripts/diff-hash.sh` with the Base prints the report's Diff hash.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
-      "evals/fixtures/review-pass-preexisting.md"
+      "evals/fixtures/review-pass-single-low.md"
     ],
     "expected_behavior": [
       "Runs diff-hash.sh with the review report's Base alone and does not read the script",
@@ -66,11 +66,11 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same setup as the fourth scenario: evals/fixtures/review-pass-preexisting.md, the only finding deferred, no Needs a human look entry open. This time the user edited src/middleware/rate-limit.js after the review, and `sh scripts/diff-hash.sh` with the Base prints a hash that differs from the report's Diff hash.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same setup as the fourth scenario: evals/fixtures/review-pass-single-low.md, the only finding deferred, no Needs a human look entry open. This time the user edited src/middleware/rate-limit.js after the review, and `sh scripts/diff-hash.sh` with the Base prints a hash that differs from the report's Diff hash.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
-      "evals/fixtures/review-pass-preexisting.md"
+      "evals/fixtures/review-pass-single-low.md"
     ],
     "expected_behavior": [
       "Compares the printed hash with the report's Diff hash and finds them different",
@@ -79,11 +79,11 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same setup as the fourth scenario: evals/fixtures/review-pass-preexisting.md, the only finding deferred, no Needs a human look entry open. This time `sh scripts/diff-hash.sh` with the Base fails with exit 128 and a git message, 'fatal: bad object', and fails the same way when run again.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same setup as the fourth scenario: evals/fixtures/review-pass-single-low.md, the only finding deferred, no Needs a human look entry open. This time `sh scripts/diff-hash.sh` with the Base fails with exit 128 and a git message, 'fatal: bad object', and fails the same way when run again.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
-      "evals/fixtures/review-pass-preexisting.md"
+      "evals/fixtures/review-pass-single-low.md"
     ],
     "expected_behavior": [
       "Treats the failed script as any other case, since no printed hash equals the Diff hash",
@@ -92,15 +92,14 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-changes-requested.md (one introduced medium finding, one pre-existing medium finding), with the epic and the ticket as in the first scenario. The uncommitted tree holds src/middleware/rate-limit.js, where line 27 compares with `>`, and src/middleware/error.js, where line 12 sends err.stack; the Base in the report is a commit of the repository and has the error.js line too. At the GATE the user rules the introduced medium finding out of Fix now and into Defer, saying only 'later'. Asked for a reason, the user answers: 'the boundary second is a rare edge and the release is tomorrow'.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-changes-requested.md (two introduced medium findings), with the epic and the ticket as in the first scenario. The uncommitted tree holds src/middleware/rate-limit.js, where line 27 compares with `>`, and src/middleware/error.js, where line 12 sends err.stack; the Base in the report is a commit of the repository. At the GATE the user rules the introduced medium finding out of Fix now and into Defer, saying only 'later'. Asked for a reason, the user answers: 'the boundary second is a rare edge and the release is tomorrow'.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
       "evals/fixtures/review-changes-requested.md"
     ],
     "expected_behavior": [
-      "Proposes the introduced medium finding (the boundary-second counter) for Fix now and the pre-existing medium finding (the stack trace in the 500 body) for Defer, whatever the severity",
-      "Proposes a title and a type for the pre-existing deferral, typing it bug because the finding is class security",
+      "Proposes both introduced medium findings (the boundary-second counter and the stack trace in the 500 body) for Fix now and none for Defer, whatever the severity",
       "Does not accept 'later' as a ruling alone: asks the user for their reason for taking the introduced medium finding out of Fix now",
       "After the user's answer, proposes a title and a type for the introduced medium deferral, typing it bug because the finding is class logic, and writes it",
       "Records the user's reason on the Deferred entry of the introduced medium finding in the fix report, as 'ruled out of Fix now'",
@@ -109,11 +108,11 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-preexisting.md, with the epic and the ticket as in the first scenario; the Base in the report is a commit of the repository. The user rules the only finding to Fix now. The baseline, `npx vitest run --coverage`, passes but leaves a coverage/ directory and a .vitest-cache/ directory in the repository. Apart from those two directories and the fix, the tree holds nothing the review did not see.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-single-low.md, with the epic and the ticket as in the first scenario; the Base in the report is a commit of the repository. The user rules the only finding to Fix now. The baseline, `npx vitest run --coverage`, passes but leaves a coverage/ directory and a .vitest-cache/ directory in the repository. Apart from those two directories and the fix, the tree holds nothing the review did not see.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
-      "evals/fixtures/review-pass-preexisting.md"
+      "evals/fixtures/review-pass-single-low.md"
     ],
     "expected_behavior": [
       "Removes the coverage/ and .vitest-cache/ directories, so the tree holds the fixes and nothing else",

@@ -26,7 +26,7 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
 - ✅ Every finding in the review report landed in exactly one bucket, and the user ruled on the split.
 - ✅ No test-fact finding was deferred.
 - ✅ Every test-fact, *introduced* or *aggravated* finding was proposed for *Fix now*, or for *Needs a human look* when the code contradicts its test-fact kind or origin; one the user ruled elsewhere carries the user's reason in the fix report, except a *low* one, which carries no reason: its `D-xx` when deferred, `won't fix — low` when left unfixed.
-- ✅ Every finding you proposed to defer is *pre-existing* in the review report; an *introduced* or *aggravated* *low* one is deferred only when the user rules it so.
+- ✅ No finding is proposed for deferral; an *introduced* or *aggravated* one is deferred only when the user rules it so.
 - ✅ Every *Fix now* finding has its Step 3 proof passing, is marked `not fixed` with the hypotheses tried, or was moved to *Needs a human look* as a refactor.
 - ✅ Every deferred finding has its file at `deferrals/D-xx.md`, its `D-xx` in the fix report, and its line under the epic's *Deferrals*.
 - ✅ With a *Fix now* set, the baseline of the tests in scope ran once, before the first edit — or the project has none, and *Checks run* says so; the full suite never ran; every test red there that no finding names is in *Checks run*, and every check of Step 4 is green or recorded red there.
@@ -41,9 +41,9 @@ This runs inside the **verify** step of the PIV loop (`docs/piv-loop.md`): it se
 
 **Type.** Every finding's type follows its class, never its claim, as `docs/piv-loop.md` defines types: `bug` for logic and security — behavior that diverges from what was specified or delivered — and for any finding of severity critical or high; `none` for the rest. Never `feature`: a deferral delivers no new capability.
 
-**Test fact and origin** are the review's rulings, read from the report: a finding is test-fact when it sits under the *Test facts* heading, and every other finding's line ends on its origin — *introduced*, *aggravated* or *pre-existing*. Take both as written. When the code contradicts the test-fact kind or the origin — not the claim itself, which *Noise / won't-fix* settles — propose the finding for *Needs a human look*, naming the contradiction.
+**Test fact and origin** are the review's rulings, read from the report: a finding is test-fact when it sits under the *Test facts* heading, and every other finding's line ends on its origin — *introduced* or *aggravated*. Take both as written. When the code contradicts the test-fact kind or the origin — not the claim itself, which *Noise / won't-fix* settles — propose the finding for *Needs a human look*, naming the contradiction.
 
-Sort the findings into four buckets, each finding into exactly one. Propose the cut by origin, whatever the severity: test-fact, *introduced* and *aggravated* to *Fix now*, *pre-existing* to *Defer*. A contradiction of the test-fact kind or the origin, above, overrides that cut, and so do three rules:
+Sort the findings into four buckets, each finding into exactly one. Propose the cut by origin, whatever the severity: test-fact, *introduced* and *aggravated* to *Fix now*. A contradiction of the test-fact kind or the origin, above, overrides that cut, and so do three rules:
 
 - A test-fact finding is never deferred: it goes to *Fix now*, or to *Noise / won't-fix* with a reason that shows the problem is not there.
 - An *introduced* or *aggravated* finding of severity critical, high or medium is never proposed for deferral to keep the change small: its repair is part of the change.
@@ -52,7 +52,7 @@ Sort the findings into four buckets, each finding into exactly one. Propose the 
 The buckets:
 
 - **Fix now** — real, and the change answers for it: a defect in code it touched, a break it caused elsewhere (a test it turned red), something it left out (an unmet acceptance criterion), or an old defect it made reachable.
-- **Defer** — real, and *pre-existing*: the review reproduced it on the *Base* without the change; or an *introduced* or *aggravated* one the user rules here at the GATE, a *low* one with no reason and any other with the reason the GATE asks. Propose the deferral's type and its title — imperative and specific, naming the defect and where it lives: `Reject an empty email in the signup handler`, not `Fix validation`.
+- **Defer** — real, and an *introduced* or *aggravated* finding the user rules here at the GATE, a *low* one with no reason and any other with the reason the GATE asks. Propose the deferral's type and its title — imperative and specific, naming the defect and where it lives: `Reject an empty email in the signup handler`, not `Fix validation`.
 - **Needs a human look** — anything the user should inspect or test by hand before trusting it. Flag it; do not fix it.
 - **Noise / won't-fix** — not a real problem, or a *low* one the user leaves unfixed. The next review weighs your reason against the code, so give one the code bears out: "the handler already rejects it at `api/signup.py:31`" keeps the finding from coming back; "minor" or "not worth fixing" does not. A real finding closes only through a fix or a deferral; an *introduced* or *aggravated* *low* one may also be left open as `won't fix — low`.
 

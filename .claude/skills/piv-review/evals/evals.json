@@ -29,7 +29,7 @@
       "Checks AC-01 and AC-02 against the code and finds both met",
       "Raises no logic finding for an acceptance criterion",
       "Sets the verdict to PASS unless an independent test-fact finding, or an introduced or aggravated finding of severity critical, high or medium, survives",
-      "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with pre-existing findings, in a session of its own"
+      "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with low findings, in a session of its own"
     ]
   },
   {
@@ -80,9 +80,9 @@
     ],
     "expected_behavior": [
       "Reproduces the SQL injection on the Base in a worktree outside the repository",
-      "Registers a finding of class security, severity critical, origin pre-existing",
-      "Sets the verdict to PASS although a critical finding stands",
-      "Offers piv-commit in a session of its own, saying piv-open-pr carries the finding into the PR body"
+      "Drops the SQL injection as pre-existing: the middleware neither reaches nor widens it, so no finding is registered",
+      "Sets the verdict to PASS with every severity heading reading \"No findings.\"",
+      "Offers piv-commit here or in a fresh session"
     ]
   },
   {
