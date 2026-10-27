@@ -75,7 +75,7 @@ Three scripts sit in `${CLAUDE_SKILL_DIR}/scripts/`. Run each with `sh`, from th
 
 **Resolve the intent and the task** from `$ARGUMENTS` as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. No epic → **STOP**: `piv-slice` writes it.
 
-The **change under review** is the task's work: the uncommitted tree, tracked and untracked alike, on the intent's branch. The loop's own artifacts under `.piv/` are ignored, so they never enter it. The **Base** is `HEAD` — the last commit before the task, since every earlier task is committed and this one is not. Record its hash. Gather the working tree status, the full diff against the Base, the diff statistics, and the list of untracked files. Then record the **Diff hash**: what `diff-hash.sh` prints, handed the Base alone.
+The **change under review** is the task's work: the uncommitted tree, tracked and untracked alike, on the intent's branch. The loop's own artifacts under `.piv/` are ignored, so they never enter it. The **Base** is `HEAD` — the last commit before the task, since every earlier task is committed and this one is not. Record its hash. Gather the working tree status, the full diff against the Base, the diff statistics, and the list of untracked files — keep that list, Step 6 reads it. Then record the **Diff hash**: what `diff-hash.sh` prints, handed the Base alone.
 
 Nothing to review — a clean tree → **STOP** and say so.
 
@@ -111,7 +111,7 @@ Read every file the change touches with the context needed to judge it — its c
 
 Run Step 6 once over all the candidates that come back, and note the dispatch in the report's *Scope*. A subagent that fails or returns nothing → read its group yourself, in context; when that is not possible → **STOP** and name the group left unreviewed, since a review with a group unread is no verdict.
 
-**Then start the tests in scope on the branch**, with the setup the project documents, so they run while Step 5 builds the case; Step 6 reads what they return. The **tests in scope** are every test the change added or edited, every test the ticket's verification names, and every existing test that loads code the change touched, directly or through the modules it imports; a changed config, fixture, dependency or build file puts every test that loads it in scope. Never the full suite for its own sake: a test that loads nothing the change touched stays out. They run once per review: no failing test is re-run, on the branch or on the Base. The project has no test suite → nothing starts, and *Checks run* says so the way **Posture** requires.
+**Then start the tests in scope on the branch**, with the setup the project documents, so they run while Step 5 builds the case; Step 6 reads what they return. The **tests in scope** are every test the change added or edited, every test the ticket's verification names, and every existing test that loads code the change touched, directly or through the modules it imports; a changed config, fixture, dependency or build file puts every test that loads it in scope. Never the full suite for its own sake: a test that loads nothing the change touched stays out. Ask the project's own tooling which tests that is — a runner's related-tests or affected-by-change option, when it has one — rather than tracing the imports by hand; trace them by hand only when the tooling offers none, and say so in *Checks run*. They run once per review. A failing test gets one re-run, alone and on the branch: it passes → it is flaky, named in *Checks run* with both outcomes and no finding; it fails again → it stands. Nothing else is re-run, on the branch or on the Base. The project has no test suite → nothing starts, and *Checks run* says so the way **Posture** requires.
 
 **Done when** every changed file has been examined, alone or as part of a dispatched group, and the tests in scope have started — or the project has none.
 
@@ -121,9 +121,9 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line.
 
-1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds, a **regression** (a changed line that undoes what the history of that line, `git log -L` or `git blame`, shows an earlier commit put there on purpose) — every `AC-xx` criterion of the ticket the code doesn't meet — an unmet criterion is a `logic` finding, `high` — and a change outside the ticket's task, or inside its non-goals or its *Never* boundary, that the implementation report doesn't list as a deviation.
-2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
-3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
+1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds, a **regression** (a changed line that undoes what the history of that line, `git log -L` or `git blame`, shows an earlier commit put there on purpose) — every `AC-xx` criterion of the ticket the code doesn't meet — an unmet criterion is a `logic` finding, `high` — and a breaking change to a public API, schema, migration or serialization contract the ticket does not call for, a change outside the ticket's task, or inside its non-goals or its *Never* boundary, that the implementation report doesn't list as a deviation.
+2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated, including path traversal, SSRF, unsafe deserialization, weak or misused crypto and CSRF; a new or unpinned dependency, a known-vulnerable version, or a lockfile change the ticket does not explain.
+3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released, a loop or query on a hot path that grows with its input.
 4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them, a comment or docstring the change left describing the old behavior, and every code smell below matched against the diff. Each smell is a judgement call, never a hard violation, and anything the project's tooling already enforces is skipped here:
    - **Feature Envy** — a method that reads or writes another object's fields more than its own → move the method onto that data.
    - **Data Clumps** — the same group of fields or parameters keeps travelling together across the diff → bundle them into one type.
@@ -142,11 +142,12 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 Merge candidates that name the same line or the same defect — across classes, passes and subagent groups — into one, keeping the strongest evidence and the highest severity. Then take each through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
-- Read what the tests in scope Step 4 started returned, and place every failing test inside or outside the change (**Posture**). They are still running → wait for them; never start a second run.
+- Read what the tests in scope Step 4 started returned, and place every failing test inside or outside the change (**Posture**). They are still running → wait for them, up to the time limit the project documents for its tests, or 10 minutes when it documents none; past it → stop them and **STOP**, naming the tests that did not finish, since an unfinished run proves nothing. Never start a second run of the set.
 - Reproduce on the Base every candidate you would mark *aggravated*, and every one that sits on a line the change did not edit, in a worktree outside the repository, so the change under review stays untouched. One that does not reproduce there is *introduced*; one that reproduces with no path from the change to it is *pre-existing* and drops:
 
   ```
-  git worktree add --detach [dir outside the repository] [Base]
+  git worktree prune
+  git worktree add --detach [new dir outside the repository] [Base]
   # set it up as the branch was set up, then reproduce each aggravated candidate and each one outside the edited lines
   git worktree remove --force [dir outside the repository]
   ```
@@ -155,12 +156,12 @@ Merge candidates that name the same line or the same defect — across classes, 
 - Reproduce a logic finding against the actual code path — the conditions that reach it, and what the callers pass.
 - On a re-review, match the candidate against the previous review's findings, against the deferrals Step 2 found, and against the previous fix report's *Noise / won't-fix* reasons and the previous report's *Dropped by prior ruling*. Record in this report's *Dropped by prior ruling* every candidate that a deferral or a *Noise / won't-fix* reason dropped this round, and carry forward the previous entries whose reason still holds against the code.
 
-When the checks are done, run `diff-hash.sh` again with the same arguments as in Step 1. A hash other than the recorded **Diff hash** means something wrote into the tree during the review. When it is what your checks left — a cache, a coverage file, a regenerated snapshot — remove it and recompute until the hash matches. When it is anything else → **STOP** and tell the user what changed: the tree no longer matches what was reviewed.
+When the checks are done, run `diff-hash.sh` again with the same arguments as in Step 1. A hash other than the recorded **Diff hash** means something wrote into the tree during the review. Compare the untracked files now with the list from Step 1: a file that is new and that a check you ran created — a cache, a coverage file, a regenerated snapshot — you remove, then recompute until the hash matches. A file on the Step 1 list is the author's, and you never remove it or restore it. When the difference is anything else → **STOP** and tell the user what changed: the tree no longer matches what was reviewed.
 
 A surviving test-fact finding stays **test-fact**, and its kind names it. A *red* test whose cause also leaves an acceptance criterion unmet raises that `logic` finding too. Give every other survivor the Step 5 class it was found under — `piv-fix` types a deferral from it — its origin (**Posture**), and a severity:
 
 - **critical** — data loss, corruption, or a security defect a reachable path can trigger.
-- **high** — wrong behavior on a path users reach, and every acceptance criterion the code doesn't meet.
+- **high** — wrong behavior on a path users reach, every acceptance criterion the code doesn't meet, a security defect whose reachability you cannot establish from the code in front of you, and a performance defect on a hot path that grows with its input.
 - **medium** — wrong behavior on an edge path, or a documented standard violated.
 - **low** — quality and maintainability, correct today.
 
@@ -182,7 +183,7 @@ Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the i
 Check the report before handing it on, whatever the verdict:
 
 1. Run `check-report.sh` on the report's path.
-2. It prints problems → fix each one in the report and go back to 1. Go on only when it exits 0.
+2. It prints problems → fix each one in the report and go back to 1. Go on only when it exits 0. Still failing after three rounds, or an exit code other than 0 and 1 → **STOP** and show the user the last output.
 3. Check every citation against the `locate.sh` output it was taken from: the line shown says what its finding claims. A citation edited since — its path or its line — gets `locate.sh` again. A finding whose line does not say it → correct the citation or the finding, and go back to 1.
 
 Then print the verdict, the count of test-fact findings and the count per severity.
