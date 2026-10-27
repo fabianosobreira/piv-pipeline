@@ -25,7 +25,7 @@
     "query": "/piv-review-pr #12. The epic and the spec sit under .piv/rate-limiting/ as in evals/fixtures. PR #40 meets every criterion, and also adds per-user quotas in src/middleware/quota.js.",
     "files": ["evals/fixtures/epic.md", "evals/fixtures/spec.md"],
     "expected_behavior": [
-      "Finds src/middleware/quota.js asked for by no task of section 8",
+      "Finds src/middleware/quota.js asked for by no task of section 9",
       "Marks the non-goal 'Per-user quotas are out of scope' as violated in Boundaries, citing the file",
       "Records an Out of scope divergence and sets the verdict to DIVERGES"
     ]

@@ -48,7 +48,7 @@ With the remote, find the open PR whose head is the epic's `Branch`: `gh pr view
 
 ### Step 2 — Index the spec
 
-List every `FR`, `NFR`, `C`, `D` and `AC` line of the spec, with its ID and its text; every non-goal of section 2; every *Never* line of section 10; and every task of section 8 with the files and surfaces it names.
+List every `FR`, `NFR`, `C`, `D` and `AC` line of the spec, with its ID and its text; every non-goal of section 2; every *Never* line of section 8; and every task of section 9 with the files and surfaces it names.
 
 **Done when** every item of those sections is on the list.
 
@@ -66,7 +66,7 @@ For each item of Step 2, decide one status and record its evidence:
 - **`diverges`** — the PR does something else, or does nothing, where the item asks for something. Cite the `path:line`, or the place the item's code should be.
 - **`not verifiable`** — the item cannot be judged from the code — a latency budget, a behavior only a running system shows. Say what would verify it.
 
-Then hunt the reverse: every change in the PR that no task of section 8 asks for, and every change inside a non-goal or a *Never* line. Each is a divergence; one outside every task is `Out of scope`.
+Then hunt the reverse: every change in the PR that no task of section 9 asks for, and every change inside a non-goal or a *Never* line. Each is a divergence; one outside every task is `Out of scope`.
 
 Give every divergence a severity: **critical** — a *Never* line violated, or data loss or a security defect; **high** — an `FR` or `AC` unmet; **medium** — an `NFR`, `C` or `D` departed from, or an out-of-scope change of behavior; **low** — an out-of-scope change that alters no behavior.
 

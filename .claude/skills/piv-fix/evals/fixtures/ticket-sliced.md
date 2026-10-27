@@ -16,12 +16,12 @@
 - FR-01 (Source: Q3): WHEN a client exceeds 100 requests per minute THE SYSTEM SHALL respond with HTTP 429.
 - FR-02 (Source: Q4): WHEN a request is rejected THE SYSTEM SHALL include a Retry-After header.
 
-## 4. Non-functional requirements
-- NFR-01 (Source: Q5): Added latency p95 below 5 ms at 1000 requests per second.
-
-## 5. Acceptance criteria
+## 4. Acceptance criteria
 - AC-01 (FR-01, Source: Q6): Given a client with 100 requests in the last minute When it sends request 101 Then the response status is 429.
 - AC-02 (FR-02, Source: Q7): Given a rejected request When the response is read Then Retry-After is present and greater than 0.
+
+## 5. Non-functional requirements
+- NFR-01 (Source: Q5): Added latency p95 below 5 ms at 1000 requests per second.
 
 ## 6. Technical constraints
 - C-01 (Source: Q8): Node 20 and vitest, as declared in package.json.
@@ -29,16 +29,7 @@
 ## 7. Design
 - D-01 (Source: Q9): Middleware in src/middleware/rate-limit.js following the pattern of src/middleware/auth.js.
 
-## 8. Task plan
-- T-01 (FR-01, FR-02, NFR-01, C-01, D-01, Source: Q10): Implement the middleware | Depends on: - | DoD: AC-01 and AC-02 pass.
-
-## 9. Verification
-| AC | Command | Pass criterion | Origin |
-|---|---|---|---|
-| AC-01 | `npx vitest run tests/rate-limit.test.js` | exit code 0 | package.json:7 |
-| AC-02 | `npx vitest run tests/rate-limit.test.js` | exit code 0 | package.json:7 |
-
-## 10. Boundaries and open questions
+## 8. Boundaries and open questions
 ### Always
 - Run `npm test` before finishing. (Source: Q11)
 ### Ask first
@@ -47,6 +38,15 @@
 - Edit test files that exist at the base commit. (Source: Q11)
 ### Open questions
 None in this ticket.
+## 9. Task plan
+- T-01 (FR-01, FR-02, NFR-01, C-01, D-01, Source: Q10): Implement the middleware | Depends on: - | DoD: AC-01 and AC-02 pass.
+
+## 10. Verification
+| AC | Command | Pass criterion | Origin |
+|---|---|---|---|
+| AC-01 | `npx vitest run tests/rate-limit.test.js` | exit code 0 | package.json:7 |
+| AC-02 | `npx vitest run tests/rate-limit.test.js` | exit code 0 | package.json:7 |
+
 ## Appendix: Decision log
 | Q | Phase | Question | User answer | Chosen option |
 |---|---|---|---|---|

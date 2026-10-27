@@ -10,7 +10,7 @@
 
 ## Tasks
 - [ ] [T-xx] — [the task's title] | [bug, feature or none] | [S, M or L] | Depends on: [the task's `Depends on`, as "-" or "T-xx, T-yy"]
-[one line per task of section 8, in the spec's order, every one starting at "[ ]"]
+[one line per task of section 9, in the spec's order, every one starting at "[ ]"]
 
 ## Deferrals
 None.

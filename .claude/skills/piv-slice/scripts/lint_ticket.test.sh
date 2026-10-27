@@ -42,13 +42,13 @@ Context sources: none
 - FR-03 (Source: Q4): WHEN the limiter is disabled THE SYSTEM SHALL pass all requests.
 - FR-05 (Source: Q4): WHEN the limit resets THE SYSTEM SHALL accept requests again.
 
-## 4. Non-functional requirements
-- NFR-01 (Source: Q5): Added latency p95 below 5 ms.
-
-## 5. Acceptance criteria
+## 4. Acceptance criteria
 - AC-01 (FR-01, FR-02, Source: Q6): Given 100 requests When request 101 arrives Then the status is 429.
 - AC-02 (FR-01, FR-05, Source: Q6): Given a blocked client When the minute ends Then request 102 passes.
 - AC-03 (FR-03, Source: Q6): Given the limiter is off When 200 requests arrive Then none is rejected.
+
+## 5. Non-functional requirements
+- NFR-01 (Source: Q5): Added latency p95 below 5 ms.
 
 ## 6. Technical constraints
 - C-01 (Source: Q7): Node 20 and vitest.
@@ -56,18 +56,7 @@ Context sources: none
 ## 7. Design
 - D-01 (Source: Q8): Middleware in src/middleware/rate-limit.js.
 
-## 8. Task plan
-- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
-- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
-
-## 9. Verification
-| AC | Command | Pass criterion | Origin |
-|---|---|---|---|
-| AC-01 | `npx vitest run a` | exit code 0 | Q10 |
-| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
-| AC-03 | `npx vitest run c` | exit code 0 | Q10 |
-
-## 10. Boundaries and open questions
+## 8. Boundaries and open questions
 ### Always
 - Run `npm test` before finishing. (Source: Q11)
 ### Ask first
@@ -78,6 +67,17 @@ Context sources: none
 - Should FR-01 count retries? (Source: Q12)
 - Should FR-03 log a warning? (Source: Q12)
 - None of the others. (Source: Q12)
+
+## 9. Task plan
+- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
+- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
+
+## 10. Verification
+| AC | Command | Pass criterion | Origin |
+|---|---|---|---|
+| AC-01 | `npx vitest run a` | exit code 0 | Q10 |
+| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
+| AC-03 | `npx vitest run c` | exit code 0 | Q10 |
 
 ## Appendix: Decision log
 | Q | Phase | Question | User answer | Chosen option |
@@ -120,12 +120,12 @@ write_ticket_t01() {
 - FR-01 (Source: Q3): WHEN a client sends request 101 THE SYSTEM SHALL respond with HTTP 429.
 - FR-02 (Source: Q3): WHEN a request is rejected THE SYSTEM SHALL include a Retry-After header.
 
-## 4. Non-functional requirements
-None in this ticket.
-
-## 5. Acceptance criteria
+## 4. Acceptance criteria
 - AC-01 (FR-01, FR-02, Source: Q6): Given 100 requests When request 101 arrives Then the status is 429.
 - AC-02 (FR-01, FR-05, Source: Q6): Given a blocked client When the minute ends Then request 102 passes.
+
+## 5. Non-functional requirements
+None in this ticket.
 
 ## 6. Technical constraints
 - C-01 (Source: Q7): Node 20 and vitest.
@@ -133,16 +133,7 @@ None in this ticket.
 ## 7. Design
 None in this ticket.
 
-## 8. Task plan
-- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
-
-## 9. Verification
-| AC | Command | Pass criterion | Origin |
-|---|---|---|---|
-| AC-01 | `npx vitest run a` | exit code 0 | Q10 |
-| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
-
-## 10. Boundaries and open questions
+## 8. Boundaries and open questions
 ### Always
 - Run `npm test` before finishing. (Source: Q11)
 ### Ask first
@@ -151,6 +142,15 @@ None in this ticket.
 - Edit test files. (Source: Q11)
 ### Open questions
 - Should FR-01 count retries? (Source: Q12)
+
+## 9. Task plan
+- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
+
+## 10. Verification
+| AC | Command | Pass criterion | Origin |
+|---|---|---|---|
+| AC-01 | `npx vitest run a` | exit code 0 | Q10 |
+| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
 
 ## Appendix: Decision log
 | Q | Phase | Question | User answer | Chosen option |
@@ -189,12 +189,12 @@ write_ticket_t02() {
 - FR-03 (Source: Q4): WHEN the limiter is disabled THE SYSTEM SHALL pass all requests.
 - FR-05 (Source: Q4): WHEN the limit resets THE SYSTEM SHALL accept requests again.
 
-## 4. Non-functional requirements
-- NFR-01 (Source: Q5): Added latency p95 below 5 ms.
-
-## 5. Acceptance criteria
+## 4. Acceptance criteria
 - AC-02 (FR-01, FR-05, Source: Q6): Given a blocked client When the minute ends Then request 102 passes.
 - AC-03 (FR-03, Source: Q6): Given the limiter is off When 200 requests arrive Then none is rejected.
+
+## 5. Non-functional requirements
+- NFR-01 (Source: Q5): Added latency p95 below 5 ms.
 
 ## 6. Technical constraints
 None in this ticket.
@@ -202,16 +202,7 @@ None in this ticket.
 ## 7. Design
 - D-01 (Source: Q8): Middleware in src/middleware/rate-limit.js.
 
-## 8. Task plan
-- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
-
-## 9. Verification
-| AC | Command | Pass criterion | Origin |
-|---|---|---|---|
-| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
-| AC-03 | `npx vitest run c` | exit code 0 | Q10 |
-
-## 10. Boundaries and open questions
+## 8. Boundaries and open questions
 ### Always
 - Run `npm test` before finishing. (Source: Q11)
 ### Ask first
@@ -220,6 +211,15 @@ None in this ticket.
 - Edit test files. (Source: Q11)
 ### Open questions
 - Should FR-03 log a warning? (Source: Q12)
+
+## 9. Task plan
+- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
+
+## 10. Verification
+| AC | Command | Pass criterion | Origin |
+|---|---|---|---|
+| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
+| AC-03 | `npx vitest run c` | exit code 0 | Q10 |
 
 ## Appendix: Decision log
 | Q | Phase | Question | User answer | Chosen option |
@@ -307,11 +307,11 @@ check "AC-05: the header carries the slice, type, blockers, size, slug and langu
 # AC-06: the slice T-01 cites FR-01 and FR-02; the AC whose head cites FR-01 and FR-05 comes whole.
 check "AC-06: section 3 holds FR-01 and FR-02" sh -c 'grep -q "^- FR-01 " ticket.md && grep -q "^- FR-02 " ticket.md'
 check "AC-06: section 3 holds no FR-03" sh -c '! grep -q "^- FR-03 " ticket.md'
-check "AC-06: section 5 holds the AC headed (FR-01, FR-05)" grep -q '^- AC-02 (FR-01, FR-05, Source: Q6):' ticket.md
+check "AC-06: section 4 holds the AC headed (FR-01, FR-05)" grep -q '^- AC-02 (FR-01, FR-05, Source: Q6):' ticket.md
 
-# AC-07: a slice that cites no NFR has only the marker in section 4.
-check "AC-07: section 4 holds only the marker" \
-  sh -c 'awk "/^## 4\./{f=1;next} /^## /{f=0} f&&NF" ticket.md | grep -qx "None in this ticket."; test "$(awk "/^## 4\./{f=1;next} /^## /{f=0} f&&NF" ticket.md | wc -l)" -eq 1'
+# AC-07: a slice that cites no NFR has only the marker in section 5.
+check "AC-07: section 5 holds only the marker" \
+  sh -c 'awk "/^## 5./{f=1;next} /^## /{f=0} f&&NF" ticket.md | grep -qx "None in this ticket."; test "$(awk "/^## 5./{f=1;next} /^## /{f=0} f&&NF" ticket.md | wc -l)" -eq 1'
 
 new_case t02-valid t02
 pass "AC-05: the ticket of a task that depends on another ticket"
@@ -373,7 +373,7 @@ reject "mutant: an AC of the slice dropped" "is missing the spec line"
 
 new_case ac-row-dropped t01
 sed -i '/^| AC-02 /d' ticket.md
-reject "mutant: the section 9 row of an AC dropped" "is missing the spec line"
+reject "mutant: the section 10 row of an AC dropped" "is missing the spec line"
 
 new_case q-row-dropped t01
 sed -i '/^| Q7 /d' ticket.md

@@ -28,7 +28,7 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 **Some findings are facts, not arguments.** Four kinds are **test-fact**:
 
 - ***red*** — a test that fails on the branch in any run, flaky ones included.
-- ***missing*** — a test the ticket's verification names — a section 9 command — that is absent, or present but skipped, marked to fail, or asserting nothing.
+- ***missing*** — a test the ticket's verification names — a section 10 command — that is absent, or present but skipped, marked to fail, or asserting nothing.
 - ***weakened*** — a test that existed before and now asserts less or something different — skipped, marked to fail, its assertions loosened or its expected values changed, or deleted — while the ticket left the behavior it pins unchanged.
 - ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
 
@@ -87,7 +87,7 @@ The **change under review** is the task's work: the uncommitted tree, tracked an
 
 Nothing to review — a clean tree → **STOP** and say so.
 
-**Then read the ticket** at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, and take its **criteria**, the `AC-xx` lines of section 5 — what the change has to do — its **verification**, the commands of section 9 — the bar the change was held to — its **task plan** (section 8), its **non-goals** (section 2) and its **boundaries** (*Always*, *Ask first* and *Never* of section 10), its `Type`, its `Intent-slug`, and its `Language`, the language the report is written in. The ticket can't be read → **STOP** and say so.
+**Then read the ticket** at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, and take its **criteria**, the `AC-xx` lines of section 4 — what the change has to do — its **verification**, the commands of section 10 — the bar the change was held to — its **task plan** (section 9), its **non-goals** (section 2) and its **boundaries** (*Always*, *Ask first* and *Never* of section 8), its `Type`, its `Intent-slug`, and its `Language`, the language the report is written in. The ticket can't be read → **STOP** and say so.
 
 **Then look for the implementation report** at `.piv/[intent-slug]/tasks/T-xx/T-xx.report.md`. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. The implementation report's status is the author's own account of the criteria; this gate checks them independently. There is no report → review the change on its own terms; this skill never requires one.
 

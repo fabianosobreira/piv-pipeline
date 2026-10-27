@@ -33,7 +33,7 @@ An `epic.md` already there decides it too:
 ## Success criteria
 
 - ✅ **The spec was reviewed at its current revision**; otherwise nothing was written.
-- ✅ **Every task of section 8 is in exactly one ticket, and every ticket carries exactly one task**, with no line the spec does not hold.
+- ✅ **Every task of section 9 is in exactly one ticket, and every ticket carries exactly one task**, with no line the spec does not hold.
 - ✅ **Every ticket passed `lint_ticket.sh` before anything reached GitHub.**
 - ✅ **The epic lists every task with its type, size and dependencies, all `[ ]`, and every open question no ticket carries.**
 - ✅ **The user approved the issue at the GATE** before it was created.
@@ -57,7 +57,7 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 
 ### Step 1 — Read the spec
 
-List every task of section 8 with the IDs in its head (`FR`, `NFR`, `C`, `D`) and its `Depends on`. List every open question of section 10 with the IDs it cites.
+List every task of section 9 with the IDs in its head (`FR`, `NFR`, `C`, `D`) and its `Depends on`. List every open question of section 8 with the IDs it cites.
 
 **Done when** every task is listed and the spec's `Status`, `Intent-slug` and `Language` are read.
 
@@ -90,18 +90,19 @@ A ticket's `Blocked by` is exactly the tasks its task lists in `Depends on`, as 
 Write each ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, from `${CLAUDE_SKILL_DIR}/templates/ticket.md` used exactly: the header block, then the 11 sections of the spec. What goes in, line by line — every bullet and table row is a line of the spec, copied character for character with its IDs, and a section with nothing for the task holds only `None in this ticket.`:
 
 - **Sections 1 and 2** — every line, whole.
-- **Section 3** — the `FR` lines the task cites. **Section 4** — the `NFR` lines. **Section 6** — the `C` lines. **Section 7** — the `D` lines.
-- **Section 5** — every `AC` whose head cites at least one `FR` the task cites, with its whole line.
-- **Section 8** — the task's own line, its `Depends on` as written.
-- **Section 9** — the table header and the rows of the `AC` copied to section 5.
-- **Section 10** — the *Always*, *Ask first* and *Never* levels, whole; under *Open questions*, only the lines that cite an ID the ticket carries.
+- **Section 3** — the `FR` lines the task cites.
+- **Section 4** — every `AC` whose head cites at least one `FR` the task cites, with its whole line.
+- **Section 5** — the `NFR` lines the task cites. **Section 6** — the `C` lines. **Section 7** — the `D` lines.
+- **Section 8** — the *Always*, *Ask first* and *Never* levels, whole; under *Open questions*, only the lines that cite an ID the ticket carries.
+- **Section 9** — the task's own line, its `Depends on` as written.
+- **Section 10** — the table header and the rows of the `AC` copied to section 4.
 - **Appendix** — the table header and the decision-log row of every `Q` cited anywhere in the ticket, whole.
 
 The header block: `Spec` as `[spec path] @ [hash]`, with the hash from `git hash-object --no-filters [spec path]`; `Task`, the task's id; `Type`, `Blocked by` and `Size` from Steps 3 and 4; `Intent-slug` and `Language` copied from the spec.
 
 Validate each ticket with `sh ${CLAUDE_SKILL_DIR}/scripts/lint_ticket.sh [ticket path] [spec path]` — run it, do not read it; it needs a POSIX `sh`, `awk`, `tr`, `cmp` and `git`. Fix the ticket, never the spec, until it prints `RESULT: OK`.
 
-Then write `.piv/[intent-slug]/epic.md` from `${CLAUDE_SKILL_DIR}/templates/epic.md`, used exactly, in the grammar `docs/piv-loop.md` gives: every task `[ ]` with its title, type, size and `Depends on`; `Issue`, `Type` and `Branch` reading `pending`; and under *Not ticketed*, every open question of section 10 that no ticket carries.
+Then write `.piv/[intent-slug]/epic.md` from `${CLAUDE_SKILL_DIR}/templates/epic.md`, used exactly, in the grammar `docs/piv-loop.md` gives: every task `[ ]` with its title, type, size and `Depends on`; `Issue`, `Type` and `Branch` reading `pending`; and under *Not ticketed*, every open question of section 8 that no ticket carries.
 
 **Done when** every ticket printed `RESULT: OK` and the epic lists every task. Nothing reaches GitHub while any ticket has findings.
 

@@ -22,7 +22,7 @@
 - **Evidence**: `path/to/file.py:42` — [the quoted line or the traced path]
 
 ## Boundaries
-[one line per non-goal of section 2 and per *Never* line of section 10, copied verbatim, then — respected, or — violated at `path/to/file.py:42`]
+[one line per non-goal of section 2 and per *Never* line of section 8, copied verbatim, then — respected, or — violated at `path/to/file.py:42`]
 
 ## Spec revision
 - **Cited in the PR body**: [the hash after `@` in the body's `Spec` line, or "none"]

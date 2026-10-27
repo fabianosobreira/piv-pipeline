@@ -13,7 +13,7 @@ This is the **implement** step of the PIV loop `docs/piv-loop.md` describes: one
 
 - ✅ The task from Step 3 is implemented.
 - ✅ Every file the change touched, apart from the artifacts under `.piv/`, shows in the git status — none is one the repository ignores.
-- ✅ Every test the ticket's section 9 commands name exists, runs and passes, and every behavior the change adds or alters has a test — or the report's *Tests added* says why there is none (no test suite, no testable behavior, or the user waived them).
+- ✅ Every test the ticket's section 10 commands name exists, runs and passes, and every behavior the change adds or alters has a test — or the report's *Tests added* says why there is none (no test suite, no testable behavior, or the user waived them).
 - ✅ The full test suite and every other check run in Step 6 are green, apart from the baseline's red tests Step 6 leaves red.
 - ✅ Every test that existed before the change still runs and asserts what it did, unless the ticket changed the behavior it pins.
 - ✅ The change matches the patterns of the files it touched (Step 4a).
@@ -44,7 +44,7 @@ Then check the task against the epic, and **STOP** on the first that holds, nami
 - **Another task is `[~]`** → that one is in progress; finish it first, since tasks never run in parallel.
 - **A task its `Depends on` names is not `[x]`** → name it as the one that has to be committed first.
 
-Read the ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`. It can't be read → **STOP**, saying so. From here on, **the ticket governs the run**, and it is the only plan: it carries what it needs, so no plan outside it is read or asked for. No task under `## 8. Task plan` → **STOP**: the ticket needs reworking in `piv-slice` before it can be built.
+Read the ticket at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`. It can't be read → **STOP**, saying so. From here on, **the ticket governs the run**, and it is the only plan: it carries what it needs, so no plan outside it is read or asked for. No task under `## 9. Task plan` → **STOP**: the ticket needs reworking in `piv-slice` before it can be built.
 
 **The spec must be the one the ticket was cut from.** Read the spec at the path the ticket's `Spec` field gives and compute `git hash-object --no-filters [the spec path]`. The spec can't be read, or its hash differs from the one in the field → **STOP**: the spec changed after `piv-slice` cut the ticket; it goes through `piv-review-spec` again and `piv-slice` re-cuts the tickets before this task runs.
 
@@ -79,17 +79,17 @@ When the ticket's `Type` is `bug`, this run is a **repair**: the instructions ma
 Make no edit until this step is done.
 
 #### a. Read the sources
-Read the ticket's sections: the goal and non-goals (1, 2), the requirements and constraints it carries (3, 4, 6), the design (7), the task plan (8), the criteria (5), the commands (9) and the boundaries and open questions (10).
+Read the ticket's sections: the goal and non-goals (1, 2), the requirements and constraints it carries (3, 5, 6), the design (7), the criteria (4), the boundaries and open questions (8), the task plan (9) and the commands (10).
 
-A reference to a file outside this repository is context, not scope: the task plan and the acceptance criteria draw the boundary of the run, and sections 2 and 10 (*Never*, *Ask first*) bound what it may touch.
+A reference to a file outside this repository is context, not scope: the task plan and the acceptance criteria draw the boundary of the run, and sections 2 and 8 (*Never*, *Ask first*) bound what it may touch.
 
 #### b. Write the working notes
-Write into your working notes the task from `## 8. Task plan` — its `Depends on` and its `DoD` — the criteria of section 5, and every command of section 9.
+Write into your working notes the task from `## 9. Task plan` — its `Depends on` and its `DoD` — the criteria of section 4, and every command of section 10.
 
 **Repair:** also note the root cause — the defect section 1 and the `AC-xx` it fails describe — and whether the task still addresses it. It no longer does → that is an undercut assumption: handle it as Step 4c says.
 
 #### c. Check the verification
-Section 9 says which check proves each criterion, never whether. A criterion with no command → ask whether to write its test anyway or rework the ticket. **GATE.**
+Section 10 says which check proves each criterion, never whether. A criterion with no command → ask whether to write its test anyway or rework the ticket. **GATE.**
 
 #### d. Check for drift
 Where the ticket quotes code or cites paths or line refs inside this repository, open those files and compare. A reference to a file outside this repository is not drift-checked: an unreachable file is not evidence of drift.
@@ -102,7 +102,7 @@ Drift is quoted code that no longer exists, has moved, or changed so the ticket'
 **Repair:** confirm the defect still reproduces before changing anything, by the `AC-xx` that describe it. It doesn't → **STOP**, saying the ticket is stale or already fixed.
 
 #### e. Settle the unsettled facts
-The ticket's section 10 *Open questions* may list facts as unsettled — a value, an error code, an edge case no source defines. A fact no task needs stays unsettled. For each one a task needs:
+The ticket's section 8 *Open questions* may list facts as unsettled — a value, an error code, an edge case no source defines. A fact no task needs stays unsettled. For each one a task needs:
 
 - **The repository already answers the same question** (existing code or schema) → take that precedent.
 - **No precedent** → propose the smallest value consistent with the ticket's requirements and design. Post all of these together for the user to settle. **GATE.**
@@ -135,7 +135,7 @@ Two things are not yours to settle: something you hit that undercuts an assumpti
 
 ### Step 5 — Close the testing strategy
 
-- Every test file and every test case the ticket's section 9 commands name now exists, runs, and asserts the behavior it is named for.
+- Every test file and every test case the ticket's section 10 commands name now exists, runs, and asserts the behavior it is named for.
 - Every behavior the change adds or alters — an observable outcome an acceptance criterion or the unit's public interface names — has at least one test that exercises it. Only a change with no testable behavior, such as docs or config that changes no observable outcome, goes without one, and the report's *Tests added* says so.
 - **Repair:** at minimum, a test that fails without the fix and passes with it, plus tests for the edge cases around the bug. Name the test so it traces back to the issue number and the task id.
 

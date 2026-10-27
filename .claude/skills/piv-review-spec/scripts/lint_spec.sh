@@ -6,7 +6,7 @@
 # must stay identical, so both skills hold a spec to the same rules.
 # Fenced code blocks are ignored. The vague-term check is a heuristic:
 # a line in sections 3-5 that contains a listed term and no number is flagged.
-# IDs: FR (section 3), NFR (4), AC (5), C (6), D (7), T (8). Every task cites
+# IDs: FR (section 3), AC (4), NFR (5), C (6), D (7), T (9). Every task cites
 # its FR, NFR, C and D in the head; every NFR, C and D must be cited by a task.
 # Status is draft, ready (piv-spec) or reviewed (piv-review-spec). A file named
 # spec.md must carry the Intent-slug of the directory that holds it.
@@ -86,7 +86,7 @@ fence { next }
 }
 
 /\[PENDING\]/ { err("unresolved [PENDING] marker") }
-/\[DEFERRED\]/ { if (sec != 10) err("[DEFERRED] is only allowed in section 10") }
+/\[DEFERRED\]/ { if (sec != 8) err("[DEFERRED] is only allowed in section 8") }
 
 sec == 0 && /^Intent-slug:/ {
   slug_seen = 1
@@ -107,11 +107,11 @@ sec != 99 && match($0, /Source: Q[0-9]+(, *Q[0-9]+)*/) {
   for (i = 1; i <= n; i++) cite(qs[i])
 }
 
-# Every statement must be a bullet with a source (sections 1-8 and 10).
-sec >= 1 && sec <= 10 && sec != 9 && /^[^-|#> \t[<]/ {
+# Every statement must be a bullet with a source (sections 1-9).
+sec >= 1 && sec <= 9 && /^[^-|#> \t[<]/ {
   err("text outside a list item has no \"Source: Q<n>\"; write it as a \"- \" bullet")
 }
-sec >= 1 && sec <= 10 && sec != 9 && /^- / && $0 !~ /Source: Q[0-9]+/ {
+sec >= 1 && sec <= 9 && /^- / && $0 !~ /Source: Q[0-9]+/ {
   err("list item without \"Source: Q<n>\"")
 }
 
@@ -121,16 +121,16 @@ sec == 3 && /^- FR-[0-9]+/ {
   if ($0 !~ /SHALL/) err(id " must use EARS form: WHEN ... THE SYSTEM SHALL ...")
 }
 
-# Sections 4, 6 and 7 number their items so that a task can cite them.
-(sec == 4 || sec == 6 || sec == 7) && /^- / && $0 !~ /^- None\./ {
-  want = (sec == 4) ? "NFR" : (sec == 6) ? "C" : "D"
+# Sections 5, 6 and 7 number their items so that a task can cite them.
+(sec == 5 || sec == 6 || sec == 7) && /^- / && $0 !~ /^- None\./ {
+  want = (sec == 5) ? "NFR" : (sec == 6) ? "C" : "D"
   if (match($0, "^- " want "-[0-9]+")) {
     id = substr($0, 3, RLENGTH - 2)
     define(id)
   } else err("item in section " sec " needs a " want "-xx ID")
 }
 
-sec == 5 && /^- AC-[0-9]+/ {
+sec == 4 && /^- AC-[0-9]+/ {
   match($0, /^- AC-[0-9]+/); id = substr($0, 3, RLENGTH - 2)
   if (id in ac) err("duplicate " id)
   ac[id] = NR; aclist[++nac] = id
@@ -146,7 +146,7 @@ sec == 5 && /^- AC-[0-9]+/ {
   if (low !~ /given/ || low !~ /when/ || low !~ /then/) err(id " must use Given/When/Then")
 }
 
-sec == 8 && /^- T-[0-9]+/ {
+sec == 9 && /^- T-[0-9]+/ {
   match($0, /^- T-[0-9]+/); id = substr($0, 3, RLENGTH - 2)
   define(id)
   n = collect(head($0), "[A-Z]+-[0-9]+", refs)
@@ -166,11 +166,11 @@ sec == 8 && /^- T-[0-9]+/ {
   if ($0 !~ /DoD:/) err(id " is missing \"DoD:\"")
 }
 
-sec == 9 && /^\|/ {
+sec == 10 && /^\|/ {
   split($0, c, "|")
   k = trim(c[2])
   if (k ~ /^AC-[0-9]+$/) {
-    row9[k] = NR
+    row10[k] = NR
     if (trim(c[3]) == "") err(k " has an empty command")
     if (trim(c[4]) == "") err(k " has an empty pass criterion")
     org = trim(c[5])
@@ -222,10 +222,10 @@ END {
     if (!(chk_ref[i] in defd)) fail(chk_owner[i] " (line " chk_line[i] ") references unknown " chk_ref[i])
   for (i = 1; i <= nac; i++) {
     id = aclist[i]
-    if (!(id in row9)) fail(id " (line " ac[id] ") has no verification row in section 9")
+    if (!(id in row10)) fail(id " (line " ac[id] ") has no verification row in section 10")
   }
-  for (k in row9)
-    if (!(k in ac)) fail("section 9 row " k " (line " row9[k] ") has no matching acceptance criterion")
+  for (k in row10)
+    if (!(k in ac)) fail("section 10 row " k " (line " row10[k] ") has no matching acceptance criterion")
   for (q in cited)
     if (!(q in logged)) fail(q " (first cited at line " cited[q] ") has no row in the decision log")
   if (fails == 0) { print "RESULT: OK"; exit 0 }

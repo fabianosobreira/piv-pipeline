@@ -14,7 +14,7 @@
 # holds the single line "None in this ticket.".
 # Slice rules: sections 1, 2 and the Always / Ask first / Never levels are
 # copied whole; FR, NFR, C and D only when a task of the slice cites them;
-# AC only when its head cites an FR of the slice; section 9 rows of those AC;
+# AC only when its head cites an FR of the slice; section 10 rows of those AC;
 # open questions that cite an ID of the slice; decision-log rows of every Q
 # the ticket cites.
 
@@ -71,8 +71,8 @@ function head(s,    a, b) {
 function prefix(id) { sub(/-[0-9]+$/, "", id); return id }
 function trim(s) { gsub(/^[ \t`]+|[ \t`]+$/, "", s); return s }
 
-# The unit a line belongs to: a section, or one level of section 10.
-function ukey(s, sb) { return (s == 10) ? "10/" sb : s "" }
+# The unit a line belongs to: a section, or one level of section 8.
+function ukey(s, sb) { return (s == 8) ? "8/" sb : s "" }
 
 # Section number of a "## " heading line, 0 when it is none of the 11.
 function heading_sec(s) {
@@ -100,7 +100,7 @@ nf == 1 {
     if ($0 ~ /^Language:/) sp_lang = trim(substr($0, 10))
     next
   }
-  if (sec == 10 && $0 ~ /^### /) {
+  if (sec == 8 && $0 ~ /^### /) {
     sb = substr($0, 5); subline[sb] = $0; subs[++nsubs] = sb
     next
   }
@@ -111,27 +111,27 @@ nf == 1 {
   if (!((u, $0) in sidx)) sidx[u, $0] = n
   id = ""; ishd = 0
   if (sec == 3 && match($0, /^- FR-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
-  else if (sec == 4 && match($0, /^- NFR-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
-  else if (sec == 5 && match($0, /^- AC-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
+  else if (sec == 5 && match($0, /^- NFR-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
+  else if (sec == 4 && match($0, /^- AC-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
   else if (sec == 6 && match($0, /^- C-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
   else if (sec == 7 && match($0, /^- D-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
-  else if (sec == 8 && match($0, /^- T-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
-  else if (sec == 9 || sec == 11) {
+  else if (sec == 9 && match($0, /^- T-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
+  else if (sec == 10 || sec == 11) {
     if ($0 ~ /^\|/) {
       split($0, c, "|"); k = trim(c[2])
-      if ((sec == 9 && k ~ /^AC-[0-9]+$/) || (sec == 11 && k ~ /^Q[0-9]+$/)) id = k
+      if ((sec == 10 && k ~ /^AC-[0-9]+$/) || (sec == 11 && k ~ /^Q[0-9]+$/)) id = k
       else ishd = 1
     }
   }
   sid[u, n] = id; shd[u, n] = ishd
   if (id != "") sdef[id] = n
-  if (sec == 5 && id != "") {
+  if (sec == 4 && id != "") {
     nn = collect(head($0), "[A-Z]+-[0-9]+", refs)
     acfr[id] = ""
     for (i = 1; i <= nn; i++) if (prefix(refs[i]) == "FR") acfr[id] = acfr[id] " " refs[i] " "
     aclist[++nac] = id
   }
-  if (sec == 8 && id != "") {
+  if (sec == 9 && id != "") {
     thead[id] = head($0)
     if (match($0, /Depends on:[^|]*/)) tdep[id] = substr($0, RSTART, RLENGTH); else tdep[id] = ""
     tlist[++ntask] = id
@@ -167,9 +167,9 @@ $0 ~ /^## / {
   next
 }
 
-$0 ~ /^### / && tsec == 10 {
+$0 ~ /^### / && tsec == 8 {
   name = substr($0, 5)
-  if (!(name in subline) || $0 != subline[name]) { err("heading is not a level of section 10 of the spec"); tsub = "?"; next }
+  if (!(name in subline) || $0 != subline[name]) { err("heading is not a level of section 8 of the spec"); tsub = "?"; next }
   if (name in tsawsub) err("duplicate heading")
   tsawsub[name] = FNR; tsub = name
   next
@@ -290,12 +290,12 @@ END {
   nu = 0
   for (s = 1; s <= 11; s++) {
     if (!(s in sseen)) continue
-    if (s == 10) { for (i = 1; i <= nsubs; i++) units[++nu] = "10/" subs[i] }
+    if (s == 8) { for (i = 1; i <= nsubs; i++) units[++nu] = "8/" subs[i] }
     else units[++nu] = s ""
   }
   for (k = 1; k <= nu; k++) {
     u = units[k]
-    sec_of = (u ~ /^10\//) ? 10 : u + 0
+    sec_of = (u ~ /^8\//) ? 8 : u + 0
     # Does the unit hold any wanted content line? (decides the table header)
     anyrow = 0
     for (n = 1; n <= scount[u]; n++) if (wanted(u, n, sec_of) && !shd[u, n]) anyrow = 1
@@ -308,7 +308,7 @@ END {
       if (!wn && ((u, n) in tseen)) errl(tseen[u, n] ": the slice does not pull in this line of the spec")
     }
     if (wantn == 0 && !(u in tmark)) {
-      if (u ~ /^10\//) { if (substr(u, 4) in tsawsub) errl(tsawsub[substr(u, 4)] ": section " label(u) " has no content for the slice: write None in this ticket.") }
+      if (u ~ /^8\//) { if (substr(u, 3) in tsawsub) errl(tsawsub[substr(u, 3)] ": section " label(u) " has no content for the slice: write None in this ticket.") }
       else if ((u + 0) in tsawh) errl(tsawh[u + 0] ": section " label(u) " has no content for the slice: write None in this ticket.")
     }
     if (wantn > 0 && (u in tmark))
@@ -316,28 +316,28 @@ END {
     if (wantn == 0 && (u in tmark) && tn[u] > 0)
       errl(tmark[u] ": None in this ticket. shares section " label(u) " with other content")
     # Every section and level of the spec appears in the ticket.
-    if (u ~ /^10\//) { if (!(substr(u, 4) in tsawsub)) fail("the ticket has no \"" subline[substr(u, 4)] "\" level") }
+    if (u ~ /^8\//) { if (!(substr(u, 3) in tsawsub)) fail("the ticket has no \"" subline[substr(u, 3)] "\" level") }
     else if (!((u + 0) in tsawh)) fail("the ticket has no \"" shead[u + 0] "\" heading")
   }
   finish()
 }
 
-function label(u) { return (u ~ /^10\//) ? "10 / " substr(u, 4) : u }
+function label(u) { return (u ~ /^8\//) ? "8 / " substr(u, 3) : u }
 
 # Does the slice pull in line n of unit u?
 function wanted(u, n, s,    id, nn, i, t) {
   id = sid[u, n]
   if (s == 1 || s == 2) return 1
-  if (u == "10/Open questions") {
+  if (u == "8/Open questions") {
     nn = collect(stext[u, n], "[A-Z]+-[0-9]+", refs2)
     for (i = 1; i <= nn; i++) if (refs2[i] in want_id) return 1
     return 0
   }
-  if (s == 10) return 1
-  if (s == 3 || s == 4 || s == 6 || s == 7 || s == 5 || s == 8 || s == 11 || s == 9) {
+  if (s == 8) return 1
+  if (s == 3 || s == 4 || s == 5 || s == 6 || s == 7 || s == 9 || s == 10 || s == 11) {
     if (shd[u, n]) return 0
     if (id == "") return 0
-    if (s == 9) return (id in want_id)
+    if (s == 10) return (id in want_id)
     return (id in want_id)
   }
   return 0

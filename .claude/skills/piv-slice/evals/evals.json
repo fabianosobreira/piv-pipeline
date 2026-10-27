@@ -35,7 +35,7 @@
     "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
       "Writes .piv/two-tasks/tasks/T-01/T-01.md and .piv/two-tasks/tasks/T-02/T-02.md from templates/ticket.md, one task each, and runs lint_ticket.sh on both until each prints RESULT: OK",
-      "T-02's ticket has Blocked by: T-01 and no T-01 task line; T-01's ticket section 4 holds only 'None in this ticket.'",
+      "T-02's ticket has Blocked by: T-01 and no T-01 task line; T-01's ticket section 5 holds only 'None in this ticket.'",
       "Writes epic.md with both tasks [ ], their type, size and Depends on, Issue and Branch reading pending, and the open question that cites no ID under Not ticketed",
       "Runs gh auth status before the GATE",
       "At the GATE, posts the issue title 'Rate limiting', the proposed type feature, the warning that the spec will be published in full as the issue body, and a relative link to .piv/two-tasks/spec.md, then ends the turn",

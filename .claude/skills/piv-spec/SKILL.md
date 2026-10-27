@@ -25,7 +25,7 @@ This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. 
 **The spec:**
 
 - ✅ No vague term stands without a measurable value or a verification command (rule 5).
-- ✅ Every section 9 command exists in the repo or came from the user (rule 6).
+- ✅ Every section 10 command exists in the repo or came from the user (rule 6).
 - ✅ The lint printed `RESULT: OK` and the file says `Status: ready` — or it says `Status: draft` and the blockers are listed.
 
 ## Language
@@ -95,7 +95,7 @@ No context to propose options: ask an open question, with no list and no 💡.
 | `A`, `B`, `C` | Record the chosen option |
 | `A with change: ...` | Record the option with the change |
 | Free text | Record literally |
-| `?` or `defer` | Add to section 10 as an open question marked `[DEFERRED]` |
+| `?` or `defer` | Add to section 8 as an open question marked `[DEFERRED]` |
 | "You decide" | Rule 7 |
 
 ## Process
@@ -105,11 +105,11 @@ Copy this checklist into the first message. Tick a phase only when it closes: it
 ```
 - [ ] Phase 0 — Recon
 - [ ] Phase 1 — Goal and scope (sections 1, 2)
-- [ ] Phase 2 — Behavior (sections 3, 5)
-- [ ] Phase 3 — Quality and technical limits (sections 4, 6)
+- [ ] Phase 2 — Behavior (sections 3, 4)
+- [ ] Phase 3 — Quality and technical limits (sections 5, 6)
 - [ ] Phase 4 — Design (section 7)
-- [ ] Phase 5 — Boundaries (section 10)
-- [ ] Phase 6 — Execution and verification (sections 8, 9)
+- [ ] Phase 5 — Boundaries (section 8)
+- [ ] Phase 6 — Execution and verification (sections 9, 10)
 - [ ] Phase 7 — Synthesis
 ```
 
@@ -137,7 +137,7 @@ Ask: the problem and expected outcome, the affected user or system, and non-goal
 
 **Done when** sections 1 and 2 hold no `[PENDING]`.
 
-### Phase 2 — Behavior (sections 3, 5)
+### Phase 2 — Behavior (sections 3, 4)
 
 1. Collect each behavior from the user. Restate it in EARS form (`WHEN [event] THE SYSTEM SHALL [response]`) using only elements the user gave. Assign IDs (`FR-01`, ...) and ask for confirmation.
 2. For each `FR-xx`, derive acceptance criteria in Given/When/Then. Expected values come from the user.
@@ -145,12 +145,12 @@ Ask: the problem and expected outcome, the affected user or system, and non-goal
 
 **Done when** every `FR-xx` was confirmed in EARS form, has at least one `AC-xx`, and its example cases were answered.
 
-### Phase 3 — Quality and technical limits (sections 4, 6)
+### Phase 3 — Quality and technical limits (sections 5, 6)
 
-- Section 4: ask for numeric values (p95 latency, coverage, memory limits, security requirements, compatibility). Values found in config or CI may be proposed as options, with source. Number each item `NFR-01`, ...
+- Section 5: ask for numeric values (p95 latency, coverage, memory limits, security requirements, compatibility). Values found in config or CI may be proposed as options, with source. Number each item `NFR-01`, ...
 - Section 6: stack and versions (propose those found in manifests), code conventions, files and directories that may or may not change, allowed dependencies. A dependency absent from the manifests may be proposed under rule 3. Number each item `C-01`, ...
 
-**Done when** every section 4 item is an `NFR-xx` with a measurable value, and sections 4 and 6 hold no `[PENDING]`.
+**Done when** every section 5 item is an `NFR-xx` with a measurable value, and sections 5 and 6 hold no `[PENDING]`.
 
 ### Phase 4 — Design (section 7)
 
@@ -160,16 +160,16 @@ Ask about API contracts, schemas, data model, interfaces, and sequence diagrams.
 
 **Done when** every `D-xx` was confirmed, every one that defines a contract or schema had its example cases answered, and section 7 holds no `[PENDING]`.
 
-### Phase 5 — Boundaries (section 10)
+### Phase 5 — Boundaries (section 8)
 
 Ask for the three levels: **Always** (the agent acts without asking), **Ask first** (the agent pauses and asks), **Never** (forbidden). Propose options from sensitive areas observed in the repo (migrations, CI files, secrets, `tests/`, lockfiles). Close the section with the open questions accumulated so far. If there are none, record `None.` with the `Source:` of the question that confirmed it.
 
 **Done when** *Always*, *Ask first*, *Never* and *Open questions* each hold a statement or `None.` with its `Source:`.
 
-### Phase 6 — Execution and verification (sections 8, 9)
+### Phase 6 — Execution and verification (sections 9, 10)
 
-1. Section 8: propose task granularity (options A/B with task counts). Each task cites its `FR-xx` and every `NFR-xx`, `C-xx` and `D-xx` that shapes it, lists dependencies, and states a definition of done (`DoD:`). Every `NFR`, `C` and `D` is cited by at least one task, because `piv-slice` copies into a ticket only the items its tasks cite. Target size: one commit per task — each task is implemented, reviewed and committed on its own, so each one must be provable alone by its `DoD`. The user confirms order and scope.
-2. Section 9: one row per acceptance criterion with the exact verification command, a pass criterion (for example, exit code 0), and the origin of the command (`Q<n>` or `path:line`), following rule 6.
+1. Section 9: propose task granularity (options A/B with task counts). Each task cites its `FR-xx` and every `NFR-xx`, `C-xx` and `D-xx` that shapes it, lists dependencies, and states a definition of done (`DoD:`). Every `NFR`, `C` and `D` is cited by at least one task, because `piv-slice` copies into a ticket only the items its tasks cite. Target size: one commit per task — each task is implemented, reviewed and committed on its own, so each one must be provable alone by its `DoD`. The user confirms order and scope.
+2. Section 10: one row per acceptance criterion with the exact verification command, a pass criterion (for example, exit code 0), and the origin of the command (`Q<n>` or `path:line`), following rule 6.
 
 **Done when** the user confirmed the task order and scope, every task carries its `FR`, `Depends on` and `DoD:`, every `NFR`, `C` and `D` is cited by a task, and every `AC-xx` has a section 9 row.
 
@@ -193,7 +193,7 @@ The lint checks structure and traceability. It does not check meaning: example t
 - Non-functional requirement, constraint, design item: `- NFR-01 (Source: Q11): ...`, `- C-01 (Source: Q12): ...`, `- D-01 (Source: Q14): ...`
 - Acceptance criterion: `- AC-01 (FR-01, Source: Q4): Given ... When ... Then ...`
 - Task: `- T-01 (FR-01, NFR-01, C-02, D-01, Source: Q9): ... | Depends on: - | DoD: ...`
-- Section 9 rows: `| AC-01 | `command` | pass criterion | Q12 |`. A `|` character is not allowed inside a cell; put pipelines in a script file and reference the script.
+- Section 10 rows: `| AC-01 | `command` | pass criterion | Q12 |`. A `|` character is not allowed inside a cell; put pipelines in a script file and reference the script.
 - Every `Q<n>` cited must have a row in the decision log.
 - `Status:` is `draft` or `ready`. Only `piv-review-spec` sets `reviewed`.
 

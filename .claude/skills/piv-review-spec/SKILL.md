@@ -48,7 +48,7 @@ The rules of `piv-spec` hold here, restated because this run edits the spec:
 | User reply | Handling |
 |---|---|
 | `A`, `B`, `C`, `A with change: ...`, free text | Record it, and apply it in Step 5 |
-| `?` or `defer` | The item stays, or becomes, an open question marked `[DEFERRED]` in section 10 |
+| `?` or `defer` | The item stays, or becomes, an open question marked `[DEFERRED]` in section 8 |
 | "You decide" | Re-ask with the recommended option, when a basis supports one, and require explicit confirmation |
 
 ## Process
@@ -75,11 +75,11 @@ Read the spec end to end. Its header decides whether the run goes on:
 - `Status: reviewed`, and `spec.review.md` records a `Reviewed-hash` equal to `git hash-object --no-filters [spec path]` → say it is already reviewed, and **STOP** pointing at `piv-slice`.
 - `Status: reviewed` with a different or missing hash — the spec changed after its review — or `Status: ready` → go on.
 
-**Done when** every `FR`, `NFR`, `C`, `D`, `AC` and `T` item and every open question of section 10 is listed, the `[DEFERRED]` ones marked.
+**Done when** every `FR`, `NFR`, `C`, `D`, `AC` and `T` item and every open question of section 8 is listed, the `[DEFERRED]` ones marked.
 
 ### Step 2 — Recon the codebase
 
-For each `FR`, `D` and `T`, search the codebase for what already does it, in part or whole, and read what you find. Check every path sections 6 and 7 name and every command of section 9 against the repo. Record each hit as the item's ID, what exists and its `path:line`. A hit that makes an item moot, or that contradicts it — a file the design creates already exists with another shape, a section 9 command the repo lacks — is an item for Step 4.
+For each `FR`, `D` and `T`, search the codebase for what already does it, in part or whole, and read what you find. Check every path sections 6 and 7 name and every command of section 10 against the repo. Record each hit as the item's ID, what exists and its `path:line`. A hit that makes an item moot, or that contradicts it — a file the design creates already exists with another shape, a section 10 command the repo lacks — is an item for Step 4.
 
 **Done when** every `FR`, `D` and `T` was searched, and every path and command the spec names was checked.
 

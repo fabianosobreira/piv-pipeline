@@ -18,13 +18,13 @@ Context sources: none
 - FR-03 (Source: Q4): WHEN the limiter is disabled THE SYSTEM SHALL pass all requests.
 - FR-05 (Source: Q4): WHEN the limit resets THE SYSTEM SHALL accept requests again.
 
-## 4. Non-functional requirements
-- NFR-01 (Source: Q5): Added latency p95 below 5 ms.
-
-## 5. Acceptance criteria
+## 4. Acceptance criteria
 - AC-01 (FR-01, FR-02, Source: Q6): Given 100 requests When request 101 arrives Then the status is 429.
 - AC-02 (FR-01, FR-05, Source: Q6): Given a blocked client When the minute ends Then request 102 passes.
 - AC-03 (FR-03, Source: Q6): Given the limiter is off When 200 requests arrive Then none is rejected.
+
+## 5. Non-functional requirements
+- NFR-01 (Source: Q5): Added latency p95 below 5 ms.
 
 ## 6. Technical constraints
 - C-01 (Source: Q7): Node 20 and vitest.
@@ -32,18 +32,7 @@ Context sources: none
 ## 7. Design
 - D-01 (Source: Q8): Middleware in src/middleware/rate-limit.js.
 
-## 8. Task plan
-- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
-- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
-
-## 9. Verification
-| AC | Command | Pass criterion | Origin |
-|---|---|---|---|
-| AC-01 | `npx vitest run a` | exit code 0 | Q10 |
-| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
-| AC-03 | `npx vitest run c` | exit code 0 | Q10 |
-
-## 10. Boundaries and open questions
+## 8. Boundaries and open questions
 ### Always
 - Run `npm test` before finishing. (Source: Q11)
 ### Ask first
@@ -54,6 +43,17 @@ Context sources: none
 - Should FR-01 count retries? (Source: Q12)
 - Should FR-03 log a warning? (Source: Q12)
 - None of the others. (Source: Q12)
+
+## 9. Task plan
+- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
+- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
+
+## 10. Verification
+| AC | Command | Pass criterion | Origin |
+|---|---|---|---|
+| AC-01 | `npx vitest run a` | exit code 0 | Q10 |
+| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
+| AC-03 | `npx vitest run c` | exit code 0 | Q10 |
 
 ## Appendix: Decision log
 | Q | Phase | Question | User answer | Chosen option |

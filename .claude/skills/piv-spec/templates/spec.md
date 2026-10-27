@@ -15,10 +15,10 @@ Context sources: [PENDING]
 ## 3. Functional requirements
 [PENDING]
 
-## 4. Non-functional requirements
+## 4. Acceptance criteria
 [PENDING]
 
-## 5. Acceptance criteria
+## 5. Non-functional requirements
 [PENDING]
 
 ## 6. Technical constraints
@@ -27,15 +27,7 @@ Context sources: [PENDING]
 ## 7. Design
 [PENDING]
 
-## 8. Task plan
-[PENDING]
-
-## 9. Verification
-| AC | Command | Pass criterion | Origin |
-|---|---|---|---|
-[PENDING]
-
-## 10. Boundaries and open questions
+## 8. Boundaries and open questions
 ### Always
 [PENDING]
 ### Ask first
@@ -43,6 +35,14 @@ Context sources: [PENDING]
 ### Never
 [PENDING]
 ### Open questions
+[PENDING]
+
+## 9. Task plan
+[PENDING]
+
+## 10. Verification
+| AC | Command | Pass criterion | Origin |
+|---|---|---|---|
 [PENDING]
 
 ## Appendix: Decision log
