@@ -40,4 +40,4 @@
 [one per line: the candidate (`path/to/file.py:42` and its claim) — the filter that dropped it (prior decision, or mitigation by a *Noise / won't-fix* reason) — the deferral (`D-xx`) or the *Noise / won't-fix* reason; or "None."]
 
 ## Checks run
-[the full test suite on the branch, each red test re-run on the base, type-check / lint — what was run and what it returned, flaky tests named as such; with no test suite, "no test suite" and the behaviors left untested; with no type-checker or linter configured, say so]
+[the tests in scope, run once on the branch — each test file and why it is in scope — and type-check / lint — what was run and what it returned; every failing test outside the change, with the assertion it fails and why the change does not reach it; every check not run, and why; with no test suite, "no test suite" and the behaviors left untested; with no type-checker or linter configured, say so]

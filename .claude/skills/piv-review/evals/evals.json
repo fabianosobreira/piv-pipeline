@@ -11,6 +11,8 @@
       "Reads the criteria from the AC-xx lines of the ticket's section 4 and the commands from section 9",
       "Registers a finding of class logic, severity high, origin introduced, because AC-01 (request 101 must get status 429) is not met",
       "Cites a file and a line of the middleware as evidence, taken with locate.sh",
+      "Starts the tests in scope once, at the end of Step 4, never runs the full suite and never re-runs a test",
+      "Writes every backticked path:line with its path from the repository root",
       "Sets the verdict to CHANGES REQUESTED",
       "Reads no plan outside the ticket and asks for none",
       "Writes the report at .piv/rate-limiting/tasks/T-01/T-01.review.md with Issue: #12 and Task: T-01, and hands off to piv-fix with that path"
@@ -108,6 +110,61 @@
       "Takes HEAD, the T-01 commit, as the Base, not the fork point with main, and records its hash",
       "Runs diff-hash.sh with the Base alone, so the diff holds only T-02's uncommitted work and none of T-01's",
       "Writes the report at .piv/rate-limiting/tasks/T-02/T-02.review.md"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing, and adds to src/http.js a clientKey() helper the middleware uses. tests/health.test.js, which loads src/http.js, fails asserting the status 'ok' that src/health.js, unchanged by the task, already answers as 'up' on the Base. tests/auth.test.js builds its own response and loads nothing the change touched.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Runs tests/rate-limit.test.js and tests/health.test.js, which load changed code, and does not run tests/auth.test.js or the full suite, naming in Checks run why each test file is in scope",
+      "Does not re-run tests/health.test.js, on the branch or on the Base, and creates no worktree for it",
+      "Traces the failure into src/health.js, outside what the change touched, and raises no finding for tests/health.test.js",
+      "Names tests/health.test.js in Checks run, with the assertion it fails and why the change does not reach it",
+      "Sets the verdict to PASS when nothing else survives"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing, and edits the export list of src/server.js. tests/server.test.js, which the change does not edit, fails because an export it imports from src/server.js is gone.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Traces the failure of tests/server.test.js into src/server.js, a file the change touched",
+      "Registers a test-fact finding of kind red under Test facts for tests/server.test.js",
+      "Runs no test on the Base",
+      "Sets the verdict to CHANGES REQUESTED"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js and mounts it on two routes, /api/search and /api/export; both answer 429 from request 101 on, but tests/rate-limit.test.js asserts the 429 only on /api/search.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Registers a test-fact finding of kind untested for the 429 on /api/export",
+      "Does not report the untested route as a low coverage finding for an unexercised branch",
+      "Sets the verdict to CHANGES REQUESTED"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing. The project's only formatter has no check mode, and running it would rewrite src/middleware/rate-limit.js.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Does not run the formatter",
+      "Names the formatter in Checks run as not run, and says why",
+      "Recomputes the Diff hash after the checks and finds it matches the one recorded in Step 1"
     ]
   }
 ]

@@ -11,7 +11,7 @@ allowed-tools:
 
 # Review: Prove the Change Wrong
 
-This opens the **verify** step of the PIV loop `docs/piv-loop.md` describes: one task is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1; template labels stay as written. Nothing this run does may alter the change under review, the checks of Step 6 included.
+This opens the **verify** step of the PIV loop `docs/piv-loop.md` describes: one task is built but not yet committed, and this gate decides whether it earns a commit. The review is a report, never an edit — the fixes belong to a later run, working from what this one writes down. Write the report in the intent's language — the ticket's `Language`, read in Step 1; template labels stay as written. Nothing this run does may alter the change under review, the tests and the checks it runs included: a check that would write into a file of the change — a build that regenerates tracked output, a formatter with no check mode — is not run, and *Checks run* names it and why.
 
 ## Posture
 
@@ -27,14 +27,14 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 
 **Some findings are facts, not arguments.** Four kinds are **test-fact**:
 
-- ***red*** — a test that fails on the branch in any run, flaky ones included.
+- ***red*** — a failing test of the branch run of the tests in scope (Step 4) that the change is answerable for (below).
 - ***missing*** — a test the ticket's verification names — a section 9 command — that is absent, or present but skipped, marked to fail, or asserting nothing.
 - ***weakened*** — a test that existed before and now asserts less or something different — skipped, marked to fail, its assertions loosened or its expected values changed, or deleted — while the ticket left the behavior it pins unchanged.
-- ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
+- ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. The same outcome at several entry points is one behavior at each. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
 
 A test-fact finding is observed, so it sits outside the severity scale and holds the verdict at CHANGES REQUESTED on its own. It faces the filters like any other, with two differences. A documented deviation leaves it standing: explaining a disabled test is transparency, not mitigation. A deferral leaves it standing too, because `piv-fix` never defers one — a deferred red test would reach PASS still red.
 
-A *red* test **confirmed red on the base** — it ran on the **Base** commit, with the setup the branch run used, and failed the same assertion the branch run failed — is not this change's failure, and drops to a **coverage** finding, **medium**, *pre-existing*. A test that fails intermittently is re-run on the base the same number of times; one that also fails there is base-red (flaky), demoted like any base-red test. Flaky only on the branch stays *red*. A test the ticket's verification names, or the test that reproduces the defect a ticket of type `bug` describes, stays *red* whatever the base shows: turning it green is this change's job.
+A failing test is **the change's** when the change added or edited it, when the ticket's verification names it or it reproduces the defect a ticket of type `bug` describes, or when its failure traces into what the change touched — a changed file, or a config, fixture, dependency or build file the test loads. Trace the failure only until it lands inside or outside that reach; one you cannot place is the change's. A failing test outside that reach is not this change's failure and raises no finding: name it in *Checks run* with the assertion it fails and why the change does not reach it.
 
 **Every other finding carries an origin**, and the origin sets the verdict (**Verdict** below holds the one exception). `piv-fix` triages from the origin this report records and repairs every finding the change is answerable for, a *low* one only as the user rules:
 
@@ -52,7 +52,7 @@ A finding **reproduces** on the Base when it fails there the way it fails on the
 - ✅ Every reported finding carries a file, a line, and evidence anchored in the code.
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ Every finding outside *Test facts* carries its origin, and every *aggravated* or *pre-existing* one was reproduced on the Base.
-- ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — test-fact, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
+- ✅ The tests in scope, and no other, ran once on the branch — or the project has none, and *Checks run* says so — every failing test the change is answerable for is reported as *red*, and every other one is named in *Checks run*.
 - ✅ The change was held to every `AC-xx` criterion of the ticket, its verification, its task, and its non-goals and boundaries.
 - ✅ The tree the report's **Diff hash** records is the tree that was reviewed: the checks left nothing behind.
 - ✅ The report follows the template in **Output**, `check-report.sh` exits 0 on it with every cited line saying what its finding claims, and its path was given to the user with the next move.
@@ -107,7 +107,9 @@ Read every file the change touches with the context needed to judge it — its c
 
 Run Step 6 once over all the candidates that come back, and note the dispatch in the report's *Scope*.
 
-**Done when** every changed file has been examined, alone or as part of a dispatched group.
+**Then start the tests in scope on the branch**, with the setup the project documents, so they run while Step 5 builds the case; Step 6 reads what they return. The **tests in scope** are every test the change added or edited, every test the ticket's verification names, and every existing test that loads code the change touched, directly or through the modules it imports; a changed config, fixture, dependency or build file puts every test that loads it in scope. Never the full suite for its own sake: a test that loads nothing the change touched stays out. They run once per review: no failing test is re-run, on the branch or on the Base. The project has no test suite → nothing starts, and *Checks run* says so the way **Posture** requires.
+
+**Done when** every changed file has been examined, alone or as part of a dispatched group, and the tests in scope have started — or the project has none.
 
 ### Step 5 — Build the case
 
@@ -136,13 +138,12 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 Take each candidate through all three filters from **Posture**, and run the checks that settle them instead of reasoning about what the code probably does:
 
-- Run the project's full test suite on the branch, whatever the candidates — it is how a *red* test gets found. Note a flaky one as such in *Checks run*. The project has no test suite → say so in *Checks run* the way **Posture** requires.
-- Run each *red* test on the Base too, in a worktree outside the repository, so the change under review stays untouched, and confirm it against the conditions **Posture** sets for a base-red test. In the same worktree, reproduce every candidate you would mark *aggravated* or *pre-existing*; one that does not reproduce there is *introduced*:
+- Read what the tests in scope Step 4 started returned, and place every failing test inside or outside the change (**Posture**). They are still running → wait for them; never start a second run.
+- Reproduce on the Base every candidate you would mark *aggravated* or *pre-existing*, in a worktree outside the repository, so the change under review stays untouched; one that does not reproduce there is *introduced*:
 
   ```
   git worktree add --detach [dir outside the repository] [Base]
-  # set it up as the branch run was set up, then run the red test there, as many times as on the branch,
-  # and reproduce each aggravated or pre-existing candidate
+  # set it up as the branch was set up, then reproduce each aggravated or pre-existing candidate
   git worktree remove --force [dir outside the repository]
   ```
 
@@ -159,7 +160,7 @@ A surviving test-fact finding stays **test-fact**, and its kind names it. A *red
 - **medium** — wrong behavior on an edge path, or a documented standard violated.
 - **low** — quality and maintainability, correct today.
 
-A **coverage** finding is **medium** when it is a *red* test demoted as base-red (**Posture**), or an unexercised branch that can produce wrong behavior on a path users reach; it is **low** otherwise.
+A **coverage** finding is **medium** when it is an unexercised branch that can produce wrong behavior on a path users reach; it is **low** otherwise.
 
 **Done when** every candidate either survived all three filters with its class, origin and severity — or its test-fact kind — or was dropped by a named filter, and the recomputed hash matches the recorded **Diff hash**.
 
@@ -172,12 +173,13 @@ Write the report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`, beside the i
 - **Findings** — the Test facts heading and every severity heading are present on every run; one that holds no finding reads "No findings.". *Dropped by prior ruling* reads "None." when nothing was dropped.
 - **Verdict** — **CHANGES REQUESTED** when any test-fact finding, or any *introduced* or *aggravated* finding of severity critical, high or medium, survived; **PASS** otherwise: a *low* finding never forces CHANGES REQUESTED, whatever its origin. A PASS leaves standing only *pre-existing* findings, critical and high included, and *low* findings of any origin.
 - **Language** — everything the template leaves to you — each finding's claim, evidence, impact and fix, the notes under *Scope*, and *Checks run* — is written in the report language Step 1 resolved; only the template's labels and headings stay as written.
+- **Citations** — every backticked `path:line`, in any field, *Evidence* and *Checks run* included, gives its path from the repository root: `check-report.sh` resolves each one from there.
 
 Check the report before handing it on, whatever the verdict:
 
 1. Run `check-report.sh` on the report's path.
 2. It prints problems → fix each one in the report and go back to 1. Go on only when it exits 0.
-3. Reopen every cited line and confirm it says what its finding claims — the script checks only that the line exists. A finding whose line does not → correct the citation or the finding, and go back to 1.
+3. Check every citation against the `locate.sh` output it was taken from: the line shown says what its finding claims. A citation edited since — its path or its line — gets `locate.sh` again. A finding whose line does not say it → correct the citation or the finding, and go back to 1.
 
 Then print the verdict, the count of test-fact findings and the count per severity.
 
