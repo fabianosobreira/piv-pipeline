@@ -18,7 +18,7 @@
     "files": ["evals/fixtures/clean.spec.md"],
     "expected_behavior": [
       "Finds src/middleware/rate-limit.js during the codebase recon and cites it with path:line under Already in the codebase",
-      "Asks what happens to FR-01, D-01 and T-01 given the existing middleware, with options and a 💡 that cites the file",
+      "Asks what happens to FR-01 and D-01 given the existing middleware, with options and a 💡 that cites the file",
       "Writes no change into the spec before the user answers",
       "Hands off to piv-slice rate-limiting, in a session of its own, once the spec is reviewed"
     ]

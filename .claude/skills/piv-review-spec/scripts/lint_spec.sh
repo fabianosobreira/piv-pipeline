@@ -4,10 +4,12 @@
 # Exit codes: 0 = no findings, 1 = findings, 2 = usage or I/O error.
 # Two copies ship, in piv-spec/scripts and piv-review-spec/scripts; both
 # must stay identical, so both skills hold a spec to the same rules.
-# Fenced code blocks are ignored. The vague-term check is a heuristic:
+# Fenced code blocks are ignored, and a fence in sections 3-7 or 9 is a finding:
+# piv-slice copies those sections line by line into tickets, and a ticket cannot
+# carry a fence line. The vague-term check is a heuristic:
 # a line in sections 3-5 that contains a listed term and no number is flagged.
-# IDs: FR (section 3), AC (4), NFR (5), C (6), D (7), T (9). Every task cites
-# its FR, NFR, C and D in the head; every NFR, C and D must be cited by a task.
+# IDs: FR (section 3), AC (4), NFR (5), C (6), D (7). The spec holds no task
+# plan: piv-slice cuts the tasks and checks that its tickets cover these IDs.
 # Status is draft, ready (piv-spec) or reviewed (piv-review-spec). A file named
 # spec.md must carry the Intent-slug of the directory that holds it.
 
@@ -72,7 +74,10 @@ FNR == 1 {
   else { sub(/\/[^\/]*$/, "", dname); sub(/.*\//, "", dname) }
 }
 
-/^```/ { fence = !fence; next }
+/^```/ {
+  if ((sec >= 3 && sec <= 7) || sec == 9) err("code fence in section " sec ": write the item as a single bullet or table row")
+  fence = !fence; next
+}
 fence { next }
 
 /^## Appendix/ { sec = 99; seen[99] = 1; next }
@@ -107,11 +112,11 @@ sec != 99 && match($0, /Source: Q[0-9]+(, *Q[0-9]+)*/) {
   for (i = 1; i <= n; i++) cite(qs[i])
 }
 
-# Every statement must be a bullet with a source (sections 1-9).
-sec >= 1 && sec <= 9 && /^[^-|#> \t[<]/ {
+# Every statement must be a bullet with a source (sections 1-8).
+sec >= 1 && sec <= 8 && /^[^-|#> \t[<]/ {
   err("text outside a list item has no \"Source: Q<n>\"; write it as a \"- \" bullet")
 }
-sec >= 1 && sec <= 9 && /^- / && $0 !~ /Source: Q[0-9]+/ {
+sec >= 1 && sec <= 8 && /^- / && $0 !~ /Source: Q[0-9]+/ {
   err("list item without \"Source: Q<n>\"")
 }
 
@@ -121,7 +126,7 @@ sec == 3 && /^- FR-[0-9]+/ {
   if ($0 !~ /SHALL/) err(id " must use EARS form: WHEN ... THE SYSTEM SHALL ...")
 }
 
-# Sections 5, 6 and 7 number their items so that a task can cite them.
+# Sections 5, 6 and 7 number their items so that a ticket can cite them.
 (sec == 5 || sec == 6 || sec == 7) && /^- / && $0 !~ /^- None\./ {
   want = (sec == 5) ? "NFR" : (sec == 6) ? "C" : "D"
   if (match($0, "^- " want "-[0-9]+")) {
@@ -146,31 +151,11 @@ sec == 4 && /^- AC-[0-9]+/ {
   if (low !~ /given/ || low !~ /when/ || low !~ /then/) err(id " must use Given/When/Then")
 }
 
-sec == 9 && /^- T-[0-9]+/ {
-  match($0, /^- T-[0-9]+/); id = substr($0, 3, RLENGTH - 2)
-  define(id)
-  n = collect(head($0), "[A-Z]+-[0-9]+", refs)
-  nfrref = 0
-  for (i = 1; i <= n; i++) {
-    p = prefix(refs[i])
-    if (p != "FR" && p != "NFR" && p != "C" && p != "D") continue
-    if (p == "FR") nfrref++
-    trcov[refs[i]] = 1
-    chk_ref[++nchk] = refs[i]; chk_line[nchk] = NR; chk_owner[nchk] = id
-  }
-  if (nfrref == 0) err(id " does not reference any FR-xx")
-  if (match($0, /Depends on:[^|]*/)) {
-    n = collect(substr($0, RSTART, RLENGTH), "T-[0-9]+", refs)
-    for (i = 1; i <= n; i++) { chk_ref[++nchk] = refs[i]; chk_line[nchk] = NR; chk_owner[nchk] = id }
-  }
-  if ($0 !~ /DoD:/) err(id " is missing \"DoD:\"")
-}
-
-sec == 10 && /^\|/ {
+sec == 9 && /^\|/ {
   split($0, c, "|")
   k = trim(c[2])
   if (k ~ /^AC-[0-9]+$/) {
-    row10[k] = NR
+    row9[k] = NR
     if (trim(c[3]) == "") err(k " has an empty command")
     if (trim(c[4]) == "") err(k " has an empty pass criterion")
     org = trim(c[5])
@@ -188,7 +173,7 @@ sec == 99 && /^\|/ {
 
 sec >= 3 && sec <= 5 && /^(- |\|)/ {
   low = tolower($0)
-  gsub(/(nfr|fr|ac|t)-[0-9]+/, "", low)
+  gsub(/(nfr|fr|ac)-[0-9]+/, "", low)
   gsub(/source: q[0-9]+(, *q[0-9]+)*/, "", low)
   if (low !~ /[0-9]/) {
     for (i = 1; i <= nv; i++) {
@@ -201,7 +186,7 @@ sec >= 3 && sec <= 5 && /^(- |\|)/ {
 }
 
 END {
-  for (n = 1; n <= 10; n++) if (!(n in seen)) fail("missing heading \"## " n ". ...\"")
+  for (n = 1; n <= 9; n++) if (!(n in seen)) fail("missing heading \"## " n ". ...\"")
   if (!(99 in seen)) fail("missing heading \"## Appendix: Decision log\"")
   if (!status_seen) fail("missing \"Status:\" line")
   if (!slug_seen) fail("missing \"Intent-slug:\" line")
@@ -213,19 +198,16 @@ END {
     id = deflist[i]; p = prefix(id)
     if (p == "FR") {
       if (!(id in frcov)) fail(id " (line " defd[id] ") has no acceptance criterion")
-      if (!(id in trcov)) fail(id " (line " defd[id] ") is not referenced by any task")
-    } else if (p == "NFR" || p == "C" || p == "D") {
-      if (!(id in trcov)) fail(id " (line " defd[id] ") is not referenced by any task")
     }
   }
   for (i = 1; i <= nchk; i++)
     if (!(chk_ref[i] in defd)) fail(chk_owner[i] " (line " chk_line[i] ") references unknown " chk_ref[i])
   for (i = 1; i <= nac; i++) {
     id = aclist[i]
-    if (!(id in row10)) fail(id " (line " ac[id] ") has no verification row in section 10")
+    if (!(id in row9)) fail(id " (line " ac[id] ") has no verification row in section 9")
   }
-  for (k in row10)
-    if (!(k in ac)) fail("section 10 row " k " (line " row10[k] ") has no matching acceptance criterion")
+  for (k in row9)
+    if (!(k in ac)) fail("section 9 row " k " (line " row9[k] ") has no matching acceptance criterion")
   for (q in cited)
     if (!(q in logged)) fail(q " (first cited at line " cited[q] ") has no row in the decision log")
   if (fails == 0) { print "RESULT: OK"; exit 0 }

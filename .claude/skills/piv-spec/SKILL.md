@@ -1,6 +1,6 @@
 ---
 name: piv-spec
-description: "Interviews the user in fixed phases, then writes one 10-section spec for piv-review-spec to audit. Takes a concept: free text, or documents with their links."
+description: "Interviews the user in fixed phases, then writes one 9-section spec for piv-review-spec to audit. Takes a concept: free text, or documents with their links."
 argument-hint: "[intent-slug] · [concept: text, file path or URLs] (blank = starts by asking for them)"
 disable-model-invocation: true
 allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh *), WebFetch
@@ -25,13 +25,13 @@ This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. 
 **The spec:**
 
 - ✅ No vague term stands without a measurable value or a verification command (rule 5).
-- ✅ Every section 10 command exists in the repo or came from the user (rule 6).
+- ✅ Every section 9 command exists in the repo or came from the user (rule 6).
 - ✅ The lint printed `RESULT: OK` and the file says `Status: ready` — or it says `Status: draft` and the blockers are listed.
 
 ## Language
 
 - Talk to the user, and write spec content, in the intent's language: the one the user runs the first interview in. Record it in the spec's `Language` field as a BCP 47 tag, such as `pt-BR`.
-- Keep these in English because the validator depends on them: section headings, header labels, IDs (`FR-01`, `NFR-01`, `C-01`, `D-01`, `AC-01`, `T-01`, `Q1`), keywords (`WHEN`, `THE SYSTEM SHALL`, `Given`/`When`/`Then`, `Source:`, `Depends on:`, `DoD:`), `Status:` values, and markers (`[PENDING]`, `[DEFERRED]`).
+- Keep these in English because the validator depends on them: section headings, header labels, IDs (`FR-01`, `NFR-01`, `C-01`, `D-01`, `AC-01`, `Q1`), keywords (`WHEN`, `THE SYSTEM SHALL`, `Given`/`When`/`Then`, `Source:`), `Status:` values, and markers (`[PENDING]`, `[DEFERRED]`).
 
 ## Rules
 
@@ -109,7 +109,7 @@ Copy this checklist into the first message. Tick a phase only when it closes: it
 - [ ] Phase 3 — Quality and technical limits (sections 5, 6)
 - [ ] Phase 4 — Design (section 7)
 - [ ] Phase 5 — Boundaries (section 8)
-- [ ] Phase 6 — Execution and verification (sections 9, 10)
+- [ ] Phase 6 — Verification (section 9)
 - [ ] Phase 7 — Synthesis
 ```
 
@@ -166,12 +166,11 @@ Ask for the three levels: **Always** (the agent acts without asking), **Ask firs
 
 **Done when** *Always*, *Ask first*, *Never* and *Open questions* each hold a statement or `None.` with its `Source:`.
 
-### Phase 6 — Execution and verification (sections 9, 10)
+### Phase 6 — Verification (section 9)
 
-1. Section 9: propose task granularity (options A/B with task counts). Each task cites its `FR-xx` and every `NFR-xx`, `C-xx` and `D-xx` that shapes it, lists dependencies, and states a definition of done (`DoD:`). Every `NFR`, `C` and `D` is cited by at least one task, because `piv-slice` copies into a ticket only the items its tasks cite. Target size: one commit per task — each task is implemented, reviewed and committed on its own, so each one must be provable alone by its `DoD`. The user confirms order and scope.
-2. Section 10: one row per acceptance criterion with the exact verification command, a pass criterion (for example, exit code 0), and the origin of the command (`Q<n>` or `path:line`), following rule 6.
+One row per acceptance criterion with the exact verification command, a pass criterion (for example, exit code 0), and the origin of the command (`Q<n>` or `path:line`), following rule 6. The spec holds no task plan: `piv-slice` cuts the tasks from the `FR`, `AC`, `NFR`, `C` and `D` items and from these rows.
 
-**Done when** the user confirmed the task order and scope, every task carries its `FR`, `Depends on` and `DoD:`, every `NFR`, `C` and `D` is cited by a task, and every `AC-xx` has a section 9 row.
+**Done when** every `AC-xx` has a section 9 row.
 
 ### Phase 7 — Synthesis
 
@@ -188,12 +187,11 @@ The lint checks structure and traceability. It does not check meaning: example t
 
 - Write the spec in the intent's language, as the Language section says; headings, labels, IDs and keywords stay as the template writes them.
 - Write every statement as a top-level `- ` bullet ending with `(Source: Q<n>)`. Multiple sources: `(Source: Q3, Q5)`.
-- One statement per line: `piv-slice` copies lines verbatim into tickets.
+- One statement per line: `piv-slice` copies lines verbatim into tickets. Write no code fence in sections 3 to 7 or 9; put a contract or a snippet in one line, or in a file the line names.
 - Requirement: `- FR-01 (Source: Q3): WHEN ... THE SYSTEM SHALL ...`
 - Non-functional requirement, constraint, design item: `- NFR-01 (Source: Q11): ...`, `- C-01 (Source: Q12): ...`, `- D-01 (Source: Q14): ...`
 - Acceptance criterion: `- AC-01 (FR-01, Source: Q4): Given ... When ... Then ...`
-- Task: `- T-01 (FR-01, NFR-01, C-02, D-01, Source: Q9): ... | Depends on: - | DoD: ...`
-- Section 10 rows: `| AC-01 | `command` | pass criterion | Q12 |`. A `|` character is not allowed inside a cell; put pipelines in a script file and reference the script.
+- Section 9 rows: `| AC-01 | `command` | pass criterion | Q12 |`. A `|` character is not allowed inside a cell; put pipelines in a script file and reference the script.
 - Every `Q<n>` cited must have a row in the decision log.
 - `Status:` is `draft` or `ready`. Only `piv-review-spec` sets `reviewed`.
 

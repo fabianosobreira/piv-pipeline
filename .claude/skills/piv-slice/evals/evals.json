@@ -21,8 +21,8 @@
   },
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, and the review in evals/fixtures/two-tasks.spec.review.md sits beside it as spec.review.md, but a line of section 1 was edited after the review.",
-    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.edited.spec.md sits at .piv/two-tasks/spec.md, and the review in evals/fixtures/two-tasks.spec.review.md sits beside it as spec.review.md. A line of section 1 was edited after the review.",
+    "files": ["evals/fixtures/two-tasks.edited.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
       "Hashes the spec with git hash-object --no-filters and finds it differs from the Reviewed-hash",
       "Stops (STOP), saying the spec changed after its review and piv-review-spec has to run again",
@@ -34,13 +34,17 @@
     "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. gh is logged in, origin is on github.com.",
     "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
-      "Writes .piv/two-tasks/tasks/T-01/T-01.md and .piv/two-tasks/tasks/T-02/T-02.md from templates/ticket.md, one task each, and runs lint_ticket.sh on both until each prints RESULT: OK",
-      "T-02's ticket has Blocked by: T-01 and no T-01 task line; T-01's ticket section 5 holds only 'None in this ticket.'",
-      "Writes epic.md with both tasks [ ], their type, size and Depends on, Issue and Branch reading pending, and the open question that cites no ID under Not ticketed",
+      "Cuts the tasks itself, with no question to the user about the cut before the GATE of the issue",
+      "Writes one ticket per task at .piv/two-tasks/tasks/T-xx/T-xx.md from templates/ticket.md, each with Title, Type, Blocked by, Size, DoD and Cites in its header, and runs lint_ticket.sh on every one until each prints RESULT: OK",
+      "Puts every AC of the spec (AC-01, AC-02, AC-03) in the DoD of exactly one ticket, and AC-03 in a different ticket from AC-01, since independent changes satisfy them",
+      "Cites NFR-01, C-01 and D-01 in the Cites of at least one ticket, and writes no FR in any Cites",
+      "Writes no line in a ticket section that the spec does not hold, and no section 9 task plan",
+      "Writes epic.md with every task [ ], their type, size and Depends on, a Large tasks section, Issue and Branch reading pending, and the open question that cites no ID under Not ticketed",
+      "Runs lint_epic.sh on .piv/two-tasks and gets RESULT: OK",
       "Runs gh auth status before the GATE",
-      "At the GATE, posts the issue title 'Rate limiting', the proposed type feature, the warning that the spec will be published in full as the issue body, and a relative link to .piv/two-tasks/spec.md, then ends the turn",
+      "At the GATE, posts the issue title 'Rate limiting', the proposed type feature, the warning that the spec will be published in full as the issue body, a relative link to .piv/two-tasks/spec.md, and the task list with each size, DoD and blockers, then ends the turn",
       "After approval, creates the issue with the spec file as its body, and @me as assignee, and writes its number and URL into the epic's Issue",
-      "Hands off to piv-implement [#N] in a session of its own"
+      "Reports each task with its type, size, files touched and AC count, and hands off to piv-implement [#N] in a session of its own"
     ]
   },
   {
@@ -55,12 +59,33 @@
   },
   {
     "skills": ["piv-slice"],
-    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. Put both tasks in one ticket, please.",
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. Put everything in one ticket, please.",
     "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
     "expected_behavior": [
-      "Declines to group the tasks: one ticket carries exactly one task",
-      "Writes one ticket per task; a ticket with Task: T-01, T-02 would fail lint_ticket.sh with 'a ticket carries exactly one task'",
-      "Goes on to the GATE with two tickets"
+      "Declines to group the work: one ticket carries exactly one task, and a task is one concern",
+      "Cuts more than one task, because AC-03 can be satisfied by a change independent of AC-01",
+      "Goes on to the GATE with the tickets it cut"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it as spec.review.md. gh is logged in, origin is on github.com. At the GATE the user answers: 'Merge the tasks of AC-01 and AC-02 into one; they share the same middleware.'",
+    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
+    "expected_behavior": [
+      "Takes the answer as a new constraint on the cut, goes back to the cut in the same run and does not ask the user a question about it",
+      "Rewrites the tickets and the epic, runs lint_ticket.sh and lint_epic.sh again until each prints RESULT: OK, and posts the GATE again with the new task list",
+      "Lists the ticket folder of the task that no longer exists and asks before deleting it",
+      "Creates no issue before the user approves the second GATE"
+    ]
+  },
+  {
+    "skills": ["piv-slice"],
+    "query": "/piv-slice two-tasks. The spec in evals/fixtures/two-tasks.spec.md sits at .piv/two-tasks/spec.md, with evals/fixtures/two-tasks.spec.review.md beside it. The epic says Issue: pending, and .piv/two-tasks/tasks/T-09/ holds T-09.md and T-09.report.md from an earlier cut.",
+    "files": ["evals/fixtures/two-tasks.spec.md", "evals/fixtures/two-tasks.spec.review.md"],
+    "expected_behavior": [
+      "Finds T-09 in no task of the new cut and sees that its folder holds a report beside the ticket",
+      "Stops (STOP), naming T-09 as work to keep, and deletes nothing",
+      "Creates no issue"
     ]
   }
 ]

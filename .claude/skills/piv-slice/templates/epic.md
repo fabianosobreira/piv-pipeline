@@ -9,8 +9,12 @@
 [one sentence: what this intent delivers, taken from section 1 of the spec]
 
 ## Tasks
-- [ ] [T-xx] — [the task's title] | [bug, feature or none] | [S, M or L] | Depends on: [the task's `Depends on`, as "-" or "T-xx, T-yy"]
-[one line per task of section 9, in the spec's order, every one starting at "[ ]"]
+- [ ] [T-xx] — [the task's title] | [bug, feature or none] | [S, M or L] | Depends on: [the task's `Blocked by`, as "-" or "T-xx, T-yy"]
+[one line per task, in execution order, every one starting at "[ ]"]
+
+## Large tasks
+- [T-xx] — [why the task stays L: the reason it cannot be split into tasks provable on their own]
+[one line per task sized L; or "None."]
 
 ## Deferrals
 None.

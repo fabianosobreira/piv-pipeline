@@ -3,7 +3,7 @@
 - **Intent-slug**: two-tasks
 - **Language**: en-US
 - **Spec**: .piv/two-tasks/spec.md
-- **Reviewed-hash**: 2ef5118b761e161f89d8b7e792adc9ddf5d55383
+- **Reviewed-hash**: 5238f539b952ccedbe514551ae6d77e70bfc85ca
 - **Outcome**: reviewed
 - **Remote check**: done
 

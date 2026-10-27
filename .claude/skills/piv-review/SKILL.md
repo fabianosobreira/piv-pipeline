@@ -28,7 +28,7 @@ Step 6 runs the three filters. What survives becomes a finding; the rest goes no
 **Some findings are facts, not arguments.** Four kinds are **test-fact**:
 
 - ***red*** — a test that fails on the branch in any run, flaky ones included.
-- ***missing*** — a test the ticket's verification names — a section 10 command — that is absent, or present but skipped, marked to fail, or asserting nothing.
+- ***missing*** — a test the ticket's verification names — a section 9 command — that is absent, or present but skipped, marked to fail, or asserting nothing.
 - ***weakened*** — a test that existed before and now asserts less or something different — skipped, marked to fail, its assertions loosened or its expected values changed, or deleted — while the ticket left the behavior it pins unchanged.
 - ***untested*** — a behavior the change adds or alters that no test exercises. A **behavior** is an observable outcome an acceptance criterion or the unit's public interface names, such as a new entry point or error contract. A new condition inside an outcome a test already asserts is a branch, and an unexercised branch is an ordinary coverage finding.
 
@@ -53,7 +53,7 @@ A finding **reproduces** on the Base when it fails there the way it fails on the
 - ✅ Every reported finding survived all three filters in **Posture**.
 - ✅ Every finding outside *Test facts* carries its origin, and every *aggravated* or *pre-existing* one was reproduced on the Base.
 - ✅ The full test suite ran on the branch — or the project has none, and *Checks run* says so — and every *red* test is reported — test-fact, or medium when **Posture** demotes it, unless an earlier deferral settles that medium.
-- ✅ The change was held to every `AC-xx` criterion of the ticket, its verification, its task plan, and its non-goals and boundaries.
+- ✅ The change was held to every `AC-xx` criterion of the ticket, its verification, its task, and its non-goals and boundaries.
 - ✅ The tree the report's **Diff hash** records is the tree that was reviewed: the checks left nothing behind.
 - ✅ The report follows the template in **Output**, `check-report.sh` exits 0 on it with every cited line saying what its finding claims, and its path was given to the user with the next move.
 
@@ -87,11 +87,11 @@ The **change under review** is the task's work: the uncommitted tree, tracked an
 
 Nothing to review — a clean tree → **STOP** and say so.
 
-**Then read the ticket** at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, and take its **criteria**, the `AC-xx` lines of section 4 — what the change has to do — its **verification**, the commands of section 10 — the bar the change was held to — its **task plan** (section 9), its **non-goals** (section 2) and its **boundaries** (*Always*, *Ask first* and *Never* of section 8), its `Type`, its `Intent-slug`, and its `Language`, the language the report is written in. The ticket can't be read → **STOP** and say so.
+**Then read the ticket** at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`, and take its **criteria**, the `AC-xx` lines of section 4 — what the change has to do — its **verification**, the commands of section 9 — the bar the change was held to — its **task** (the `Title` and `DoD` of the header), its **non-goals** (section 2) and its **boundaries** (*Always*, *Ask first* and *Never* of section 8), its `Type`, its `Intent-slug`, and its `Language`, the language the report is written in. The ticket can't be read → **STOP** and say so.
 
 **Then look for the implementation report** at `.piv/[intent-slug]/tasks/T-xx/T-xx.report.md`. It says what the author meant to build: take above all its **documented deviations** — a documented deviation is an intentional decision, so it feeds the mitigation filter rather than the finding list. Its *Tests added* is the author's account of what was tested; the ticket is what they were asked to test. The implementation report's status is the author's own account of the criteria; this gate checks them independently. There is no report → review the change on its own terms; this skill never requires one.
 
-**Done when** the task, the change under review, its Base and Diff hash, the ticket's criteria, verification, task plan, non-goals, boundaries, type and `Intent-slug`, the report language, and the implementation report — or its absence — are in hand.
+**Done when** the task, the change under review, its Base and Diff hash, the ticket's criteria, verification, task, non-goals, boundaries, type and `Intent-slug`, the report language, and the implementation report — or its absence — are in hand.
 
 ### Step 2 — Resolve the deferrals
 
@@ -127,7 +127,7 @@ Work the list below over every changed file. Each class is a thing to hunt for, 
 
 **Done when** every class below has been hunted over every changed file, and each candidate is anchored to a file and a line.
 
-1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds — every `AC-xx` criterion of the ticket the code doesn't meet — an unmet criterion is a `logic` finding, `high` — and a change outside the ticket's task plan, or inside its non-goals or its *Never* boundary, that the implementation report doesn't list as a deviation.
+1. **Logic** — off-by-one bounds, inverted or short-circuiting conditionals, unhandled error paths, races and unawaited work, state mutated under an alias someone else holds — every `AC-xx` criterion of the ticket the code doesn't meet — an unmet criterion is a `logic` finding, `high` — and a change outside the ticket's task, or inside its non-goals or its *Never* boundary, that the implementation report doesn't list as a deviation.
 2. **Security** — injection through interpolated queries, commands and templates; unescaped output; secrets and keys in code, config or logs; authorization checked in one path and skipped in another; untrusted input reaching a sink unvalidated.
 3. **Performance** — queries inside loops, work repeated per iteration that belongs outside it, unbounded growth of a collection or cache, resources opened and never released.
 4. **Quality** — a function doing several jobs, a name that lies about what the thing holds, duplicated logic the codebase already has one home for, missing types or annotations where the project uses them, and every code smell below matched against the diff. Each smell is a judgement call, never a hard violation, and anything the project's tooling already enforces is skipped here:

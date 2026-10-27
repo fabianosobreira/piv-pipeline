@@ -116,9 +116,9 @@ const MANUAL_PT_BR = {
           rows: [
             ['As skills instaladas com o [comando de instalação](#setup), ainda sem `docs/` para elas', '`piv-setup`', 'Cada passo lê o loop e as git conventions de `docs/`, e guarda seus arquivos num `.piv/` ignorado; sem eles a primeira execução não tem de onde partir.'],
             ['Uma ideia de produto, nada escrito', '`piv-write-prd`', 'Opcional: fixe o *quê e por quê* antes da spec.'],
-            ['Um PRD, ou uma ideia clara da mudança', '`piv-spec`', 'Uma entrevista fixa requisitos, design, tasks e verificação numa spec; um PRD é uma entrada como qualquer outra.'],
+            ['Um PRD, ou uma ideia clara da mudança', '`piv-spec`', 'Uma entrevista fixa requisitos, design e verificação numa spec; um PRD é uma entrada como qualquer outra.'],
             ['Uma spec marcada como ready', '`piv-review-spec`', 'Ela confere a spec contra o seu código e as suas issues e PRs do GitHub antes de qualquer coisa ser publicada.'],
-            ['Uma spec marcada como reviewed', '`piv-slice`', 'Um ticket por task, cada um uma fatia literal da spec, e uma issue que a publica.'],
+            ['Uma spec marcada como reviewed', '`piv-slice`', 'A `piv-slice` corta as tasks por conta própria: um ticket por task, com as linhas da spec de que ela precisa copiadas literalmente, e uma issue que publica a spec.'],
             ['Um número de issue', '`piv-implement`', 'Ela escolhe a próxima task do epic e a constrói na branch do intent.'],
             ['Uma task construída, ainda sem commit', '`piv-review`', 'Este é o portão que decide se a task merece um commit.'],
             ['Um veredito CHANGES REQUESTED', '`piv-fix`', 'Findings são entrada, não ordem de serviço — você decide sobre cada um.'],
@@ -188,16 +188,16 @@ const MANUAL_PT_BR = {
       phase: 'plan',
       title: 'Plan',
       blocks: [
-        { type: 'p', text: 'O passo de plan produz a **spec**, que fixa requisitos, design, tasks e verificação num único arquivo; a **review** dela, que a confere contra o que já existe; e os **tickets**, cada um uma fatia literal da spec para uma task, acompanhados por um **epic** local e publicados como uma única **issue** do GitHub. São skills separadas porque respondem a perguntas diferentes. `piv-write-prd` fica à parte: o PRD dela é uma entrada comum da `piv-spec`, passada pelo path.' },
+        { type: 'p', text: 'O passo de plan produz a **spec**, que fixa requisitos, design e verificação num único arquivo; a **review** dela, que a confere contra o que já existe; e os **tickets**, um por task, que a `piv-slice` corta sozinha e preenche com as linhas da spec de que a task precisa, acompanhados por um **epic** local e publicados como uma única **issue** do GitHub. São skills separadas porque respondem a perguntas diferentes. `piv-write-prd` fica à parte: o PRD dela é uma entrada comum da `piv-spec`, passada pelo path.' },
         {
           type: 'skill',
           id: 'piv-spec',
           kicker: 'Plan · passo 1',
-          summary: 'Entrevista você em fases fixas e depois escreve uma spec de 10 seções. Cada afirmação vem de uma resposta sua; o agente nunca preenche lacunas.',
+          summary: 'Entrevista você em fases fixas e depois escreve uma spec de 9 seções. Cada afirmação vem de uma resposta sua; o agente nunca preenche lacunas.',
           fields: [
             { label: 'Entrada', text: '`[intent-slug]` e o conceito — um parágrafo, um arquivo ou um documento completo com links. URLs que você passa são lidas sem perguntar; links que ela encontra por conta própria são perguntados antes. Um PRD é um desses documentos: passe o path dele, `.piv/[intent-slug]/prd.md`, e a pasta é reaproveitada. Em branco, começa com perguntas.' },
-            { label: 'Saída', text: '`.piv/[intent-slug]/spec.md` — objetivo, non-goals, requisitos funcionais (`FR`), requisitos não funcionais (`NFR`), critérios de aceitação (`AC`), restrições (`C`), design (`D`), plano de tasks (`T`), comandos de verificação, limites e um registro de decisões. `Intent-slug` e `Language` ficam no header.' },
-            { label: 'Como funciona', text: 'Oito fases de perguntas numeradas; cada afirmação remete a uma resposta sua. Um validador embutido confere estrutura e rastreabilidade: cada `NFR`, `C` e `D` precisa ser citado por uma task, e cada referência precisa resolver. `Status: ready` quando o lint está limpo.' },
+            { label: 'Saída', text: '`.piv/[intent-slug]/spec.md` — objetivo, non-goals, requisitos funcionais (`FR`), requisitos não funcionais (`NFR`), critérios de aceitação (`AC`), restrições (`C`), design (`D`), comandos de verificação, limites e um registro de decisões. `Intent-slug` e `Language` ficam no header.' },
+            { label: 'Como funciona', text: 'Oito fases de perguntas numeradas; cada afirmação remete a uma resposta sua. Um validador embutido confere estrutura e rastreabilidade: cada referência precisa resolver e cada `AC` precisa de uma linha de verificação. `Status: ready` quando o lint está limpo.' },
             { label: 'Próximo passo', text: '`piv-review-spec [intent-slug]`, numa sessão própria.' },
           ],
           notes: [
@@ -231,11 +231,11 @@ const MANUAL_PT_BR = {
           type: 'skill',
           id: 'piv-slice',
           kicker: 'Plan · passo 3',
-          summary: 'Corta uma spec reviewed em um ticket por task e um epic que os acompanha, depois publica a spec como a única issue do GitHub do intent. Cada ticket copia, linha por linha, a parte da spec de que sua task precisa — nada é criado nem reescrito.',
+          summary: 'Corta uma spec reviewed em tasks, um ticket por task e um epic que os acompanha, depois publica a spec como a única issue do GitHub do intent. O corte é decisão dela; as linhas da spec em cada ticket são copiadas, nunca criadas nem reescritas.',
           fields: [
             { label: 'Entrada', text: '`[intent-slug]`, para uma spec em `Status: reviewed` cujo hash bate com o da review. Um `draft`, um `ready` ou uma spec editada depois da review interrompe a execução.' },
-            { label: 'Saída', text: '`tasks/T-xx/T-xx.md`, um ticket por task, cada um com um header block (`Spec` com o hash da revisão, `Slice`, `Type`, `Blocked by`, `Size`, `Intent-slug`, `Language`) e as seções da spec; `epic.md`, a lista de tasks a fazer; e uma issue do GitHub, com a spec inteira como corpo, um label de tipo — `bug`, `feature` ou `task` — e você como assignee.' },
-            { label: 'Como funciona', text: 'Não interativa durante o corte, o lint e o preflight do `gh`, depois **um portão** onde você aprova a issue: o título, o label e o aviso de que a spec é publicada por inteiro. Um validador embutido, `lint_ticket.sh`, rejeita qualquer linha de ticket que não seja uma linha literal da spec, e qualquer ticket com mais de uma task; nada chega ao GitHub até que todos os tickets passem.' },
+            { label: 'Saída', text: '`tasks/T-xx/T-xx.md`, um ticket por task, cada um com um header block (`Spec` com o hash da revisão, `Task`, `Title`, `Type`, `Blocked by`, `Size`, `DoD`, `Cites`, `Intent-slug`, `Language`) e as seções da spec; `epic.md`, a lista de tasks a fazer; e uma issue do GitHub, com a spec inteira como corpo, um label de tipo — `bug`, `feature` ou `task` — e você como assignee.' },
+            { label: 'Como funciona', text: 'Não interativa durante o corte, o lint e o preflight do `gh`, depois **um portão** onde você aprova a issue: o título, o label e o aviso de que a spec é publicada por inteiro. Um validador embutido, `lint_ticket.sh`, rejeita qualquer linha de ticket que não seja uma linha literal da spec, e o `lint_epic.sh` confere que o corte cobre todo `AC`, `NFR`, `C` e `D`; nada chega ao GitHub até que os dois passem.' },
             { label: 'Próximo passo', text: '`piv-implement [#N]`, numa sessão própria.' },
           ],
           notes: [

@@ -4,7 +4,7 @@
 
 ## The nine steps, in order
 
-1. **`piv-spec`** — the plan: one interview that fixes requirements, design, tasks and verification in a spec.
+1. **`piv-spec`** — the plan: one interview that fixes requirements, design and verification in a spec.
 2. **`piv-review-spec`** — the audit of the plan: the spec checked against the codebase and against the issues and PRs on GitHub, its open items settled with the user, and its revision marked reviewed.
 3. **`piv-slice`** — the breakdown: one ticket per task, each a verbatim copy of the part of the spec its task needs, the epic that tracks them, and the one GitHub issue that publishes the spec.
 
@@ -64,10 +64,10 @@ Every skill closes the same way: confirm where the artifact landed and name it b
 One name per artifact, used the same way across every skill:
 
 - **intent** — the *what and why*: a PRD, an idea, or a brief.
-- **spec** — the plan: requirements, design, tasks and verification in one file written by `piv-spec`, from an idea or from a PRD.
+- **spec** — the plan: requirements, design and verification in one file written by `piv-spec`, from an idea or from a PRD.
 - **spec review** — what `piv-review-spec` leaves behind: what it checked, what it settled with the user, and the spec revision it marked reviewed.
 - **epic** — the local to-do list of an intent's tasks, with the state of each: born in `piv-slice`, read by every step that picks a task.
-- **ticket** — one task of the spec, as a local file: a verbatim slice of the spec, exactly one task per ticket.
+- **ticket** — one task, as a local file: a header with the cut `piv-slice` made — title, type, size, blockers, the criteria it proves and the items it cites — then the parts of the spec the task needs, copied verbatim; exactly one task per ticket.
 - **issue** — the one GitHub issue per intent, whose body is the spec as `piv-slice` published it. Its number is the intent's id in git.
 - **deferral** — a finding `piv-fix` set aside for later work, as a local file that names the task whose review raised it.
 - **implementation report** — what a finished task leaves behind: what was built, how it was validated, and what deviated.
@@ -147,6 +147,10 @@ A step of the per-task loop takes `[#N | intent-slug] [T-xx]`:
 - [ ] T-01 — [title] | [bug|feature|none] | [S|M|L] | Depends on: [-|T-xx, T-yy]
 - [~] T-02 — [title] | [type] | [size] | Depends on: T-01
 - [x] T-03 — [title] | [type] | [size] | Depends on: - — commits: a1b2c3d, e4f5a6b
+
+## Large tasks
+- T-02 — [why the task stays L: the reason it cannot be split into tasks provable on their own]
+[or "None."]
 
 ## Deferrals
 - D-01 — [title] — origin T-02

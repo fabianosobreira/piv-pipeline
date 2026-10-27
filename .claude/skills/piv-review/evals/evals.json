@@ -8,7 +8,7 @@
     ],
     "expected_behavior": [
       "Resolves #12 to the rate-limiting epic and T-01, its [~] task, takes HEAD as the Base and runs diff-hash.sh with the Base alone",
-      "Reads the criteria from the AC-xx lines of the ticket's section 4 and the commands from section 10",
+      "Reads the criteria from the AC-xx lines of the ticket's section 4 and the commands from section 9",
       "Registers a finding of class logic, severity high, origin introduced, because AC-01 (request 101 must get status 429) is not met",
       "Cites a file and a line of the middleware as evidence, taken with locate.sh",
       "Sets the verdict to CHANGES REQUESTED",
@@ -85,13 +85,13 @@
   },
   {
     "skills": ["piv-review"],
-    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 10 command runs, does not exist.",
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js that meets both criteria, but tests/rate-limit.test.js, the file the section 9 command runs, does not exist.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
-      "Registers a test-fact finding of kind missing for the test file the section 10 command names",
+      "Registers a test-fact finding of kind missing for the test file the section 9 command names",
       "Sets the verdict to CHANGES REQUESTED",
       "Does not treat the implementation report's account as proof that the criteria are met"
     ]

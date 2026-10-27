@@ -44,11 +44,7 @@ Context sources: none
 - Should FR-03 log a warning? (Source: Q12)
 - None of the others. (Source: Q12)
 
-## 9. Task plan
-- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
-- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-01 | `npx vitest run a` | exit code 0 | Q10 |
@@ -66,7 +62,6 @@ Context sources: none
 | Q6 | 2 | Acceptance criteria | Confirmed | A |
 | Q7 | 3 | Stack | Node 20 | A |
 | Q8 | 4 | Design | Middleware | A |
-| Q9 | 6 | Tasks | Two tasks | A |
 | Q10 | 6 | Commands | Confirmed | A |
 | Q11 | 5 | Boundaries | Confirmed | A |
 | Q12 | 5 | Open questions | Kept | A |

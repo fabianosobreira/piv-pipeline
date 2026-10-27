@@ -36,10 +36,7 @@ This paragraph has no list bullet and no source.
 ### Open questions
 - [DEFERRED] Redis counters. (Source: Q11)
 
-## 9. Task plan
-- T-01 (FR-01, C-09, Source: Q10): Implement the middleware | Depends on: - | DoD: tests pass.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-01 | `npx vitest run` | exit code 0 | |

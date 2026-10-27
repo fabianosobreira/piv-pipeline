@@ -6,17 +6,19 @@
 # "RESULT: N issue(s) found".
 #
 # The ticket is a header block (a markdown list, one bold label per line)
-# followed by the 11 sections of the spec. The slice is the one task named by
-# the "Task" field. "Type" is bug, feature or none. "Blocked by" is "none" or
-# exactly the tasks the slice's "Depends on" names, as T-xx ids. A line of the ticket passes only if it is a line of the
-# same section of the spec; a line the slice does not pull in, or a line the
-# slice pulls in and the ticket drops, is a finding. A section with no content
-# holds the single line "None in this ticket.".
+# followed by the 10 sections of the spec (9 numbered ones and the appendix).
+# The header holds what piv-slice writes: "Task" (one T-xx id), "Title",
+# "Type" (bug, feature or none), "Blocked by" ("none" or T-xx ids), "Size"
+# (S, M or L), "DoD" (the AC ids the task proves) and "Cites" ("none" or the
+# NFR, C and D ids it needs). A line of a section passes only if it is a line
+# of the same section of the spec; a line the ticket does not pull in, or a
+# line it pulls in and drops, is a finding. A section with no content holds the
+# single line "None in this ticket.".
 # Slice rules: sections 1, 2 and the Always / Ask first / Never levels are
-# copied whole; FR, NFR, C and D only when a task of the slice cites them;
-# AC only when its head cites an FR of the slice; section 10 rows of those AC;
-# open questions that cite an ID of the slice; decision-log rows of every Q
-# the ticket cites.
+# copied whole; AC only when the DoD names it; FR only when an AC of the DoD
+# cites it; NFR, C and D only when Cites names them; section 9 rows of the DoD
+# AC; open questions that cite an ID the ticket carries; decision-log rows of
+# every Q the ticket cites. Coverage across tickets is lint_epic.sh's job.
 
 if [ "$#" -ne 2 ]; then
   echo "usage: lint_ticket.sh [ticket.md] [spec.md]" >&2
@@ -74,9 +76,9 @@ function trim(s) { gsub(/^[ \t`]+|[ \t`]+$/, "", s); return s }
 # The unit a line belongs to: a section, or one level of section 8.
 function ukey(s, sb) { return (s == 8) ? "8/" sb : s "" }
 
-# Section number of a "## " heading line, 0 when it is none of the 11.
+# Section number of a "## " heading line, 0 when it is none of the 10.
 function heading_sec(s) {
-  if (s ~ /^## Appendix/) return 11
+  if (s ~ /^## Appendix/) return 10
   if (s ~ /^## [0-9]+\./) { split(s, w, " "); return w[2] + 0 }
   return 0
 }
@@ -115,11 +117,10 @@ nf == 1 {
   else if (sec == 4 && match($0, /^- AC-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
   else if (sec == 6 && match($0, /^- C-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
   else if (sec == 7 && match($0, /^- D-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
-  else if (sec == 9 && match($0, /^- T-[0-9]+/)) id = substr($0, 3, RLENGTH - 2)
-  else if (sec == 10 || sec == 11) {
+  else if (sec == 9 || sec == 10) {
     if ($0 ~ /^\|/) {
       split($0, c, "|"); k = trim(c[2])
-      if ((sec == 10 && k ~ /^AC-[0-9]+$/) || (sec == 11 && k ~ /^Q[0-9]+$/)) id = k
+      if ((sec == 9 && k ~ /^AC-[0-9]+$/) || (sec == 10 && k ~ /^Q[0-9]+$/)) id = k
       else ishd = 1
     }
   }
@@ -129,12 +130,6 @@ nf == 1 {
     nn = collect(head($0), "[A-Z]+-[0-9]+", refs)
     acfr[id] = ""
     for (i = 1; i <= nn; i++) if (prefix(refs[i]) == "FR") acfr[id] = acfr[id] " " refs[i] " "
-    aclist[++nac] = id
-  }
-  if (sec == 9 && id != "") {
-    thead[id] = head($0)
-    if (match($0, /Depends on:[^|]*/)) tdep[id] = substr($0, RSTART, RLENGTH); else tdep[id] = ""
-    tlist[++ntask] = id
   }
   next
 }
@@ -150,7 +145,7 @@ nf == 1 {
     next
   }
   lab = substr($0, 5, RLENGTH - 8); val = trim(substr($0, RLENGTH + 1))
-  if (lab !~ /^(Spec|Task|Type|Blocked by|Size|Intent-slug|Language)$/) { err("unknown header label \"" lab "\""); next }
+  if (lab !~ /^(Spec|Task|Title|Type|Blocked by|Size|DoD|Cites|Intent-slug|Language)$/) { err("unknown header label \"" lab "\""); next }
   if (lab in hval) { err("duplicate header label \"" lab "\""); next }
   hval[lab] = val; hline[lab] = FNR
   if (val == "") err("header label \"" lab "\" has no value")
@@ -194,7 +189,7 @@ $0 ~ /^### / && tsec == 8 {
   tseen[u, idx] = FNR
   if (idx < tlast[u]) err("line is out of the spec order")
   tlast[u] = idx
-  if (tsec <= 10) {
+  if (tsec <= 9) {
     nn = collect($0, "Q[0-9]+", qs)
     for (i = 1; i <= nn; i++) citedq[qs[i]] = 1
   }
@@ -205,7 +200,7 @@ END {
   if (nf < 2) { fail("the ticket has no lines"); finish() }
 
   # Header block.
-  nreq = split("Spec|Task|Type|Blocked by|Size|Intent-slug|Language", req, "|")
+  nreq = split("Spec|Task|Title|Type|Blocked by|Size|DoD|Cites|Intent-slug|Language", req, "|")
   for (i = 1; i <= nreq; i++) if (!(req[i] in hval)) fail("header is missing \"" req[i] "\"")
   if ("Type" in hval && hval["Type"] !~ /^(bug|feature|none)$/)
     errl(hline["Type"] ": Type must be bug, feature or none")
@@ -226,59 +221,54 @@ END {
     errl(hline["Intent-slug"] ": Intent-slug is not the spec Intent-slug (" sp_slug ")")
   if ("Language" in hval && hval["Language"] != sp_lang)
     errl(hline["Language"] ": Language is not the spec Language (" sp_lang ")")
-  if ("Blocked by" in hval && hval["Blocked by"] != "none" && hval["Blocked by"] !~ /^T-[0-9]+(, *T-[0-9]+)*$/)
-    errl(hline["Blocked by"] ": Blocked by must be \"none\" or task ids (T-xx) separated by commas")
-
-  # The slice.
-  if (!("Task" in hval)) { finish() }
-  ns = split(hval["Task"], sl, /[ ,]+/)
-  nsl = 0
-  for (i = 1; i <= ns; i++) {
-    if (sl[i] == "") continue
-    if (sl[i] !~ /^T-[0-9]+$/ || !(sl[i] in thead)) {
-      errl(hline["Task"] ": " sl[i] " is not a task of the spec")
-      continue
-    }
-    if (sl[i] in inslice) { errl(hline["Task"] ": " sl[i] " is named twice"); continue }
-    inslice[sl[i]] = 1; nsl++
-  }
-  if (nsl == 0) { fail("the slice names no task of the spec"); finish() }
-  if (nsl > 1) errl(hline["Task"] ": Task names " nsl " tasks; a ticket carries exactly one task")
-
-  # IDs the slice pulls in: those cited in the head of its tasks.
-  external = 0
-  for (t in inslice) {
-    nn = collect(thead[t], "[A-Z]+-[0-9]+", refs)
-    for (i = 1; i <= nn; i++) {
-      p = prefix(refs[i])
-      if (p == "FR" || p == "NFR" || p == "C" || p == "D") {
-        if (!(refs[i] in sdef)) fail(t " cites " refs[i] ", which the spec does not define")
-        want_id[refs[i]] = 1
+  if ("Task" in hval && hval["Task"] !~ /^T-[0-9]+$/)
+    errl(hline["Task"] ": Task must be one task id (T-xx); a ticket carries exactly one task")
+  if ("Blocked by" in hval) {
+    if (hval["Blocked by"] != "none" && hval["Blocked by"] !~ /^T-[0-9]+(, *T-[0-9]+)*$/)
+      errl(hline["Blocked by"] ": Blocked by must be \"none\" or task ids (T-xx) separated by commas")
+    else if (hval["Blocked by"] != "none") {
+      nblk = split(hval["Blocked by"], bl, /, */)
+      for (i = 1; i <= nblk; i++) {
+        if (bl[i] in blseen) errl(hline["Blocked by"] ": " bl[i] " is named twice in Blocked by")
+        if ("Task" in hval && bl[i] == hval["Task"]) errl(hline["Blocked by"] ": a task cannot block itself")
+        blseen[bl[i]] = 1
       }
     }
-    nn = collect(tdep[t], "T-[0-9]+", refs)
-    for (i = 1; i <= nn; i++) if (!(refs[i] in inslice)) { external = 1; extseen[refs[i]] = 1 }
-    want_id[t] = 1
   }
-  if (external && ("Blocked by" in hval) && hval["Blocked by"] == "none")
-    errl(hline["Blocked by"] ": a task of the slice depends on a task outside it, so Blocked by cannot be none")
-  if (!external && ("Blocked by" in hval) && hval["Blocked by"] != "none")
-    errl(hline["Blocked by"] ": no task of the slice depends on a task outside it, so Blocked by must be none")
-  # Blocked by names exactly the tasks outside the slice that Depends on lists.
-  if (external && ("Blocked by" in hval) && hval["Blocked by"] != "none") {
-    nblk = split(hval["Blocked by"], bl, /, */)
-    for (i = 1; i <= nblk; i++) {
-      if (bl[i] in blseen) { errl(hline["Blocked by"] ": " bl[i] " is named twice in Blocked by"); continue }
-      blseen[bl[i]] = 1
-      if (!(bl[i] in extseen)) errl(hline["Blocked by"] ": " bl[i] " is in Blocked by, but no task of the slice depends on it")
+
+  # What the ticket pulls in: the AC of its DoD, the FR those AC cite, and the
+  # NFR, C and D it cites.
+  if ("DoD" in hval) {
+    if (hval["DoD"] !~ /^AC-[0-9]+(, *AC-[0-9]+)*$/)
+      errl(hline["DoD"] ": DoD must be acceptance criteria ids (AC-xx) separated by commas")
+    else {
+      nd = split(hval["DoD"], dl, /, */)
+      for (i = 1; i <= nd; i++) {
+        a = dl[i]
+        if (a in dseen) { errl(hline["DoD"] ": " a " is named twice in DoD"); continue }
+        dseen[a] = 1
+        if (!(a in acfr)) { errl(hline["DoD"] ": " a " is not an acceptance criterion of the spec"); continue }
+        want_id[a] = 1
+        nn = split(acfr[a], fr, " ")
+        for (j = 1; j <= nn; j++) {
+          if (!(fr[j] in sdef)) fail(a " cites " fr[j] ", which the spec does not define")
+          want_id[fr[j]] = 1
+        }
+      }
     }
-    for (t in extseen) if (!(t in blseen)) errl(hline["Blocked by"] ": the slice depends on " t ", which Blocked by does not name")
   }
-  for (i = 1; i <= nac; i++) {
-    a = aclist[i]; keep = 0
-    nn = split(acfr[a], fr, " ")
-    for (j = 1; j <= nn; j++) if (fr[j] in want_id) keep = 1
-    if (keep) want_id[a] = 1
+  if ("Cites" in hval && hval["Cites"] != "none") {
+    if (hval["Cites"] !~ /^(NFR|C|D)-[0-9]+(, *(NFR|C|D)-[0-9]+)*$/)
+      errl(hline["Cites"] ": Cites must be \"none\" or NFR, C or D ids separated by commas")
+    else {
+      nc = split(hval["Cites"], cl, /, */)
+      for (i = 1; i <= nc; i++) {
+        if (cl[i] in cseen) { errl(hline["Cites"] ": " cl[i] " is named twice in Cites"); continue }
+        cseen[cl[i]] = 1
+        if (!(cl[i] in sdef)) { errl(hline["Cites"] ": " cl[i] " is not an item of the spec"); continue }
+        want_id[cl[i]] = 1
+      }
+    }
   }
   # Decision-log rows of the Q the ticket cites.
   for (q in citedq) {
@@ -286,9 +276,9 @@ END {
     else want_id[q] = 1
   }
 
-  # Per unit: which spec lines the slice wants, against which the ticket has.
+  # Per unit: which spec lines the ticket wants, against which it has.
   nu = 0
-  for (s = 1; s <= 11; s++) {
+  for (s = 1; s <= 10; s++) {
     if (!(s in sseen)) continue
     if (s == 8) { for (i = 1; i <= nsubs; i++) units[++nu] = "8/" subs[i] }
     else units[++nu] = s ""
@@ -305,14 +295,14 @@ END {
       if (shd[u, n]) wn = anyrow
       if (wn) wantn++
       if (wn && !((u, n) in tseen)) fail("section " label(u) " is missing the spec line " snr[u, n] " (" short(stext[u, n]) ")")
-      if (!wn && ((u, n) in tseen)) errl(tseen[u, n] ": the slice does not pull in this line of the spec")
+      if (!wn && ((u, n) in tseen)) errl(tseen[u, n] ": the ticket does not pull in this line of the spec")
     }
     if (wantn == 0 && !(u in tmark)) {
-      if (u ~ /^8\//) { if (substr(u, 3) in tsawsub) errl(tsawsub[substr(u, 3)] ": section " label(u) " has no content for the slice: write None in this ticket.") }
-      else if ((u + 0) in tsawh) errl(tsawh[u + 0] ": section " label(u) " has no content for the slice: write None in this ticket.")
+      if (u ~ /^8\//) { if (substr(u, 3) in tsawsub) errl(tsawsub[substr(u, 3)] ": section " label(u) " has no content for the ticket: write None in this ticket.") }
+      else if ((u + 0) in tsawh) errl(tsawh[u + 0] ": section " label(u) " has no content for the ticket: write None in this ticket.")
     }
     if (wantn > 0 && (u in tmark))
-      errl(tmark[u] ": None in this ticket. is used in section " label(u) ", which has content for the slice")
+      errl(tmark[u] ": None in this ticket. is used in section " label(u) ", which has content for the ticket")
     if (wantn == 0 && (u in tmark) && tn[u] > 0)
       errl(tmark[u] ": None in this ticket. shares section " label(u) " with other content")
     # Every section and level of the spec appears in the ticket.
@@ -324,8 +314,8 @@ END {
 
 function label(u) { return (u ~ /^8\//) ? "8 / " substr(u, 3) : u }
 
-# Does the slice pull in line n of unit u?
-function wanted(u, n, s,    id, nn, i, t) {
+# Does the ticket pull in line n of unit u?
+function wanted(u, n, s,    id, nn, i) {
   id = sid[u, n]
   if (s == 1 || s == 2) return 1
   if (u == "8/Open questions") {
@@ -334,10 +324,9 @@ function wanted(u, n, s,    id, nn, i, t) {
     return 0
   }
   if (s == 8) return 1
-  if (s == 3 || s == 4 || s == 5 || s == 6 || s == 7 || s == 9 || s == 10 || s == 11) {
+  if (s == 3 || s == 4 || s == 5 || s == 6 || s == 7 || s == 9 || s == 10) {
     if (shd[u, n]) return 0
     if (id == "") return 0
-    if (s == 10) return (id in want_id)
     return (id in want_id)
   }
   return 0

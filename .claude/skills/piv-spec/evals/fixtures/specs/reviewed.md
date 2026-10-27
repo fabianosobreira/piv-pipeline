@@ -39,10 +39,7 @@ Context sources: package.json, .github/workflows/ci.yml
 ### Open questions
 - [DEFERRED] Redis-backed counters for multi-instance deployment. (Source: Q12)
 
-## 9. Task plan
-- T-01 (FR-01, FR-02, NFR-01, C-01, D-01, Source: Q10): Implement the middleware | Depends on: - | DoD: AC-01 and AC-02 pass.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-01 | `npx vitest run tests/rate-limit.test.js` | exit code 0 | package.json:7 |
@@ -60,6 +57,5 @@ Context sources: package.json, .github/workflows/ci.yml
 | Q7 | 2 | AC for FR-02 | Confirmed | A |
 | Q8 | 3 | Stack | Node 20, vitest | A |
 | Q9 | 4 | Design | Middleware | A |
-| Q10 | 6 | Task granularity | One task | A |
 | Q11 | 5 | Boundaries | Confirmed | A |
 | Q12 | 5 | Open questions | Redis deferred | defer |

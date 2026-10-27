@@ -12,6 +12,9 @@ Limit abusive clients on the public API to protect availability.
 - [ ] T-01 — Add the request counter | feature | S | Depends on: -
 - [ ] T-02 — Implement the middleware | feature | S | Depends on: T-01
 
+## Large tasks
+None.
+
 ## Deferrals
 None.
 

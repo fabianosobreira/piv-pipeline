@@ -37,10 +37,7 @@ Context sources: [PENDING]
 ### Open questions
 [PENDING]
 
-## 9. Task plan
-[PENDING]
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 [PENDING]

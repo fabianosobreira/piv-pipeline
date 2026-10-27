@@ -17,7 +17,7 @@
 [one block per item whose status is diverges, and per change outside the spec's scope — or "None."]
 
 ### [the item's ID, or "Out of scope"] — [critical | high | medium | low]
-- **Spec**: [the item's line, copied verbatim from the spec; for an out-of-scope change, the task plan or non-goal it falls outside]
+- **Spec**: [the item's line, copied verbatim from the spec; for an out-of-scope change, the task or non-goal it falls outside]
 - **The PR**: [what the PR does instead]
 - **Evidence**: `path/to/file.py:42` — [the quoted line or the traced path]
 

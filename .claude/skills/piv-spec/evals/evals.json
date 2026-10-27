@@ -16,7 +16,7 @@
       "Sends at most 3 questions per message, numbered continuously (Q1, Q2, ...) in the 🔍 format with 1 to 3 options",
       "Every recommendation (💡) carries an Empirical: basis with a source, such as the coverage threshold in .github/workflows/ci.yml:13 or the vitest script in package.json:7, a Pragmatic: basis naming the concrete problem it solves, or both",
       "Writes spec content in the language of the user's request and keeps headings, IDs and keywords in English",
-      "Numbers section 5, 6 and 7 items as NFR-xx, C-xx and D-xx, and cites each of them in the head of at least one task",
+      "Numbers section 5, 6 and 7 items as NFR-xx, C-xx and D-xx",
       "Runs scripts/lint_spec.sh before finishing and sets Status: ready once it prints RESULT: OK, with no playback and no extra confirmation gate",
       "Hands off to piv-review-spec [intent-slug] in a session of its own, not to piv-slice"
     ]
@@ -69,7 +69,7 @@
       "Detects the conflict: package.json and .github/workflows/ci.yml use vitest and contain no Jest dependency",
       "Shows the observed fact with its source (path:line) and asks the user again instead of choosing silently",
       "Offers options such as keeping vitest, migrating to Jest, or confirming that Jest is intended, without writing either test runner into section 6 before the user answers",
-      "Does not put a verification command in section 10 until the user resolves the conflict"
+      "Does not put a verification command in section 9 until the user resolves the conflict"
     ]
   },
   {

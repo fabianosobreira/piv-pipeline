@@ -7,8 +7,8 @@
       "Resolves #12 to the rate-limiting epic and picks T-01 as the next task, since no task is [~] and T-01 depends on nothing",
       "Turns T-01 from [ ] to [~] in the epic",
       "Creates the branch feat/12-rate-limiting from the base, since the epic's Type is feature, and writes it into the epic's Branch",
-      "Takes the task from the Task plan section (T-01), the criteria from section 4 and the commands from section 10, and reads no plan outside the ticket",
-      "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 10 command names",
+      "Takes the task from the header (Title, Blocked by, DoD), the criteria from section 4 and the commands from section 9, and reads no plan outside the ticket",
+      "Implements the middleware at src/middleware/rate-limit.js following src/middleware/auth.js, with the test the section 9 command names",
       "Writes .piv/rate-limiting/tasks/T-01/T-01.report.md with Issue: #12 and Task: T-01 in the header block, and commits nothing",
       "Hands off to piv-review #12 T-01 in a session of its own"
     ]
@@ -25,12 +25,12 @@
   },
   {
     "skills": ["piv-implement"],
-    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-no-tasks.md at .piv/rate-limiting/tasks/T-01/T-01.md: its Task plan section reads 'None in this ticket.'.",
-    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-no-tasks.md"],
+    "query": "/piv-implement #12. The epic in evals/fixtures/epic.md sits at .piv/rate-limiting/epic.md and the ticket in evals/fixtures/ticket-no-dod.md at .piv/rate-limiting/tasks/T-01/T-01.md: its header has no DoD.",
+    "files": ["evals/fixtures/epic.md", "evals/fixtures/ticket-no-dod.md"],
     "expected_behavior": [
-      "Finds no task under the Task plan section",
+      "Finds no DoD in the ticket header",
       "Stops (STOP), saying the ticket needs reworking before it can be built",
-      "Does not derive tasks from the requirements or the criteria on its own"
+      "Does not derive the criteria to prove from the requirements on its own"
     ]
   },
   {

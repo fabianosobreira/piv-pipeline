@@ -38,17 +38,17 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 
 ### Step 1 — Resolve the intent and the PR
 
-Resolve the intent as `docs/piv-loop.md` says under *Resolving the intent and the task*, and read `.piv/[intent-slug]/epic.md` and the spec its `Spec` line names.
+Resolve the intent as `docs/piv-loop.md` says under *Resolving the intent and the task*, and read `.piv/[intent-slug]/epic.md`, the spec its `Spec` line names and the ticket of every task of the epic, at `.piv/[intent-slug]/tasks/T-xx/T-xx.md`.
 
 Run `gh auth status`. It fails → post its message with the command that fixes it (`gh auth login`), and ask whether to fix it and rerun, or go on without the remote: the diff then comes from git, `git diff [base]...[the epic's Branch]` with the base `docs/git-conventions.md` defines, and the PR body goes unread. **GATE.** Going on → `Remote check: skipped by the user`.
 
 With the remote, find the open PR whose head is the epic's `Branch`: `gh pr view [branch] --json number,url,title,body,state,headRefName,baseRefName`. No open PR → **STOP**: `piv-open-pr` opens it first.
 
-**Done when** the epic, the spec and the PR — or, with the remote skipped, the branch diff — are in hand.
+**Done when** the epic, the spec, the tickets and the PR — or, with the remote skipped, the branch diff — are in hand.
 
 ### Step 2 — Index the spec
 
-List every `FR`, `NFR`, `C`, `D` and `AC` line of the spec, with its ID and its text; every non-goal of section 2; every *Never* line of section 8; and every task of section 9 with the files and surfaces it names.
+List every `FR`, `NFR`, `C`, `D` and `AC` line of the spec, with its ID and its text; every non-goal of section 2; every *Never* line of section 8; and every task of the epic, from the `Title` and `DoD` of its ticket, with the files and surfaces its ticket names.
 
 **Done when** every item of those sections is on the list.
 
@@ -66,7 +66,7 @@ For each item of Step 2, decide one status and record its evidence:
 - **`diverges`** — the PR does something else, or does nothing, where the item asks for something. Cite the `path:line`, or the place the item's code should be.
 - **`not verifiable`** — the item cannot be judged from the code — a latency budget, a behavior only a running system shows. Say what would verify it.
 
-Then hunt the reverse: every change in the PR that no task of section 9 asks for, and every change inside a non-goal or a *Never* line. Each is a divergence; one outside every task is `Out of scope`.
+Then hunt the reverse: every change in the PR that no task of the epic asks for, and every change inside a non-goal or a *Never* line. Each is a divergence; one outside every task is `Out of scope`.
 
 Give every divergence a severity: **critical** — a *Never* line violated, or data loss or a security defect; **high** — an `FR` or `AC` unmet; **medium** — an `NFR`, `C` or `D` departed from, or an out-of-scope change of behavior; **low** — an out-of-scope change that alters no behavior.
 

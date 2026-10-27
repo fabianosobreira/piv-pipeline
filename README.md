@@ -62,9 +62,9 @@ You rarely need all ten. Find the row that matches what you have in hand.
 | What you have | Start with | Why |
 | --- | --- | --- |
 | A product idea, nothing written | `piv-write-prd` | Pin the *what and why* down before the spec; it hands the PRD's path to `piv-spec`. |
-| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design, tasks and verification in a spec; pass the PRD's path as the input. |
+| A PRD, or just a clear idea of the change | `piv-spec` | One interview fixes requirements, design and verification in a spec; pass the PRD's path as the input. |
 | A spec marked ready | `piv-review-spec` | It checks the spec against your code and your GitHub issues and PRs before anything is published. |
-| A spec marked reviewed | `piv-slice` | One ticket per task, each a verbatim slice of the spec, and one issue that publishes it. |
+| A spec marked reviewed | `piv-slice` | `piv-slice` cuts the tasks itself: one ticket per task, with the spec lines it needs copied verbatim, and one issue that publishes the spec. |
 | An issue number | `piv-implement` | It picks the next task from the epic and builds it on the intent's branch. |
 | A task built, not yet committed | `piv-review` | This is the gate that decides whether the task earns a commit. |
 | A CHANGES REQUESTED verdict | `piv-fix` | Findings are input, not a work order — you rule on each one. |

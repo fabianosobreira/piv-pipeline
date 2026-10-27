@@ -1,8 +1,11 @@
 - **Spec**: .piv/rate-limiting/spec.md @ 77c3c9cdf53be34e77c291fc806119caa44837be
 - **Task**: T-02
+- **Title**: Implement the middleware
 - **Type**: feature
 - **Blocked by**: T-01
 - **Size**: S
+- **DoD**: AC-01, AC-02
+- **Cites**: NFR-01, C-01, D-01
 - **Intent-slug**: rate-limiting
 - **Language**: en-US
 
@@ -38,10 +41,7 @@
 - Edit test files that exist at the base commit. (Source: Q11)
 ### Open questions
 None in this ticket.
-## 9. Task plan
-- T-02 (FR-01, FR-02, NFR-01, C-01, D-01, Source: Q10): Implement the middleware | Depends on: T-01 | DoD: AC-01 and AC-02 pass.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-01 | `npx vitest run tests/rate-limit.test.js` | exit code 0 | package.json:7 |
@@ -59,5 +59,4 @@ None in this ticket.
 | Q7 | 2 | AC for FR-02 | Confirmed | A |
 | Q8 | 3 | Stack | Node 20, vitest | A |
 | Q9 | 4 | Design | Middleware | A |
-| Q10 | 6 | Task granularity | One task | A |
 | Q11 | 5 | Boundaries | Confirmed | A |

@@ -75,13 +75,13 @@ Read the spec end to end. Its header decides whether the run goes on:
 - `Status: reviewed`, and `spec.review.md` records a `Reviewed-hash` equal to `git hash-object --no-filters [spec path]` → say it is already reviewed, and **STOP** pointing at `piv-slice`.
 - `Status: reviewed` with a different or missing hash — the spec changed after its review — or `Status: ready` → go on.
 
-**Done when** every `FR`, `NFR`, `C`, `D`, `AC` and `T` item and every open question of section 8 is listed, the `[DEFERRED]` ones marked.
+**Done when** every `FR`, `NFR`, `C`, `D`, `AC` item and every open question of section 8 is listed, the `[DEFERRED]` ones marked.
 
 ### Step 2 — Recon the codebase
 
-For each `FR`, `D` and `T`, search the codebase for what already does it, in part or whole, and read what you find. Check every path sections 6 and 7 name and every command of section 10 against the repo. Record each hit as the item's ID, what exists and its `path:line`. A hit that makes an item moot, or that contradicts it — a file the design creates already exists with another shape, a section 10 command the repo lacks — is an item for Step 4.
+For each `FR` and `D`, search the codebase for what already does it, in part or whole, and read what you find. Check every path sections 6 and 7 name and every command of section 9 against the repo. Record each hit as the item's ID, what exists and its `path:line`. A hit that makes an item moot, or that contradicts it — a file the design creates already exists with another shape, a section 9 command the repo lacks — is an item for Step 4.
 
-**Done when** every `FR`, `D` and `T` was searched, and every path and command the spec names was checked.
+**Done when** every `FR` and `D` was searched, and every path and command the spec names was checked.
 
 ### Step 3 — Check the remote
 
@@ -95,7 +95,7 @@ Search the repo's issues and PRs, open and closed, with terms from the spec's ti
 
 Ask one question per item: every `[DEFERRED]` open question, every item Step 2 found the codebase already holds or contradicts, and every issue or PR Step 3 kept. Follow **Rules**.
 
-An answer that needs a new interview — a new requirement, a task plan reshaped beyond single lines, a phase of `piv-spec` to redo — is not settled here: note it for Step 6 as a reason to reopen.
+An answer that needs a new interview — a new requirement, a phase of `piv-spec` to redo — is not settled here: note it for Step 6 as a reason to reopen.
 
 **Done when** every item has an answer, a `defer`, or a note to reopen.
 

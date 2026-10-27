@@ -18,8 +18,9 @@ count=0
 out=
 code=0
 
-# A spec with two tasks: T-01 cites FR-01, FR-02 and C-01 (no NFR); T-02 cites FR-03, FR-05,
-# NFR-01 and D-01 and depends on T-01. AC-02 cites FR-01 and FR-05, so it is in both slices.
+# A spec with no task plan. The tickets cut from it: T-01 proves AC-01 (FR-01, FR-02) and
+# cites C-01; T-02 proves AC-02 (FR-01, FR-05) and AC-03 (FR-03), cites NFR-01 and D-01,
+# and is blocked by T-01. FR-01 is in both tickets, because an AC of each DoD cites it.
 write_spec() {
   cat > "$1" <<'EOF'
 # Spec: Demo
@@ -68,11 +69,7 @@ Context sources: none
 - Should FR-03 log a warning? (Source: Q12)
 - None of the others. (Source: Q12)
 
-## 9. Task plan
-- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
-- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-01 | `npx vitest run a` | exit code 0 | Q10 |
@@ -90,23 +87,25 @@ Context sources: none
 | Q6 | 2 | Acceptance criteria | Confirmed | A |
 | Q7 | 3 | Stack | Node 20 | A |
 | Q8 | 4 | Design | Middleware | A |
-| Q9 | 6 | Tasks | Two tasks | A |
 | Q10 | 6 | Commands | Confirmed | A |
 | Q11 | 5 | Boundaries | Confirmed | A |
 | Q12 | 5 | Open questions | Kept | A |
 EOF
 }
 
-# The ticket for the slice T-01: no NFR, so section 4 holds only the marker. The Spec line
-# carries the placeholder @HASH@. The open question that cites FR-01 is in; the one that
+# The ticket for T-01: no NFR and no D, so sections 5 and 7 hold only the marker. The Spec
+# line carries the placeholder @HASH@. The open question that cites FR-01 is in; the one that
 # cites FR-03 is out; the one that cites no ID is out.
 write_ticket_t01() {
   cat > "$1" <<'EOF'
 - **Spec**: .piv/demo/spec.md @ @HASH@
 - **Task**: T-01
+- **Title**: Reject request 101
 - **Type**: feature
 - **Blocked by**: none
 - **Size**: S
+- **DoD**: AC-01
+- **Cites**: C-01
 - **Intent-slug**: demo
 - **Language**: en-US
 
@@ -122,7 +121,6 @@ write_ticket_t01() {
 
 ## 4. Acceptance criteria
 - AC-01 (FR-01, FR-02, Source: Q6): Given 100 requests When request 101 arrives Then the status is 429.
-- AC-02 (FR-01, FR-05, Source: Q6): Given a blocked client When the minute ends Then request 102 passes.
 
 ## 5. Non-functional requirements
 None in this ticket.
@@ -143,14 +141,10 @@ None in this ticket.
 ### Open questions
 - Should FR-01 count retries? (Source: Q12)
 
-## 9. Task plan
-- T-01 (FR-01, FR-02, C-01, Source: Q9): Reject request 101 | Depends on: - | DoD: AC-01 and AC-02 pass.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-01 | `npx vitest run a` | exit code 0 | Q10 |
-| AC-02 | `npx vitest run b` | exit code 0 | Q10 |
 
 ## Appendix: Decision log
 | Q | Phase | Question | User answer | Chosen option |
@@ -160,22 +154,24 @@ None in this ticket.
 | Q3 | 2 | FR-01 and FR-02 | Confirmed | A |
 | Q6 | 2 | Acceptance criteria | Confirmed | A |
 | Q7 | 3 | Stack | Node 20 | A |
-| Q9 | 6 | Tasks | Two tasks | A |
 | Q10 | 6 | Commands | Confirmed | A |
 | Q11 | 5 | Boundaries | Confirmed | A |
 | Q12 | 5 | Open questions | Kept | A |
 EOF
 }
 
-# The ticket for the slice T-02, blocked by T-01. AC-03 only, and
-# AC-02 too, because its head cites FR-05. The line of T-01 is not copied.
+# The ticket for T-02, blocked by T-01: AC-02 and AC-03, the FR those two cite (FR-01, FR-03,
+# FR-05), NFR-01 and D-01. Both open questions that cite one of its IDs are in.
 write_ticket_t02() {
   cat > "$1" <<'EOF'
 - **Spec**: .piv/demo/spec.md @ @HASH@
 - **Task**: T-02
+- **Title**: Add the off switch and the reset
 - **Type**: feature
 - **Blocked by**: T-01
-- **Size**: S
+- **Size**: M
+- **DoD**: AC-02, AC-03
+- **Cites**: NFR-01, D-01
 - **Intent-slug**: demo
 - **Language**: en-US
 
@@ -186,6 +182,7 @@ write_ticket_t02() {
 - Do not publish the spec. (Source: Q2)
 
 ## 3. Functional requirements
+- FR-01 (Source: Q3): WHEN a client sends request 101 THE SYSTEM SHALL respond with HTTP 429.
 - FR-03 (Source: Q4): WHEN the limiter is disabled THE SYSTEM SHALL pass all requests.
 - FR-05 (Source: Q4): WHEN the limit resets THE SYSTEM SHALL accept requests again.
 
@@ -210,12 +207,10 @@ None in this ticket.
 ### Never
 - Edit test files. (Source: Q11)
 ### Open questions
+- Should FR-01 count retries? (Source: Q12)
 - Should FR-03 log a warning? (Source: Q12)
 
-## 9. Task plan
-- T-02 (FR-03, FR-05, NFR-01, D-01, Source: Q9): Add the off switch | Depends on: T-01 | DoD: AC-03 passes.
-
-## 10. Verification
+## 9. Verification
 | AC | Command | Pass criterion | Origin |
 |---|---|---|---|
 | AC-02 | `npx vitest run b` | exit code 0 | Q10 |
@@ -226,11 +221,11 @@ None in this ticket.
 |---|---|---|---|---|
 | Q1 | 1 | Goal | Show it | A |
 | Q2 | 1 | Non-goals | No publishing | A |
+| Q3 | 2 | FR-01 and FR-02 | Confirmed | A |
 | Q4 | 2 | FR-03 and FR-05 | Confirmed | A |
 | Q5 | 3 | Latency | p95 below 5 ms | A |
 | Q6 | 2 | Acceptance criteria | Confirmed | A |
 | Q8 | 4 | Design | Middleware | A |
-| Q9 | 6 | Tasks | Two tasks | A |
 | Q10 | 6 | Commands | Confirmed | A |
 | Q11 | 5 | Boundaries | Confirmed | A |
 | Q12 | 5 | Open questions | Kept | A |
@@ -296,33 +291,32 @@ line_of() {
   grep -n -F -- "$1" ticket.md | head -n 1 | cut -d: -f1
 }
 
-# AC-05: the header names the spec path and hash, the slice, the blockers, the size, the slug
-# and the language, and every bullet of sections 1 to 10 is a line of the spec.
+# The header names the spec path and hash, the task, its title, type, blockers, size,
+# DoD and citations, the slug and the language; every bullet of sections 1 to 9 is a line of the spec.
 new_case t01-valid t01
-pass "AC-05: a ticket cut verbatim from the spec"
-check "AC-05: the header carries the spec path and hash" grep -qE '^- \*\*Spec\*\*: \.piv/demo/spec\.md @ [0-9a-f]{40}$' ticket.md
-check "AC-05: the header carries the slice, type, blockers, size, slug and language" \
-  sh -c 'grep -q "^- \*\*Task\*\*: T-01$" ticket.md && grep -q "^- \*\*Type\*\*: feature$" ticket.md && grep -q "^- \*\*Blocked by\*\*: none$" ticket.md && grep -q "^- \*\*Size\*\*: S$" ticket.md && grep -q "^- \*\*Intent-slug\*\*: demo$" ticket.md && grep -q "^- \*\*Language\*\*: en-US$" ticket.md'
+pass "a ticket cut verbatim from the spec"
+check "the header carries the spec path and hash" grep -qE '^- \*\*Spec\*\*: \.piv/demo/spec\.md @ [0-9a-f]{40}$' ticket.md
+check "the header carries the task, title, type, blockers, size, DoD, citations, slug and language" \
+  sh -c 'grep -q "^- \*\*Task\*\*: T-01$" ticket.md && grep -q "^- \*\*Title\*\*: Reject request 101$" ticket.md && grep -q "^- \*\*Type\*\*: feature$" ticket.md && grep -q "^- \*\*Blocked by\*\*: none$" ticket.md && grep -q "^- \*\*Size\*\*: S$" ticket.md && grep -q "^- \*\*DoD\*\*: AC-01$" ticket.md && grep -q "^- \*\*Cites\*\*: C-01$" ticket.md && grep -q "^- \*\*Intent-slug\*\*: demo$" ticket.md && grep -q "^- \*\*Language\*\*: en-US$" ticket.md'
 
-# AC-06: the slice T-01 cites FR-01 and FR-02; the AC whose head cites FR-01 and FR-05 comes whole.
-check "AC-06: section 3 holds FR-01 and FR-02" sh -c 'grep -q "^- FR-01 " ticket.md && grep -q "^- FR-02 " ticket.md'
-check "AC-06: section 3 holds no FR-03" sh -c '! grep -q "^- FR-03 " ticket.md'
-check "AC-06: section 4 holds the AC headed (FR-01, FR-05)" grep -q '^- AC-02 (FR-01, FR-05, Source: Q6):' ticket.md
+# The FR come from the AC of the DoD: AC-01 cites FR-01 and FR-02, so no FR-05 and no FR-03.
+check "section 3 holds FR-01 and FR-02" sh -c 'grep -q "^- FR-01 " ticket.md && grep -q "^- FR-02 " ticket.md'
+check "section 3 holds no FR-03" sh -c '! grep -q "^- FR-03 " ticket.md'
+check "section 4 holds AC-01 and not AC-02" sh -c 'grep -q "^- AC-01 " ticket.md && ! grep -q "^- AC-02 " ticket.md'
 
-# AC-07: a slice that cites no NFR has only the marker in section 5.
-check "AC-07: section 5 holds only the marker" \
+# A ticket that cites no NFR has only the marker in section 5.
+check "section 5 holds only the marker" \
   sh -c 'awk "/^## 5./{f=1;next} /^## /{f=0} f&&NF" ticket.md | grep -qx "None in this ticket."; test "$(awk "/^## 5./{f=1;next} /^## /{f=0} f&&NF" ticket.md | wc -l)" -eq 1'
 
 new_case t02-valid t02
-pass "AC-05: the ticket of a task that depends on another ticket"
-check "D-05: the blocker is T-01 and the task keeps Depends on: T-01" \
-  sh -c 'grep -q "^- \*\*Blocked by\*\*: T-01$" ticket.md && grep -q "Depends on: T-01 |" ticket.md && ! grep -q "^- T-01 " ticket.md'
+pass "the ticket of a task that depends on another ticket and proves two AC"
+check "the blocker is T-01" grep -q '^- \*\*Blocked by\*\*: T-01$' ticket.md
 
-# AC-08: a line changed against the spec is named by its number, with exit 1.
+# A line changed against the spec is named by its number, with exit 1.
 new_case changed-line t01
 n=$(line_of "FR-02")
 sed -i "${n}s/Retry-After/Retry-Before/" ticket.md
-reject "AC-08: a changed line" "FAIL line $n: not a verbatim line of the spec"
+reject "a changed line" "FAIL line $n: not a verbatim line of the spec"
 
 # Mutants of a valid ticket, each of which must be rejected.
 new_case id-removed t01
@@ -331,7 +325,7 @@ reject "mutant: an ID removed from a line" "not a verbatim line of the spec"
 
 new_case id-line-dropped t01
 sed -i '/^- FR-02 /d' ticket.md
-reject "mutant: a cited ID whose line is dropped" "is missing the spec line"
+reject "mutant: an FR whose line is dropped" "is missing the spec line"
 
 new_case marker-wrong t01
 n=$(line_of "None in this ticket.")
@@ -356,24 +350,29 @@ reject "mutant: the marker in a section with content" "is used in section 1"
 new_case extra-fr t01
 n=$(line_of "- FR-02 ")
 sed -i "${n}a - FR-03 (Source: Q4): WHEN the limiter is disabled THE SYSTEM SHALL pass all requests." ticket.md
-reject "mutant: an FR no task of the slice cites" "the slice does not pull in this line of the spec"
+reject "mutant: an FR no AC of the DoD cites" "the ticket does not pull in this line of the spec"
+
+new_case extra-ac t01
+n=$(line_of "- AC-01 ")
+sed -i "${n}a - AC-03 (FR-03, Source: Q6): Given the limiter is off When 200 requests arrive Then none is rejected." ticket.md
+reject "mutant: an AC the DoD does not name" "the ticket does not pull in this line of the spec"
 
 new_case extra-open-question t01
 n=$(line_of "- Should FR-01")
 sed -i "${n}a - Should FR-03 log a warning? (Source: Q12)" ticket.md
-reject "mutant: an open question that cites no ID of the slice" "the slice does not pull in this line of the spec"
+reject "mutant: an open question that cites no ID of the ticket" "the ticket does not pull in this line of the spec"
 
 new_case open-question-dropped t01
 sed -i '/^- Should FR-01/d' ticket.md
-reject "mutant: an open question of the slice dropped" "is missing the spec line"
+reject "mutant: an open question of the ticket dropped" "is missing the spec line"
 
 new_case ac-dropped t01
-sed -i '/^- AC-02 /d' ticket.md
-reject "mutant: an AC of the slice dropped" "is missing the spec line"
+sed -i '/^- AC-01 /d' ticket.md
+reject "mutant: an AC of the DoD dropped" "is missing the spec line"
 
 new_case ac-row-dropped t01
-sed -i '/^| AC-02 /d' ticket.md
-reject "mutant: the section 10 row of an AC dropped" "is missing the spec line"
+sed -i '/^| AC-01 /d' ticket.md
+reject "mutant: the section 9 row of an AC dropped" "is missing the spec line"
 
 new_case q-row-dropped t01
 sed -i '/^| Q7 /d' ticket.md
@@ -381,7 +380,7 @@ reject "mutant: the decision-log row of a cited Q dropped" "is missing the spec 
 
 new_case q-row-extra t01
 sed -i '/^| Q12 /a | Q5 | 3 | Latency | p95 below 5 ms | A |' ticket.md
-reject "mutant: a decision-log row no line cites" "the slice does not pull in this line of the spec"
+reject "mutant: a decision-log row no line cites" "the ticket does not pull in this line of the spec"
 
 new_case copied-twice t01
 n=$(line_of "- Show the slicing.")
@@ -400,6 +399,10 @@ reject "mutant: a changed heading" "heading is not a heading of the spec"
 new_case heading-dropped t01
 sed -i '/^## 7. Design/,+1d' ticket.md
 reject "mutant: a dropped section" "the ticket has no"
+
+new_case heading-task-plan t01
+sed -i 's/^## 9. Verification/## 9. Task plan/' ticket.md
+reject "mutant: the retired Task plan heading" "heading is not a heading of the spec"
 
 new_case placeholder t01
 sed -i 's/^- Show the slicing\./- [PENDING]/' ticket.md
@@ -422,6 +425,18 @@ new_case label-missing t01
 sed -i '/^- \*\*Size\*\*/d' ticket.md
 reject "header: a missing label" 'header is missing "Size"'
 
+new_case title-missing t01
+sed -i '/^- \*\*Title\*\*/d' ticket.md
+reject "header: a missing Title" 'header is missing "Title"'
+
+new_case dod-missing t01
+sed -i '/^- \*\*DoD\*\*/d' ticket.md
+reject "header: a missing DoD" 'header is missing "DoD"'
+
+new_case cites-missing t01
+sed -i '/^- \*\*Cites\*\*/d' ticket.md
+reject "header: a missing Cites" 'header is missing "Cites"'
+
 new_case label-unknown t01
 sed -i 's/^- \*\*Size\*\*: S/- **Estimate**: S/' ticket.md
 reject "header: an unknown label" 'unknown header label "Estimate"'
@@ -434,17 +449,61 @@ new_case language-wrong t01
 sed -i 's/^- \*\*Language\*\*: en-US/- **Language**: pt-BR/' ticket.md
 reject "header: a language that is not the spec's" "Language is not the spec Language"
 
-new_case slice-unknown t01
-sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-09/' ticket.md
-reject "header: a slice that is not a task of the spec" "is not a task of the spec"
+new_case task-bad t01
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: task one/' ticket.md
+reject "header: a Task that is not a task id" "Task must be one task id"
+
+new_case task-two t01
+sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-02/' ticket.md
+reject "header: a Task of two tasks" "a ticket carries exactly one task"
 
 new_case blocked-bad t01
-sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: T-01 T-02/' ticket.md
+sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: T-05 T-06/' ticket.md
 reject "header: a malformed Blocked by" "Blocked by must be"
 
-new_case blocked-none-with-dependency t02
-sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: none/' ticket.md
-reject "header: Blocked by none for a task that depends on another ticket" "Blocked by cannot be none"
+new_case blocked-self t01
+sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: T-01/' ticket.md
+reject "header: a task that blocks itself" "a task cannot block itself"
+
+new_case blocked-twice t02
+sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: T-01, T-01/' ticket.md
+reject "header: a blocker named twice" "is named twice in Blocked by"
+
+new_case blocked-ticket-id t02
+sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: #12/' ticket.md
+reject "header: a ticket id instead of a task id in Blocked by" "Blocked by must be"
+
+new_case dod-bad t01
+sed -i 's/^- \*\*DoD\*\*: AC-01/- **DoD**: AC-01 passes/' ticket.md
+reject "header: a DoD that is not a list of AC ids" "DoD must be acceptance criteria ids"
+
+new_case dod-unknown t01
+sed -i 's/^- \*\*DoD\*\*: AC-01/- **DoD**: AC-01, AC-09/' ticket.md
+reject "header: a DoD naming an AC the spec lacks" "AC-09 is not an acceptance criterion of the spec"
+
+new_case dod-twice t01
+sed -i 's/^- \*\*DoD\*\*: AC-01/- **DoD**: AC-01, AC-01/' ticket.md
+reject "header: an AC named twice in the DoD" "AC-01 is named twice in DoD"
+
+new_case dod-widened t01
+sed -i 's/^- \*\*DoD\*\*: AC-01/- **DoD**: AC-01, AC-03/' ticket.md
+reject "header: a DoD wider than the sections copied" "is missing the spec line"
+
+new_case cites-bad t01
+sed -i 's/^- \*\*Cites\*\*: C-01/- **Cites**: the stack/' ticket.md
+reject "header: a Cites that is not a list of ids" "Cites must be"
+
+new_case cites-unknown t01
+sed -i 's/^- \*\*Cites\*\*: C-01/- **Cites**: C-01, D-09/' ticket.md
+reject "header: a Cites naming an item the spec lacks" "D-09 is not an item of the spec"
+
+new_case cites-fr t01
+sed -i 's/^- \*\*Cites\*\*: C-01/- **Cites**: C-01, FR-03/' ticket.md
+reject "header: a Cites naming an FR, which the DoD derives" "Cites must be"
+
+new_case cites-none t01
+sed -i 's/^- \*\*Cites\*\*: C-01/- **Cites**: none/' ticket.md
+reject "header: Cites none while the ticket copies a C" "does not pull in this line of the spec"
 
 new_case part-of t01
 sed -i '1i - **Part of**: #10' ticket.md
@@ -466,10 +525,6 @@ new_case type-none t01
 sed -i 's/^- \*\*Type\*\*: feature/- **Type**: none/' ticket.md
 pass "header: Type none"
 
-new_case slice-two-tasks t01
-sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-02/' ticket.md
-reject "header: a slice of two tasks" "a ticket carries exactly one task"
-
 new_case title-line t01
 sed -i '1i # A title' ticket.md
 reject "header: a title line in the body" 'header line is not "- **Label**: value"'
@@ -478,33 +533,17 @@ new_case size-bad t01
 sed -i 's/^- \*\*Size\*\*: S/- **Size**: banana/' ticket.md
 reject "header: a size outside S, M and L" "Size must be S, M or L"
 
+new_case size-large t01
+sed -i 's/^- \*\*Size\*\*: S/- **Size**: L/' ticket.md
+pass "header: Size L, which the epic must justify"
+
 new_case spec-path-wrong t01
 sed -i 's| .piv/demo/spec.md @ | /nonexistent/other.md @ |' ticket.md
 reject "header: a Spec path that is not the spec" "is not the spec"
 
-new_case slice-twice t01
-sed -i 's/^- \*\*Task\*\*: T-01/- **Task**: T-01, T-01/' ticket.md
-reject "header: a task named twice in the slice" "is named twice"
-
 new_case crlf-ticket t01
 awk '{printf "%s%c\n", $0, 13}' ticket.md > ticket.crlf && mv ticket.crlf ticket.md
 reject "mutant: a ticket whose lines end in CR" "FAIL line"
-
-new_case blocked-invented t01
-sed -i 's/^- \*\*Blocked by\*\*: none/- **Blocked by**: T-05, T-06/' ticket.md
-reject "header: Blocked by on a slice that depends on no outside task" "so Blocked by must be none"
-
-new_case blocked-extra t02
-sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: T-01, T-03/' ticket.md
-reject "header: a blocker no task of the slice depends on" "T-03 is in Blocked by, but no task of the slice depends on it"
-
-new_case blocked-wrong t02
-sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: T-03/' ticket.md
-reject "header: a dependency Blocked by leaves out" "the slice depends on T-01, which Blocked by does not name"
-
-new_case blocked-ticket-id t02
-sed -i 's/^- \*\*Blocked by\*\*: T-01/- **Blocked by**: #12/' ticket.md
-reject "header: a ticket id instead of a task id in Blocked by" "Blocked by must be"
 
 # Usage and I/O errors exit 2.
 new_case usage t01
