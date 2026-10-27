@@ -108,4 +108,4 @@ Run `sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh [spec path]`. It prints finding
 Confirm where the spec and `spec.review.md` landed, by path, then offer the next move and let the user run it:
 
 - **Reviewed** → run `piv-slice [intent-slug]`, in a session of its own.
-- **Reopened** → run `piv-spec [intent-slug]` to settle what `spec.review.md` lists, then this skill again.
+- **Reopened** → run `piv-spec [intent-slug]`, in a session of its own, to settle what `spec.review.md` lists, then this skill again.
