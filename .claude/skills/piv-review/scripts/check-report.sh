@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Checks a review report before it is handed on: the template's header fields are
 # filled, its headings are present and in order, no section is left empty, every
-# `path:line` it cites exists in the working tree, every non-blocking finding carries
+# `path:line` it cites exists in the working tree, every finding outside Test facts carries
 # its origin, and the verdict agrees with the findings. It reads the report and the
 # files it cites; it changes nothing. The report's path is the first argument; the
 # repository root is the current directory, where the cited paths are relative to.
@@ -53,7 +53,7 @@ case "$verdict" in
 esac
 
 # Headings: each must be present, and together they must follow the template's order.
-headings="## Scope|## Findings|### Blocking|### Critical|### High|### Medium|### Low|## Dropped by prior ruling|## Checks run"
+headings="## Scope|## Findings|### Test facts|### Critical|### High|### Medium|### Low|## Dropped by prior ruling|## Checks run"
 absent=""
 old_ifs=$IFS
 IFS='|'
@@ -105,15 +105,15 @@ done < "$problems.sections"
 rm -f "$problems.sections"
 
 # Origins and verdict: a finding is a top-level "- ", "* " or "+ " line of a findings section. Outside
-# Blocking, it ends on " · [class] · [origin]"; a Blocking finding carries no origin.
-# PASS holds only when Blocking is empty and every finding of severity Critical, High or Medium is pre-existing.
+# Test facts, it ends on " · [class] · [origin]"; a Test facts finding carries no origin.
+# PASS holds only when Test facts is empty and every finding of severity Critical, High or Medium is pre-existing.
 findings=$(awk '
   { sub(/\r$/, ""); sub(/[[:space:]]+$/, "") }
-  /^### (Blocking|Critical|High|Medium|Low)$/ { sec = $2; next }
+  /^### (Test facts|Critical|High|Medium|Low)$/ { sec = ($2 == "Test") ? "Test-facts" : $2; next }
   /^##/ { sec = "" }
   sec == "" || $0 !~ /^[-*+] / { next }
-  sec == "Blocking" && / · (introduced|aggravated|pre-existing)$/ { print "tagged " $0; print "holds Blocking"; next }
-  sec == "Blocking" { print "holds Blocking"; next }
+  sec == "Test-facts" && / · (introduced|aggravated|pre-existing)$/ { print "tagged " $0; print "holds Test-facts"; next }
+  sec == "Test-facts" { print "holds Test-facts"; next }
   $0 !~ / · (logic|security|performance|quality|standards|coverage) · (introduced|aggravated|pre-existing)$/ { print "origin " sec ": " $0; next }
   sec != "Low" && ($NF == "introduced" || $NF == "aggravated") { print "holds " sec }
 ' "$report")
@@ -122,19 +122,19 @@ printf '%s\n' "$findings" | sed -n 's/^origin //p' | while IFS= read -r line; do
   fail "finding in $line; end its line with ' · [class] · [origin]', the class one of logic, security, performance, quality, standards or coverage, the origin one of introduced, aggravated or pre-existing"
 done
 printf '%s\n' "$findings" | sed -n 's/^tagged //p' | while IFS= read -r line; do
-  fail "Blocking finding carries an origin: $line; drop it, a blocking finding has none"
+  fail "Test facts finding carries an origin: $line; drop it, a test-fact finding has none"
 done
 if [ "$verdict" = "PASS" ] && [ -n "$holding" ]; then
   case " $holding " in
-    *" Blocking "*) fail "Verdict is PASS but Blocking holds a finding" ;;
+    *" Test-facts "*) fail "Verdict is PASS but Test facts holds a finding" ;;
   esac
-  other=$(printf '%s\n' "$holding" | tr ' ' '\n' | grep -vx 'Blocking' | tr '\n' ' ' | sed 's/ $//' || true)
+  other=$(printf '%s\n' "$holding" | tr ' ' '\n' | grep -vx 'Test-facts' | tr '\n' ' ' | sed 's/ $//' || true)
   if [ -n "$other" ]; then
     fail "Verdict is PASS but $other holds an introduced or aggravated finding of severity Critical, High or Medium"
   fi
 fi
 if [ "$verdict" = "CHANGES REQUESTED" ] && [ -z "$holding" ]; then
-  fail "Verdict is CHANGES REQUESTED but no finding is blocking, or introduced or aggravated of severity Critical, High or Medium"
+  fail "Verdict is CHANGES REQUESTED but no finding is a test fact, or introduced or aggravated of severity Critical, High or Medium"
 fi
 
 # Citations: a backticked `path:line` or `path:start-end`. The path must exist and the

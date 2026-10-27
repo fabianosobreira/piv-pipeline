@@ -14,7 +14,7 @@
 
 ## Findings
 
-### Blocking
+### Test facts
 - **[one-line claim: the red, missing or weakened test, or the untested behavior — its kind named]** — [the test's `file:line`, or the code's for an absent test or an untested behavior]
   - **Evidence**: [the failing output, the test the ticket's verification names, the diff line that weakened it, or the acceptance criterion or interface naming the untested behavior]
   - **Impact**: [what the missing proof leaves unguarded]

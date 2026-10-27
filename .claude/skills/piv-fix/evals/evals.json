@@ -11,7 +11,7 @@
       "Proposes the introduced low finding for Fix now and the pre-existing low finding for Defer, with a title and a type for the deferral, and waits for the user's ruling before moving any code",
       "Asks the user for no reason at any point for the introduced low finding",
       "Types the deferral none, since the finding is class quality and severity low",
-      "Proves the `cache` fix with a check that shows the claim no longer holds, not with a test that fails without the fix: the finding is neither blocking nor typed bug",
+      "Proves the `cache` fix with a check that shows the claim no longer holds, not with a test that fails without the fix: the finding is neither a test-fact nor typed bug",
       "Writes the fix report at .piv/rate-limiting/tasks/T-01/T-01.fixes.md with Round 1, and the deferral at .piv/rate-limiting/deferrals/D-01.md with Origin T-01, review round 1",
       "Offers piv-review #12 T-01 in a session of its own, not piv-commit, although the verdict is PASS, because the printed hash differs from the Diff hash"
     ]

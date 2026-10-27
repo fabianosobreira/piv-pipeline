@@ -26,7 +26,7 @@
     "expected_behavior": [
       "Checks AC-01 and AC-02 against the code and finds both met",
       "Raises no logic finding for an acceptance criterion",
-      "Sets the verdict to PASS unless an independent blocking finding, or an introduced or aggravated finding of severity critical, high or medium, survives",
+      "Sets the verdict to PASS unless an independent test-fact finding, or an introduced or aggravated finding of severity critical, high or medium, survives",
       "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with pre-existing findings, in a session of its own"
     ]
   },
@@ -91,7 +91,7 @@
       "evals/fixtures/ticket-sliced.md"
     ],
     "expected_behavior": [
-      "Registers a blocking finding of kind missing for the test file the section 9 command names",
+      "Registers a test-fact finding of kind missing for the test file the section 9 command names",
       "Sets the verdict to CHANGES REQUESTED",
       "Does not treat the implementation report's account as proof that the criteria are met"
     ]

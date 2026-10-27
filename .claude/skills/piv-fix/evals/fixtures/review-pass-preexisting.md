@@ -15,7 +15,7 @@
 
 ## Findings
 
-### Blocking
+### Test facts
 No findings.
 
 ### Critical

@@ -17,7 +17,7 @@
 - **[the finding's one-line claim]** — `path/to/file.py:42` → [what to inspect or test by hand] | candidate task: [proposed title] — [why the repair outgrew this run]
 
 ## Noise / won't-fix
-- **[the finding's one-line claim]** — `path/to/file.py:42` → [why it drops, in terms the code bears out][, only for a blocking finding, or an introduced or aggravated one of severity critical, high or medium: · ruled out of Fix now: [the user's reason]] | won't fix — low
+- **[the finding's one-line claim]** — `path/to/file.py:42` → [why it drops, in terms the code bears out][, only for a test-fact finding, or an introduced or aggravated one of severity critical, high or medium: · ruled out of Fix now: [the user's reason]] | won't fix — low
 
 ## Checks run
 - [check — test / type-check / lint / build]: [the command] → [green | red: the failure and what was tried]
