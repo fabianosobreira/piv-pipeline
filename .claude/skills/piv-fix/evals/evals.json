@@ -13,7 +13,10 @@
       "Types the deferral none, since the finding is class quality and severity low",
       "Proves the `cache` fix with a check that shows the claim no longer holds, not with a test that fails without the fix: the finding is neither a test-fact nor typed bug",
       "Writes the fix report at .piv/rate-limiting/tasks/T-01/T-01.fixes.md with Round 1, and the deferral at .piv/rate-limiting/deferrals/D-01.md with Origin T-01, review round 1",
-      "Offers piv-review #12 T-01 in a session of its own, not piv-commit, although the verdict is PASS, because the printed hash differs from the Diff hash"
+      "Offers piv-review #12 T-01 in a session of its own, not piv-commit, although the verdict is PASS, because the printed hash differs from the Diff hash",
+      "Runs the existing tests of src/middleware/rate-limit.js once, before the first edit, as the baseline, and never runs the full test suite",
+      "Runs in Step 4 the baseline tests again plus the test it wrote or edited for the `cache` fix",
+      "Flips the `cache` entry from not fixed — pending to fixed as soon as its proof passes, before Step 4"
     ]
   },
   {
@@ -106,16 +109,16 @@
   },
   {
     "skills": ["piv-fix"],
-    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-preexisting.md, with the epic and the ticket as in the first scenario; the Base in the report is a commit of the repository. The user rules the only finding to Defer. In Step 4, `npx vitest run --coverage` passes but leaves a coverage/ directory and a .vitest-cache/ directory in the repository. Apart from those two directories, the tree holds nothing the review did not see.",
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-pass-preexisting.md, with the epic and the ticket as in the first scenario; the Base in the report is a commit of the repository. The user rules the only finding to Fix now. The baseline, `npx vitest run --coverage`, passes but leaves a coverage/ directory and a .vitest-cache/ directory in the repository. Apart from those two directories and the fix, the tree holds nothing the review did not see.",
     "files": [
       "evals/fixtures/epic.md",
       "evals/fixtures/ticket-sliced.md",
       "evals/fixtures/review-pass-preexisting.md"
     ],
     "expected_behavior": [
-      "Removes the coverage/ and .vitest-cache/ directories after the checks, so the tree holds the fixes and nothing else",
-      "Records the test check in the fix report's Checks run with its command and result",
-      "Runs diff-hash.sh only after the cleanup, finds the printed hash equal to the report's Diff hash, and offers piv-commit #12 T-01 in a session of its own"
+      "Removes the coverage/ and .vitest-cache/ directories, so the tree holds the fixes and nothing else",
+      "Records the baseline in the fix report's Checks run with its command and result",
+      "Runs diff-hash.sh only after the cleanup"
     ]
   },
   {
@@ -133,6 +136,72 @@
       "Records the verdict in the fix report as a Deferred entry of the moved finding, then writes only that deferral at .piv/rate-limiting/deferrals/D-01.md with Origin T-01, review round 1",
       "Does not re-fix the `cache` finding",
       "Runs diff-hash.sh and offers piv-review #12 T-01, not piv-commit, although the verdict is PASS and this run changed no code, since the printed hash differs from the Diff hash"
+    ]
+  },
+  {
+    "skills": ["piv-fix"],
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. The user rules the introduced low finding (the `cache` name) to Fix now. In the baseline, a test of src/middleware/rate-limit.js fails an assertion the fix does not touch, and no finding cites it.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md",
+      "evals/fixtures/review-pass-low.md"
+    ],
+    "expected_behavior": [
+      "Does not put the red test in any bucket",
+      "Does not edit the test and does not work the failure",
+      "Cites the test in Checks run as `not this run's`, with the assertion it fails"
+    ]
+  },
+  {
+    "skills": ["piv-fix"],
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. The user rules the introduced low finding to Fix now. tests/health.test.js fails, but exercises nothing that the change, the findings or the fix touch.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md",
+      "evals/fixtures/review-pass-low.md"
+    ],
+    "expected_behavior": [
+      "Does not run tests/health.test.js at any moment",
+      "Does not run the full test suite at any moment"
+    ]
+  },
+  {
+    "skills": ["piv-fix"],
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. Same files and tree as the first scenario, from evals/fixtures/review-pass-low.md. The user rules the introduced low finding to Fix now. An existing test of src/middleware/rate-limit.js is green in the baseline and turns red after the fix.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md",
+      "evals/fixtures/review-pass-low.md"
+    ],
+    "expected_behavior": [
+      "Treats the failure as this run's and fixes its cause, or records the three hypotheses tried",
+      "Does not record the test as `not this run's`"
+    ]
+  },
+  {
+    "skills": ["piv-fix"],
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-changes-requested.md, with the epic and the ticket as in the first scenario. The user rules the introduced medium finding to Fix now. Its behavior, a time boundary, cannot be exercised by the project's test setup.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md",
+      "evals/fixtures/review-changes-requested.md"
+    ],
+    "expected_behavior": [
+      "Posts the finding, why the setup cannot reach it and the manual check that would prove it, and ends the turn at the GATE",
+      "Does not mark the finding fixed before the user answers"
+    ]
+  },
+  {
+    "skills": ["piv-fix"],
+    "query": "/piv-fix .piv/rate-limiting/tasks/T-01/T-01.review.md. The review report is evals/fixtures/review-changes-requested.md, the epic as in the first scenario and the ticket evals/fixtures/ticket-ask-first.md, which lists editing src/server.js under Ask first. The repair of the introduced medium finding needs an edit in src/server.js.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-ask-first.md",
+      "evals/fixtures/review-changes-requested.md"
+    ],
+    "expected_behavior": [
+      "Names the Ask first item in the split posted at the GATE",
+      "Makes no edit in src/server.js before the user's ruling"
     ]
   }
 ]

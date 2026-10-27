@@ -20,4 +20,4 @@
 - **[the finding's one-line claim]** — `path/to/file.py:42` → [why it drops, in terms the code bears out][, only for a test-fact finding, or an introduced or aggravated one of severity critical, high or medium: · ruled out of Fix now: [the user's reason]] | won't fix — low
 
 ## Checks run
-- [check — test / type-check / lint / build]: [the command] → [green | red: the failure and what was tried]
+- [check — baseline (the tests in scope, before the first edit) / tests in scope (after the fixes) / type-check / lint / build]: [the command] → [green | red: the failure and what was tried | not this run's: each test red in the baseline, and the assertion it fails]
