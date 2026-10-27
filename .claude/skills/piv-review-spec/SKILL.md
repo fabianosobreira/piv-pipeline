@@ -17,7 +17,7 @@ This is part of the **plan** step of the PIV loop `docs/piv-loop.md` describes. 
 
 Talk to the user, and write every spec edit and the content of `spec.review.md`, in the spec's `Language`; headings, labels, IDs and keywords stay as the templates write them.
 
-- Output skeleton: [${CLAUDE_SKILL_DIR}/templates/spec-review.md](${CLAUDE_SKILL_DIR}/templates/spec-review.md)
+- Output skeleton: `${CLAUDE_SKILL_DIR}/templates/spec-review.md`
 - Validator: `${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh` (execute it, do not read it). It is a copy of `piv-spec`'s and needs only POSIX `sh` and `awk`.
 
 ## Success criteria
@@ -109,7 +109,7 @@ Run `sh ${CLAUDE_SKILL_DIR}/scripts/lint_spec.sh [spec path]`. It prints finding
 
 ### Step 6 — Mark the outcome and write spec.review.md
 
-- **A note to reopen** → set `Status: draft`. Write `spec.review.md` from [${CLAUDE_SKILL_DIR}/templates/spec-review.md](${CLAUDE_SKILL_DIR}/templates/spec-review.md) with `Outcome: reopened` and `Reviewed-hash: none`, listing under *Resolved with the user* each item `piv-spec` has to settle. **STOP**, pointing at `piv-spec [intent-slug]`.
+- **A note to reopen** → set `Status: draft`. Write `spec.review.md` from `${CLAUDE_SKILL_DIR}/templates/spec-review.md` with `Outcome: reopened` and `Reviewed-hash: none`, listing under *Resolved with the user* each item `piv-spec` has to settle. **STOP**, pointing at `piv-spec [intent-slug]`.
 - **Otherwise** → set `Status: reviewed`, the spec's last edit. Run the lint once more, then take `git hash-object --no-filters [spec path]`. Write `spec.review.md` from the template, used exactly, with `Outcome: reviewed` and that hash as `Reviewed-hash`. Never write the hash into the spec: any edit to the spec changes it.
 
 **Done when** `spec.review.md` exists with every section filled, and its `Reviewed-hash` matches the spec — or it says `reopened` and the spec says `Status: draft`.

@@ -80,7 +80,7 @@ Take the hash after `@` in the PR body's `Spec` line, and the spec's current has
 
 ### Step 6 — Write the PR review
 
-Write `.piv/[intent-slug]/pr-review.md` from [${CLAUDE_SKILL_DIR}/templates/pr-review.md](${CLAUDE_SKILL_DIR}/templates/pr-review.md), used exactly: every heading, in the template's order. Copy each divergent item's spec line verbatim. Set the verdict as **Success criteria** says. Then reopen every cited line and confirm it says what its row or divergence claims; a citation that does not → correct it, and check again.
+Write `.piv/[intent-slug]/pr-review.md` from `${CLAUDE_SKILL_DIR}/templates/pr-review.md`, used exactly: every heading, in the template's order. Copy each divergent item's spec line verbatim. Set the verdict as **Success criteria** says. Then reopen every cited line and confirm it says what its row or divergence claims; a citation that does not → correct it, and check again.
 
 Print the verdict and the count of divergences per severity.
 
