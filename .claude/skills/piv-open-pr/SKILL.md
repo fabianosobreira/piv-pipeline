@@ -13,7 +13,7 @@ This closes the **verify** step of the PIV loop `docs/piv-loop.md` describes: ev
 
 - ✅ Every task of the epic was `[x]` and every commit it lists is on the branch.
 - ✅ The PR title follows the form `docs/git-conventions.md` defines, with the issue number.
-- ✅ The body carries `Closes #N`, the epic's `Spec` line, and, per task, the implementation report's *Deviations from the ticket* and *Problems encountered*, every finding the review report left standing, and the fix report's items flagged for a manual check — or says which report was unavailable. A missing fix report goes unmentioned.
+- ✅ The body carries `Closes #N`, the epic's `Spec` line, and, per task, the implementation report's *Deviations from the ticket* and *Problems encountered*, the findings Step 2 carries from the review report, and the fix report's items flagged for a manual check — or says which report was unavailable. A missing fix report goes unmentioned.
 - ✅ The body carries every deferral of the intent in full.
 - ✅ The reports themselves stay local: the body is their distillation, and nothing is attached.
 - ✅ The PR carries the user as assignee, and is a draft or ready for review as Step 5's rule decides.
@@ -56,7 +56,7 @@ Run `gh auth status`; check which branch is checked out, whether the working tre
 Read, for each task of the epic in its order, under `.piv/[intent-slug]/tasks/T-xx/`:
 
 - **Implementation report**, `T-xx.report.md` — its status, *Summary*, *Validation results*, *Deviations from the ticket* and *Problems encountered*.
-- **Review report**, `T-xx.review.md` — its verdict and every finding it left standing. On a PASS those are its *pre-existing* findings, of any severity — the body is the only place the human reviewer meets them. When the commit went ahead on a verdict that was not PASS, its blocking, *introduced* and *aggravated* findings stand too. Carry each finding as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix: a reviewer who reads the first reviewer's reasoning inherits that framing instead of reading the code.
+- **Review report**, `T-xx.review.md` — its verdict and the findings to carry. On a PASS those are its *pre-existing* findings, of any severity — the body is the only place the human reviewer meets them; its *introduced* or *aggravated* *low* findings stay in the report. A finding the fix report of the review's *Round* settled elsewhere (same claim and `file:line`) is not listed here: one with a deferral in the body appears only as that deferral, one ruled *Noise / won't-fix* drops out, and one under *Needs a human look* appears only among the items flagged for a manual check. When the commit went ahead on a verdict that was not PASS, its blocking findings, and its *introduced* and *aggravated* ones of severity critical, high or medium, are carried too. Carry each finding as its severity, its one-line claim and its `file:line` — never its evidence, impact or fix: a reviewer who reads the first reviewer's reasoning inherits that framing instead of reading the code.
 - **Fix report**, `T-xx.fixes.md`, when there is one — its *Checks run* and every *Needs a human look* item it still holds unresolved; the body lists those as flagged, never as checked. No fix report is the normal case when the first review passed.
 - **Validation results** — the fix report's *Checks run*; with no fix report, the implementation report's *Validation results*; with neither, run the project's checks now and use what they report.
 
@@ -78,7 +78,7 @@ Open it with `gh pr create` against `[base]`, with the body file from Step 3, an
 
 Open it as a draft or ready for review by the first condition below that holds, over every task:
 
-- **An implementation report status `PARTIAL`, with a fix report, and a PASS review report whose *Round* is above that fix report's** → ready for review. The PARTIAL went through a fix round and a fresh review, but a PASS proves only that no blocking, *introduced* or *aggravated* finding survived — the review runs no build, for one. Mark each of its problems under *Open problems* "reported by the implementation before the PASS review", never as resolved.
+- **An implementation report status `PARTIAL`, with a fix report, and a PASS review report whose *Round* is above that fix report's** → ready for review. The PARTIAL went through a fix round and a fresh review, but a PASS proves only that no blocking finding, and no *introduced* or *aggravated* one of severity critical, high or medium, survived — the review runs no build, for one. Mark each of its problems under *Open problems* "reported by the implementation before the PASS review", never as resolved.
 - **Any other implementation report status `PARTIAL`** → draft. The body's closing line says it waits on the open problems it lists.
 - **Otherwise** → ready for review.
 

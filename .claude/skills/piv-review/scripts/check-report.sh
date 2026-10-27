@@ -35,9 +35,12 @@ fail() {
 
 # Header fields: each must carry a value after the colon, and not the template's
 # [placeholder].
-for field in Intent-slug Issue Task Branch Round Base Diff Verdict; do
+for field in Intent-slug Issue Task Branch Round Base "Diff hash" Verdict; do
   if ! grep -Eq "^- \*\*$field\*\*: [^[:space:]]" "$report"; then
     fail "header field '$field' is missing or empty"
+    if [ "$field" = "Diff hash" ] && grep -Eq '^- \*\*Diff\*\*:' "$report"; then
+      fail "the header carries the old '**Diff**' field; rename it to '**Diff hash**'"
+    fi
   elif grep -Eq "^- \*\*$field\*\*: [[]" "$report"; then
     fail "header field '$field' still holds the template's [placeholder]; replace it with the value"
   fi
@@ -103,7 +106,7 @@ rm -f "$problems.sections"
 
 # Origins and verdict: a finding is a top-level "- ", "* " or "+ " line of a findings section. Outside
 # Blocking, it ends on " · [class] · [origin]"; a Blocking finding carries no origin.
-# PASS holds only when Blocking is empty and every other finding is pre-existing.
+# PASS holds only when Blocking is empty and every finding of severity Critical, High or Medium is pre-existing.
 findings=$(awk '
   { sub(/\r$/, ""); sub(/[[:space:]]+$/, "") }
   /^### (Blocking|Critical|High|Medium|Low)$/ { sec = $2; next }
@@ -112,7 +115,7 @@ findings=$(awk '
   sec == "Blocking" && / · (introduced|aggravated|pre-existing)$/ { print "tagged " $0; print "holds Blocking"; next }
   sec == "Blocking" { print "holds Blocking"; next }
   $0 !~ / · (logic|security|performance|quality|standards|coverage) · (introduced|aggravated|pre-existing)$/ { print "origin " sec ": " $0; next }
-  $NF == "introduced" || $NF == "aggravated" { print "holds " sec }
+  sec != "Low" && ($NF == "introduced" || $NF == "aggravated") { print "holds " sec }
 ' "$report")
 holding=$(printf '%s\n' "$findings" | sed -n 's/^holds //p' | sort -u | tr '\n' ' ' | sed 's/ $//')
 printf '%s\n' "$findings" | sed -n 's/^origin //p' | while IFS= read -r line; do
@@ -122,10 +125,16 @@ printf '%s\n' "$findings" | sed -n 's/^tagged //p' | while IFS= read -r line; do
   fail "Blocking finding carries an origin: $line; drop it, a blocking finding has none"
 done
 if [ "$verdict" = "PASS" ] && [ -n "$holding" ]; then
-  fail "Verdict is PASS but findings in $holding are blocking, introduced or aggravated"
+  case " $holding " in
+    *" Blocking "*) fail "Verdict is PASS but Blocking holds a finding" ;;
+  esac
+  other=$(printf '%s\n' "$holding" | tr ' ' '\n' | grep -vx 'Blocking' | tr '\n' ' ' | sed 's/ $//' || true)
+  if [ -n "$other" ]; then
+    fail "Verdict is PASS but $other holds an introduced or aggravated finding of severity Critical, High or Medium"
+  fi
 fi
 if [ "$verdict" = "CHANGES REQUESTED" ] && [ -z "$holding" ]; then
-  fail "Verdict is CHANGES REQUESTED but no finding is blocking, introduced or aggravated"
+  fail "Verdict is CHANGES REQUESTED but no finding is blocking, or introduced or aggravated of severity Critical, High or Medium"
 fi
 
 # Citations: a backticked `path:line` or `path:start-end`. The path must exist and the

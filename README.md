@@ -19,11 +19,11 @@ Two properties hold the whole thing together. **Every step reads the artifact th
 ### The chain at a glance
 
 - **Plan** — `piv-spec` → `piv-review-spec` → `piv-slice`
-- **Per task** — `piv-implement` → `piv-review` → `piv-fix` (when the review asks for changes) → `piv-commit`
+- **Per task** — `piv-implement` → `piv-review` → `piv-fix` (when the review asks for changes, or to optionally clear `low` findings after a PASS) → `piv-commit`
 - **Ship** — `piv-open-pr` → `piv-review-pr`
 - **Standalone** — `piv-write-prd` writes the intent as a PRD, an ordinary input of `piv-spec` (`piv-spec .piv/[intent-slug]/prd.md`)
 
-**Each task closes on a PASS.** `piv-fix` always hands back to a fresh `piv-review`, and only a PASS verdict earns a commit. Tasks run one at a time, in the order the epic gives.
+**Each task closes on a PASS.** `piv-fix` hands back to a fresh `piv-review` — or to `piv-commit`, when the review was a PASS and the tree still matches it — and only a PASS verdict earns a commit. Tasks run one at a time, in the order the epic gives.
 
 Read the arrows as *"this is the next move offered"*, not as automation. The PR is the handoff out of the loop, to a human who reviews, approves and merges.
 
@@ -68,6 +68,7 @@ You rarely need all ten. Find the row that matches what you have in hand.
 | An issue number | `piv-implement` | It picks the next task from the epic and builds it on the intent's branch. |
 | A task built, not yet committed | `piv-review` | This is the gate that decides whether the task earns a commit. |
 | A CHANGES REQUESTED verdict | `piv-fix` | Findings are input, not a work order — you rule on each one. |
+| A PASS verdict with `low` findings | `piv-fix` (optional) | Fix, defer or leave each one; none blocks the commit. |
 | A PASS verdict | `piv-commit` | Atomic commits for the task, then the next task — or the PR. |
 | Every task committed | `piv-open-pr` | One PR for the whole intent, closing its issue on merge. |
 | An open PR | `piv-review-pr` | It holds the PR to every item of the spec. |

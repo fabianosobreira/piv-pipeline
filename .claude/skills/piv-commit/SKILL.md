@@ -14,7 +14,7 @@ Commit the work as **atomic** commits — each one a coherent piece of work its 
 
 ## Success criteria
 
-- ✅ The task's review report verdict was PASS, with no fix report matching its **Round** and the tree matching its **Diff** — or the user ruled to commit anyway.
+- ✅ The task's review report verdict was PASS and the tree still matches its **Diff hash** — or the user ruled to commit anyway.
 - ✅ Every uncommitted change landed in a group, or the user decided where it goes.
 - ✅ Every group is one coherent piece of work its subject can name.
 - ✅ Every subject follows the form `docs/git-conventions.md` defines, with the tag the work earns and the issue number.
@@ -38,7 +38,7 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
 1. **Intent and task.** Resolve them from `$ARGUMENTS` as `docs/piv-loop.md` says under *Resolving the intent and the task*, from `.piv/[intent-slug]/epic.md`. The task is not `[~]` → **STOP**: only the task in progress is committed.
 2. **Branch.** The checked-out branch must be the one the epic names under `Branch`. It isn't → **STOP**, naming both.
 3. **Review.** Check the change earned its commit:
-   1. Read the review report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`: its **Verdict**, **Round**, **Base** and **Diff** and nothing else, then the **Round** of the fix report beside it, `T-xx.fixes.md`, when there is one.
+   1. Read the review report at `.piv/[intent-slug]/tasks/T-xx/T-xx.review.md`: its **Verdict**, **Base** and **Diff hash** and nothing else.
    2. Hash the change by running the bundled script — run it, don't read it — with the report's **Base** and nothing else:
 
       ```bash
@@ -46,7 +46,7 @@ Copy this checklist into your task list. Tick an item only when its step's **Don
       ```
 
       It needs `git` and a POSIX shell, and prints one hash. A non-zero exit prints no hash: exit 2 names the cause and its fix — apply the fix and rerun; when you can't, the check fails with the script's message as the reason.
-   3. Any of these fails the check: the verdict is not PASS; there is no review report; the fix report's **Round** matches the review's (fixes nobody re-reviewed); the hash differs from the report's **Diff**, or the report records none, or the script gave no hash; the **Base** is not `HEAD`. Say which failed, and ask the user whether to commit anyway. **GATE.** No → end the run.
+   3. Any of these fails the check: the verdict is not PASS; there is no review report; the hash differs from the report's **Diff hash**, or the report records none, or the script gave no hash; the **Base** is not `HEAD`. Say which failed, and ask the user whether to commit anyway. **GATE.** No → end the run.
 
 **Done when** the task is `[~]`, the run sits on the intent's branch, and the review check passed or the user ruled to commit anyway.
 

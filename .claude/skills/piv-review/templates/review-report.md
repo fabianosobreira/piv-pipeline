@@ -6,7 +6,7 @@
 - **Branch**: [branch]
 - **Round**: [n]
 - **Base**: [hash of the commit the diff was taken against: `HEAD` when the task started, the last commit before its work]
-- **Diff**: [the hash `scripts/diff-hash.sh` prints for that commit: the full diff against it, untracked files included, ignored files left out]
+- **Diff hash**: [the hash `scripts/diff-hash.sh` prints for that commit: the full diff against it, untracked files included, ignored files left out]
 - **Verdict**: PASS | CHANGES REQUESTED
 
 ## Scope

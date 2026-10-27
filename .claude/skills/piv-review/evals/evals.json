@@ -26,7 +26,7 @@
     "expected_behavior": [
       "Checks AC-01 and AC-02 against the code and finds both met",
       "Raises no logic finding for an acceptance criterion",
-      "Sets the verdict to PASS unless an independent blocking finding, or an introduced or aggravated finding of any severity, survives",
+      "Sets the verdict to PASS unless an independent blocking finding, or an introduced or aggravated finding of severity critical, high or medium, survives",
       "When the verdict is PASS with every severity heading reading \"No findings.\", offers piv-commit here or in a fresh session; with pre-existing findings, in a session of its own"
     ]
   },
@@ -39,7 +39,20 @@
     ],
     "expected_behavior": [
       "Registers a finding of class quality, severity low, origin introduced, for the name that lies about what the map holds",
-      "Sets the verdict to CHANGES REQUESTED although the only finding is low",
+      "Sets the verdict to PASS because the only finding is low",
+      "Hands off to piv-commit in a session of its own, and offers piv-fix with the report's path for those who want the low finding fixed"
+    ]
+  },
+  {
+    "skills": ["piv-review"],
+    "query": "/piv-review #12 T-01. The epic and the ticket sit under .piv/rate-limiting/ as in the first scenario. The uncommitted tree adds src/middleware/rate-limit.js, which meets both criteria with tests/rate-limit.test.js passing, but never resets a client's counter when the window expires on the exact boundary second, an edge path no acceptance criterion covers.",
+    "files": [
+      "evals/fixtures/epic.md",
+      "evals/fixtures/ticket-sliced.md"
+    ],
+    "expected_behavior": [
+      "Registers a finding of class logic, severity medium, origin introduced, for the counter that is not reset at the boundary second",
+      "Sets the verdict to CHANGES REQUESTED because a medium finding is introduced",
       "Hands off to piv-fix with the report's path, not to piv-commit"
     ]
   },

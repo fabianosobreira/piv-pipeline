@@ -97,7 +97,7 @@ const MANUAL_EN_US = {
               phase: 'verify',
               label: 'Verify',
               skills: ['piv-review', 'piv-fix', 'piv-commit', 'piv-open-pr', 'piv-review-pr'],
-              note: '**Each task closes on a PASS.** `piv-fix` always hands back to a fresh `piv-review`. Only a PASS verdict earns a commit; the PR opens once every task is committed.',
+              note: '**Each task closes on a PASS.** `piv-fix` hands back to a fresh `piv-review`, or to `piv-commit` when the review was a PASS and the tree still matches it. Only a PASS verdict earns a commit; the PR opens once every task is committed.',
             },
           ],
         },
@@ -122,6 +122,7 @@ const MANUAL_EN_US = {
             ['An issue number', '`piv-implement`', 'It picks the next task from the epic and builds it on the intent\'s branch.'],
             ['A task built, not yet committed', '`piv-review`', 'This is the gate that decides whether the task earns a commit.'],
             ['A CHANGES REQUESTED verdict', '`piv-fix`', 'Findings are input, not a work order — you rule on each one.'],
+            ['A PASS verdict with `low` findings', '`piv-fix` (optional)', 'Fix, defer or leave each one; none blocks the commit.'],
             ['A PASS verdict', '`piv-commit`', 'Atomic commits for the task, then the next task — or the PR.'],
             ['Every task committed', '`piv-open-pr`', 'One PR for the whole intent, closing its issue on merge.'],
             ['An open PR', '`piv-review-pr`', 'It holds the PR to every item of the spec.'],
@@ -311,9 +312,9 @@ const MANUAL_EN_US = {
           fields: [
             { label: 'Input', text: '`[#N | intent-slug] [T-xx]` — blank and it takes the issue from the branch name and the task in progress from the epic.' },
             { label: 'Output', text: '`tasks/T-xx/T-xx.review.md` — scope (every file read), findings grouped `blocking` / `critical` / `high` / `medium` / `low`, and the checks run, the full test suite among them. A `blocking` finding is a red, missing or weakened test, or a behavior with no test — a fact, outside the severity scale. Every other finding carries an origin: `introduced` by the change, `aggravated` — an old defect the change made reachable — or `pre-existing`, reproduced on the base and untouched by the change. Each finding carries evidence, impact and a concrete fix.' },
-            { label: 'Verdict', text: '**CHANGES REQUESTED** when any blocking, `introduced` or `aggravated` finding survives, whatever its severity. **PASS** otherwise — a PASS leaves only `pre-existing` findings, which the PR body carries.' },
+            { label: 'Verdict', text: '**CHANGES REQUESTED** when any blocking finding, or any `introduced` or `aggravated` one of severity critical, high or medium, survives. **PASS** otherwise — a PASS leaves only `pre-existing` findings, which the PR body carries, and `introduced` or `aggravated` `low` findings, which stay only in the report.' },
             { label: 'How it runs', text: 'Resolve the change against `HEAD`, the last commit before the task → resolve prior deferrals → read the standards the change must meet → examine every changed file in its context → build the case → run three filters that kill unproven findings. The change is held to the ticket\'s acceptance criteria as well as its testing strategy: a criterion the code doesn\'t meet is a `high` finding.' },
-            { label: 'Next move', text: '**PASS** with no findings → `piv-commit [#N] [T-xx]`, here or in a fresh session. **PASS** with `pre-existing` findings → `piv-commit [#N] [T-xx]`, in a session of its own. **CHANGES REQUESTED** → `piv-fix`, in a session of its own, handed this report\'s path.' },
+            { label: 'Next move', text: '**PASS** with no findings → `piv-commit [#N] [T-xx]`, here or in a fresh session. **PASS** with `pre-existing` findings → `piv-commit [#N] [T-xx]`, in a session of its own. **PASS** with `introduced` or `aggravated` `low` findings → `piv-commit [#N] [T-xx]`, in a session of its own; to clear them first, `piv-fix`, which points back to `piv-commit` while the tree still matches the report, and to a fresh `piv-review` otherwise. **CHANGES REQUESTED** → `piv-fix`, in a session of its own, handed this report\'s path.' },
           ],
           notes: [
             { type: 'p', text: '**Use it** before committing a task, and again after every fix run. On a re-review it overwrites the previous report: it is the current state of the task, and the rulings on old findings live in the deferrals, not here.' },
@@ -327,8 +328,8 @@ const MANUAL_EN_US = {
           fields: [
             { label: 'Input', text: '`[review report path]` — blank and it uses the review of the task in progress.' },
             { label: 'Output', text: '`tasks/T-xx/T-xx.fixes.md` — **Fixed**, **Deferred** (with their `D-xx`), **Needs a human look**, **Noise / won\'t-fix**, and the checks run. Each deferral lands in `deferrals/D-xx.md` and in the epic\'s list; no issue is created.' },
-            { label: 'How it runs', text: 'Triage every finding into one of the four buckets, by the blocking kind and the origin the review recorded — blocking, `introduced` and `aggravated` to *fix now*, `pre-existing` to *defer*; a blocking finding only into *fix now* or *noise*, never deferred → fix the *fix now* set one at a time, each with a test that proves it → validate the whole branch.' },
-            { label: 'Next move', text: '`piv-review [#N] [T-xx]` again, in a session of its own. With a *Needs a human look* entry still open, the hand-off waits: inspect it, then rerun `piv-fix`.' },
+            { label: 'How it runs', text: 'Triage every finding into one of the four buckets, by the blocking kind and the origin the review recorded — blocking, `introduced` and `aggravated` to *fix now*, `pre-existing` to *defer*, an `introduced` or `aggravated` `low` one being optional (fix, defer or leave it); a blocking finding only into *fix now* or *noise*, never deferred → fix the *fix now* set one at a time, each with a test that proves it → validate the whole branch.' },
+            { label: 'Next move', text: 'When the review was a PASS and the tree still matches its Diff hash, `piv-commit [#N] [T-xx]`; otherwise `piv-review [#N] [T-xx]` again, in a session of its own. With a *Needs a human look* entry still open, the hand-off waits: inspect it, then rerun `piv-fix`.' },
           ],
           notes: [
             { type: 'p', text: '**Why the report exists.** Triage is a human decision, and a decision that lives only in the conversation is gone by the next run. The fix report and the deferral files are what tell the re-review that a finding was already settled — so settled findings stay settled.' },
@@ -432,7 +433,7 @@ const MANUAL_EN_US = {
             '**Skills stop rather than guess.** A spec not reviewed, a task whose dependency isn\'t committed, a dirty tree with work that fits no group, `gh` not logged in — the run stops and asks.',
             '**GitHub is written twice.** `piv-slice` creates the issue and `piv-open-pr` opens the PR; every other step reads, or stays local.',
             '**Review and fixes are separate runs.** The reviewer writes findings and touches no code; the triage run decides what happens to each one, with you ruling on the split.',
-            '**Each task closes on a PASS.** A fix run always hands back to a fresh review, which reads the deferrals so settled findings stay settled.',
+            '**Each task closes on a PASS.** A fix run hands back to a fresh review, which reads the deferrals so settled findings stay settled. After a PASS the tree still matches, it goes straight to the commit.',
             '**One task at a time.** Tasks run in the epic\'s order, never in parallel, each committed before the next starts.',
             '**One language per intent.** The PRD — or, with no PRD, the spec — is written in the language you interview in, and every later artifact follows it. Template headings and labels stay as the templates write them.',
           ],

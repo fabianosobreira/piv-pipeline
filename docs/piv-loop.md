@@ -12,7 +12,7 @@ Then, **per task**, in the order the epic gives, one task at a time:
 
 4. **`piv-implement`** — the task, built on the intent's branch, with an implementation report.
 5. **`piv-review`** — the gate: the findings that survive scrutiny, with a verdict.
-6. **`piv-fix`** — the triage, when the review requests changes: every finding fixed, deferred, flagged for a human, or dropped.
+6. **`piv-fix`** — the triage, when the review requests changes or, after a PASS, to clear its *low* findings: every finding fixed, deferred, flagged for a human, or dropped.
 7. **`piv-commit`** — the task's atomic history, one coherent piece of work per commit.
 
 Then, once every task is committed:
@@ -20,7 +20,7 @@ Then, once every task is committed:
 8. **`piv-open-pr`** — the hand-off out of the loop, to a human who reviews, approves and merges.
 9. **`piv-review-pr`** — the audit of the PR against the spec.
 
-`piv-write-prd` stands apart from the loop: a standalone skill that writes the intent — what to build and why, never how. Its PRD (`.piv/[intent-slug]/prd.md`) is an ordinary input of `piv-spec`: the user passes its path. Steps 5 and 6 repeat until a fresh review returns PASS; steps 4 to 7 repeat until every task of the epic is committed. Tasks never run in parallel.
+`piv-write-prd` stands apart from the loop: a standalone skill that writes the intent — what to build and why, never how. Its PRD (`.piv/[intent-slug]/prd.md`) is an ordinary input of `piv-spec`: the user passes its path. Steps 5 and 6 repeat until a review returns PASS that no later fix run invalidated; steps 4 to 7 repeat until every task of the epic is committed. Tasks never run in parallel.
 
 ## GATE and STOP
 

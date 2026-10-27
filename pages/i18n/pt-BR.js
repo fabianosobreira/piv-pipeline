@@ -97,7 +97,7 @@ const MANUAL_PT_BR = {
               phase: 'verify',
               label: 'Verify',
               skills: ['piv-review', 'piv-fix', 'piv-commit', 'piv-open-pr', 'piv-review-pr'],
-              note: '**Cada task fecha com um PASS.** `piv-fix` sempre devolve para um `piv-review` novo. Só um veredito PASS dá direito a commit; o PR é aberto quando todas as tasks estão commitadas.',
+              note: '**Cada task fecha com um PASS.** `piv-fix` devolve para um `piv-review` novo, ou para o `piv-commit` quando a review era PASS e a árvore ainda corresponde a ela. Só um veredito PASS dá direito a commit; o PR é aberto quando todas as tasks estão commitadas.',
             },
           ],
         },
@@ -122,6 +122,7 @@ const MANUAL_PT_BR = {
             ['Um número de issue', '`piv-implement`', 'Ela escolhe a próxima task do epic e a constrói na branch do intent.'],
             ['Uma task construída, ainda sem commit', '`piv-review`', 'Este é o portão que decide se a task merece um commit.'],
             ['Um veredito CHANGES REQUESTED', '`piv-fix`', 'Findings são entrada, não ordem de serviço — você decide sobre cada um.'],
+            ['Um veredito PASS com findings `low`', '`piv-fix` (opcional)', 'Corrija, adie ou deixe cada um; nenhum bloqueia o commit.'],
             ['Um veredito PASS', '`piv-commit`', 'Commits atômicos para a task, depois a próxima task — ou o PR.'],
             ['Todas as tasks commitadas', '`piv-open-pr`', 'Um PR para o intent inteiro, que fecha a issue no merge.'],
             ['Um PR aberto', '`piv-review-pr`', 'Ela confronta o PR com cada item da spec.'],
@@ -311,9 +312,9 @@ const MANUAL_PT_BR = {
           fields: [
             { label: 'Entrada', text: '`[#N | intent-slug] [T-xx]` — em branco, pega a issue do nome da branch e a task em andamento do epic.' },
             { label: 'Saída', text: '`tasks/T-xx/T-xx.review.md` — escopo (cada arquivo lido), findings agrupados em `blocking` / `critical` / `high` / `medium` / `low`, e as checagens executadas, entre elas a suíte de testes completa. Um finding `blocking` é um teste vermelho, ausente ou enfraquecido, ou um comportamento sem teste — um fato, fora da escala de severidade. Todo outro finding traz uma origem: `introduced` pela mudança, `aggravated` — um defeito antigo que a mudança tornou alcançável — ou `pre-existing`, reproduzido na base e intocado pela mudança. Cada finding traz evidência, impacto e uma correção concreta.' },
-            { label: 'Veredito', text: '**CHANGES REQUESTED** quando sobrevive qualquer finding blocking, `introduced` ou `aggravated`, seja qual for a severidade. **PASS** caso contrário — um PASS deixa só findings `pre-existing`, que o corpo do PR carrega.' },
+            { label: 'Veredito', text: '**CHANGES REQUESTED** quando sobrevive qualquer finding blocking, ou qualquer `introduced` ou `aggravated` de severidade critical, high ou medium. **PASS** caso contrário — um PASS deixa só findings `pre-existing`, que o corpo do PR carrega, e findings `low` `introduced` ou `aggravated`, que ficam só no relatório.' },
             { label: 'Como funciona', text: 'Resolve a mudança contra o `HEAD`, o último commit antes da task → resolve os deferrals anteriores → lê os padrões que a mudança precisa cumprir → examina cada arquivo alterado no seu contexto → monta o caso → roda três filtros que eliminam findings não comprovados. A mudança é confrontada com os critérios de aceitação do ticket além da estratégia de testes: um critério que o código não cumpre é um finding `high`.' },
-            { label: 'Próximo passo', text: '**PASS** sem findings → `piv-commit [#N] [T-xx]`, aqui ou numa sessão nova. **PASS** com findings `pre-existing` → `piv-commit [#N] [T-xx]`, numa sessão própria. **CHANGES REQUESTED** → `piv-fix`, numa sessão própria, recebendo o path deste relatório.' },
+            { label: 'Próximo passo', text: '**PASS** sem findings → `piv-commit [#N] [T-xx]`, aqui ou numa sessão nova. **PASS** com findings `pre-existing` → `piv-commit [#N] [T-xx]`, numa sessão própria. **PASS** com findings `low` `introduced` ou `aggravated` → `piv-commit [#N] [T-xx]`, numa sessão própria; para limpá-los antes, `piv-fix`, que volta ao `piv-commit` enquanto a árvore ainda corresponde ao relatório e aponta um `piv-review` novo caso contrário. **CHANGES REQUESTED** → `piv-fix`, numa sessão própria, recebendo o path deste relatório.' },
           ],
           notes: [
             { type: 'p', text: '**Use** antes de commitar uma task, e de novo depois de cada execução de fix. Numa nova review ela sobrescreve o relatório anterior: ele é o estado atual da task, e as decisões sobre findings antigos ficam nos deferrals, não aqui.' },
@@ -327,8 +328,8 @@ const MANUAL_PT_BR = {
           fields: [
             { label: 'Entrada', text: '`[review report path]` — em branco, usa a review da task em andamento.' },
             { label: 'Saída', text: '`tasks/T-xx/T-xx.fixes.md` — **Fixed**, **Deferred** (com seus `D-xx`), **Needs a human look**, **Noise / won\'t-fix**, e as checagens executadas. Cada deferral vai para `deferrals/D-xx.md` e para a lista do epic; nenhuma issue é criada.' },
-            { label: 'Como funciona', text: 'Classifica cada finding num dos quatro grupos, pelo tipo blocking e pela origem que a review registrou — blocking, `introduced` e `aggravated` para *fix now*, `pre-existing` para *defer*; um finding blocking só em *fix now* ou *noise*, nunca adiado → corrige o conjunto *fix now* um de cada vez, cada um com um teste que o prova → valida a branch inteira.' },
-            { label: 'Próximo passo', text: '`piv-review [#N] [T-xx]` de novo, numa sessão própria. Com uma entrada *Needs a human look* ainda aberta, a passagem espera: inspecione-a e rode `piv-fix` de novo.' },
+            { label: 'Como funciona', text: 'Classifica cada finding num dos quatro grupos, pelo tipo blocking e pela origem que a review registrou — blocking, `introduced` e `aggravated` para *fix now*, `pre-existing` para *defer*, e um `low` `introduced` ou `aggravated` é opcional (corrigir, adiar ou deixar); um finding blocking só em *fix now* ou *noise*, nunca adiado → corrige o conjunto *fix now* um de cada vez, cada um com um teste que o prova → valida a branch inteira.' },
+            { label: 'Próximo passo', text: 'Quando a review era PASS e a árvore ainda corresponde ao seu Diff hash, `piv-commit [#N] [T-xx]`; caso contrário, `piv-review [#N] [T-xx]` de novo, numa sessão própria. Com uma entrada *Needs a human look* ainda aberta, a passagem espera: inspecione-a e rode `piv-fix` de novo.' },
           ],
           notes: [
             { type: 'p', text: '**Por que o relatório existe.** A triagem é uma decisão humana, e uma decisão que vive só na conversa some até a próxima execução. O relatório de correções e os arquivos de deferral são o que dizem à nova review que um finding já foi resolvido — assim, findings resolvidos continuam resolvidos.' },
@@ -432,7 +433,7 @@ const MANUAL_PT_BR = {
             '**As skills param em vez de adivinhar.** Uma spec não revisada, uma task cuja dependência não foi commitada, uma árvore suja com trabalho que não cabe em nenhum grupo, o `gh` sem login — a execução para e pergunta.',
             '**O GitHub é escrito duas vezes.** A `piv-slice` cria a issue e a `piv-open-pr` abre o PR; todo outro passo só lê, ou fica local.',
             '**Review e correções são execuções separadas.** O reviewer escreve findings e não toca no código; a execução de triagem decide o que acontece com cada um, com você decidindo a divisão.',
-            '**Cada task fecha com um PASS.** Uma execução de fix sempre devolve para uma review nova, que lê os deferrals para que findings resolvidos continuem resolvidos.',
+            '**Cada task fecha com um PASS.** Uma execução de fix devolve para uma review nova, que lê os deferrals para que findings resolvidos continuem resolvidos. Após um PASS ao qual a árvore ainda corresponde, vai direto ao commit.',
             '**Uma task de cada vez.** As tasks rodam na ordem do epic, nunca em paralelo, cada uma commitada antes de a próxima começar.',
             '**Um idioma por intent.** O PRD — ou, sem PRD, a spec — é escrito no idioma em que você dá a entrevista, e todo artefato seguinte o acompanha. Títulos e labels dos templates ficam como os templates os escrevem.',
           ],
